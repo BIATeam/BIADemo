@@ -83,5 +83,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
 
             // End BIADemo
         }
+
+        public static class DatabaseMigrations
+        {
+            public const string AssemblyNameSqlServer = "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer";
+            public const string AssemblyNamePostgreSQL = "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL";
+        }
     }
 }

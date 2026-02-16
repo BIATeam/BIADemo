@@ -16,7 +16,6 @@
     <PackageReference Include="NLog.Extensions.Hosting" />
     <PackageReference Include="NLog.Extensions.Logging" />
     <PackageReference Include="Bonura.NLog.HangfireLayouts" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />

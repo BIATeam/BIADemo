@@ -2,3 +2,7 @@
 tab_width = 2
 indent_size = 2
 end_of_line = crlf
+
+[**/Migrations*/*.cs]
+generated_code = true
+dotnet_analyzer_diagnostic.severity = none

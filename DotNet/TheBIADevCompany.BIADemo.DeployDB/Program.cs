@@ -68,14 +68,20 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         {
                             services.AddDbContext<IDbContextDatabase, DataContextPostGreSql>(options =>
                             {
-                                options.UseNpgsql(connectionString);
+                                options.UseNpgsql(connectionString, optionsBuilder =>
+                                {
+                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
+                                });
                             });
                         }
                         else
                         {
                             services.AddDbContext<IDbContextDatabase, DataContext>(options =>
                             {
-                                options.UseSqlServer(connectionString);
+                                options.UseSqlServer(connectionString, optionsBuilder =>
+                                {
+                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
+                                });
                             });
                         }
 
@@ -83,11 +89,17 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                         {
                             if (dbEngine == DbProvider.PostGreSql)
                             {
-                                options.UseNpgsql(connectionString);
+                                options.UseNpgsql(connectionString, optionsBuilder =>
+                                {
+                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
+                                });
                             }
                             else
                             {
-                                options.UseSqlServer(connectionString);
+                                options.UseSqlServer(connectionString, optionsBuilder =>
+                                {
+                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
+                                });
                             }
                         });
 

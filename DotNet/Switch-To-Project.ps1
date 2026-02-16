@@ -2,6 +2,26 @@ $RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
 
+function AddProjectToSlnf {
+    param([string]$slnfFile, [string]$projectPath)
+    
+    if (-not (Test-Path $slnfFile)) {
+        return
+    }
+    
+    $slnfContent = Get-Content $slnfFile -Raw | ConvertFrom-Json
+    
+    # Check if project already exists
+    if ($slnfContent.solution.projects -notcontains $projectPath) {
+        $slnfContent.solution.projects = @($slnfContent.solution.projects) + $projectPath
+        $slnfContent.solution.projects = @($slnfContent.solution.projects | Sort-Object)
+        
+        # Save with proper formatting
+        $json = $slnfContent | ConvertTo-Json -Depth 10
+        [System.IO.File]::WriteAllText($slnfFile, $json, [System.Text.Encoding]::UTF8)
+    }
+}
+
 function AddBIAProjectToSolution {
     param([string]$layerProject, [string]$layerPackage)
 	
@@ -17,6 +37,10 @@ function AddBIAProjectToSolution {
         # Remove the NuGet package reference
         dotnet remove $ProjectFile package BIA.Net.Core.$layerPackage
     }
+    
+    # Add to .slnf files
+    $slnfProjectPath = "BIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
+    AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 
 AddBIAProjectToSolution "Crosscutting.Common" "Common"
@@ -33,6 +57,9 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 
 # Add the library project to the solution
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
+
+# Add NuGetPackage to .slnf files
+AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
     $propsFilePath = "Directory.Build.props"
@@ -63,7 +90,7 @@ function UpdateDirectoryBuildPropsAnalyzersReferences {
     # Add ProjectReference entries for Analyzers and CodeFixes
     $itemGroup1 = $xmlContent.CreateElement("ItemGroup")
     $itemGroup1.SetAttribute("Label", "AnalyzerReferencesProject")
-    $itemGroup1.SetAttribute("Condition", "!`$(MSBuildProjectDirectory.Contains('BIAPackage'))")
+    $itemGroup1.SetAttribute("Condition", "!`$(MSBuildProjectDirectory.Contains('BIAPackage')) and !`$(MSBuildProjectDirectory.Contains('Migrations'))")
 
     $analyzerReference1 = $xmlContent.CreateElement("ProjectReference")
     $analyzerReference1.SetAttribute("Include", "..\BIAPackage\BIA.Net.Analyzers\BIA.Net.Analyzers\BIA.Net.Analyzers.csproj")
@@ -114,6 +141,10 @@ function AddAnalyzerProjectToSolution {
     
     # Add the analyzer project to the solution
     dotnet sln $SlnFile add -s "BIAPackage\BIA.Net.Analyzers" $AnalyzerProjectFile
+    
+    # Add to .slnf files
+    $slnfProjectPath = "BIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
+    AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 
 # Add Analyzer projects to the solution
