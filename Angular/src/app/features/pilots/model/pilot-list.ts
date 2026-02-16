@@ -13,6 +13,8 @@ export interface PilotList extends BaseDto<string>, VersionedDto, FixableDto {
   name: string;
   identificationNumber: string;
   flightHours: number;
+  firstFlightDate: Date;
+  lastFlightDate: Date | null;
 }
 
 // TODO after creation of CRUD Pilot : adapt the field configuration
@@ -33,6 +35,21 @@ export const pilotListFieldsConfiguration: BiaFieldsConfig<PilotList> = {
       type: PropType.Number,
       isRequired: true,
     }),
+    Object.assign(
+      new BiaFieldConfig('firstFlightDate', 'pilot.firstFlightDate'),
+      {
+        type: PropType.DateTime,
+        isRequired: true,
+        asLocalDateTime: true,
+      }
+    ),
+    Object.assign(
+      new BiaFieldConfig('lastFlightDate', 'pilot.lastFlightDate'),
+      {
+        type: PropType.DateTime,
+        asLocalDateTime: true,
+      }
+    ),
     Object.assign(new BiaFieldConfig('rowVersion', 'pilot.rowVersion'), {
       isVisible: false,
       isVisibleInTable: false,
