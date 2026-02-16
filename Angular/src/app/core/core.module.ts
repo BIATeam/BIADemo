@@ -13,6 +13,7 @@ import biaLocaleEn from '../../assets/bia/i18n/en.json';
 import biaLocaleEs from '../../assets/bia/i18n/es.json';
 import biaLocaleFr from '../../assets/bia/i18n/fr.json';
 import {
+  ANNOUNCEMENT_DISPLAY_DURATION_MS,
   APP_SUPPORTED_TRANSLATIONS,
   APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
   DEFAULT_PAGE_SIZE,
@@ -46,7 +47,8 @@ const ONLINEOFFLINE =
       APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
       DEFAULT_POPUP_MINWIDTH,
       SHOW_FPS,
-      LOGIN_PARAM_SOURCE
+      LOGIN_PARAM_SOURCE,
+      ANNOUNCEMENT_DISPLAY_DURATION_MS
     ),
   ],
   providers: [...ONLINEOFFLINE],
