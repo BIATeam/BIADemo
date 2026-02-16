@@ -119,10 +119,10 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
                 { HeaderName.IdentificationNumber, () => CSVString(dto.IdentificationNumber) },
-                { HeaderName.BaseAirport, () => CSVString(dto.FirstName) },
-                { HeaderName.BaseAirport, () => CSVString(dto.LastName) },
-                { HeaderName.BaseAirport, () => CSVDate(dto.Birthdate) },
-                { HeaderName.BaseAirport, () => CSVDate(dto.CPLDate) },
+                { HeaderName.FirstName, () => CSVString(dto.FirstName) },
+                { HeaderName.LastName, () => CSVString(dto.LastName) },
+                { HeaderName.Birthdate, () => CSVDate(dto.Birthdate) },
+                { HeaderName.CPLDate, () => CSVDate(dto.CPLDate) },
                 { HeaderName.BaseAirport, () => CSVString(dto.BaseAirport?.Display) },
                 { HeaderName.FlightHours, () => CSVNumber(dto.FlightHours) },
                 { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.UtcDateTime) },
