@@ -121,12 +121,17 @@ export class CrudItemImportService<
 
   protected parseCSV(csv: string): Observable<ImportData<TFormCrudItem>> {
     const columnMapping = this.getColumnMapping();
-    const cleanedCSVData = this.cleanCSVFormat(csv, Object.keys(columnMapping));
+    const cleanedCSVData = this.cleanCSVFormat(
+      csv,
+      Object.keys(columnMapping)
+    ).replace(/\r\n/g, '\n');
+    console.log('cleanedCSVData', cleanedCSVData);
 
     const result = Papa.parse<TFormCrudItem>(cleanedCSVData, {
       skipEmptyLines: 'greedy',
       header: true,
       dynamicTyping: true,
+      newline: '\n',
       transformHeader: header => {
         const propName = columnMapping[header];
         if (propName === undefined) {
@@ -136,6 +141,8 @@ export class CrudItemImportService<
         }
       },
     });
+
+    console.log('result', result);
 
     const resultData$ = this.parseCSVBia(result.data);
 
