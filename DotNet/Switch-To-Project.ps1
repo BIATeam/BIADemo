@@ -40,7 +40,6 @@ function AddBIAProjectToSolution {
     
     # Add to .slnf files
     $slnfProjectPath = "BIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
-    AddProjectToSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 
@@ -60,7 +59,6 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 # Add NuGetPackage to .slnf files
-AddProjectToSlnf "${SolutionName}_DeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
 AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
@@ -146,7 +144,6 @@ function AddAnalyzerProjectToSolution {
     
     # Add to .slnf files
     $slnfProjectPath = "BIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
-    AddProjectToSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 

@@ -134,7 +134,6 @@ function AddBIAPackageToSolution {
     
     # Remove from .slnf files
     $slnfProjectPath = "BIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
-    RemoveProjectFromSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     RemoveProjectFromSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 
@@ -154,7 +153,6 @@ AddBIAPackageToSolution "WorkerService" "WorkerService"
 dotnet sln "$SolutionName.sln" remove "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 # Remove NuGetPackage from .slnf files
-RemoveProjectFromSlnf "${SolutionName}_DeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
 RemoveProjectFromSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
@@ -213,7 +211,6 @@ function RemoveAnalyzerProjectToSolution {
     
     # Remove from .slnf files
     $slnfProjectPath = "BIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
-    RemoveProjectFromSlnf "${SolutionName}_DeployDB.slnf" $slnfProjectPath
     RemoveProjectFromSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
 
