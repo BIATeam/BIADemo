@@ -65,6 +65,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             return base.EntityToDto().CombineMapping(entity => new PilotListDto
             {
                 IdentificationNumber = entity.IdentificationNumber,
+                Name = entity.FirstName + " " + entity.LastName,
                 FlightHours = entity.FlightHours,
             });
         }
@@ -75,6 +76,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
                 { HeaderName.IdentificationNumber, () => CSVString(dto.IdentificationNumber) },
+                { HeaderName.Name, () => CSVString(dto.Name) },
                 { HeaderName.FlightHours, () => CSVNumber(dto.FlightHours) },
             };
         }

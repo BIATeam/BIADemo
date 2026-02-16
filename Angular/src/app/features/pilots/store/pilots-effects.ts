@@ -16,6 +16,7 @@ import {
 } from 'rxjs/operators';
 import { AppState } from 'src/app/store/state';
 import { Pilot } from '../model/pilot';
+import { PilotList } from '../model/pilot-list';
 import { pilotCRUDConfiguration } from '../pilot.constants';
 import { PilotDas } from '../services/pilot-das.service';
 import { FeaturePilotsStore } from './pilot.state';
@@ -34,7 +35,7 @@ export class PilotsEffects {
       map(x => x?.event),
       switchMap(event =>
         this.pilotDas.getListByPost({ event: event }).pipe(
-          map((result: DataResult<Pilot[]>) =>
+          map((result: DataResult<PilotList[]>) =>
             FeaturePilotsActions.loadAllByPostSuccess({
               result: result,
               event: event,

@@ -54,6 +54,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         /// <summary>
         /// Gets or sets the Base Airport.
         /// </summary>
+        [BiaDtoField(Required = false)]
         public OptionDto BaseAirport { get; set; }
 
         /// <summary>

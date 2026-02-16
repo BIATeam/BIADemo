@@ -2,6 +2,7 @@
 import { DataResult } from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Pilot } from '../model/pilot';
+import { PilotList } from '../model/pilot-list';
 import { pilotCRUDConfiguration } from '../pilot.constants';
 
 export namespace FeaturePilotsActions {
@@ -42,7 +43,7 @@ export namespace FeaturePilotsActions {
 
   export const loadAllByPostSuccess = createAction(
     '[' + pilotCRUDConfiguration.storeKey + '] Load all by post success',
-    props<{ result: DataResult<Pilot[]>; event: TableLazyLoadEvent }>()
+    props<{ result: DataResult<PilotList[]>; event: TableLazyLoadEvent }>()
   );
 
   export const loadSuccess = createAction(

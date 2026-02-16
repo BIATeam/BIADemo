@@ -1,4 +1,5 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { OptionDto } from '@bia-team/bia-ng/models';
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -12,6 +13,11 @@ import {
 export interface Pilot extends BaseDto<string>, VersionedDto, FixableDto {
   siteId: number;
   identificationNumber: string;
+  firstName: string;
+  lastName: string;
+  birthdate: Date | null;
+  cPLDate: Date;
+  baseAirport: OptionDto | null;
   flightHours: number | null;
   firstFlightDate: Date;
   lastFlightDate: Date | null;
@@ -27,6 +33,24 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
         isRequired: true,
       }
     ),
+    Object.assign(new BiaFieldConfig('firstName', 'pilot.firstName'), {
+      type: PropType.String,
+      isRequired: true,
+    }),
+    Object.assign(new BiaFieldConfig('lastName', 'pilot.lastName'), {
+      type: PropType.String,
+      isRequired: true,
+    }),
+    Object.assign(new BiaFieldConfig('birthdate', 'pilot.birthdate'), {
+      type: PropType.Date,
+    }),
+    Object.assign(new BiaFieldConfig('cPLDate', 'pilot.cPLDate'), {
+      type: PropType.Date,
+      isRequired: true,
+    }),
+    Object.assign(new BiaFieldConfig('baseAirport', 'pilot.baseAirport'), {
+      type: PropType.OneToMany,
+    }),
     Object.assign(new BiaFieldConfig('flightHours', 'pilot.flightHours'), {
       type: PropType.Number,
     }),

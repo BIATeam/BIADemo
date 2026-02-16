@@ -5,15 +5,16 @@ import {
   DEFAULT_CRUD_STATE,
 } from 'packages/bia-ng/models/public-api';
 import { Pilot } from '../model/pilot';
+import { PilotList } from '../model/pilot-list';
 import { FeaturePilotsActions } from './pilots-actions';
 
 // This adapter will allow is to manipulate pilots (mostly CRUD operations)
-export const pilotsAdapter = createEntityAdapter<Pilot>({
-  selectId: (pilot: Pilot) => pilot.id,
+export const pilotsAdapter = createEntityAdapter<PilotList>({
+  selectId: (pilot: PilotList) => pilot.id,
   sortComparer: false,
 });
 
-export interface State extends CrudState<Pilot>, EntityState<Pilot> {
+export interface State extends CrudState<Pilot>, EntityState<PilotList> {
   // additional props here
 }
 
