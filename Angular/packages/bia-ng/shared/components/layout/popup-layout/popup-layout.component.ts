@@ -40,7 +40,7 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   popupTitle: string;
   popupVisible: boolean = true;
   popupClosable: boolean;
-  hasParentUrlSegment: boolean;
+  relativeRouteOnClose: string;
   style: any;
   maximizable: boolean;
   @HostBinding('class') classes = 'bia-flex';
@@ -56,7 +56,7 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.maximizable = snapshot.data['maximizable'] ?? true;
     this.popupClosable = snapshot.data['closable'] ?? false;
-    this.hasParentUrlSegment = snapshot.data['hasParentUrlSegment'] ?? false;
+    this.relativeRouteOnClose = snapshot.data['relativeRouteOnClose'] ?? '..';
   }
   ngAfterViewInit() {
     setTimeout(() => {
@@ -74,10 +74,8 @@ export class PopupLayoutComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onPopupHide() {
-    this.router.navigate(['..'], {
-      relativeTo: this.hasParentUrlSegment
-        ? this.activatedRoute.parent
-        : this.activatedRoute,
+    this.router.navigate([this.relativeRouteOnClose], {
+      relativeTo: this.activatedRoute,
     });
   }
 }
