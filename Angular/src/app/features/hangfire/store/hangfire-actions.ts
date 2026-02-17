@@ -21,3 +21,7 @@ export const generateHandledError = createAction(
 export const generateErrorSuccess = createAction(
   '[Notifications] Generate error success'
 );
+
+export const prepareDownloadFile = createAction(
+  '[Notifications] Prepare download file'
+);

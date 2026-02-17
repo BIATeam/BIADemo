@@ -12,6 +12,7 @@ import { AppState } from 'src/app/store/state';
 import {
   generateHandledError,
   generateUnhandledError,
+  prepareDownloadFile,
   randomReviewPlane,
 } from '../../store/hangfire-actions';
 
@@ -41,5 +42,9 @@ export class HangfireIndexComponent {
 
   onGenerateHandledErrorClick() {
     this.store.dispatch(generateHandledError());
+  }
+
+  onDownloadFileClick() {
+    this.store.dispatch(prepareDownloadFile());
   }
 }

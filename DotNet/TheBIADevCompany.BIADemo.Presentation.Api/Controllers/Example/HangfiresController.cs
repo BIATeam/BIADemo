@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 // BIADemo only
 // <copyright file="HangfiresController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
@@ -8,6 +9,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using System;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.File;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Hangfire;
     using Hangfire.States;
@@ -26,14 +29,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     public class HangfiresController : BiaControllerBase
     {
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
+        private readonly IBiaFileDownloaderService fileDownloaderService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService)
+        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService, IBiaFileDownloaderService fileDownloaderService)
         {
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
+            this.fileDownloaderService = fileDownloaderService;
         }
 
         /// <summary>
@@ -117,6 +122,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         public IActionResult GenerateHandledError()
         {
             throw FrontUserException.Create(ErrorId.HangfireHandledError);
+        }
+
+        [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesDefaultResponseType]
+        public IActionResult PrepareDownloadFile()
+        {
+            this.fileDownloaderService.PrepareDownload(
+                () => Task.FromResult(new FileDownloadData() { FileContent = [], FileContentType = string.Empty, FileName = "Test" }),
+                this.biaClaimsPrincipalService.GetUserId());
+
+            return this.NoContent();
         }
     }
 }

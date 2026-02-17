@@ -13,6 +13,7 @@ import {
   generateErrorSuccess,
   generateHandledError,
   generateUnhandledError,
+  prepareDownloadFile,
   randomReviewPlane,
 } from './hangfire-actions';
 
@@ -62,6 +63,21 @@ export class HangfireEffects {
       ofType(generateHandledError),
       exhaustMap(() =>
         this.hangfireDas.generateHandledError().pipe(
+          map((): Action => generateErrorSuccess()),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(failure({ error: err }));
+          })
+        )
+      )
+    )
+  );
+
+  prepareDownloadFile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(prepareDownloadFile),
+      exhaustMap(() =>
+        this.hangfireDas.prepareDownloadFile().pipe(
           map((): Action => generateErrorSuccess()),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
