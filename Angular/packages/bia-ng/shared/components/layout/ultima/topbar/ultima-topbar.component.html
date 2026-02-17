@@ -168,6 +168,8 @@
           class="p-toast-message-text ng-tns-c191-5 ng-star-inserted"
           (click)="
             message.data?.notification?.type?.id === notificationType.Task ||
+              message.data?.notification?.type?.id ===
+                notificationType.DownloadReady ||
               onNotificationClick(message)
           ">
           <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
@@ -187,6 +189,18 @@
             label="{{ 'bia.ignore' | translate }}"
             (click)="onIgnoreClick(message)"
             class="p-button-outlined"></button>
+        </div>
+      }
+      @if (
+        message.data?.notification?.type?.id === notificationType.DownloadReady
+      ) {
+        <div
+          class="notification-actions flex flex-row justify-content-between align-content-between">
+          <button
+            pButton
+            [label]="message.data?.notification?.data?.display | translate"
+            (click)="onNotificationClick(message)"
+            class="p-button-primary"></button>
         </div>
       }
       <bia-notification-team-warning

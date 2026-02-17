@@ -156,7 +156,14 @@ export class BiaUltimaTopbarComponent
             }
           });
         }
-        this.router.navigate(data.route);
+        if (!data.openRouteAsHref) {
+          this.router.navigate(data.route);
+        } else {
+          window.open(
+            this.router.serializeUrl(this.router.createUrlTree(data.route)),
+            '_blank'
+          );
+        }
       } else if (notification.id) {
         this.router.navigate(['/notifications/', notification.id, 'detail']);
       } else {

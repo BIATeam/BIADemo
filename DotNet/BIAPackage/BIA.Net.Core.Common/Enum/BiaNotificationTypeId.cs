@@ -33,5 +33,7 @@ namespace BIA.Net.Core.Common.Enum
         /// Error notification.
         /// </summary>
         Error = 5,
+
+        DownloadReady = 6,
     }
 }

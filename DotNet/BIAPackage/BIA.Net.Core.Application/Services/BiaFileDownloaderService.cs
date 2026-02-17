@@ -78,7 +78,7 @@
                 CreatedDate = DateTime.UtcNow,
                 Description = "You can now download the file !",
                 Title = $"Download ready for {fileDownloadData.FileName}",
-                TypeId = (int)BiaNotificationTypeId.Info,
+                TypeId = (int)BiaNotificationTypeId.DownloadReady,
                 Read = false,
                 JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", Route = [$"/file/download?token={fileDownloadData.Token}"], OpenRouteAsHref = true }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotifiedUsers = [new() { UserId = requestedByUserId }],

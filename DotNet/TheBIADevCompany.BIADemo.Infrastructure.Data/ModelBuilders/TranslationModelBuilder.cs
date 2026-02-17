@@ -159,6 +159,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.Error, LanguageId = LanguageId.German, Id = 503, Label = "Fehler" });
 
             // End BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.DownloadReady, LanguageId = LanguageId.French, Id = 601, Label = "Téléchargement prêt" });
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.DownloadReady, LanguageId = LanguageId.Spanish, Id = 602, Label = "Descarga lista" });
+
+            // Begin BIADemo
+            modelBuilder.Entity<NotificationTypeTranslation>().HasData(new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.DownloadReady, LanguageId = LanguageId.German, Id = 603, Label = "Download bereit" });
+
+            // End BIADemo
         }
 
         /// <summary>

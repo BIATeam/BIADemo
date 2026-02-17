@@ -29,10 +29,12 @@ export enum NotificationType {
   Success = 3,
   Warning = 4,
   Error = 5,
+  DownloadReady = 6,
 }
 
 export interface NotificationData {
   route: string[] | null;
   display: string;
   teams: NotificationTeam[] | null;
+  openRouteAsHref: boolean;
 }
