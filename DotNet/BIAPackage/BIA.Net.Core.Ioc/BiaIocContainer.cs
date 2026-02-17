@@ -189,6 +189,7 @@ namespace BIA.Net.Core.Ioc
             collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
             collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
             collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
+            collection.AddScoped<Domain.RepoContract.IBiaHybridCache, Infrastructure.Data.Helpers.BiaHybridCache>();
 
             // Infrastructure Data
         }
@@ -215,8 +216,6 @@ namespace BIA.Net.Core.Ioc
             {
                 collection.AddTransient<IBiaDistributedCache, BiaLocalCache>();
             }
-
-            collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
 
             collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() =>
                 CreateHttpClientHandler(biaNetSection));

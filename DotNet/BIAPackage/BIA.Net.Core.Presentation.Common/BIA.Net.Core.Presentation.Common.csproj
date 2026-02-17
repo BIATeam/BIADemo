@@ -34,6 +34,7 @@
     <PackageReference Include="Microsoft.Identity.Client" />
     <PackageReference Include="System.Drawing.Common" />
     <PackageReference Include="Azure.Identity" />
+	<PackageReference Include="Microsoft.Extensions.Caching.Hybrid" />
   </ItemGroup>
 
 	<ItemGroup>
