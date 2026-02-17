@@ -76,10 +76,20 @@
                 Title = $"Download ready for {fileDownloadData.FileName}",
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
-                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", Route = [$"/file/download?token={fileDownloadData.Token}"], OpenRouteAsHref = true, IsApiRoute = true }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", Route = [$"/files/download?token={fileDownloadData.Token}"], OpenRouteAsHref = true, IsApiRoute = true }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotifiedUsers = [new() { Id = requestedByUserId }],
                 NotificationTranslations = [],
                 NotifiedTeams = [],
+            };
+        }
+
+        public async Task<FileDownloadData> GetFileDownloadData(string token)
+        {
+            return new FileDownloadData
+            {
+                FileName = "Example.txt",
+                FileContent = Encoding.UTF8.GetBytes("This is an example file content."),
+                FileContentType = "text/plain",
             };
         }
     }
