@@ -9,7 +9,11 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
+import {
+  AuthService,
+  BiaEnvironmentService,
+  BiaPermission,
+} from 'packages/bia-ng/core/public-api';
 import { AuthInfo } from 'packages/bia-ng/models/public-api';
 import {
   NotificationTeamWarningComponent,
@@ -113,10 +117,11 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
         if (!data.openRouteAsHref) {
           this.router.navigate(data.route);
         } else {
-          window.open(
-            this.router.serializeUrl(this.router.createUrlTree(data.route)),
-            '_blank'
-          );
+          let route = data.route.join('/');
+          if (data.isApiRoute) {
+            route = BiaEnvironmentService.getApiUrl() + route;
+          }
+          window.open(route, '_blank');
         }
       }
     }

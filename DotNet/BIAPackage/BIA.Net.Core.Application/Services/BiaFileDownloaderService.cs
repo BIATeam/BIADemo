@@ -76,7 +76,7 @@
                 Title = $"Download ready for {fileDownloadData.FileName}",
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
-                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", Route = [$"/file/download?token={fileDownloadData.Token}"], OpenRouteAsHref = true }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", Route = [$"/file/download?token={fileDownloadData.Token}"], OpenRouteAsHref = true, IsApiRoute = true }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotifiedUsers = [new() { Id = requestedByUserId }],
                 NotificationTranslations = [],
                 NotifiedTeams = [],

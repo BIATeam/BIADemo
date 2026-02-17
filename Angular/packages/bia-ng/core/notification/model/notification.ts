@@ -37,4 +37,5 @@ export interface NotificationData {
   display: string;
   teams: NotificationTeam[] | null;
   openRouteAsHref: boolean;
+  isApiRoute: boolean;
 }

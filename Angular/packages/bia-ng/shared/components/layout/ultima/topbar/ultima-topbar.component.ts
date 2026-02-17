@@ -21,6 +21,7 @@ import {
   AppSettingsService,
   AuthService,
   BiaAppConstantsService,
+  BiaEnvironmentService,
   BiaMessageService,
   BiaTranslationService,
   CoreNotificationsActions,
@@ -159,10 +160,11 @@ export class BiaUltimaTopbarComponent
         if (!data.openRouteAsHref) {
           this.router.navigate(data.route);
         } else {
-          window.open(
-            this.router.serializeUrl(this.router.createUrlTree(data.route)),
-            '_blank'
-          );
+          let route = data.route.join('/');
+          if (data.isApiRoute) {
+            route = BiaEnvironmentService.getApiUrl() + route;
+          }
+          window.open(route, '_blank');
         }
       } else if (notification.id) {
         this.router.navigate(['/notifications/', notification.id, 'detail']);

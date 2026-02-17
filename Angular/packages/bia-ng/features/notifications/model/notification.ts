@@ -47,6 +47,7 @@ export class NotificationTeam extends BaseDto {
 export interface NotificationData {
   route: string[] | null;
   openRouteAsHref: boolean;
+  isApiRoute: boolean;
   display: string;
   teams: NotificationTeam[] | null;
 }

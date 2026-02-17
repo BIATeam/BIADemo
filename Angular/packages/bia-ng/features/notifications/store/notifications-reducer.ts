@@ -72,6 +72,7 @@ export const notificationReducers = createReducer<NotificationState>(
         display: '',
         teams: null,
         openRouteAsHref: false,
+        isApiRoute: false,
       };
     }
     return { ...state, currentNotification: notif, loadingGet: false };

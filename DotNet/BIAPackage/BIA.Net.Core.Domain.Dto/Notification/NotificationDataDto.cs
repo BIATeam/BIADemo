@@ -22,6 +22,11 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         public bool OpenRouteAsHref { get; set; }
 
         /// <summary>
+        /// Indicates whether the route is from API.
+        /// </summary>
+        public bool IsApiRoute { get; set; }
+
+        /// <summary>
         /// Gets or sets the i18n translation that will be used to
         /// display text in the action button of the notification.
         /// Defaults to "bia.action".
