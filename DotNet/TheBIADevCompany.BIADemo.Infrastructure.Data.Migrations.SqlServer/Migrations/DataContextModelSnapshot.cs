@@ -1704,8 +1704,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<DateTime?>("ArchivedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("BaseAirportId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Birthdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CPLDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTimeOffset>("FirstFlightDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<DateTime?>("FixedDate")
                         .HasColumnType("datetime2");
@@ -1727,6 +1741,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.Property<DateTimeOffset?>("LastFlightDate")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -1737,6 +1756,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BaseAirportId");
 
                     b.HasIndex("SiteId");
 
@@ -2737,11 +2758,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Pilot", b =>
                 {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "BaseAirport")
+                        .WithMany()
+                        .HasForeignKey("BaseAirportId");
+
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BaseAirport");
 
                     b.Navigation("Site");
                 });
