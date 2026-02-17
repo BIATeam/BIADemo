@@ -6,8 +6,10 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -43,6 +45,65 @@ namespace BIA.Net.Core.Application.Services
         protected CrudAppServiceListAndItemBase(ITGenericRepository<TEntity, TKey> repository)
             : base(repository)
         {
+        }
+
+        /// <summary>
+        /// Get the DTO list for TDto type.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">Acces mode, filter on right (optionnal).</param>
+        /// <param name="queryMode">Mode of the query (optionnal).</param>
+        /// <param name="mapperMode">Mode of the mapper (optionnal).</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>The list of DTO.</returns>
+        public async Task<(IEnumerable<TDto> Results, int Total)> GetRangeItemsAsync(TFilterDto filters = null, TKey id = default, Specification<TEntity> specification = null, Expression<Func<TEntity, bool>> filter = null, string accessMode = "Read", string queryMode = "ReadList", string mapperMode = null, bool isReadOnlyMode = false)
+        {
+            return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
+            {
+                TMapperListItem mapperList = this.InitMapper<TDtoListItem, TMapperListItem>();
+                TMapper mapper = this.InitMapper<TDto, TMapper>();
+
+                return await this.ExecuteRangeAsync(
+                    lazyLoadMapper: mapperList,
+                    selector: mapper.EntityToDto(mapperMode),
+                    filters: filters,
+                    id: id,
+                    specification: specification,
+                    filter: filter,
+                    accessMode: accessMode,
+                    queryMode: queryMode,
+                    isReadOnlyMode: isReadOnlyMode);
+            });
+        }
+
+        /// <summary>
+        /// Get the csv with filter.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="mapperMode">A string to adapt the mapper function DtoToEntity.</param>
+        /// <param name="isReadOnlyMode">if set to <c>true</c> [This improves performance and enables parallel querying]. (optionnal, false by default).</param>
+        /// <returns>
+        /// A <see cref="Task" /> representing the asynchronous operation.
+        /// </returns>
+        public virtual async Task<byte[]> GetCsvForImportAsync(
+            TFilterDto filters = null,
+            TKey id = default,
+            Specification<TEntity> specification = null,
+            Expression<Func<TEntity, bool>> filter = null,
+            string accessMode = AccessMode.Read,
+            string queryMode = QueryMode.ReadList,
+            string mapperMode = null,
+            bool isReadOnlyMode = false)
+        {
+            return await this.GetCsvGenericAsync<TDto, TMapper, TFilterDto>(this.GetRangeItemsAsync, filters, id, specification, filter, accessMode, queryMode, mapperMode, isReadOnlyMode);
         }
     }
 }

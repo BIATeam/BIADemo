@@ -10,7 +10,7 @@ import { CrudItemOptionsService } from './crud-item-options.service';
   providedIn: 'root',
 })
 export abstract class CrudItemSingleService<
-  CrudItem extends BaseDto<string | number>,
+  TFormCrudItem extends BaseDto<string | number>,
 > {
   constructor(public optionsService: CrudItemOptionsService) {
     setTimeout(() => this.initSub()); // should be done after initialization of the parent constructor
@@ -49,7 +49,7 @@ export abstract class CrudItemSingleService<
     return 'refresh-' + this.getFeatureName();
   }
 
-  protected _currentCrudItem: CrudItem;
+  protected _currentCrudItem: TFormCrudItem;
   protected _currentCrudItemId: string | number;
 
   public get currentCrudItem() {
@@ -105,13 +105,13 @@ export abstract class CrudItemSingleService<
 
   abstract lastLazyLoadEvent$: Observable<TableLazyLoadEvent>;
 
-  abstract crudItem$: Observable<CrudItem>;
+  abstract crudItem$: Observable<TFormCrudItem>;
   displayItemName$: Observable<string> = of('');
   abstract loadingGet$: Observable<boolean>;
 
   abstract load(id: any): void;
-  abstract create(crudItem: CrudItem): void;
-  abstract update(crudItem: CrudItem): void;
+  abstract create(crudItem: TFormCrudItem): void;
+  abstract update(crudItem: TFormCrudItem): void;
   abstract remove(id: any): void;
   abstract multiRemove(ids: any[]): void;
   abstract clearAll(): void;

@@ -82,6 +82,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         }
 
         /// <summary>
+        /// Get all pilots with filters.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <returns>The list of pilots.</returns>
+        [HttpPost("allItems")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = nameof(PermissionId.Pilot_List_Access))]
+        public async Task<IActionResult> GetAllItems([FromBody] PagingFilterFormatDto filters)
+        {
+            var (results, total) = await this.pilotService.GetRangeItemsAsync(filters);
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return this.Ok(results);
+        }
+
+        /// <summary>
         /// Get a pilot by its identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
@@ -311,6 +328,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.pilotService.GetCsvAsync(filters);
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Pilots{BiaConstants.Csv.Extension}");
+        }
+
+        /// <summary>
+        /// Generates a csv file for bulk import.
+        /// </summary>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
+        /// <returns>a csv file.</returns>
+        [HttpPost("csvForImport")]
+        [Authorize(Roles = nameof(PermissionId.Pilot_List_Access))]
+        public virtual async Task<IActionResult> GetFileForImport([FromBody] PagingFilterFormatDto filters)
+        {
+            byte[] buffer = await this.pilotService.GetCsvForImportAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Pilots{BiaConstants.Csv.Extension}");
         }
 

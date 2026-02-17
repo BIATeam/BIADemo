@@ -10,6 +10,7 @@ import { map, Observable } from 'rxjs';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
 import { Pilot } from '../model/pilot';
+import { PilotList } from '../model/pilot-list';
 import { pilotCRUDConfiguration } from '../pilot.constants';
 import { FeaturePilotsStore } from '../store/pilot.state';
 import { FeaturePilotsActions } from '../store/pilots-actions';
@@ -19,7 +20,7 @@ import { PilotOptionsService } from './pilot-options.service';
 @Injectable({
   providedIn: 'root',
 })
-export class PilotService extends CrudItemService<Pilot> {
+export class PilotService extends CrudItemService<PilotList, Pilot> {
   _updateSuccessActionType = FeaturePilotsActions.loadAllByPost.type;
   _createSuccessActionType = FeaturePilotsActions.loadAllByPost.type;
   _updateFailureActionType = FeaturePilotsActions.failure.type;
@@ -27,7 +28,7 @@ export class PilotService extends CrudItemService<Pilot> {
   constructor(
     private store: Store<AppState>,
     public dasService: PilotDas,
-    public signalRService: CrudItemSignalRService<Pilot>,
+    public signalRService: CrudItemSignalRService<PilotList, Pilot>,
     protected authService: AuthService,
     public optionsService: PilotOptionsService,
     protected injector: Injector
@@ -44,7 +45,7 @@ export class PilotService extends CrudItemService<Pilot> {
     return pilotCRUDConfiguration.featureName;
   }
 
-  public crudItems$: Observable<Pilot[]> = this.store.select(
+  public crudItems$: Observable<PilotList[]> = this.store.select(
     FeaturePilotsStore.getAllPilots
   );
   public totalCount$: Observable<number> = this.store.select(

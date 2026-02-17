@@ -392,6 +392,64 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Get the DTO list with paging and sorting.
         /// </summary>
+        /// <typeparam name="TOtherDtoFilter">The type of DTO.</typeparam>
+        /// <typeparam name="TOtherDtoSelect">The type of Mapper entity to Dto.</typeparam>
+        /// <typeparam name="TOtherFilterDto">The type of the filter.</typeparam>
+        /// <param name="lazyLoadMapper">The filters mapper.</param>
+        /// <param name="selector">The expression selector.</param>
+        /// <param name="filters">The filters.</param>
+        /// <param name="id">The id.</param>
+        /// <param name="specification">Specification Used to filter query.</param>
+        /// <param name="filter">Filter Query.</param>
+        /// <param name="accessMode">The acces Mode (Read, Write delete, all ...). It take the corresponding filter.</param>
+        /// <param name="queryMode">The queryMode use to customize query (repository functions CustomizeQueryBefore and CustomizeQueryAfter).</param>
+        /// <param name="isReadOnlyMode">Readonly mode to use readOnly context.</param>
+        /// <returns>The list of DTO.</returns>
+        protected async Task<(IEnumerable<TOtherDtoSelect> Results, int Total)> ExecuteRangeAsync<TOtherDtoFilter, TOtherDtoSelect, TOtherFilterDto>(
+            BiaBaseMapper<TOtherDtoFilter, TEntity, TKey> lazyLoadMapper,
+            Expression<Func<TEntity, TOtherDtoSelect>> selector,
+            TOtherFilterDto filters,
+            TKey id,
+            Specification<TEntity> specification,
+            Expression<Func<TEntity, bool>> filter,
+            string accessMode,
+            string queryMode,
+            bool isReadOnlyMode)
+            where TOtherDtoFilter : BaseDto<TKey>, new()
+            where TOtherDtoSelect : BaseDto<TKey>, new()
+            where TOtherFilterDto : class, IPagingFilterFormatDto
+        {
+            this.SetGetRangeFilterSpecifications(ref specification, filters);
+
+            var spec = SpecificationHelper.GetLazyLoad<TEntity, TKey, BiaBaseMapper<TOtherDtoFilter, TEntity, TKey>>(
+                this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
+                lazyLoadMapper,
+                filters,
+                this.GetClientTimeZoneContext());
+
+            var queryOrder = this.GetQueryOrder(
+                lazyLoadMapper.ExpressionCollectionOrder,
+                filters?.SortField,
+                filters?.SortOrder == 1,
+                filters?.MultiSortMeta);
+
+            var results = await this.Repository.GetRangeResultAsync(
+                selector,
+                id: id,
+                specification: spec,
+                filter: filter,
+                queryOrder: queryOrder,
+                firstElement: filters?.First ?? 0,
+                pageCount: filters?.Rows ?? 0,
+                queryMode: queryMode,
+                isReadOnlyMode: isReadOnlyMode);
+
+            return (results.Item1.ToList(), results.Item2);
+        }
+
+        /// <summary>
+        /// Get the DTO list with paging and sorting.
+        /// </summary>
         /// <typeparam name="TOtherDto">The type of DTO.</typeparam>
         /// <typeparam name="TOtherMapper">The type of Mapper entity to Dto.</typeparam>
         /// <typeparam name="TOtherFilterDto">The type of the filter.</typeparam>
@@ -419,29 +477,18 @@ namespace BIA.Net.Core.Domain.Service
         {
             return await this.ExecuteWithFrontUserExceptionHandlingAsync(async () =>
             {
-                TOtherMapper mapper = this.InitMapper<TOtherDto, TOtherMapper>();
+                var mapper = this.InitMapper<TOtherDto, TOtherMapper>();
 
-                this.SetGetRangeFilterSpecifications(ref specification, filters);
-                var spec = SpecificationHelper.GetLazyLoad<TEntity, TKey, TOtherMapper>(
-                    this.GetFilterSpecification(accessMode, this.FiltersContext) & specification,
-                    mapper,
-                    filters,
-                    this.GetClientTimeZoneContext());
-
-                var queryOrder = this.GetQueryOrder(mapper.ExpressionCollectionOrder, filters?.SortField, filters?.SortOrder == 1, filters?.MultiSortMeta);
-
-                var results = await this.Repository.GetRangeResultAsync(
-                    mapper.EntityToDto(mapperMode),
+                return await this.ExecuteRangeAsync(
+                    lazyLoadMapper: mapper,
+                    selector: mapper.EntityToDto(mapperMode),
+                    filters: filters,
                     id: id,
-                    specification: spec,
+                    specification: specification,
                     filter: filter,
-                    queryOrder: queryOrder,
-                    firstElement: filters?.First ?? 0,
-                    pageCount: filters?.Rows ?? 0,
+                    accessMode: accessMode,
                     queryMode: queryMode,
                     isReadOnlyMode: isReadOnlyMode);
-
-                return (results.Item1.ToList(), results.Item2);
             });
         }
 

@@ -16,8 +16,8 @@ import { CrudItemService } from './crud-item.service';
   providedIn: 'root',
 })
 export class CrudItemSignalRService<
-  ListCrudItem extends BaseDto<string | number>,
-  CrudItem extends BaseDto<string | number> = ListCrudItem,
+  TListCrudItem extends BaseDto<string | number>,
+  TFormCrudItem extends BaseDto<string | number> = TListCrudItem,
 > {
   protected targetedFeature: TargetedFeature;
 
@@ -39,7 +39,7 @@ export class CrudItemSignalRService<
    * Initialize SignalR communication.
    * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
    */
-  initialize(crudItemService: CrudItemService<ListCrudItem, CrudItem>) {
+  initialize(crudItemService: CrudItemService<TListCrudItem, TFormCrudItem>) {
     this.targetedFeature = crudItemService.getSignalRTargetedFeature();
 
     console.log(
@@ -64,7 +64,7 @@ export class CrudItemSignalRService<
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  destroy(crudItemService: CrudItemService<ListCrudItem, CrudItem>) {
+  destroy(crudItemService: CrudItemService<TListCrudItem, TFormCrudItem>) {
     console.log(
       '%c [' +
         crudItemService.getConsoleLabel() +

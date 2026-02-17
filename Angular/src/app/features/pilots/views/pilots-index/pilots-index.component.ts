@@ -14,6 +14,8 @@ import { PrimeTemplate } from 'primeng/api';
 import { Permission } from 'src/app/shared/permission';
 import { PilotTableComponent } from '../../components/pilot-table/pilot-table.component';
 import { Pilot } from '../../model/pilot';
+import { PilotList } from '../../model/pilot-list';
+import { pilotListCRUDConfiguration } from '../../pilot-list.constants';
 import { pilotCRUDConfiguration } from '../../pilot.constants';
 import { PilotService } from '../../services/pilot.service';
 
@@ -35,7 +37,7 @@ import { PilotService } from '../../services/pilot.service';
   providers: [{ provide: CrudItemService, useExisting: PilotService }],
 })
 export class PilotsIndexComponent
-  extends CrudItemsIndexComponent<Pilot>
+  extends CrudItemsIndexComponent<PilotList, Pilot>
   implements OnInit
 {
   @ViewChild(PilotTableComponent, { static: false })
@@ -50,7 +52,8 @@ export class PilotsIndexComponent
     protected authService: AuthService
   ) {
     super(injector, pilotService);
-    this.crudConfiguration = pilotCRUDConfiguration;
+    this.crudConfiguration = pilotListCRUDConfiguration;
+    this.crudConfigurationItem = pilotCRUDConfiguration;
   }
 
   protected setPermissions() {

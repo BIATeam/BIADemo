@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+﻿import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { parse } from 'date-fns';
 import {
@@ -21,6 +21,14 @@ import { DictOptionDto } from '../../../components/table/bia-table/dict-option-d
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { CrudConfig } from '../model/crud-config';
 import { CrudItemService } from './crud-item.service';
+
+export const SAME_LIST_FORM_MODELS = new InjectionToken<boolean>(
+  'SAME_LIST_FORM_MODELS',
+  {
+    providedIn: 'root',
+    factory: () => true,
+  }
+);
 
 export interface ImportParam {
   useCurrentView: boolean;
@@ -47,12 +55,15 @@ export interface ImportData<T extends BaseDto<string | number>> {
 @Injectable({
   providedIn: 'root',
 })
-export class CrudItemImportService<T extends BaseDto<string | number>> {
-  protected form: BiaFormComponent<T>;
-  protected importData: ImportData<T>;
-  protected tmpImportDataErrors: TmpImportDataError<T>[] = [];
-  protected crudItemService: CrudItemService<T>;
-  protected crudConfig: CrudConfig<T>;
+export class CrudItemImportService<
+  TListCrudItem extends BaseDto<string | number>,
+  TFormCrudItem extends BaseDto<string | number> = TListCrudItem,
+> {
+  protected form: BiaFormComponent<TFormCrudItem>;
+  protected importData: ImportData<TFormCrudItem>;
+  protected tmpImportDataErrors: TmpImportDataError<TFormCrudItem>[] = [];
+  protected crudItemService: CrudItemService<TListCrudItem, TFormCrudItem>;
+  protected crudConfig: CrudConfig<TFormCrudItem>;
   public importParam = <ImportParam>{
     useCurrentView: false,
   };
@@ -60,22 +71,23 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
   constructor(
     protected translateService: TranslateService,
     protected biaTranslationService: BiaTranslationService,
-    protected formatValuePipe: FormatValuePipe
+    protected formatValuePipe: FormatValuePipe,
+    @Inject(SAME_LIST_FORM_MODELS) protected isSameListFormModels: boolean
   ) {
     this.initImportParam();
   }
 
   public init(
-    form: BiaFormComponent<T>,
-    crudConfig: CrudConfig<T>,
-    crudItemService: CrudItemService<T>
+    form: BiaFormComponent<TFormCrudItem>,
+    crudConfig: CrudConfig<TFormCrudItem>,
+    crudItemService: CrudItemService<TListCrudItem, TFormCrudItem>
   ): void {
     this.crudItemService = crudItemService;
     this.crudConfig = crudConfig;
     this.form = form;
   }
 
-  public uploadCsv(file: File): Observable<ImportData<T>> {
+  public uploadCsv(file: File): Observable<ImportData<TFormCrudItem>> {
     this.initImportData();
     return from(this.readFileAsText(file)).pipe(
       switchMap(csv => this.parseCSV(csv))
@@ -107,14 +119,19 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     });
   }
 
-  protected parseCSV(csv: string): Observable<ImportData<T>> {
+  protected parseCSV(csv: string): Observable<ImportData<TFormCrudItem>> {
     const columnMapping = this.getColumnMapping();
-    const cleanedCSVData = this.cleanCSVFormat(csv, Object.keys(columnMapping));
+    const cleanedCSVData = this.cleanCSVFormat(
+      csv,
+      Object.keys(columnMapping)
+    ).replace(/\r\n/g, '\n');
+    console.log('cleanedCSVData', cleanedCSVData);
 
-    const result = Papa.parse<T>(cleanedCSVData, {
+    const result = Papa.parse<TFormCrudItem>(cleanedCSVData, {
       skipEmptyLines: 'greedy',
       header: true,
       dynamicTyping: true,
+      newline: '\n',
       transformHeader: header => {
         const propName = columnMapping[header];
         if (propName === undefined) {
@@ -125,9 +142,11 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
       },
     });
 
+    console.log('result', result);
+
     const resultData$ = this.parseCSVBia(result.data);
 
-    let allObjs$: Observable<T[]>;
+    let allObjs$: Observable<TFormCrudItem[]>;
 
     if (
       this.crudConfig.importMode?.useDelete === true ||
@@ -151,7 +170,10 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
         }),
         switchMap(event =>
           this.crudItemService.dasService
-            .getListByPost({ event })
+            .getListItemsByPost<TFormCrudItem>({
+              event: event,
+              endpoint: this.isSameListFormModels ? 'all' : 'allItems',
+            })
             .pipe(map(x => x.data))
         )
       );
@@ -171,7 +193,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
       }, {});
   }
 
-  protected parseCSVBia(csvObjs: T[]): Observable<T[]> {
+  protected parseCSVBia(csvObjs: TFormCrudItem[]): Observable<TFormCrudItem[]> {
     return this.crudItemService.optionsService.dictOptionDtos$.pipe(
       map((dictOptionDtos: DictOptionDto[]) => {
         csvObjs.forEach(csvObj => {
@@ -284,7 +306,10 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     return separator;
   }
 
-  protected parseCSVString(csvObj: T, column: BiaFieldConfig<T>) {
+  protected parseCSVString(
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>
+  ) {
     const regex1 = /"=""(.*?)"""/g;
     const regex2 = /=""(.*?)""/g;
 
@@ -294,7 +319,10 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
       .trim();
   }
 
-  protected parseCSVDateAndDateTime(csvObj: T, column: BiaFieldConfig<T>) {
+  protected parseCSVDateAndDateTime(
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>
+  ) {
     const csvValue = csvObj[column.field]?.toString().trim();
 
     if (isEmpty(csvValue)) {
@@ -361,15 +389,24 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     }
   }
 
-  protected parseCSVDate(csvObj: T, column: BiaFieldConfig<T>) {
+  protected parseCSVDate(
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>
+  ) {
     return this.parseCSVDateAndDateTime(csvObj, column);
   }
 
-  protected parseCSVDateTime(csvObj: T, column: BiaFieldConfig<T>) {
+  protected parseCSVDateTime(
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>
+  ) {
     return this.parseCSVDateAndDateTime(csvObj, column);
   }
 
-  protected parseCSVBoolean(csvObj: T, column: BiaFieldConfig<T>) {
+  protected parseCSVBoolean(
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>
+  ) {
     const csvValue = csvObj[column.field]?.toString().trim();
 
     if (isEmpty(csvValue)) {
@@ -386,7 +423,10 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     }
   }
 
-  protected parseCSVNumber(csvObj: T, column: BiaFieldConfig<T>) {
+  protected parseCSVNumber(
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>
+  ) {
     const csvValue = csvObj[column.field]?.toString().trim();
 
     const number = Number(csvValue);
@@ -401,8 +441,8 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
   }
 
   protected parseCSVOneToMany(
-    csvObj: T,
-    column: BiaFieldConfig<T>,
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>,
     dictOptionDtos: DictOptionDto[]
   ) {
     const csvValue = csvObj[column.field]?.toString().trim();
@@ -426,8 +466,8 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
   }
 
   protected parseCSVManyToMany(
-    csvObj: T,
-    column: BiaFieldConfig<T>,
+    csvObj: TFormCrudItem,
+    column: BiaFieldConfig<TFormCrudItem>,
     dictOptionDtos: DictOptionDto[]
   ) {
     const csvValue = csvObj[column.field]?.toString().trim();
@@ -458,9 +498,9 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
   }
 
   protected fillImportData(
-    csvObjs$: Observable<T[]>,
-    oldObjs$: Observable<T[]>
-  ): Observable<ImportData<T>> {
+    csvObjs$: Observable<TFormCrudItem[]>,
+    oldObjs$: Observable<TFormCrudItem[]>
+  ): Observable<ImportData<TFormCrudItem>> {
     return combineLatest([csvObjs$, oldObjs$]).pipe(
       map(([csvObjs, oldObjs]) => {
         this.checkDuplicateIdObjects(csvObjs);
@@ -514,13 +554,13 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     );
   }
 
-  protected fillToDeletes(oldObj: T) {
+  protected fillToDeletes(oldObj: TFormCrudItem) {
     oldObj.dtoState = DtoState.Deleted;
     this.importData.toDeletes.push(oldObj);
   }
 
-  protected fillToUpdates(oldObj: T, csvObj: T) {
-    const newObj: T = clone(oldObj);
+  protected fillToUpdates(oldObj: TFormCrudItem, csvObj: TFormCrudItem) {
+    const newObj: TFormCrudItem = clone(oldObj);
     for (const prop in newObj) {
       // We do not directly compare the CSV object because it could contain properties that are not known to the object.
       // So, we start from an obj and we fill in the properties if they are present on both sides.
@@ -581,17 +621,20 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     }
   }
 
-  protected fillToInserts(csvObj: T) {
+  protected fillToInserts(csvObj: TFormCrudItem) {
     for (const prop in csvObj) {
       const field = this.crudConfig.fieldsConfig.columns.find(
         column => column.field === prop
       );
       if (!field?.isEditable && !field?.isOnlyInitializable) {
-        csvObj[prop] = null as T[Extract<keyof T, string>];
+        csvObj[prop] = null as TFormCrudItem[Extract<
+          keyof TFormCrudItem,
+          string
+        >];
       }
     }
 
-    this.form.element = <T>{};
+    this.form.element = <TFormCrudItem>{};
     const checkObject = this.form.checkObject(csvObj);
 
     if (checkObject.errorMessages.length > 0) {
@@ -604,7 +647,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
 
   protected initImportData() {
     this.tmpImportDataErrors = [];
-    this.importData = <ImportData<T>>{
+    this.importData = <ImportData<TFormCrudItem>>{
       toDeletes: [],
       toInserts: [],
       toUpdates: [],
@@ -612,7 +655,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     };
   }
 
-  protected addErrorToSave(obj: T, errorMessage: string) {
+  protected addErrorToSave(obj: TFormCrudItem, errorMessage: string) {
     const existingErrorToSave = this.tmpImportDataErrors.find(
       entry => entry.obj === obj
     );
@@ -626,7 +669,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     }
   }
 
-  protected addErrorsToSave(obj: T, errorMessages: string[]) {
+  protected addErrorsToSave(obj: TFormCrudItem, errorMessages: string[]) {
     const existingErrorToSave = this.tmpImportDataErrors.find(
       entry => entry.obj === obj
     );
@@ -641,7 +684,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
   }
 
   protected fillsErrors(
-    tmpImportDataErrors: TmpImportDataError<T>[]
+    tmpImportDataErrors: TmpImportDataError<TFormCrudItem>[]
   ): ImportDataError[] {
     return tmpImportDataErrors.map(tmp => {
       return <ImportDataError>{
@@ -651,7 +694,7 @@ export class CrudItemImportService<T extends BaseDto<string | number>> {
     });
   }
 
-  protected checkDuplicateIdObjects(arr: T[]): void {
+  protected checkDuplicateIdObjects(arr: TFormCrudItem[]): void {
     const idCount = new Map<any, number>();
 
     arr.forEach(obj => {
