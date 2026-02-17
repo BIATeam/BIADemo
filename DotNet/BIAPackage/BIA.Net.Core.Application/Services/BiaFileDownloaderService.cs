@@ -22,10 +22,11 @@
     using Newtonsoft.Json.Serialization;
     using static System.Runtime.InteropServices.JavaScript.JSType;
 
-    public class BiaFileDownloaderService<TNotification, TNotificationDto, TNotificationMapper> : IBiaFileDownloaderService
+    public class BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
+        where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification>
         where TNotification : BaseNotification, new()
         where TNotificationDto : BaseNotificationDto, new()
-        where TNotificationMapper : BaseNotificationMapper<TNotificationDto, TNotification>
+        where TNotificationListItemDto : BaseNotificationListItemDto, new()
     {
         private readonly IServiceScopeFactory serviceScopeFactory;
 
@@ -39,10 +40,8 @@
             Task.Run(async () =>
             {
                 using var scope = this.serviceScopeFactory.CreateAsyncScope();
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<BiaFileDownloaderService<TNotification, TNotificationDto, TNotificationMapper>>>();
-                var notificationRepository = scope.ServiceProvider.GetRequiredService<ITGenericRepository<TNotification, int>>();
-                var clientForHubService = scope.ServiceProvider.GetRequiredService<IClientForHubService>();
-                var mapper = scope.ServiceProvider.GetRequiredService<TNotificationMapper>();
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>>();
+                var notificationAppService = scope.ServiceProvider.GetRequiredService<TINotificationAppService>();
 
                 try
                 {
@@ -50,10 +49,7 @@
                     fileDownloadData.Token = GenerateFileDownloadToken(fileDownloadData, requestedByUserId);
                     var notification = CreateDownloadReadyNotification(fileDownloadData, requestedByUserId);
 
-                    notificationRepository.Add(notification);
-                    await notificationRepository.UnitOfWork.CommitAsync();
-                    var notificationDto = await notificationRepository.GetResultAsync(mapper.EntityToDto(MapperMode.Item), notification.Id);
-                    _ = clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "notification-domain" }, "notification-addUnread", notificationDto);
+                    await notificationAppService.AddAsync(notification);
                 }
                 catch (Exception ex)
                 {
@@ -70,18 +66,18 @@
             return Convert.ToHexString(Encoding.UTF8.GetBytes($"{fileDownloadData.FileName}:{requestedByUserId}:{DateTime.UtcNow.Ticks}"));
         }
 
-        private static TNotification CreateDownloadReadyNotification(FileDownloadData fileDownloadData, int requestedByUserId)
+        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadData fileDownloadData, int requestedByUserId)
         {
-            return new TNotification
+            return new TNotificationDto
             {
-                CreatedById = requestedByUserId,
+                CreatedBy = new OptionDto { Id = requestedByUserId },
                 CreatedDate = DateTime.UtcNow,
                 Description = "You can now download the file !",
                 Title = $"Download ready for {fileDownloadData.FileName}",
-                TypeId = (int)BiaNotificationTypeId.DownloadReady,
+                Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
                 JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", Route = [$"/file/download?token={fileDownloadData.Token}"], OpenRouteAsHref = true }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
-                NotifiedUsers = [new() { UserId = requestedByUserId }],
+                NotifiedUsers = [new() { Id = requestedByUserId }],
                 NotificationTranslations = [],
                 NotifiedTeams = [],
             };

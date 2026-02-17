@@ -151,7 +151,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
-            collection.AddTransient<IBiaFileDownloaderService, BiaFileDownloaderService<Notification, NotificationDto, NotificationMapper>>();
+            collection.AddTransient<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
