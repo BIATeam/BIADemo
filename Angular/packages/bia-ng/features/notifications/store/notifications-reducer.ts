@@ -67,7 +67,12 @@ export const notificationReducers = createReducer<NotificationState>(
         ? JSON.parse(notification.jData)
         : { route: null, display: '', teams: null };
     } catch {
-      notif.data = { route: null, display: '', teams: null };
+      notif.data = {
+        route: null,
+        display: '',
+        teams: null,
+        openRouteAsHref: false,
+      };
     }
     return { ...state, currentNotification: notif, loadingGet: false };
   }),

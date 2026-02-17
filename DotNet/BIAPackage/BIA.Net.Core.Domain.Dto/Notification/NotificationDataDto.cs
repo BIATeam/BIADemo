@@ -17,6 +17,11 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         public string[] Route { get; set; }
 
         /// <summary>
+        /// Indicates whether the route should be opened as an href link.
+        /// </summary>
+        public bool OpenRouteAsHref { get; set; }
+
+        /// <summary>
         /// Gets or sets the i18n translation that will be used to
         /// display text in the action button of the notification.
         /// Defaults to "bia.action".

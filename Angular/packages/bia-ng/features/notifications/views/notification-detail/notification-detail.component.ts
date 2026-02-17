@@ -110,7 +110,14 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
             }
           });
         }
-        this.router.navigate(data.route);
+        if (!data.openRouteAsHref) {
+          this.router.navigate(data.route);
+        } else {
+          window.open(
+            this.router.serializeUrl(this.router.createUrlTree(data.route)),
+            '_blank'
+          );
+        }
       }
     }
   }
