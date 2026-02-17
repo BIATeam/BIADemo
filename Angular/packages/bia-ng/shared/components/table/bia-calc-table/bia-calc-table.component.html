@@ -177,11 +177,12 @@
         let-expanded="expanded">
         <!-- SELECTABLE IF NOT FOOTER -->
         <tr
+          #currentRow
           class="bia-selectable-row"
           [ngClass]="{ 'p-even-row': ri % 2 !== 0 }"
           [pSelectableRow]="!isFooter(rowData) ? rowData : null"
           [pEditableRow]="rowData"
-          (focusout)="onFocusout()"
+          (focusout)="onFocusout(currentRow)"
           (keyup.enter)="initEditableRow(null)"
           (keyup.escape)="escape()">
           <!-- FIRST COLUMN WITH CHECKBOX OR RADIOBUTTON -->
@@ -298,8 +299,9 @@
       <ng-template pTemplate="footer" let-columns>
         @if (canAdd === true && !readOnly) {
           <tr
+            #currentRow
             class="bia-selectable-row"
-            (focusout)="onFocusout()"
+            (focusout)="onFocusout(currentRow)"
             (keyup.enter)="initEditableRow(null)"
             (keyup.escape)="escape()">
             @if (canSelectElement === true && !readOnly) {

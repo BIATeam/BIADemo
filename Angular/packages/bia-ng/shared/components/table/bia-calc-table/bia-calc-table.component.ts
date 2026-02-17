@@ -202,7 +202,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
               this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
-        if (!rowData || rowData.id !== this.form.value.id) {
+        if (!rowData) {
           if (this.form.valid) {
             this.onSubmit();
           } else {
@@ -275,17 +275,17 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('onSubmit not Implemented');
   }
 
-  public onFocusout() {
+  public onFocusout(tr: HTMLTableRowElement) {
     // stop the onFocusout after this code this.currentRow?.focus();
     // because it is launched by the onfocusout of the tr
     if (this.isInComplexInput === false) {
       setTimeout(() => {
         if (
           this.isInComplexInput !== true &&
-          this.getParentComponent(document.activeElement, 'bia-calc-form') ===
-            null &&
-          !document.activeElement?.className?.includes('p-select') /*&&
-          this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
+          this.getParentComponent(
+            document.activeElement,
+            'bia-selectable-row'
+          ) !== tr
         ) {
           this.initEditableRow(null);
         }
