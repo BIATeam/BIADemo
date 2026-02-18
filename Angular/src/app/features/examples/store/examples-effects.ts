@@ -1,0 +1,71 @@
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { BiaMessageService } from 'packages/bia-ng/core/public-api';
+import { of } from 'rxjs';
+import { catchError, exhaustMap, map } from 'rxjs/operators';
+import { ExamplesDas } from '../service/examples-das.service';
+import {
+  generateErrorSuccess,
+  generateHandledError,
+  generateUnhandledError,
+  prepareDownloadFileExample,
+} from './examples-actions';
+
+/**
+ * Effects file is for isolating and managing side effects of the application in one place
+ * Http requests, Sockets, Routing, LocalStorage, etc
+ */
+
+@Injectable()
+export class ExamplesEffects {
+  generateUnhandledError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateUnhandledError),
+      exhaustMap(() =>
+        this.examplesDas.generateUnhandledError().pipe(
+          map((): any => generateErrorSuccess()),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(err);
+          })
+        )
+      )
+    )
+  );
+
+  generateHandledError$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateHandledError),
+      exhaustMap(() =>
+        this.examplesDas.generateHandledError().pipe(
+          map((): any => generateErrorSuccess()),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(err);
+          })
+        )
+      )
+    )
+  );
+
+  prepareDownloadFile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(prepareDownloadFileExample),
+      exhaustMap(() =>
+        this.examplesDas.prepareDownloadFileExample().pipe(
+          map((): any => generateErrorSuccess()),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(err);
+          })
+        )
+      )
+    )
+  );
+
+  constructor(
+    private actions$: Actions,
+    private examplesDas: ExamplesDas,
+    private biaMessageService: BiaMessageService
+  ) {}
+}

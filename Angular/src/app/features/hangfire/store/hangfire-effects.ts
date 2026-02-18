@@ -1,21 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
 import {
   BiaMessageService,
   biaSuccessWaitRefreshSignalR,
 } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
-import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { HangfireDas } from '../service/hangfire-das.service';
-import {
-  failure,
-  generateErrorSuccess,
-  generateHandledError,
-  generateUnhandledError,
-  prepareDownloadFileExample,
-  randomReviewPlane,
-} from './hangfire-actions';
+import { failure, randomReviewPlane } from './hangfire-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -40,51 +32,6 @@ export class HangfireEffects {
           })
         );
       })
-    )
-  );
-
-  generateUnhandledError$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(generateUnhandledError),
-      exhaustMap(() =>
-        this.hangfireDas.generateUnhandledError().pipe(
-          map((): Action => generateErrorSuccess()),
-          catchError(err => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-
-  generateHandledError$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(generateHandledError),
-      exhaustMap(() =>
-        this.hangfireDas.generateHandledError().pipe(
-          map((): Action => generateErrorSuccess()),
-          catchError(err => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-
-  prepareDownloadFile$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(prepareDownloadFileExample),
-      exhaustMap(() =>
-        this.hangfireDas.prepareDownloadFileExample().pipe(
-          map((): Action => generateErrorSuccess()),
-          catchError(err => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
-          })
-        )
-      )
     )
   );
 

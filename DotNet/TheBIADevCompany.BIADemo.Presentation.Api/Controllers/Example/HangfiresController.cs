@@ -6,10 +6,8 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 {
     using System;
-    using System.IO;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Hangfire;
     using Hangfire.States;
@@ -18,7 +16,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Job;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -27,17 +24,14 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     public class HangfiresController : BiaControllerBase
     {
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
-        private readonly IBiaFileDownloaderService fileDownloaderService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        /// <param name="fileDownloaderService">The BIA file downloader service.</param>
-        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService, IBiaFileDownloaderService fileDownloaderService)
+        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService)
         {
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
-            this.fileDownloaderService = fileDownloaderService;
         }
 
         /// <summary>
@@ -97,48 +91,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             {
                 return this.NotFound();
             }
-        }
-
-        /// <summary>
-        /// Throw unhandled exception.
-        /// </summary>
-        /// <returns><see cref="IActionResult"/>.</returns>
-        /// <exception cref="BadHttpRequestException">Thrown exception.</exception>
-        [HttpGet("[action]")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GenerateUnhandledError()
-        {
-            throw new BadHttpRequestException("Unhandled error");
-        }
-
-        /// <summary>
-        /// Throw handled exception.
-        /// </summary>
-        /// <returns><see cref="IActionResult"/>.</returns>
-        /// <exception cref="FrontUserException">Thrown exception.</exception>
-        [HttpGet("[action]")]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public IActionResult GenerateHandledError()
-        {
-            throw FrontUserException.Create(ErrorId.HangfireHandledError);
-        }
-
-        /// <summary>
-        /// Prepare the download of example file.
-        /// </summary>
-        /// <returns>No content.</returns>
-        [HttpPost("[action]")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult PrepareDownloadFileExample()
-        {
-            var currentAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var downloadFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadFileExample.txt");
-
-            this.fileDownloaderService.PrepareDownload(
-                () => Task.FromResult(new FileDownloadDataDto() { FilePath = downloadFileExamplePath, FileContentType = "text/plain; charset=utf-8", FileName = "DownloadFileExample.txt" }),
-                this.biaClaimsPrincipalService.GetUserId());
-
-            return this.NoContent();
         }
     }
 }
