@@ -38,7 +38,7 @@ import { ButtonDirective } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';
 import { Toast } from 'primeng/toast';
 import { Tooltip } from 'primeng/tooltip';
-import { first, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { BiaOnlineOfflineIconComponent } from '../../../bia-online-offline-icon/bia-online-offline-icon.component';
 import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
 import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
@@ -160,12 +160,7 @@ export class BiaUltimaTopbarComponent
         }
         this.router.navigate(data.route);
       } else if (data?.downloadFileGuid) {
-        this.sub.add(
-          this.fileDownloaderService
-            .downloadFile(data.downloadFileGuid)
-            .pipe(first())
-            .subscribe()
-        );
+        this.fileDownloaderService.downloadFile(data.downloadFileGuid);
       } else if (notification.id) {
         this.router.navigate(['/notifications/', notification.id, 'detail']);
       } else {

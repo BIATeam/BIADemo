@@ -21,7 +21,7 @@ import {
 } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { ButtonDirective } from 'primeng/button';
-import { first, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Notification, NotificationData } from '../../model/notification';
 import { NotificationService } from '../../services/notification.service';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
@@ -119,12 +119,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
       }
 
       if (data?.downloadFileGuid) {
-        this.sub.add(
-          this.fileDownloaderService
-            .downloadFile(data.downloadFileGuid)
-            .pipe(first())
-            .subscribe()
-        );
+        this.fileDownloaderService.downloadFile(data.downloadFileGuid);
       }
     }
   }
