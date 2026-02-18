@@ -98,9 +98,13 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             this.cache = cache;
             this.unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.expiration = ResolveExpiration(configuration);
-            this.localCacheExpiration = ResolveLocalCacheExpiration(configuration);
-            this.isDistributedCacheActive = ResolveDistributedCacheActive(configuration);
+
+            BiaNetSection biaNetSection = new BiaNetSection();
+            configuration?.GetSection("BiaNet").Bind(biaNetSection);
+
+            this.expiration = ResolveExpiration(biaNetSection);
+            this.localCacheExpiration = ResolveLocalCacheExpiration(biaNetSection);
+            this.isDistributedCacheActive = ResolveDistributedCacheActive(biaNetSection);
         }
 
         /// <inheritdoc />
@@ -463,11 +467,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <summary>
         /// Resolves the default expiration duration from configuration.
         /// </summary>
-        /// <param name="configuration">The BiaNet configuration section.</param>
+        /// <param name="biaNetSection">The BiaNet configuration section.</param>
         /// <returns>The resolved expiration.</returns>
-        protected static TimeSpan ResolveExpiration(IConfiguration configuration)
+        protected static TimeSpan ResolveExpiration(BiaNetSection biaNetSection)
         {
-            int? expirationSeconds = configuration?.GetValue<int?>($"{nameof(HybridCache)}:ExpirationSeconds");
+            int? expirationSeconds = biaNetSection?.CommonFeatures?.HybridCache.ExpirationSeconds;
 
             if (!expirationSeconds.HasValue)
             {
@@ -480,11 +484,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <summary>
         /// Resolves the default local cache expiration duration from configuration.
         /// </summary>
-        /// <param name="configuration">The configuration source.</param>
+        /// <param name="biaNetSection">The configuration source.</param>
         /// <returns>The resolved local cache expiration.</returns>
-        protected static TimeSpan ResolveLocalCacheExpiration(IConfiguration configuration)
+        protected static TimeSpan ResolveLocalCacheExpiration(BiaNetSection biaNetSection)
         {
-            int? expirationSeconds = configuration?.GetValue<int?>($"{nameof(HybridCache)}:LocalCacheExpirationSeconds");
+            int? expirationSeconds = biaNetSection?.CommonFeatures?.HybridCache.LocalCacheExpirationSeconds;
 
             if (!expirationSeconds.HasValue)
             {
@@ -498,13 +502,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// Resolves whether the distributed cache is active from the configuration.
         /// If the configuration value is not set, returns true by default.
         /// </summary>
-        /// <param name="configuration">The configuration source.</param>
+        /// <param name="biaNetSection">The configuration source.</param>
         /// <returns>True if the distributed cache is active; otherwise, false.</returns>
-        protected static bool ResolveDistributedCacheActive(IConfiguration configuration)
+        protected static bool ResolveDistributedCacheActive(BiaNetSection biaNetSection)
         {
-            BiaNetSection biaNetSection = new BiaNetSection();
-            configuration?.GetSection("BiaNet").Bind(biaNetSection);
-
             bool? isActive = biaNetSection?.CommonFeatures?.DistributedCache?.IsActive;
             return isActive.GetValueOrDefault(true);
         }
