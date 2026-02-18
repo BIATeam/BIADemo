@@ -38,6 +38,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
@@ -59,7 +60,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
 #endif
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Application.Services;
     using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
@@ -151,7 +151,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
-            collection.AddSingleton<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
+            collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)

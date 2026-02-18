@@ -1,30 +1,35 @@
-﻿namespace BIA.Net.Core.Application.Services
+﻿// <copyright file="BiaFileDownloaderService.cs" company="PlaceholderCompany">
+// Copyright (c) PlaceholderCompany. All rights reserved.
+// </copyright>
+
+namespace BIA.Net.Core.Application.Services
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.File.Entities;
+    using BIA.Net.Core.Domain.File.Mappers;
     using BIA.Net.Core.Domain.Notification.Entities;
-    using BIA.Net.Core.Domain.Notification.Mappers;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Domain.User.Entities;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-    using static System.Runtime.InteropServices.JavaScript.JSType;
 
+    /// <summary>
+    /// File downloader service that prepares file download and notifies the user when the file is ready to be downloaded.
+    /// </summary>
+    /// <typeparam name="TINotificationAppService">Interface for the notification application service.</typeparam>
+    /// <typeparam name="TNotification">Type of the notification.</typeparam>
+    /// <typeparam name="TNotificationDto">Type of the notification DTO.</typeparam>
+    /// <typeparam name="TNotificationListItemDto">Type of the notification list item DTO.</typeparam>
     public class BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
         where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification>
         where TNotification : BaseNotification, new()
@@ -33,59 +38,95 @@
     {
         private readonly IServiceScopeFactory serviceScopeFactory;
         private readonly ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
-        private readonly Dictionary<Guid, FileDownloadData> downloadDataByFileGuid = [];
-        private readonly Dictionary<string, Guid> fileGuidByDownloadToken = [];
+        private readonly FileDownloadDataMapper fileDownloadDataMapper;
+        private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
+        private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
 
-        public BiaFileDownloaderService(IServiceScopeFactory serviceScopeFactory, ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
+        /// </summary>
+        /// <param name="serviceScopeFactory">The service scope factory.</param>
+        /// <param name="logger">The logger.</param>
+        /// <param name="fileDownloadDataMapper">The file download data mapper.</param>
+        /// <param name="fileDownloadDataRepository">The file download data repository.</param>
+        /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
+        public BiaFileDownloaderService(
+            IServiceScopeFactory serviceScopeFactory,
+            ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
+            FileDownloadDataMapper fileDownloadDataMapper,
+            ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
+            IFileDownloadTokenRepository fileDownloadTokenRepository)
         {
             this.serviceScopeFactory = serviceScopeFactory;
             this.logger = logger;
+            this.fileDownloadDataMapper = fileDownloadDataMapper;
+            this.fileDownloadDataRepository = fileDownloadDataRepository;
+            this.fileDownloadTokenRepository = fileDownloadTokenRepository;
         }
 
+        /// <inheritdoc/>
         public void PrepareDownload(Func<Task<FileDownloadDataDto>> getFileDownloadDataTask, int requestedByUserId)
         {
             Task.Run(async () =>
             {
                 using var scope = this.serviceScopeFactory.CreateAsyncScope();
-                var notificationAppService = scope.ServiceProvider.GetRequiredService<TINotificationAppService>();
-                var fileDownloadDataAppService = scope.ServiceProvider.GetRequiredService<IFileDownloadDataAppService>();
+                var scopeLogger = scope.ServiceProvider.GetRequiredService<ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>>();
+                var scopeNotificationAppService = scope.ServiceProvider.GetRequiredService<TINotificationAppService>();
+                var scopeFileDownloadDataRepository = scope.ServiceProvider.GetRequiredService<ITGenericRepository<FileDownloadData, Guid>>();
 
                 try
                 {
                     var fileDownloadDataDto = await getFileDownloadDataTask();
+                    if (string.IsNullOrEmpty(fileDownloadDataDto.FilePath) || !File.Exists(fileDownloadDataDto.FilePath))
+                    {
+                        throw new FileNotFoundException("The file path is invalid or the file does not exist.");
+                    }
+
+                    if (string.IsNullOrEmpty(fileDownloadDataDto.FileName))
+                    {
+                        throw new FileNotFoundException("The file name is invalid.");
+                    }
+
+                    if (string.IsNullOrEmpty(fileDownloadDataDto.FileContentType))
+                    {
+                        throw new FileNotFoundException("The file content type is invalid.");
+                    }
+
                     fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUserId };
                     fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
-                    await fileDownloadDataAppService.AddAsync(fileDownloadDataDto);
 
+                    FileDownloadData fileDownloadData = null;
+                    this.fileDownloadDataMapper.DtoToEntity(fileDownloadDataDto, ref fileDownloadData);
+                    scopeFileDownloadDataRepository.Add(fileDownloadData);
+                    await scopeFileDownloadDataRepository.UnitOfWork.CommitAsync();
+
+                    fileDownloadDataDto.Id = fileDownloadData.Id;
                     var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
-                    await notificationAppService.AddAsync(notification);
+                    await scopeNotificationAppService.AddAsync(notification);
                 }
                 catch (Exception ex)
                 {
-                    if (this.logger.IsEnabled(LogLevel.Error))
+                    if (scopeLogger.IsEnabled(LogLevel.Error))
                     {
-                        this.logger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUserId);
+                        scopeLogger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUserId);
                     }
                 }
             });
         }
 
-        public string GenerateDownloadToken(Guid fileGuid, int requestedByUserId)
+        /// <inheritdoc/>
+        public async Task<string> GenerateDownloadToken(Guid fileGuid, int requestedByUserId)
         {
             try
             {
-                if (!this.downloadDataByFileGuid.TryGetValue(fileGuid, out var fileDownloadData))
-                {
-                    throw new ArgumentException("Invalid file guid");
-                }
-
+                var fileDownloadData = await this.fileDownloadDataRepository.GetEntityAsync(fileGuid) ?? throw new ElementNotFoundException("Unable to retrieve file download data");
                 if (fileDownloadData.RequestByUserId != requestedByUserId)
                 {
                     throw new UnauthorizedAccessException("User is not authorized to download this file");
                 }
 
                 var token = Convert.ToHexString(Encoding.UTF8.GetBytes($"{fileDownloadData.FileName}:{requestedByUserId}:{DateTime.UtcNow.Ticks}"));
-                this.fileGuidByDownloadToken[token] = fileGuid;
+                await this.fileDownloadTokenRepository.AddAsync(new() { FileGuid = fileGuid, Token = token, CreatedAt = DateTime.UtcNow });
                 return token;
             }
             catch (Exception ex)
@@ -99,33 +140,20 @@
             }
         }
 
-        public FileDownloadData GetFileDownloadData(Guid fileGuid, string token)
+        /// <inheritdoc/>
+        public async Task<FileDownloadDataDto> GetFileDownloadData(Guid fileGuid, string token)
         {
             try
             {
-                if (!this.fileGuidByDownloadToken.TryGetValue(token, out var registerFileGuid))
-                {
-                    throw new ArgumentException("Invalid download token");
-                }
-
-                if (registerFileGuid != fileGuid)
-                {
-                    throw new ArgumentException("Download token does not match the file guid");
-                }
-
-                if (!this.downloadDataByFileGuid.TryGetValue(registerFileGuid, out var fileDownloadData))
-                {
-                    throw new ArgumentException("Invalid file guid");
-                }
-
-                this.fileGuidByDownloadToken.Remove(token);
-                return fileDownloadData;
+                var fileDownloadToken = await this.fileDownloadTokenRepository.GetAsync(fileGuid, token) ?? throw new ElementNotFoundException("Unable to retrieve file download token");
+                await this.fileDownloadTokenRepository.RemoveAsync(fileDownloadToken);
+                return this.fileDownloadDataMapper.EntityToDto().Compile().Invoke(fileDownloadToken.FileDownloadData);
             }
             catch (Exception ex)
             {
                 if (this.logger.IsEnabled(LogLevel.Error))
                 {
-                    this.logger.LogError(ex, "Error downloading file {FileGuid}", fileGuid);
+                    this.logger.LogError(ex, "Error getting download data for file {FileGuid} with token {Token}", fileGuid, token);
                 }
 
                 throw;

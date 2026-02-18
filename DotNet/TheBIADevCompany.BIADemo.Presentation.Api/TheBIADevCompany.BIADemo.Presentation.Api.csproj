@@ -29,6 +29,9 @@
     <None Update="ca-certificates\ca-bundle.crt">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\DownloadFileExample.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="opt\app-root\ssl_dir\ca-bundle.crt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

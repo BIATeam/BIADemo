@@ -21,7 +21,7 @@ export class HangfireDas extends GenericDas {
     return this.http.get(this.route + 'GenerateHandledError');
   }
 
-  prepareDownloadFile() {
-    return this.http.post(this.route + 'PrepareDownloadFile', null);
+  prepareDownloadFileExample() {
+    return this.http.post(this.route + 'PrepareDownloadFileExample', null);
   }
 }

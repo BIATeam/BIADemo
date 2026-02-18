@@ -189,6 +189,7 @@ namespace BIA.Net.Core.Ioc
             collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
             collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
             collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
+            collection.AddScoped<IFileDownloadTokenRepository, FileDownloadTokenRepository>();
 
             // Infrastructure Data
         }

@@ -5,7 +5,6 @@
 namespace BIA.Net.Core.Domain.File.Mappers
 {
     using System;
-    using System.Linq;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain.Dto.File;
@@ -30,12 +29,11 @@ namespace BIA.Net.Core.Domain.File.Mappers
                 FileContentType = entity.FileContentType,
                 FilePath = entity.FilePath,
                 RequestDateTime = entity.RequestDateTime,
-                RequestByUser = entity.RequestByUser != null ? new OptionDto
+                RequestByUser = new OptionDto
                 {
                     Id = entity.RequestByUser.Id,
                     Display = entity.RequestByUser.FirstName + " " + entity.RequestByUser.LastName,
-                }
-                : null,
+                },
             });
         }
 

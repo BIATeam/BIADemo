@@ -92,6 +92,11 @@ namespace BIA.Net.Core.Infrastructure.Data
         public DbSet<FileDownloadData> FileDownloadData { get; set; }
 
         /// <summary>
+        /// Represents the database table for file download tokens.
+        /// </summary>
+        public DbSet<FileDownloadToken> FileDownloadTokens { get; set; }
+
+        /// <summary>
         /// Save Change on DataBase.
         /// </summary>
         /// <param name="cancellationToken">
@@ -392,7 +397,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
             AnnouncementModelBuilder.CreateModel(modelBuilder);
-            FileDownloadDataModelBuilder.CreateModel(modelBuilder);
+            FileDownloadModelBuilder.CreateModel(modelBuilder);
         }
 
         /// <summary>

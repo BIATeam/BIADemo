@@ -12,7 +12,7 @@ import { AppState } from 'src/app/store/state';
 import {
   generateHandledError,
   generateUnhandledError,
-  prepareDownloadFile,
+  prepareDownloadFileExample,
   randomReviewPlane,
 } from '../../store/hangfire-actions';
 
@@ -45,6 +45,6 @@ export class HangfireIndexComponent {
   }
 
   onDownloadFileClick() {
-    this.store.dispatch(prepareDownloadFile());
+    this.store.dispatch(prepareDownloadFileExample());
   }
 }

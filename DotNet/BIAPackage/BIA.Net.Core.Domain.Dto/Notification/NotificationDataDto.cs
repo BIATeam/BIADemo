@@ -30,6 +30,9 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// </summary>
         public List<NotificationTeamDto> Teams { get; set; }
 
+        /// <summary>
+        /// Gets or sets the unique identifier for the downloadable file.
+        /// </summary>
         public Guid DownloadFileGuid { get; set; }
     }
 }

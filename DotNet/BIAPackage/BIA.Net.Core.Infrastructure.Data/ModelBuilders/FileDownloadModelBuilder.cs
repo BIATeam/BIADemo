@@ -1,4 +1,4 @@
-// <copyright file="FileDownloadDataModelBuilder.cs" company="BIA">
+// <copyright file="FileDownloadModelBuilder.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -10,7 +10,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
     /// <summary>
     /// Class used to update the model builder for file download data domain.
     /// </summary>
-    public static class FileDownloadDataModelBuilder
+    public static class FileDownloadModelBuilder
     {
         /// <summary>
         /// Create the file download data model.
@@ -19,6 +19,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         public static void CreateModel(ModelBuilder modelBuilder)
         {
             CreateFileDownloadDataModel(modelBuilder);
+            CreateFileDownloadTokenModel(modelBuilder);
         }
 
         /// <summary>
@@ -37,7 +38,22 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
                 .HasOne(m => m.RequestByUser)
                 .WithMany()
                 .HasForeignKey(m => m.RequestByUserId)
-                .OnDelete(DeleteBehavior.ClientCascade);
+                .OnDelete(DeleteBehavior.Cascade);
+        }
+
+        /// <summary>
+        /// Create the model for file download token.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        private static void CreateFileDownloadTokenModel(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<FileDownloadToken>().HasKey(m => new { m.FileGuid, m.Token });
+            modelBuilder.Entity<FileDownloadToken>().Property(m => m.CreatedAt).IsRequired();
+            modelBuilder.Entity<FileDownloadToken>()
+                .HasOne(m => m.FileDownloadData)
+                .WithMany()
+                .HasForeignKey(m => m.FileGuid)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

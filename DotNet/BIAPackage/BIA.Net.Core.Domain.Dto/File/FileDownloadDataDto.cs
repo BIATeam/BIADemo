@@ -16,17 +16,17 @@ namespace BIA.Net.Core.Domain.Dto.File
         /// <summary>
         /// Gets or sets the file name.
         /// </summary>
-        public required string FileName { get; set; }
+        public string FileName { get; set; }
 
         /// <summary>
         /// Gets or sets the file content type.
         /// </summary>
-        public required string FileContentType { get; set; }
+        public string FileContentType { get; set; }
 
         /// <summary>
         /// Gets or sets the file path.
         /// </summary>
-        public required string FilePath { get; set; }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time of the request.

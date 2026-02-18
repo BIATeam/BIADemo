@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 // BIADemo only
 // <copyright file="HangfiresController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
@@ -7,11 +6,10 @@ using Microsoft.AspNetCore.Http;
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 {
     using System;
+    using System.IO;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
-    using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.File;
-    using BIA.Net.Core.Domain.File;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Hangfire;
     using Hangfire.States;
@@ -19,7 +17,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Job;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -36,6 +33,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
+        /// <param name="fileDownloaderService">The BIA file downloader service.</param>
         public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService, IBiaFileDownloaderService fileDownloaderService)
         {
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
@@ -125,12 +123,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             throw FrontUserException.Create(ErrorId.HangfireHandledError);
         }
 
+        /// <summary>
+        /// Prepare the download of example file.
+        /// </summary>
+        /// <returns>No content.</returns>
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult PrepareDownloadFile()
+        public IActionResult PrepareDownloadFileExample()
         {
+            var currentAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var downloadFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadFileExample.txt");
+
             this.fileDownloaderService.PrepareDownload(
-                () => Task.FromResult(new FileDownloadDataDto() { FilePath = @"C:\temp\Test.txt", FileContentType = "text/plain; charset=utf-8", FileName = "Test.txt" }),
+                () => Task.FromResult(new FileDownloadDataDto() { FilePath = downloadFileExamplePath, FileContentType = "text/plain; charset=utf-8", FileName = "DownloadFileExample.txt" }),
                 this.biaClaimsPrincipalService.GetUserId());
 
             return this.NoContent();
