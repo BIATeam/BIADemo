@@ -6,10 +6,10 @@
 
     public class FileDownloadData
     {
+        public Guid FileGuid { get; set; }
         public required string FileName { get; set; }
-        public required byte[] FileContent { get; set; }
         public required string FileContentType { get; set; }
-        public string Token { get; set; }
         public string FilePath { get; set; }
+        public int RequestByUserId { get; set; }
     }
 }

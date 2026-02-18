@@ -126,11 +126,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesDefaultResponseType]
         public IActionResult PrepareDownloadFile()
         {
             this.fileDownloaderService.PrepareDownload(
-                () => Task.FromResult(new FileDownloadData() { FileContent = [], FileContentType = string.Empty, FileName = "Test" }),
+                () => Task.FromResult(new FileDownloadData() { FilePath = @"C:\temp\Test.txt", FileContentType = "text/plain; charset=utf-8", FileName = "Test.txt" }),
                 this.biaClaimsPrincipalService.GetUserId());
 
             return this.NoContent();

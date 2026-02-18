@@ -11,7 +11,7 @@ import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
 import {
   AuthService,
-  BiaEnvironmentService,
+  BiaFileDownloaderService,
   BiaPermission,
 } from 'packages/bia-ng/core/public-api';
 import { AuthInfo } from 'packages/bia-ng/models/public-api';
@@ -21,7 +21,7 @@ import {
 } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { ButtonDirective } from 'primeng/button';
-import { Observable, Subscription } from 'rxjs';
+import { first, Observable, Subscription } from 'rxjs';
 import { Notification, NotificationData } from '../../model/notification';
 import { NotificationService } from '../../services/notification.service';
 import { FeatureNotificationsActions } from '../../store/notifications-actions';
@@ -51,7 +51,8 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
     protected authService: AuthService,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    protected fileDownloaderService: BiaFileDownloaderService
   ) {}
 
   ngOnInit() {
@@ -90,7 +91,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
 
   canAction(notification: Notification) {
     if (notification.data) {
-      if (notification.data.route) {
+      if (notification.data.route || notification.data.downloadFileGuid) {
         return true;
       }
     }
@@ -114,15 +115,16 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
             }
           });
         }
-        if (!data.openRouteAsHref) {
-          this.router.navigate(data.route);
-        } else {
-          let route = data.route.join('/');
-          if (data.isApiRoute) {
-            route = BiaEnvironmentService.getApiUrl() + route;
-          }
-          window.open(route, '_blank');
-        }
+        this.router.navigate(data.route);
+      }
+
+      if (data?.downloadFileGuid) {
+        this.sub.add(
+          this.fileDownloaderService
+            .downloadFile(data.downloadFileGuid)
+            .pipe(first())
+            .subscribe()
+        );
       }
     }
   }

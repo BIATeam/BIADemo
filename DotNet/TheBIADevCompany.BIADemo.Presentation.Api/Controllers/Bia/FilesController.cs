@@ -8,24 +8,28 @@
     public class FilesController : BiaControllerBase
     {
         private readonly IBiaFileDownloaderService biaFileDownloaderService;
+        private readonly IBiaClaimsPrincipalService biaClaimsPrincipal;
 
-        public FilesController(IBiaFileDownloaderService biaFileDownloaderService)
+        public FilesController(IBiaFileDownloaderService biaFileDownloaderService, IBiaClaimsPrincipalService biaClaimsPrincipal)
         {
             this.biaFileDownloaderService = biaFileDownloaderService;
-        }
-
-        [HttpGet("[action]")]
-        [AllowAnonymous]
-        public async Task<IActionResult> Download([FromQuery] string token)
-        {
-            var fileDownloadData = await this.biaFileDownloaderService.GetFileDownloadData(token);
-            return this.File(fileDownloadData.FileContent, fileDownloadData.FileContentType, fileDownloadData.FileName);
+            this.biaClaimsPrincipal = biaClaimsPrincipal;
         }
 
         [HttpGet("{guid}/[action]")]
-        public async Task<IActionResult> GetDownloadToken([FromRoute] string guid)
+        [AllowAnonymous]
+        public async Task<IActionResult> Download([FromRoute] string guid, [FromQuery] string token)
         {
-            return Ok();
+            var fileDownloadData = this.biaFileDownloaderService.GetFileDownloadData(Guid.Parse(guid), token);
+            var fileContent = await System.IO.File.ReadAllBytesAsync(fileDownloadData.FilePath);
+            return this.File(fileContent, fileDownloadData.FileContentType, fileDownloadData.FileName);
+        }
+
+        [HttpGet("{guid}/[action]")]
+        public IActionResult GetDownloadToken([FromRoute] string guid)
+        {
+            var token = this.biaFileDownloaderService.GenerateDownloadToken(Guid.Parse(guid), this.biaClaimsPrincipal.GetUserId());
+            return this.Ok(token);
         }
     }
 }

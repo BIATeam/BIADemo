@@ -71,8 +71,7 @@ export const notificationReducers = createReducer<NotificationState>(
         route: null,
         display: '',
         teams: null,
-        openRouteAsHref: false,
-        isApiRoute: false,
+        downloadFileGuid: null,
       };
     }
     return { ...state, currentNotification: notif, loadingGet: false };

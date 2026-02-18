@@ -5,6 +5,7 @@ export * from './bia-app-init.service';
 export * from './bia-barcode-scanner.service';
 export * from './bia-dialog.service';
 export * from './bia-environment.service';
+export * from './bia-file-downloader.service';
 export * from './bia-inject-external.service';
 export * from './bia-injector.service';
 export * from './bia-message.service';

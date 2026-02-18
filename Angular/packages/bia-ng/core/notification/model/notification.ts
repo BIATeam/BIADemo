@@ -36,6 +36,5 @@ export interface NotificationData {
   route: string[] | null;
   display: string;
   teams: NotificationTeam[] | null;
-  openRouteAsHref: boolean;
-  isApiRoute: boolean;
+  downloadFileGuid: string | null;
 }

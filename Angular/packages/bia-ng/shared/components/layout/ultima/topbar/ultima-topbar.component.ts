@@ -21,7 +21,7 @@ import {
   AppSettingsService,
   AuthService,
   BiaAppConstantsService,
-  BiaEnvironmentService,
+  BiaFileDownloaderService,
   BiaMessageService,
   BiaTranslationService,
   CoreNotificationsActions,
@@ -38,7 +38,7 @@ import { ButtonDirective } from 'primeng/button';
 import { Ripple } from 'primeng/ripple';
 import { Toast } from 'primeng/toast';
 import { Tooltip } from 'primeng/tooltip';
-import { Observable, Subscription } from 'rxjs';
+import { first, Observable, Subscription } from 'rxjs';
 import { BiaOnlineOfflineIconComponent } from '../../../bia-online-offline-icon/bia-online-offline-icon.component';
 import { BiaTeamSelectorComponent } from '../../../bia-team-selector/bia-team-selector.component';
 import { NotificationTeamWarningComponent } from '../../../notification-team-warning/notification-team-warning.component';
@@ -109,7 +109,8 @@ export class BiaUltimaTopbarComponent
     public el: ElementRef,
     protected readonly biaMessageService: BiaMessageService,
     protected renderer: Renderer2,
-    protected appSettingsService: AppSettingsService
+    protected appSettingsService: AppSettingsService,
+    protected fileDownloaderService: BiaFileDownloaderService
   ) {
     this.isIE = this.platform.TRIDENT;
   }
@@ -157,15 +158,14 @@ export class BiaUltimaTopbarComponent
             }
           });
         }
-        if (!data.openRouteAsHref) {
-          this.router.navigate(data.route);
-        } else {
-          let route = data.route.join('/');
-          if (data.isApiRoute) {
-            route = BiaEnvironmentService.getApiUrl() + route;
-          }
-          window.open(route, '_blank');
-        }
+        this.router.navigate(data.route);
+      } else if (data?.downloadFileGuid) {
+        this.sub.add(
+          this.fileDownloaderService
+            .downloadFile(data.downloadFileGuid)
+            .pipe(first())
+            .subscribe()
+        );
       } else if (notification.id) {
         this.router.navigate(['/notifications/', notification.id, 'detail']);
       } else {

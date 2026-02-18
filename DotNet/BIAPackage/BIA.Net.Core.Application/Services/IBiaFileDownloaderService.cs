@@ -10,6 +10,7 @@
     public interface IBiaFileDownloaderService
     {
         void PrepareDownload(Func<Task<FileDownloadData>> getFileDownloadDataTask, int requestedByUserId);
-        Task<FileDownloadData> GetFileDownloadData(string token);
+        string GenerateDownloadToken(Guid fileGuid, int requestedByUserId);
+        FileDownloadData GetFileDownloadData(Guid fileGuid, string token);
     }
 }
