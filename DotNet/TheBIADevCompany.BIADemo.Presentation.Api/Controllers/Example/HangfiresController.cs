@@ -10,6 +10,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
+    using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.File;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Hangfire;
@@ -129,7 +130,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         public IActionResult PrepareDownloadFile()
         {
             this.fileDownloaderService.PrepareDownload(
-                () => Task.FromResult(new FileDownloadData() { FilePath = @"C:\temp\Test.txt", FileContentType = "text/plain; charset=utf-8", FileName = "Test.txt" }),
+                () => Task.FromResult(new FileDownloadDataDto() { FilePath = @"C:\temp\Test.txt", FileContentType = "text/plain; charset=utf-8", FileName = "Test.txt" }),
                 this.biaClaimsPrincipalService.GetUserId());
 
             return this.NoContent();

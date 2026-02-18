@@ -6,12 +6,14 @@
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.File;
+    using BIA.Net.Core.Domain.File.Entities;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Notification.Mappers;
     using BIA.Net.Core.Domain.RepoContract;
@@ -40,22 +42,22 @@
             this.logger = logger;
         }
 
-        public void PrepareDownload(Func<Task<FileDownloadData>> getFileDownloadDataTask, int requestedByUserId)
+        public void PrepareDownload(Func<Task<FileDownloadDataDto>> getFileDownloadDataTask, int requestedByUserId)
         {
             Task.Run(async () =>
             {
                 using var scope = this.serviceScopeFactory.CreateAsyncScope();
                 var notificationAppService = scope.ServiceProvider.GetRequiredService<TINotificationAppService>();
+                var fileDownloadDataAppService = scope.ServiceProvider.GetRequiredService<IFileDownloadDataAppService>();
 
                 try
                 {
-                    var fileDownloadData = await getFileDownloadDataTask();
-                    fileDownloadData.FileGuid = Guid.NewGuid();
-                    fileDownloadData.RequestByUserId = requestedByUserId;
+                    var fileDownloadDataDto = await getFileDownloadDataTask();
+                    fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUserId };
+                    fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
+                    await fileDownloadDataAppService.AddAsync(fileDownloadDataDto);
 
-                    this.downloadDataByFileGuid.Add(fileDownloadData.FileGuid, fileDownloadData);
-
-                    var notification = CreateDownloadReadyNotification(fileDownloadData, requestedByUserId);
+                    var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
                     await notificationAppService.AddAsync(notification);
                 }
                 catch (Exception ex)
@@ -130,17 +132,17 @@
             }
         }
 
-        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadData fileDownloadData, int requestedByUserId)
+        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
         {
             return new TNotificationDto
             {
                 CreatedBy = new OptionDto { Id = requestedByUserId },
                 CreatedDate = DateTime.UtcNow,
                 Description = "You can now download the file !",
-                Title = $"Download ready for {fileDownloadData.FileName}",
+                Title = $"Download ready for {fileDownloadDataDto.FileName}",
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
-                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", DownloadFileGuid = fileDownloadData.FileGuid }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", DownloadFileGuid = fileDownloadDataDto.Id }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotifiedUsers = [new() { Id = requestedByUserId }],
                 NotificationTranslations = [],
                 NotifiedTeams = [],
