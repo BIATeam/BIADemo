@@ -77,7 +77,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   protected currentRow: HTMLElement;
   protected currentInput: HTMLElement;
   protected sub = new Subscription();
-  protected isInComplexInput = false;
+  protected complexInputState: 'idle' | 'active' | 'closing' = 'idle';
   public footerRowData: any;
   public editFooter = false;
 
@@ -275,28 +275,25 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('onSubmit not Implemented');
   }
 
-  public onFocusout(tr: HTMLTableRowElement) {
+  public onFocusout(event: FocusEvent, tr: HTMLTableRowElement) {
     // stop the onFocusout after this code this.currentRow?.focus();
     // because it is launched by the onfocusout of the tr
-    if (this.isInComplexInput === false) {
-      setTimeout(() => {
-        if (
-          this.isInComplexInput !== true &&
-          this.getParentComponent(
-            document.activeElement,
-            'bia-selectable-row'
-          ) !== tr
-        ) {
-          this.initEditableRow(null);
-        }
-      }, 200);
+    if (
+      event.relatedTarget &&
+      this.complexInputState === 'idle' &&
+      this.getParentComponent(
+        event.relatedTarget as Element,
+        'bia-selectable-row'
+      ) !== tr
+    ) {
+      this.initEditableRow(null);
     }
   }
 
   public onComplexInput(isIn: boolean) {
     if (isIn) {
       setTimeout(() => {
-        this.isInComplexInput = true;
+        this.complexInputState = 'active';
         this.currentRow = this.getParentComponent(
           document.activeElement,
           'bia-selectable-row'
@@ -304,16 +301,21 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
         this.currentInput = document.activeElement as HTMLElement;
       });
     } else {
+      this.complexInputState = 'closing';
       if (
         // If selected element parent is the same as complex input parent, don't change focus. If not, focus complex input
-        (this.getParentComponent(
+        this.getParentComponent(
           document.activeElement,
           'bia-selectable-row'
-        ) as HTMLElement) !== this.currentRow
+        ) !== this.currentRow
       ) {
         this.currentInput?.focus();
       }
-      this.isInComplexInput = false;
+      setTimeout(() => {
+        if (this.complexInputState === 'closing') {
+          this.complexInputState = 'idle';
+        }
+      }, 300);
     }
   }
 
@@ -322,6 +324,9 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     parentClassName: string
   ): HTMLElement | null {
     if (el) {
+      if (el.classList.contains(parentClassName)) {
+        return el as HTMLElement;
+      }
       while (el.parentElement) {
         if (el.parentElement.classList.contains(parentClassName)) {
           return el.parentElement;

@@ -182,7 +182,7 @@
           [ngClass]="{ 'p-even-row': ri % 2 !== 0 }"
           [pSelectableRow]="!isFooter(rowData) ? rowData : null"
           [pEditableRow]="rowData"
-          (focusout)="onFocusout(currentRow)"
+          (focusout)="onFocusout($event, currentRow)"
           (keyup.enter)="initEditableRow(null)"
           (keyup.escape)="escape()">
           <!-- FIRST COLUMN WITH CHECKBOX OR RADIOBUTTON -->
@@ -301,7 +301,7 @@
           <tr
             #currentRow
             class="bia-selectable-row"
-            (focusout)="onFocusout(currentRow)"
+            (focusout)="onFocusout($event, currentRow)"
             (keyup.enter)="initEditableRow(null)"
             (keyup.escape)="escape()">
             @if (canSelectElement === true && !readOnly) {
