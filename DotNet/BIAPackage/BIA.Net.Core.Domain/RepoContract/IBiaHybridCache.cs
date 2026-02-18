@@ -37,6 +37,14 @@ namespace BIA.Net.Core.Domain.RepoContract
             CancellationToken cancellationToken = default);
 
         /// <summary>
+        /// Asynchronously removes the value associated with the key if it exists.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        Task RemoveAsync(string key, CancellationToken cancellationToken = default);
+
+        /// <summary>
         /// Removes all cache entries.
         /// </summary>
         /// <param name="cancellationToken">The token used to cancel the operation.</param>

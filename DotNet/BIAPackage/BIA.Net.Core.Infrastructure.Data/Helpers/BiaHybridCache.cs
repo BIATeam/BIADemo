@@ -104,10 +104,17 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         }
 
         /// <inheritdoc />
+        public virtual async Task RemoveAsync(string key, CancellationToken cancellationToken = default)
+        {
+            string prefixKey = $"{PrefixKey}|{key}";
+            await this.cache.RemoveAsync(key: prefixKey, cancellationToken: cancellationToken);
+        }
+
+        /// <inheritdoc />
         public virtual async Task RemoveAllAsync(CancellationToken cancellationToken = default)
         {
             await this.cache.RemoveByTagAsync("*");
-            await this.RemoveByFilterAsync(filter: null, cancellationToken: cancellationToken);
+            await this.RemoveDistCacheEntriesAsync(filter: null, cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -120,7 +127,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
 
             string tagTeamId = $"{PrefixTeam}{teamId}";
             await this.cache.RemoveByTagAsync(tagTeamId);
-            await this.RemoveByFilterAsync(filter: x => x.Id.Contains(tagTeamId), cancellationToken: cancellationToken);
+            await this.RemoveDistCacheEntriesAsync(filter: x => x.Id.Contains(tagTeamId), cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -132,7 +139,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             }
 
             await this.cache.RemoveByTagAsync(tag);
-            await this.RemoveByFilterAsync(filter: x => x.Id.Contains(PrefixTag + tag), cancellationToken: cancellationToken);
+            await this.RemoveDistCacheEntriesAsync(filter: x => x.Id.Contains(PrefixTag + tag), cancellationToken: cancellationToken);
         }
 
         /// <inheritdoc />
@@ -143,7 +150,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
             if (tags.Any())
             {
                 await this.cache.RemoveByTagAsync(tags);
-                await this.RemoveByFilterAsync(filter: x => tags.Any(tag => x.Id.Contains(PrefixTag + tag)), cancellationToken: cancellationToken);
+                await this.RemoveDistCacheEntriesAsync(filter: x => tags.Any(tag => x.Id.Contains(PrefixTag + tag)), cancellationToken: cancellationToken);
             }
         }
 
@@ -554,13 +561,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <param name="filter">The filter.</param>
         /// <param name="cancellationToken">The System.Threading.CancellationToken used to propagate notifications that the operation should be canceled.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        protected virtual async Task RemoveByFilterAsync(Expression<Func<DistCache, bool>> filter = null, CancellationToken cancellationToken = default)
+        protected virtual async Task RemoveDistCacheEntriesAsync(Expression<Func<DistCache, bool>> filter = null, CancellationToken cancellationToken = default)
         {
             if (!this.isDistributedCacheActive)
             {
                 return;
             }
 
+            // We delete directly from the DistCache table because deletion by tag does not work properly on the database cache.
             IQueryable<DistCache> query = this.unitOfWork.RetrieveSet<DistCache>()
                 .Where(x => x.Id.StartsWith(PrefixKey));
 
@@ -569,11 +577,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
                 query = query.Where(filter);
             }
 
-            List<string> keys = await query.Select(x => x.Id).ToListAsync(cancellationToken);
-            foreach (string key in keys)
-            {
-                await this.cache.RemoveAsync(key, cancellationToken);
-            }
+            await query.ExecuteDeleteAsync(cancellationToken);
         }
 
         /// <summary>
