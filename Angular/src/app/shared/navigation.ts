@@ -166,7 +166,7 @@ export const NAVIGATION: BiaNavigation[] = [
   {
     labelKey: 'app.examples',
     path: ['/examples'],
-    icon: 'pi pi-star',
+    icon: 'pi pi-desktop',
   },
   // End BIADemo
   {
