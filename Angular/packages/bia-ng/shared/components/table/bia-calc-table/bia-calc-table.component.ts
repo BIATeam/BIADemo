@@ -294,7 +294,9 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
           // If the complex input is active, don't close the edit mode because the user is probably trying to click on an option in the overlay
           this.complexInputState !== 'active' &&
           // Checking if the clicked element is outside of the current edited row (in case of click on an element of the current edited row, we don't want to close the edit mode)
-          clickedRowOfActiveElement !== tr
+          clickedRowOfActiveElement !== tr &&
+          // If the filter is active in the p-select overlay, the focus switch and stays on the p-select-filter but the overlay is not a children of the row
+          !document.activeElement?.className?.includes('p-select')
         ) {
           // If it's a change of row and no change has been made to the previous row, the row editing has already been handle by the initEditableRowAndFocus and should not cancel the edition again
           this.initEditableRow(
