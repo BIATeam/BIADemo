@@ -74,10 +74,10 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   public form: UntypedFormGroup;
   public element: TDto = <TDto>{};
   public hasChanged = false;
-  protected currentRow: HTMLElement;
-  protected currentInput: HTMLElement;
+  protected currentRow: HTMLTableRowElement;
   protected sub = new Subscription();
   protected complexInputState: 'idle' | 'active' | 'closing' = 'idle';
+  protected isFocusingOut = false;
   public footerRowData: any;
   public editFooter = false;
 
@@ -277,7 +277,6 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('onSubmit not Implemented');
   }
 
-  isFocusingOut = false;
   public onFocusout(tr: HTMLTableRowElement) {
     // Avoid multiple onFocuseOut triggers in too short a time
     if (this.isFocusingOut === false) {
@@ -317,17 +316,17 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       this.currentRow = this.getParentComponent(
         document.activeElement,
         'bia-selectable-row'
-      ) as HTMLElement;
-      this.currentInput = document.activeElement as HTMLElement;
+      ) as HTMLTableRowElement;
     } else {
       // Closing the complexInputState
       this.complexInputState = 'closing';
+      // Trigger onFocusOut when complexinput is closed because is in overlay and not on tr so onFocusOut is never triggered
+      this.onFocusout(this.currentRow);
       setTimeout(() => {
         // Setting complexInputState to idle only if still closing.
         // Reason: If another complex input has been opened when leaving the previous, state will be active and input won't change to idle
-        if (this.complexInputState === 'closing') {
-          this.complexInputState = 'idle';
-        }
+        this.complexInputState =
+          this.complexInputState === 'closing' ? 'idle' : 'active';
       }, 300);
     }
   }
