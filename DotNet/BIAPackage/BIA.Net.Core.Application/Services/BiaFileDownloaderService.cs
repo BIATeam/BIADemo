@@ -89,8 +89,9 @@ namespace BIA.Net.Core.Application.Services
         {
             var requestedByUser = await this.userRepository.GetEntityAsync(requestedByUserId, isReadOnlyMode: true) ?? throw new ElementNotFoundException($"User with ID {requestedByUserId} not found");
             var generatorType = typeof(TBackgroundFileGeneratorService);
+
             this.backgroundJobClient.Enqueue<BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>(
-                x => x.PrepareBackgroundDownloadJobAsync(generatorType, requestedByUser));
+                x => x.PrepareBackgroundDownloadJob(generatorType, requestedByUser));
         }
 
         /// <summary>
@@ -99,8 +100,8 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="generatorType">Type of the background file generator service.</param>
         /// <param name="requestedByUser">The user data who requested the download.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        [JobDisplayName("Prepare File Download")]
-        public async Task PrepareBackgroundDownloadJobAsync(Type generatorType, BaseEntityUser requestedByUser)
+        [JobDisplayName($"{nameof(this.PrepareBackgroundDownloadJob)}")]
+        public async Task PrepareBackgroundDownloadJob(Type generatorType, BaseEntityUser requestedByUser)
         {
             try
             {
@@ -123,6 +124,44 @@ namespace BIA.Net.Core.Application.Services
                 }
 
                 throw;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, BaseEntityUser requestedByUser)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(fileDownloadDataDto.FilePath) || !File.Exists(fileDownloadDataDto.FilePath))
+                {
+                    throw new FileNotFoundException("The file path is invalid or the file does not exist.");
+                }
+
+                if (string.IsNullOrEmpty(fileDownloadDataDto.FileName))
+                {
+                    throw new FileNotFoundException("The file name is invalid.");
+                }
+
+                if (string.IsNullOrEmpty(fileDownloadDataDto.FileContentType))
+                {
+                    throw new FileNotFoundException("The file content type is invalid.");
+                }
+
+                FileDownloadData fileDownloadData = null;
+                this.fileDownloadDataMapper.DtoToEntity(fileDownloadDataDto, ref fileDownloadData);
+                this.fileDownloadDataRepository.Add(fileDownloadData);
+                await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
+
+                fileDownloadDataDto.Id = fileDownloadData.Id;
+                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUser);
+                await this.notificationAppService.AddAsync(notification);
+            }
+            catch (Exception ex)
+            {
+                if (this.logger.IsEnabled(LogLevel.Error))
+                {
+                    this.logger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUser);
+                }
             }
         }
 
@@ -187,43 +226,6 @@ namespace BIA.Net.Core.Application.Services
                 NotificationTranslations = [],
                 NotifiedTeams = [],
             };
-        }
-
-        private async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, BaseEntityUser requestedByUser)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(fileDownloadDataDto.FilePath) || !File.Exists(fileDownloadDataDto.FilePath))
-                {
-                    throw new FileNotFoundException("The file path is invalid or the file does not exist.");
-                }
-
-                if (string.IsNullOrEmpty(fileDownloadDataDto.FileName))
-                {
-                    throw new FileNotFoundException("The file name is invalid.");
-                }
-
-                if (string.IsNullOrEmpty(fileDownloadDataDto.FileContentType))
-                {
-                    throw new FileNotFoundException("The file content type is invalid.");
-                }
-
-                FileDownloadData fileDownloadData = null;
-                this.fileDownloadDataMapper.DtoToEntity(fileDownloadDataDto, ref fileDownloadData);
-                this.fileDownloadDataRepository.Add(fileDownloadData);
-                await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
-
-                fileDownloadDataDto.Id = fileDownloadData.Id;
-                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUser);
-                await this.notificationAppService.AddAsync(notification);
-            }
-            catch (Exception ex)
-            {
-                if (this.logger.IsEnabled(LogLevel.Error))
-                {
-                    this.logger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUser);
-                }
-            }
         }
     }
 }
