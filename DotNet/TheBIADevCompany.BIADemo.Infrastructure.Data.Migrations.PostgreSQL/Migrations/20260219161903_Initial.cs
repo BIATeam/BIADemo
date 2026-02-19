@@ -337,8 +337,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TypeId = table.Column<int>(type: "integer", nullable: false),
                     RawContent = table.Column<string>(type: "text", nullable: false),
-                    Start = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    End = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    Start = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    End = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
@@ -476,6 +476,28 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         name: "FK_Teams_TeamTypes_TeamTypeId",
                         column: x => x.TeamTypeId,
                         principalTable: "TeamTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileDownloadData",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    FileName = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    FileContentType = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    FilePath = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
+                    RequestDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    RequestByUserId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileDownloadData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FileDownloadData_Users_RequestByUserId",
+                        column: x => x.RequestByUserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -675,6 +697,25 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         name: "FK_ViewTeam_Views_ViewId",
                         column: x => x.ViewId,
                         principalTable: "Views",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FileDownloadTokens",
+                columns: table => new
+                {
+                    FileGuid = table.Column<Guid>(type: "uuid", nullable: false),
+                    Token = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FileDownloadTokens", x => new { x.FileGuid, x.Token });
+                    table.ForeignKey(
+                        name: "FK_FileDownloadTokens_FileDownloadData_FileGuid",
+                        column: x => x.FileGuid,
+                        principalTable: "FileDownloadData",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -917,8 +958,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     IdentificationNumber = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
+                    Birthdate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    CPLDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     FlightHours = table.Column<int>(type: "integer", nullable: false),
+                    BaseAirportId = table.Column<int>(type: "integer", nullable: true),
                     SiteId = table.Column<int>(type: "integer", nullable: false),
+                    FirstFlightDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    LastFlightDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     xmin = table.Column<uint>(type: "xid", rowVersion: true, nullable: false),
                     IsFixed = table.Column<bool>(type: "boolean", nullable: false),
                     FixedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
@@ -928,6 +976,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Pilots", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pilots_Airports_BaseAirportId",
+                        column: x => x.BaseAirportId,
+                        principalTable: "Airports",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Pilots_Sites_SiteId",
                         column: x => x.SiteId,
@@ -1252,7 +1305,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                     { 2, "info", "Info" },
                     { 3, "success", "Success" },
                     { 4, "warn", "Warn" },
-                    { 5, "error", "Error" }
+                    { 5, "error", "Error" },
+                    { 6, "downloadr", "Download Ready" }
                 });
 
             migrationBuilder.InsertData(
@@ -1332,7 +1386,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                     { 403, "Erwärmen", 4, 4 },
                     { 501, "Erreur", 2, 5 },
                     { 502, "Culpa", 3, 5 },
-                    { 503, "Fehler", 4, 5 }
+                    { 503, "Fehler", 4, 5 },
+                    { 601, "Téléchargement prêt", 2, 6 },
+                    { 602, "Descarga lista", 3, 6 },
+                    { 603, "Download bereit", 4, 6 }
                 });
 
             migrationBuilder.InsertData(
@@ -1423,6 +1480,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                 name: "IX_Engines_PrincipalPartId",
                 table: "Engines",
                 column: "PrincipalPartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FileDownloadData_RequestByUserId",
+                table: "FileDownloadData",
+                column: "RequestByUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Flight_ArrivalAirportId",
@@ -1554,6 +1616,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                 column: "NotificationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pilots_BaseAirportId",
+                table: "Pilots",
+                column: "BaseAirportId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Pilots_SiteId",
                 table: "Pilots",
                 column: "SiteId");
@@ -1668,6 +1735,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                 name: "EnginePart");
 
             migrationBuilder.DropTable(
+                name: "FileDownloadTokens");
+
+            migrationBuilder.DropTable(
                 name: "Flight");
 
             migrationBuilder.DropTable(
@@ -1738,6 +1808,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
 
             migrationBuilder.DropTable(
                 name: "Engines");
+
+            migrationBuilder.DropTable(
+                name: "FileDownloadData");
 
             migrationBuilder.DropTable(
                 name: "MaintenanceContract");

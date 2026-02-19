@@ -9,18 +9,18 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 #nullable disable
 
-namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
+namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Migrations
 {
     [DbContext(typeof(DataContextPostGreSql))]
-    [Migration("20260129152642_UseDateTimeOffsetForAnnouncements")]
-    partial class UseDateTimeOffsetForAnnouncements
+    [Migration("20260219161903_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.1")
+                .HasAnnotation("ProductVersion", "10.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -182,6 +182,56 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.ToTable("DistCache");
                 });
 
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileContentType")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("RequestByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("RequestDateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestByUserId");
+
+                    b.ToTable("FileDownloadData");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadToken", b =>
+                {
+                    b.Property<Guid>("FileGuid")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("FileGuid", "Token");
+
+                    b.ToTable("FileDownloadTokens");
+                });
+
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.Property<int>("Id")
@@ -234,7 +284,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 
                     b.ToTable("Notifications", (string)null);
 
-                    b.HasDiscriminator().HasValue("BaseNotification");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseNotification");
 
                     b.UseTphMappingStrategy();
                 });
@@ -351,6 +401,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                             Id = 5,
                             Code = "error",
                             Label = "Error",
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Code = "downloadr",
+                            Label = "Download Ready",
                             RowVersionXmin = 0u
                         });
                 });
@@ -716,6 +773,30 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                             LanguageId = 4,
                             NotificationTypeId = 5,
                             RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 601,
+                            Label = "Téléchargement prêt",
+                            LanguageId = 2,
+                            NotificationTypeId = 6,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 602,
+                            Label = "Descarga lista",
+                            LanguageId = 3,
+                            NotificationTypeId = 6,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 603,
+                            Label = "Download bereit",
+                            LanguageId = 4,
+                            NotificationTypeId = 6,
+                            RowVersionXmin = 0u
                         });
                 });
 
@@ -1053,7 +1134,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 
                     b.ToTable("Users", (string)null);
 
-                    b.HasDiscriminator().HasValue("BaseEntityUser");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("BaseEntityUser");
 
                     b.UseTphMappingStrategy();
                 });
@@ -1786,8 +1867,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.Property<DateTime?>("ArchivedDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<int?>("BaseAirportId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("Birthdate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("CPLDate")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTimeOffset>("FirstFlightDate")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
 
                     b.Property<DateTime?>("FixedDate")
                         .HasColumnType("timestamp without time zone");
@@ -1809,6 +1904,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.Property<DateTimeOffset?>("LastFlightDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("character varying(128)");
+
                     b.Property<uint>("RowVersionXmin")
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
@@ -1819,6 +1919,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BaseAirportId");
 
                     b.HasIndex("SiteId");
 
@@ -2037,6 +2139,44 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                     b.HasIndex("PlaneTypeId");
 
                     b.ToTable("PlanePlaneType");
+                });
+
+            modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneTypeAudit", b =>
+                {
+                    b.Property<int>("AuditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditId"));
+
+                    b.Property<string>("AuditAction")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("AuditChanges")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("AuditDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("AuditUserLogin")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("PlaneId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PlaneTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PlaneTypeTitle")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("AuditId");
+
+                    b.ToTable("PlanePlaneTypeAudit");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlaneType", b =>
@@ -2295,7 +2435,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("xid")
-                        .HasColumnName("RowVersionXmin");
+                        .HasColumnName("xmin");
 
                     b.ToTable("AircraftMaintenanceCompanies", (string)null);
                 });
@@ -2372,7 +2512,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("xid")
-                        .HasColumnName("RowVersionXmin");
+                        .HasColumnName("xmin");
 
                     b.Property<decimal>("TotalOperationCost")
                         .HasColumnType("Money");
@@ -2400,7 +2540,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .IsConcurrencyToken()
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("xid")
-                        .HasColumnName("RowVersionXmin");
+                        .HasColumnName("xmin");
 
                     b.Property<string>("UniqueIdentifier")
                         .HasColumnType("text");
@@ -2431,6 +2571,28 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
                         .IsRequired();
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadData", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "RequestByUser")
+                        .WithMany()
+                        .HasForeignKey("RequestByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RequestByUser");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadToken", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.File.Entities.FileDownloadData", "FileDownloadData")
+                        .WithMany()
+                        .HasForeignKey("FileGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FileDownloadData");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
@@ -2784,11 +2946,17 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Pilot", b =>
                 {
+                    b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Airport", "BaseAirport")
+                        .WithMany()
+                        .HasForeignKey("BaseAirportId");
+
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Site.Entities.Site", "Site")
                         .WithMany()
                         .HasForeignKey("SiteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("BaseAirport");
 
                     b.Navigation("Site");
                 });
@@ -2840,7 +3008,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.PlanePlaneType", b =>
                 {
                     b.HasOne("TheBIADevCompany.BIADemo.Domain.Fleet.Entities.Plane", "Plane")
-                        .WithMany("SimilarPlaneType")
+                        .WithMany("SimilarPlanePlaneTypes")
                         .HasForeignKey("PlaneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3059,7 +3227,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.MigrationsPostGreSql
 
                     b.Navigation("Engines");
 
-                    b.Navigation("SimilarPlaneType");
+                    b.Navigation("SimilarPlanePlaneTypes");
                 });
 
             modelBuilder.Entity("TheBIADevCompany.BIADemo.Domain.Maintenance.Entities.MaintenanceContract", b =>

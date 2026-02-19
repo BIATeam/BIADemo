@@ -84,9 +84,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             // End BIADemo
         }
 
+        /// <summary>
+        /// Provides constants for database migrations.
+        /// </summary>
         public static class DatabaseMigrations
         {
+            /// <summary>
+            /// Assembly names for database migrations SQL Server.
+            /// </summary>
             public const string AssemblyNameSqlServer = "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer";
+
+            /// <summary>
+            /// Assembly names for database migrations PostgreSQL.
+            /// </summary>
             public const string AssemblyNamePostgreSQL = "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL";
         }
     }

@@ -179,6 +179,56 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                     b.ToTable("DistCache");
                 });
 
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FileContentType")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<int>("RequestByUserId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("RequestDateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestByUserId");
+
+                    b.ToTable("FileDownloadData");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadToken", b =>
+                {
+                    b.Property<Guid>("FileGuid")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("FileGuid", "Token");
+
+                    b.ToTable("FileDownloadTokens");
+                });
+
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.Property<int>("Id")
@@ -348,6 +398,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                             Id = 5,
                             Code = "error",
                             Label = "Error",
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Code = "downloadr",
+                            Label = "Download Ready",
                             RowVersionXmin = 0u
                         });
                 });
@@ -712,6 +769,30 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                             Label = "Fehler",
                             LanguageId = 4,
                             NotificationTypeId = 5,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 601,
+                            Label = "Téléchargement prêt",
+                            LanguageId = 2,
+                            NotificationTypeId = 6,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 602,
+                            Label = "Descarga lista",
+                            LanguageId = 3,
+                            NotificationTypeId = 6,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 603,
+                            Label = "Download bereit",
+                            LanguageId = 4,
+                            NotificationTypeId = 6,
                             RowVersionXmin = 0u
                         });
                 });
@@ -2487,6 +2568,28 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         .IsRequired();
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadData", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "RequestByUser")
+                        .WithMany()
+                        .HasForeignKey("RequestByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RequestByUser");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadToken", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.File.Entities.FileDownloadData", "FileDownloadData")
+                        .WithMany()
+                        .HasForeignKey("FileGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FileDownloadData");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
