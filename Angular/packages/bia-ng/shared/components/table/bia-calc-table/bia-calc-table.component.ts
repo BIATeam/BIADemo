@@ -189,7 +189,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     }
   }
 
-  public initEditableRow(rowData: any) {
+  public initEditableRow(rowData: any, cancelRowEditing = true) {
     if (
       (this.canEdit === true || this.canAdd === true) &&
       (!rowData ||
@@ -212,8 +212,10 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
           }
         }
       } else {
-        this.cancel();
-        this.initRowEdit(rowData);
+        if (cancelRowEditing) {
+          this.cancel();
+          this.initRowEdit(rowData);
+        }
       }
     }
   }
@@ -275,23 +277,38 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('onSubmit not Implemented');
   }
 
+  isFocusingOut = false;
   public onFocusout(event: FocusEvent, tr: HTMLTableRowElement) {
-    // stop the onFocusout after this code this.currentRow?.focus();
-    // because it is launched by the onfocusout of the tr
-    if (
-      this.complexInputState !== 'active' &&
-      (event.relatedTarget === null ||
-        this.getParentComponent(
+    // Avoid multiple onFocuseOut triggers in too short a time
+    if (this.isFocusingOut === false) {
+      this.isFocusingOut = true;
+
+      // SetTimout is necessary because selecting an option in p-select is not immediately setting back focus to the p-select and document.activeElement isn't updated fast enough
+      setTimeout(() => {
+        const clickedRow = this.getParentComponent(
           event.relatedTarget as Element,
           'bia-selectable-row'
-        ) !== tr)
-    ) {
-      this.initEditableRow(null);
+        );
+        if (
+          // If the complex input is active, don't close the edit mode because the user is probably trying to click on an option in the overlay
+          this.complexInputState !== 'active' &&
+          // This is a way to check that the click element was an element of p-select overlay
+          !document.activeElement?.className?.includes('p-select') &&
+          // Checking if the clicked element is outside of the current edited row (in case of click on an element of the current edited row, we don't want to close the edit mode)
+          clickedRow !== tr
+        ) {
+          // If it's a change of row and no change has been made to the previous row, the row editing has already been handle by the initEditableRowAndFocus and should not cancel the edition again
+          this.initEditableRow(null, this.hasChanged || clickedRow === null);
+        }
+        this.isFocusingOut = false;
+      }, 200);
     }
   }
 
   public onComplexInput(isIn: boolean) {
+    // If entering a complex input overlay
     if (isIn) {
+      // Saving the row and input and setting the complexInputState as active
       this.complexInputState = 'active';
       this.currentRow = this.getParentComponent(
         document.activeElement,
@@ -299,8 +316,11 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       ) as HTMLElement;
       this.currentInput = document.activeElement as HTMLElement;
     } else {
+      // Closing the complexInputState
       this.complexInputState = 'closing';
       setTimeout(() => {
+        // Setting complexInputState to idle only if still closing.
+        // Reason: If another complex input has been opened when leaving the previous, state will be active and input won't change to idle
         if (this.complexInputState === 'closing') {
           this.complexInputState = 'idle';
         }
