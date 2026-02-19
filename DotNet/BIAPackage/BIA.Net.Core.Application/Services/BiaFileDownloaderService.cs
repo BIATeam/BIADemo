@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.Services
     using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
@@ -90,41 +91,7 @@ namespace BIA.Net.Core.Application.Services
             var requestedByUser = await this.userRepository.GetEntityAsync(requestedByUserId, isReadOnlyMode: true) ?? throw new ElementNotFoundException($"User with ID {requestedByUserId} not found");
             var generatorType = typeof(TBackgroundFileGeneratorService);
 
-            this.backgroundJobClient.Enqueue<BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>(
-                x => x.PrepareBackgroundDownloadJob(generatorType, requestedByUser));
-        }
-
-        /// <summary>
-        /// Job method that generates the file and notifies the user when it's ready. This method is executed in the background by Hangfire.
-        /// </summary>
-        /// <param name="generatorType">Type of the background file generator service.</param>
-        /// <param name="requestedByUser">The user data who requested the download.</param>
-        /// <returns>A task representing the asynchronous operation.</returns>
-        [JobDisplayName($"{nameof(this.PrepareBackgroundDownloadJob)}")]
-        public async Task PrepareBackgroundDownloadJob(Type generatorType, BaseEntityUser requestedByUser)
-        {
-            try
-            {
-                if (!typeof(IBiaBackgroundFileGeneratorService).IsAssignableFrom(generatorType))
-                {
-                    throw new InvalidOperationException($"Type {generatorType.Name} does not implement {nameof(IBiaBackgroundFileGeneratorService)}");
-                }
-
-                var generator = (IBiaBackgroundFileGeneratorService)this.serviceProvider.GetRequiredService(generatorType);
-                var fileDownloadDataDto = await generator.GenerateAsync();
-                fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUser.Id, Display = requestedByUser.Login };
-                fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
-                await this.NotifyDownloadReadyAsync(fileDownloadDataDto, requestedByUser);
-            }
-            catch (Exception ex)
-            {
-                if (this.logger.IsEnabled(LogLevel.Error))
-                {
-                    this.logger.LogError(ex, "Error in PrepareDownload for user {UserId}", requestedByUser);
-                }
-
-                throw;
-            }
+            this.backgroundJobClient.Enqueue<PrepareDownloadTask>(x => x.Run(generatorType, requestedByUser));
         }
 
         /// <inheritdoc/>
