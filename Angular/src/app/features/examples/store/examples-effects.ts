@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { ExamplesDas } from '../service/examples-das.service';
 import {
+  generateErrorFailure,
   generateErrorSuccess,
   generateHandledError,
   generateUnhandledError,
@@ -25,7 +26,7 @@ export class ExamplesEffects {
           map((): any => generateErrorSuccess()),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(err);
+            return of(generateErrorFailure());
           })
         )
       )
@@ -40,7 +41,7 @@ export class ExamplesEffects {
           map((): any => generateErrorSuccess()),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(err);
+            return of(generateErrorFailure());
           })
         )
       )

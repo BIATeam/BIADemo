@@ -11,3 +11,7 @@ export const generateHandledError = createAction(
 export const generateErrorSuccess = createAction(
   '[Examples] Generate error success'
 );
+
+export const generateErrorFailure = createAction(
+  '[Examples] Generate error failure'
+);
