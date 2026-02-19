@@ -1,11 +1,11 @@
-﻿import { OptionDto } from '@bia-team/bia-ng/models';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   BiaFormLayoutConfig,
   FixableDto,
+  OptionDto,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
 

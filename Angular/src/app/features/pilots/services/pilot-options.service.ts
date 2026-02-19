@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
-import { OptionDto } from '@bia-team/bia-ng/models';
 import { Store } from '@ngrx/store';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import {
   CrudItemOptionsService,
   DictOptionDto,
