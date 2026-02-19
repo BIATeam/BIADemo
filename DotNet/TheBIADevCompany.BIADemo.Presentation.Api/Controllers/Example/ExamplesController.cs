@@ -5,10 +5,12 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
 {
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using TheBIADevCompany.BIADemo.Application.Example;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 
     /// <summary>
@@ -16,6 +18,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     /// </summary>
     public class ExamplesController : BiaControllerBase
     {
+        private readonly IExampleAppService exampleAppService;
+        private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExamplesController"/> class.
+        /// </summary>
+        /// <param name="exampleAppService">The example application service.</param>
+        /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
+        public ExamplesController(IExampleAppService exampleAppService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
+        {
+            this.exampleAppService = exampleAppService;
+            this.biaClaimsPrincipalService = biaClaimsPrincipalService;
+        }
+
         /// <summary>
         /// Throw unhandled exception.
         /// </summary>
@@ -38,6 +54,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         public IActionResult GenerateHandledError()
         {
             throw FrontUserException.Create(ErrorId.HangfireHandledError);
+        }
+
+        /// <summary>
+        /// Triggers a notification indicating that a file is ready for download for the current user.
+        /// </summary>
+        /// <returns>A 204 No Content response.</returns>
+        [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> GenerateFileDownloadNotification()
+        {
+            await this.exampleAppService.NotifyDownloadReadyFileExample(this.biaClaimsPrincipalService.GetUserId());
+            return this.NoContent();
         }
     }
 }

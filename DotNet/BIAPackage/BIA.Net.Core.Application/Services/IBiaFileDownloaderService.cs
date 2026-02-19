@@ -22,17 +22,16 @@ namespace BIA.Net.Core.Application.Services
         /// <typeparam name="TService">Type of the DI-registered service that exposes the generation method.</typeparam>
         /// <param name="requestedByUserId">ID of the user who requested the download.</param>
         /// <param name="generateFileExpression">Expression pointing to the generation method.</param>
-        /// <returns>A task that represents the asynchronous operation.</returns>
-        Task PrepareBackgroundDownloadAsync<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
+        void PrepareBackgroundDownload<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
             where TService : class;
 
         /// <summary>
         /// Notifies the user that the file is ready to be downloaded by creating a notification and saving the file download data in the database.
         /// </summary>
         /// <param name="fileDownloadDataDto">The file download data transfer object.</param>
-        /// <param name="requestedByUser">The user who requested the download.</param>
+        /// <param name="requestedByUserId">ID of the user who requested the download.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, BaseEntityUser requestedByUser);
+        Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId);
 
         /// <summary>
         /// Generates a download token for the specified file and user. This token can be used to securely download the file without exposing the file path or other sensitive information.

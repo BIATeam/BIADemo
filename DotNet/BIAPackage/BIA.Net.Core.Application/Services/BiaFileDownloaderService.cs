@@ -17,15 +17,11 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.File.Entities;
     using BIA.Net.Core.Domain.File.Mappers;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Entities;
     using Hangfire;
-    using Hangfire.States;
-    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
@@ -33,28 +29,25 @@ namespace BIA.Net.Core.Application.Services
     /// <summary>
     /// File downloader service that prepares file download and notifies the user when the file is ready to be downloaded.
     /// </summary>
-    /// <typeparam name="TUser">Type of the user entity.</typeparam>
     /// <typeparam name="TINotificationAppService">Interface for the notification application service.</typeparam>
     /// <typeparam name="TNotification">Type of the notification.</typeparam>
     /// <typeparam name="TNotificationDto">Type of the notification DTO.</typeparam>
     /// <typeparam name="TNotificationListItemDto">Type of the notification list item DTO.</typeparam>
-    public class BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
-        where TUser : BaseEntityUser, new()
+    public class BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
         where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification>
         where TNotification : BaseNotification, new()
         where TNotificationDto : BaseNotificationDto, new()
         where TNotificationListItemDto : BaseNotificationListItemDto, new()
     {
         private readonly TINotificationAppService notificationAppService;
-        private readonly ILogger<BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
+        private readonly ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
         private readonly FileDownloadDataMapper fileDownloadDataMapper;
         private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
-        private readonly ITGenericRepository<TUser, int> userRepository;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
+        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
         /// </summary>
         /// <param name="notificationAppService">The notification application service.</param>
         /// <param name="logger">The logger.</param>
@@ -65,12 +58,11 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="userRepository">The user repository.</param>
         public BiaFileDownloaderService(
             TINotificationAppService notificationAppService,
-            ILogger<BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
+            ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
             FileDownloadDataMapper fileDownloadDataMapper,
             ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
             IFileDownloadTokenRepository fileDownloadTokenRepository,
-            IBackgroundJobClient backgroundJobClient,
-            ITGenericRepository<TUser, int> userRepository)
+            IBackgroundJobClient backgroundJobClient)
         {
             this.notificationAppService = notificationAppService;
             this.logger = logger;
@@ -78,19 +70,16 @@ namespace BIA.Net.Core.Application.Services
             this.fileDownloadDataRepository = fileDownloadDataRepository;
             this.fileDownloadTokenRepository = fileDownloadTokenRepository;
             this.backgroundJobClient = backgroundJobClient;
-            this.userRepository = userRepository;
         }
 
         /// <inheritdoc/>
-        public async Task PrepareBackgroundDownloadAsync<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
+        public void PrepareBackgroundDownload<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
             where TService : class
         {
             if (generateFileExpression.Body is not MethodCallExpression methodCall)
             {
                 throw new ArgumentException("Expression body must be a method call", nameof(generateFileExpression));
             }
-
-            var requestedByUser = await this.userRepository.GetEntityAsync(requestedByUserId, isReadOnlyMode: true) ?? throw new ElementNotFoundException($"User with ID {requestedByUserId} not found");
 
             var args = methodCall.Arguments
                 .Select(argExpr => Expression.Lambda(argExpr).Compile().DynamicInvoke())
@@ -101,11 +90,11 @@ namespace BIA.Net.Core.Application.Services
             var serializedArgs = JsonConvert.SerializeObject(args);
             var serializedArgTypes = JsonConvert.SerializeObject(methodCall.Method.GetParameters().Select(p => p.ParameterType.AssemblyQualifiedName).ToArray());
 
-            this.backgroundJobClient.Enqueue<PrepareDownloadTask>(x => x.Run(serviceTypeName, methodName, serializedArgs, serializedArgTypes, requestedByUser));
+            this.backgroundJobClient.Enqueue<PrepareDownloadTask>(x => x.Run(serviceTypeName, methodName, serializedArgs, serializedArgTypes, requestedByUserId));
         }
 
         /// <inheritdoc/>
-        public async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, BaseEntityUser requestedByUser)
+        public async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
         {
             try
             {
@@ -124,20 +113,23 @@ namespace BIA.Net.Core.Application.Services
                     throw new FileNotFoundException("The file content type is invalid.");
                 }
 
+                fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUserId };
+                fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
+
                 FileDownloadData fileDownloadData = null;
                 this.fileDownloadDataMapper.DtoToEntity(fileDownloadDataDto, ref fileDownloadData);
                 this.fileDownloadDataRepository.Add(fileDownloadData);
                 await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
 
                 fileDownloadDataDto.Id = fileDownloadData.Id;
-                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUser);
+                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
                 await this.notificationAppService.AddAsync(notification);
             }
             catch (Exception ex)
             {
                 if (this.logger.IsEnabled(LogLevel.Error))
                 {
-                    this.logger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUser);
+                    this.logger.LogError(ex, "Error notifying file download for user {UserId}", requestedByUserId);
                 }
             }
         }
@@ -188,18 +180,18 @@ namespace BIA.Net.Core.Application.Services
             }
         }
 
-        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, BaseEntityUser requestedByUser)
+        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
         {
             return new TNotificationDto
             {
-                CreatedBy = new OptionDto { Id = requestedByUser.Id, Display = requestedByUser.Login },
+                CreatedBy = new OptionDto { Id = requestedByUserId },
                 CreatedDate = DateTime.UtcNow,
                 Description = "You can now download the file !",
                 Title = $"Download ready for {fileDownloadDataDto.FileName}",
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
                 JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", DownloadFileGuid = fileDownloadDataDto.Id }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
-                NotifiedUsers = [new() { Id = requestedByUser.Id, Display = requestedByUser.Login }],
+                NotifiedUsers = [new() { Id = requestedByUserId }],
                 NotificationTranslations = [],
                 NotifiedTeams = [],
             };

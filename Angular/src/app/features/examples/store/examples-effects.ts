@@ -7,6 +7,9 @@ import { ExamplesDas } from '../service/examples-das.service';
 import {
   generateErrorFailure,
   generateErrorSuccess,
+  generateFileDownloadNotification,
+  generateFileDownloadNotificationFailure,
+  generateFileDownloadNotificationSuccess,
   generateHandledError,
   generateUnhandledError,
 } from './examples-actions';
@@ -42,6 +45,21 @@ export class ExamplesEffects {
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(generateErrorFailure());
+          })
+        )
+      )
+    )
+  );
+
+  generateFileDownloadNotification$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(generateFileDownloadNotification),
+      exhaustMap(() =>
+        this.examplesDas.generateFileDownloadNotification().pipe(
+          map((): any => generateFileDownloadNotificationSuccess()),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(generateFileDownloadNotificationFailure());
           })
         )
       )

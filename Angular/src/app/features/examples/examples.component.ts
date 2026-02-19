@@ -5,6 +5,7 @@ import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { AppState } from 'src/app/store/state';
 import {
+  generateFileDownloadNotification,
   generateHandledError,
   generateUnhandledError,
 } from './store/examples-actions';
@@ -27,5 +28,9 @@ export class ExamplesComponent {
 
   onGenerateHandledErrorClick() {
     this.store.dispatch(generateHandledError());
+  }
+
+  onGenerateFileDownloadNotificationClick() {
+    this.store.dispatch(generateFileDownloadNotification());
   }
 }

@@ -40,3 +40,26 @@
 </div>
 <div>Date formatted to locale: {{ date | localeDate }}</div>
 <div>Date with time formatted to locale: {{ date | localeDate: true }}</div>
+<BR />
+
+<BR />
+<div class="header flex flex-row justify-content-between align-content-between">
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch">
+    <h1>Notify Download File Example</h1>
+  </div>
+  <div
+    class="flex flex-row gap-2 align-items-center align-content-center align-self-stretch"></div>
+</div>
+<div
+  class="flex flex-row flex-wrap justify-content-around align-content-around">
+  <button
+    pButton
+    type="button"
+    label="Generate"
+    pTooltip="Generate"
+    tooltipPosition="top"
+    (click)="onGenerateFileDownloadNotificationClick()"></button>
+</div>

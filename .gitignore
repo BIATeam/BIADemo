@@ -21,6 +21,3 @@
 
 # Visual Studio 2017 auto generated files
 Generated\ Files/
-# BIA Demo resources files
-/DotNet/TheBIADevCompany.BIADemo.WorkerService/Resources/DownloadHugeFileExample.zip
-/DotNet/TheBIADevCompany.BIADemo.Presentation.Api/Resources/DownloadHugeFileExample.zip

@@ -15,3 +15,15 @@ export const generateErrorSuccess = createAction(
 export const generateErrorFailure = createAction(
   '[Examples] Generate error failure'
 );
+
+export const generateFileDownloadNotification = createAction(
+  '[Examples] Generate file download notification'
+);
+
+export const generateFileDownloadNotificationSuccess = createAction(
+  '[Examples] Generate file download notification success'
+);
+
+export const generateFileDownloadNotificationFailure = createAction(
+  '[Examples] Generate file download notification failure'
+);

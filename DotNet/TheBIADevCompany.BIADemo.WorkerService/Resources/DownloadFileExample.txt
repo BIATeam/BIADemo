@@ -1,1 +1,1 @@
-This is a download file example. You can use this file to test the download functionality of your API.
+This is a download file example (WorkserService)

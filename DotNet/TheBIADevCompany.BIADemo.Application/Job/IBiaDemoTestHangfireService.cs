@@ -33,7 +33,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <summary>
         /// Generate an example file and return the file information to download it.
         /// </summary>
+        /// <param name="fileName">The name of the file to generate.</param>
         /// <returns>A task representing the asynchronous operation, with a FileDownloadDataDto as the result.</returns>
-        Task<FileDownloadDataDto> GenerateExampleFileAsync();
+        Task<FileDownloadDataDto> GenerateExampleFileAsync(string fileName);
     }
 }

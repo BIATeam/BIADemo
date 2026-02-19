@@ -9,8 +9,6 @@ namespace BIA.Net.Core.Application.Job
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.File;
-    using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.User.Entities;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
@@ -49,9 +47,9 @@ namespace BIA.Net.Core.Application.Job
         /// <param name="methodName">Name of the method to invoke on the service.</param>
         /// <param name="serializedArgs">JSON-serialized array of argument values.</param>
         /// <param name="serializedArgTypes">JSON-serialized array of argument type assembly-qualified names.</param>
-        /// <param name="requestedByUser">The user who requested the download.</param>
+        /// <param name="requestedByUserId">The user who requested the download.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task Run(string serviceTypeName, string methodName, string serializedArgs, string serializedArgTypes, BaseEntityUser requestedByUser)
+        public async Task Run(string serviceTypeName, string methodName, string serializedArgs, string serializedArgTypes, int requestedByUserId)
         {
             try
             {
@@ -69,16 +67,13 @@ namespace BIA.Net.Core.Application.Job
                 var service = this.serviceProvider.GetRequiredService(serviceType);
                 var fileDownloadDataDto = await (Task<FileDownloadDataDto>)method.Invoke(service, typedArgs);
 
-                fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUser.Id, Display = requestedByUser.Login };
-                fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
-
-                await this.fileDownloaderService.NotifyDownloadReadyAsync(fileDownloadDataDto, requestedByUser);
+                await this.fileDownloaderService.NotifyDownloadReadyAsync(fileDownloadDataDto, requestedByUserId);
             }
             catch (Exception ex)
             {
                 if (this.Logger.IsEnabled(LogLevel.Error))
                 {
-                    this.Logger.LogError(ex, "Error while preparing download for user {UserId}", requestedByUser);
+                    this.Logger.LogError(ex, "Error while preparing download for user {UserId}", requestedByUserId);
                 }
 
                 throw;
