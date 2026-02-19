@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.IO;
+    using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Notification;
@@ -18,6 +19,8 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.File.Mappers;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.RepoContract;
+    using Hangfire;
+    using Hangfire.States;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json;
@@ -36,82 +39,77 @@ namespace BIA.Net.Core.Application.Services
         where TNotificationDto : BaseNotificationDto, new()
         where TNotificationListItemDto : BaseNotificationListItemDto, new()
     {
-        private readonly IServiceScopeFactory serviceScopeFactory;
+        private readonly TINotificationAppService notificationAppService;
         private readonly ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
         private readonly FileDownloadDataMapper fileDownloadDataMapper;
         private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
+        private readonly IBackgroundJobClient backgroundJobClient;
+        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
         /// </summary>
-        /// <param name="serviceScopeFactory">The service scope factory.</param>
+        /// <param name="notificationAppService">The notification application service.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="fileDownloadDataMapper">The file download data mapper.</param>
         /// <param name="fileDownloadDataRepository">The file download data repository.</param>
         /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
+        /// <param name="serviceProvider">The service provider for resolving generators and their dependencies.</param>
+        /// <param name="backgroundJobClient">Hangfire job client.</param>
         public BiaFileDownloaderService(
-            IServiceScopeFactory serviceScopeFactory,
+            TINotificationAppService notificationAppService,
             ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
             FileDownloadDataMapper fileDownloadDataMapper,
             ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
-            IFileDownloadTokenRepository fileDownloadTokenRepository)
+            IFileDownloadTokenRepository fileDownloadTokenRepository,
+            IServiceProvider serviceProvider,
+            IBackgroundJobClient backgroundJobClient)
         {
-            this.serviceScopeFactory = serviceScopeFactory;
+            this.notificationAppService = notificationAppService;
             this.logger = logger;
             this.fileDownloadDataMapper = fileDownloadDataMapper;
             this.fileDownloadDataRepository = fileDownloadDataRepository;
             this.fileDownloadTokenRepository = fileDownloadTokenRepository;
+            this.serviceProvider = serviceProvider;
+            this.backgroundJobClient = backgroundJobClient;
         }
 
         /// <inheritdoc/>
-        public void PrepareDownload(Func<Task<FileDownloadDataDto>> getFileDownloadDataTask, int requestedByUserId)
+        public void PrepareDownload<TBackgroundFileGeneratorService>(int requestedByUserId)
+            where TBackgroundFileGeneratorService : IBiaBackgroundFileGeneratorService
         {
-            Task.Run(async () =>
+            var generatorType = typeof(TBackgroundFileGeneratorService);
+            this.backgroundJobClient.Enqueue<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>(
+                x => x.PrepareDownloadJobAsync(generatorType, requestedByUserId));
+        }
+
+        /// <inheritdoc/>
+        [JobDisplayName("Prepare Download - User {1}")]
+        public async Task PrepareDownloadJobAsync(Type generatorType, int requestedByUserId)
+        {
+            try
             {
-                using var scope = this.serviceScopeFactory.CreateAsyncScope();
-                var scopeLogger = scope.ServiceProvider.GetRequiredService<ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>>();
-                var scopeNotificationAppService = scope.ServiceProvider.GetRequiredService<TINotificationAppService>();
-                var scopeFileDownloadDataRepository = scope.ServiceProvider.GetRequiredService<ITGenericRepository<FileDownloadData, Guid>>();
-
-                try
+                if (!typeof(IBiaBackgroundFileGeneratorService).IsAssignableFrom(generatorType))
                 {
-                    var fileDownloadDataDto = await getFileDownloadDataTask();
-                    if (string.IsNullOrEmpty(fileDownloadDataDto.FilePath) || !File.Exists(fileDownloadDataDto.FilePath))
-                    {
-                        throw new FileNotFoundException("The file path is invalid or the file does not exist.");
-                    }
-
-                    if (string.IsNullOrEmpty(fileDownloadDataDto.FileName))
-                    {
-                        throw new FileNotFoundException("The file name is invalid.");
-                    }
-
-                    if (string.IsNullOrEmpty(fileDownloadDataDto.FileContentType))
-                    {
-                        throw new FileNotFoundException("The file content type is invalid.");
-                    }
-
-                    fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUserId };
-                    fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
-
-                    FileDownloadData fileDownloadData = null;
-                    this.fileDownloadDataMapper.DtoToEntity(fileDownloadDataDto, ref fileDownloadData);
-                    scopeFileDownloadDataRepository.Add(fileDownloadData);
-                    await scopeFileDownloadDataRepository.UnitOfWork.CommitAsync();
-
-                    fileDownloadDataDto.Id = fileDownloadData.Id;
-                    var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
-                    await scopeNotificationAppService.AddAsync(notification);
+                    throw new InvalidOperationException($"Type {generatorType.Name} does not implement {nameof(IBiaBackgroundFileGeneratorService)}");
                 }
-                catch (Exception ex)
+
+                var generator = (IBiaBackgroundFileGeneratorService)this.serviceProvider.GetRequiredService(generatorType);
+                var fileDownloadDataDto = await generator.GenerateAsync();
+                fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUserId };
+                fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
+                await this.NotifyDownloadReadyAsync(fileDownloadDataDto, requestedByUserId);
+            }
+            catch (Exception ex)
+            {
+                if (this.logger.IsEnabled(LogLevel.Error))
                 {
-                    if (scopeLogger.IsEnabled(LogLevel.Error))
-                    {
-                        scopeLogger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUserId);
-                    }
+                    this.logger.LogError(ex, "Error in PrepareDownload for user {UserId}", requestedByUserId);
                 }
-            });
+
+                throw;
+            }
         }
 
         /// <inheritdoc/>
@@ -175,6 +173,43 @@ namespace BIA.Net.Core.Application.Services
                 NotificationTranslations = [],
                 NotifiedTeams = [],
             };
+        }
+
+        private async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(fileDownloadDataDto.FilePath) || !File.Exists(fileDownloadDataDto.FilePath))
+                {
+                    throw new FileNotFoundException("The file path is invalid or the file does not exist.");
+                }
+
+                if (string.IsNullOrEmpty(fileDownloadDataDto.FileName))
+                {
+                    throw new FileNotFoundException("The file name is invalid.");
+                }
+
+                if (string.IsNullOrEmpty(fileDownloadDataDto.FileContentType))
+                {
+                    throw new FileNotFoundException("The file content type is invalid.");
+                }
+
+                FileDownloadData fileDownloadData = null;
+                this.fileDownloadDataMapper.DtoToEntity(fileDownloadDataDto, ref fileDownloadData);
+                this.fileDownloadDataRepository.Add(fileDownloadData);
+                await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
+
+                fileDownloadDataDto.Id = fileDownloadData.Id;
+                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
+                await this.notificationAppService.AddAsync(notification);
+            }
+            catch (Exception ex)
+            {
+                if (this.logger.IsEnabled(LogLevel.Error))
+                {
+                    this.logger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUserId);
+                }
+            }
         }
     }
 }

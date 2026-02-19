@@ -14,11 +14,20 @@ namespace BIA.Net.Core.Application.Services
     public interface IBiaFileDownloaderService
     {
         /// <summary>
-        /// Prepares the file download by executing the provided function to get the file download data, and then notifies the user when the file is ready to be downloaded.
+        /// Prepares the file download by enqueuing a background job that will generate the file and notify the user when it's ready.
         /// </summary>
-        /// <param name="getFileDownloadDataTask">The task to retrieve the file download data.</param>
+        /// <typeparam name="TBackgroundFileGeneratorService">Type of the background file generator service.</typeparam>
         /// <param name="requestedByUserId">The ID of the user who requested the download.</param>
-        void PrepareDownload(Func<Task<FileDownloadDataDto>> getFileDownloadDataTask, int requestedByUserId);
+        void PrepareDownload<TBackgroundFileGeneratorService>(int requestedByUserId)
+            where TBackgroundFileGeneratorService : IBiaBackgroundFileGeneratorService;
+
+        /// <summary>
+        /// Job method that generates the file and notifies the user when it's ready. This method is executed in the background by Hangfire.
+        /// </summary>
+        /// <param name="generatorType">Type of the background file generator service.</param>
+        /// <param name="requestedByUserId">The ID of the user who requested the download.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        Task PrepareDownloadJobAsync(Type generatorType, int requestedByUserId);
 
         /// <summary>
         /// Generates a download token for the specified file and user. This token can be used to securely download the file without exposing the file path or other sensitive information.

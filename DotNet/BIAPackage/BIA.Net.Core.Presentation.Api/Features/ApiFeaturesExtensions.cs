@@ -58,26 +58,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
 
             // Identity
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<IPrincipal>(provider =>
-            {
-                var httpContext = provider.GetService<IHttpContextAccessor>()?.HttpContext;
-                if (httpContext is not null)
-                {
-                    return new BiaClaimsPrincipal(httpContext.User);
-                }
-
-                return new BiaClaimsPrincipal();
-            });
-            services.AddTransient(provider =>
-            {
-                var httpContext = provider.GetService<IHttpContextAccessor>()?.HttpContext;
-                if (httpContext is not null)
-                {
-                    return new UserContext(httpContext.Request.Headers.AcceptLanguage.ToString(), biaNetSection.Cultures);
-                }
-
-                return new UserContext();
-            });
+            services.AddTransient<IPrincipal>(provider => new BiaClaimsPrincipal(provider.GetService<IHttpContextAccessor>().HttpContext.User));
+            services.AddTransient(provider => new UserContext(provider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers.AcceptLanguage.ToString(), biaNetSection.Cultures));
 
             // Client TimeZone
             services.AddScoped<IClientTimeZoneContext, HttpClientTimeZoneContext>();

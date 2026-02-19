@@ -15,6 +15,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using TheBIADevCompany.BIADemo.Application.Examples;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 
     /// <summary>
@@ -68,15 +69,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult PrepareDownloadFileExample()
         {
-            var currentAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
-            var downloadFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadFileExample.txt");
-            var downloadHugeFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadHugeFileExample.zip");
-
-            this.fileDownloaderService.PrepareDownload(
-                () => Task.FromResult(new FileDownloadDataDto() { FilePath = downloadFileExamplePath, FileContentType = "text/plain; charset=utf-8", FileName = "FileExample.txt" }),
-                // () => Task.FromResult(new FileDownloadDataDto() { FilePath = downloadHugeFileExamplePath, FileContentType = "application/zip", FileName = "HugeFileExample.zip" }),
-                this.biaClaimsPrincipalService.GetUserId());
-
+            this.fileDownloaderService.PrepareDownload<IExampleBackgroundFileGeneratorService>(this.biaClaimsPrincipalService.GetUserId());
             return this.NoContent();
         }
     }

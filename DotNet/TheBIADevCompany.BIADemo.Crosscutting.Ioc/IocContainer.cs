@@ -65,6 +65,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using TheBIADevCompany.BIADemo.Domain.Notification.Mappers;
+    using TheBIADevCompany.BIADemo.Application.Examples;
 
     /// <summary>
     /// The IoC Container.
@@ -151,7 +152,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
-            collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
+            collection.AddTransient<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
