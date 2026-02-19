@@ -278,27 +278,29 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   }
 
   isFocusingOut = false;
-  public onFocusout(event: FocusEvent, tr: HTMLTableRowElement) {
+  public onFocusout(tr: HTMLTableRowElement) {
     // Avoid multiple onFocuseOut triggers in too short a time
     if (this.isFocusingOut === false) {
       this.isFocusingOut = true;
 
       // SetTimout is necessary because selecting an option in p-select is not immediately setting back focus to the p-select and document.activeElement isn't updated fast enough
       setTimeout(() => {
-        const clickedRow = this.getParentComponent(
-          event.relatedTarget as Element,
+        const clickedRowOfActiveElement = this.getParentComponent(
+          document.activeElement as Element,
           'bia-selectable-row'
         );
+
         if (
           // If the complex input is active, don't close the edit mode because the user is probably trying to click on an option in the overlay
           this.complexInputState !== 'active' &&
-          // This is a way to check that the click element was an element of p-select overlay
-          !document.activeElement?.className?.includes('p-select') &&
           // Checking if the clicked element is outside of the current edited row (in case of click on an element of the current edited row, we don't want to close the edit mode)
-          clickedRow !== tr
+          clickedRowOfActiveElement !== tr
         ) {
           // If it's a change of row and no change has been made to the previous row, the row editing has already been handle by the initEditableRowAndFocus and should not cancel the edition again
-          this.initEditableRow(null, this.hasChanged || clickedRow === null);
+          this.initEditableRow(
+            null,
+            this.hasChanged || clickedRowOfActiveElement === null
+          );
         }
         this.isFocusingOut = false;
       }, 200);
