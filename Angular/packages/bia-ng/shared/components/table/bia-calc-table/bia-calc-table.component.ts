@@ -278,39 +278,30 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   public onFocusout(event: FocusEvent, tr: HTMLTableRowElement) {
     // stop the onFocusout after this code this.currentRow?.focus();
     // because it is launched by the onfocusout of the tr
-    if (
-      event.relatedTarget &&
-      this.complexInputState === 'idle' &&
-      this.getParentComponent(
-        event.relatedTarget as Element,
-        'bia-selectable-row'
-      ) !== tr
-    ) {
-      this.initEditableRow(null);
-    }
+    setTimeout(() => {
+      if (
+        event.relatedTarget &&
+        this.complexInputState !== 'active' &&
+        this.getParentComponent(
+          event.relatedTarget as Element,
+          'bia-selectable-row'
+        ) !== tr
+      ) {
+        this.initEditableRow(null);
+      }
+    }, 200);
   }
 
   public onComplexInput(isIn: boolean) {
     if (isIn) {
-      setTimeout(() => {
-        this.complexInputState = 'active';
-        this.currentRow = this.getParentComponent(
-          document.activeElement,
-          'bia-selectable-row'
-        ) as HTMLElement;
-        this.currentInput = document.activeElement as HTMLElement;
-      });
+      this.complexInputState = 'active';
+      this.currentRow = this.getParentComponent(
+        document.activeElement,
+        'bia-selectable-row'
+      ) as HTMLElement;
+      this.currentInput = document.activeElement as HTMLElement;
     } else {
       this.complexInputState = 'closing';
-      if (
-        // If selected element parent is the same as complex input parent, don't change focus. If not, focus complex input
-        this.getParentComponent(
-          document.activeElement,
-          'bia-selectable-row'
-        ) !== this.currentRow
-      ) {
-        this.currentInput?.focus();
-      }
       setTimeout(() => {
         if (this.complexInputState === 'closing') {
           this.complexInputState = 'idle';

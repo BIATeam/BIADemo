@@ -107,8 +107,8 @@ export class BiaTableInputComponent<CrudItem>
   }
 
   onPanelHide(multiselect: MultiSelect) {
-    this.onComplexInput(false);
     multiselect.el.nativeElement.querySelector('input')?.focus();
+    this.onComplexInput(false);
   }
 
   onMouseDown(element: any, event: MouseEvent) {
