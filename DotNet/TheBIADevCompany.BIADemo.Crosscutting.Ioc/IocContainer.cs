@@ -64,8 +64,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Mappers;
-    using TheBIADevCompany.BIADemo.Application.Examples;
 
     /// <summary>
     /// The IoC Container.

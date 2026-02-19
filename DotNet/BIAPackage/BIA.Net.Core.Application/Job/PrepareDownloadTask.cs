@@ -5,14 +5,17 @@
 namespace BIA.Net.Core.Application.Job
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.User.Entities;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Hangfire task to prepare a file download in background and notify the user when it's ready.
@@ -38,22 +41,34 @@ namespace BIA.Net.Core.Application.Job
         }
 
         /// <summary>
-        /// Runs the task to prepare the file download.
+        /// Runs the task to prepare the file download by invoking a specific method on a DI-registered service.
+        /// This overload is used when the generation logic resides in the calling application service rather
+        /// than in a dedicated <see cref="IBiaBackgroundFileGeneratorService"/> implementation.
         /// </summary>
-        /// <param name="generatorType">The type of the background file generator service.</param>
+        /// <param name="serviceTypeName">Assembly-qualified name of the DI-registered service type.</param>
+        /// <param name="methodName">Name of the method to invoke on the service.</param>
+        /// <param name="serializedArgs">JSON-serialized array of argument values.</param>
+        /// <param name="serializedArgTypes">JSON-serialized array of argument type assembly-qualified names.</param>
         /// <param name="requestedByUser">The user who requested the download.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        public async Task Run(Type generatorType, BaseEntityUser requestedByUser)
+        public async Task Run(string serviceTypeName, string methodName, string serializedArgs, string serializedArgTypes, BaseEntityUser requestedByUser)
         {
             try
             {
-                if (!typeof(IBiaBackgroundFileGeneratorService).IsAssignableFrom(generatorType))
-                {
-                    throw new InvalidOperationException($"Type {generatorType.Name} does not implement {nameof(IBiaBackgroundFileGeneratorService)}");
-                }
+                var serviceType = Type.GetType(serviceTypeName) ?? throw new InvalidOperationException($"Could not resolve type '{serviceTypeName}'");
 
-                var generator = (IBiaBackgroundFileGeneratorService)this.serviceProvider.GetRequiredService(generatorType);
-                var fileDownloadDataDto = await generator.GenerateAsync();
+                var argTypes = JsonConvert.DeserializeObject<string[]>(serializedArgTypes)
+                    .Select(t => Type.GetType(t) ?? throw new InvalidOperationException($"Could not resolve argument type '{t}'"))
+                    .ToArray();
+
+                var method = serviceType.GetMethod(methodName, argTypes) ?? throw new InvalidOperationException($"Method '{methodName}' not found on type '{serviceType.Name}'");
+
+                var rawArgs = JsonConvert.DeserializeObject<object[]>(serializedArgs);
+                var typedArgs = rawArgs.Zip(argTypes, (arg, argType) => arg == null ? null : JsonConvert.DeserializeObject(JsonConvert.SerializeObject(arg), argType)).ToArray();
+
+                var service = this.serviceProvider.GetRequiredService(serviceType);
+                var fileDownloadDataDto = await (Task<FileDownloadDataDto>)method.Invoke(service, typedArgs);
+
                 fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUser.Id, Display = requestedByUser.Login };
                 fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
 

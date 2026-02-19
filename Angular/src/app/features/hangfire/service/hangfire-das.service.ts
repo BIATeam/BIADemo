@@ -12,4 +12,11 @@ export class HangfireDas extends GenericDas {
   randomReviewPlane(teamId: number) {
     return this.http.put(this.route + 'randomReviewPlane/' + teamId, null);
   }
+
+  prepareBackgroundDownloadFileExample() {
+    return this.http.post(
+      this.route + 'PrepareBackgroundDownloadFileExample',
+      null
+    );
+  }
 }

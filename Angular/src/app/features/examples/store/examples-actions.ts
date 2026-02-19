@@ -11,7 +11,3 @@ export const generateHandledError = createAction(
 export const generateErrorSuccess = createAction(
   '[Examples] Generate error success'
 );
-
-export const prepareDownloadFileExample = createAction(
-  '[Examples] Prepare download file example'
-);

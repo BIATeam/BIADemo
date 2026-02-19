@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Application.Services
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Linq.Expressions;
     using System.Text;
     using System.Threading.Tasks;
@@ -51,7 +52,6 @@ namespace BIA.Net.Core.Application.Services
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
         private readonly ITGenericRepository<TUser, int> userRepository;
-        private readonly IServiceProvider serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
@@ -61,7 +61,6 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="fileDownloadDataMapper">The file download data mapper.</param>
         /// <param name="fileDownloadDataRepository">The file download data repository.</param>
         /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
-        /// <param name="serviceProvider">The service provider for resolving generators and their dependencies.</param>
         /// <param name="backgroundJobClient">Hangfire job client.</param>
         /// <param name="userRepository">The user repository.</param>
         public BiaFileDownloaderService(
@@ -70,7 +69,6 @@ namespace BIA.Net.Core.Application.Services
             FileDownloadDataMapper fileDownloadDataMapper,
             ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
             IFileDownloadTokenRepository fileDownloadTokenRepository,
-            IServiceProvider serviceProvider,
             IBackgroundJobClient backgroundJobClient,
             ITGenericRepository<TUser, int> userRepository)
         {
@@ -79,19 +77,31 @@ namespace BIA.Net.Core.Application.Services
             this.fileDownloadDataMapper = fileDownloadDataMapper;
             this.fileDownloadDataRepository = fileDownloadDataRepository;
             this.fileDownloadTokenRepository = fileDownloadTokenRepository;
-            this.serviceProvider = serviceProvider;
             this.backgroundJobClient = backgroundJobClient;
             this.userRepository = userRepository;
         }
 
         /// <inheritdoc/>
-        public async Task PrepareBackgroundDownloadAsync<TBackgroundFileGeneratorService>(int requestedByUserId)
-            where TBackgroundFileGeneratorService : IBiaBackgroundFileGeneratorService
+        public async Task PrepareBackgroundDownloadAsync<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
+            where TService : class
         {
-            var requestedByUser = await this.userRepository.GetEntityAsync(requestedByUserId, isReadOnlyMode: true) ?? throw new ElementNotFoundException($"User with ID {requestedByUserId} not found");
-            var generatorType = typeof(TBackgroundFileGeneratorService);
+            if (generateFileExpression.Body is not MethodCallExpression methodCall)
+            {
+                throw new ArgumentException("Expression body must be a method call", nameof(generateFileExpression));
+            }
 
-            this.backgroundJobClient.Enqueue<PrepareDownloadTask>(x => x.Run(generatorType, requestedByUser));
+            var requestedByUser = await this.userRepository.GetEntityAsync(requestedByUserId, isReadOnlyMode: true) ?? throw new ElementNotFoundException($"User with ID {requestedByUserId} not found");
+
+            var args = methodCall.Arguments
+                .Select(argExpr => Expression.Lambda(argExpr).Compile().DynamicInvoke())
+                .ToArray();
+
+            var serviceTypeName = typeof(TService).AssemblyQualifiedName;
+            var methodName = methodCall.Method.Name;
+            var serializedArgs = JsonConvert.SerializeObject(args);
+            var serializedArgTypes = JsonConvert.SerializeObject(methodCall.Method.GetParameters().Select(p => p.ParameterType.AssemblyQualifiedName).ToArray());
+
+            this.backgroundJobClient.Enqueue<PrepareDownloadTask>(x => x.Run(serviceTypeName, methodName, serializedArgs, serializedArgTypes, requestedByUser));
         }
 
         /// <inheritdoc/>

@@ -8,7 +8,6 @@ import {
   generateErrorSuccess,
   generateHandledError,
   generateUnhandledError,
-  prepareDownloadFileExample,
 } from './examples-actions';
 
 /**
@@ -38,21 +37,6 @@ export class ExamplesEffects {
       ofType(generateHandledError),
       exhaustMap(() =>
         this.examplesDas.generateHandledError().pipe(
-          map((): any => generateErrorSuccess()),
-          catchError(err => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(err);
-          })
-        )
-      )
-    )
-  );
-
-  prepareDownloadFile$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(prepareDownloadFileExample),
-      exhaustMap(() =>
-        this.examplesDas.prepareDownloadFileExample().pipe(
           map((): any => generateErrorSuccess()),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);

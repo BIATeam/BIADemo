@@ -7,7 +7,6 @@ import { AppState } from 'src/app/store/state';
 import {
   generateHandledError,
   generateUnhandledError,
-  prepareDownloadFileExample,
 } from './store/examples-actions';
 
 @Component({
@@ -28,9 +27,5 @@ export class ExamplesComponent {
 
   onGenerateHandledErrorClick() {
     this.store.dispatch(generateHandledError());
-  }
-
-  onDownloadFileClick() {
-    this.store.dispatch(prepareDownloadFileExample());
   }
 }

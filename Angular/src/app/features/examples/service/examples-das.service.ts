@@ -16,8 +16,4 @@ export class ExamplesDas extends GenericDas {
   generateHandledError() {
     return this.http.get(this.route + 'GenerateHandledError');
   }
-
-  prepareDownloadFileExample() {
-    return this.http.post(this.route + 'PrepareDownloadFileExample', null);
-  }
 }

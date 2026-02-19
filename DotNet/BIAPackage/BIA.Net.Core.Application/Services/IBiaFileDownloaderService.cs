@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Application.Services
 {
     using System;
+    using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.User;
@@ -16,13 +17,14 @@ namespace BIA.Net.Core.Application.Services
     public interface IBiaFileDownloaderService
     {
         /// <summary>
-        /// Prepares the file download by enqueuing a background job that will generate the file and notify the user when it's ready.
+        /// Prepares a background file download by calling a method on an already-registered DI service.
         /// </summary>
-        /// <typeparam name="TBackgroundFileGeneratorService">Type of the background file generator service.</typeparam>
-        /// <param name="requestedByUserId">The ID of the user who requested the download.</param>
+        /// <typeparam name="TService">Type of the DI-registered service that exposes the generation method.</typeparam>
+        /// <param name="requestedByUserId">ID of the user who requested the download.</param>
+        /// <param name="generateFileExpression">Expression pointing to the generation method.</param>
         /// <returns>A task that represents the asynchronous operation.</returns>
-        Task PrepareBackgroundDownloadAsync<TBackgroundFileGeneratorService>(int requestedByUserId)
-            where TBackgroundFileGeneratorService : IBiaBackgroundFileGeneratorService;
+        Task PrepareBackgroundDownloadAsync<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
+            where TService : class;
 
         /// <summary>
         /// Notifies the user that the file is ready to be downloaded by creating a notification and saving the file download data in the database.

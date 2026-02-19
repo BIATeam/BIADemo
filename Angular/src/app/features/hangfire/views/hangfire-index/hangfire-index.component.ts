@@ -8,7 +8,10 @@ import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { AppState } from 'src/app/store/state';
-import { randomReviewPlane } from '../../store/hangfire-actions';
+import {
+  prepareBackgroundDownloadFileExample,
+  randomReviewPlane,
+} from '../../store/hangfire-actions';
 
 @Component({
   selector: 'app-hangfire-index',
@@ -27,5 +30,9 @@ export class HangfireIndexComponent {
 
   randomReviewPlane(teamId: number) {
     this.store.dispatch(randomReviewPlane({ teamId }));
+  }
+
+  onPrepareBackgroundDownloadFileClick() {
+    this.store.dispatch(prepareBackgroundDownloadFileExample());
   }
 }

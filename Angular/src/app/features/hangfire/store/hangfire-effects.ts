@@ -5,9 +5,14 @@ import {
   biaSuccessWaitRefreshSignalR,
 } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
 import { HangfireDas } from '../service/hangfire-das.service';
-import { failure, randomReviewPlane } from './hangfire-actions';
+import {
+  failure,
+  prepareBackgroundDownloadFileExample,
+  randomReviewPlane,
+  success,
+} from './hangfire-actions';
 
 /**
  * Effects file is for isolating and managing side effects of the application in one place
@@ -32,6 +37,26 @@ export class HangfireEffects {
           })
         );
       })
+    )
+  );
+
+  prepareBackgroundDownloadFile$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(prepareBackgroundDownloadFileExample),
+      exhaustMap(() =>
+        this.hangfireDas.prepareBackgroundDownloadFileExample().pipe(
+          map(() => {
+            this.biaMessageService.showSuccess(
+              'File is being prepared, you will be notified when it is ready for download'
+            );
+            return success();
+          }),
+          catchError(err => {
+            this.biaMessageService.showErrorHttpResponse(err);
+            return of(err);
+          })
+        )
+      )
     )
   );
 

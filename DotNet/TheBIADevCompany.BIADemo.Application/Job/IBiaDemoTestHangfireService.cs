@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System.Threading.Tasks;
+    using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.User;
     using Hangfire.Server;
 
@@ -28,5 +29,11 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         /// <param name="context">The job context.</param>
         /// <returns>The Task.</returns>
         Task RandomReviewPlane(int teamId, CurrentTeamDto currentSite, int createdById, PerformContext context);
+
+        /// <summary>
+        /// Generate an example file and return the file information to download it.
+        /// </summary>
+        /// <returns>A task representing the asynchronous operation, with a FileDownloadDataDto as the result.</returns>
+        Task<FileDownloadDataDto> GenerateExampleFileAsync();
     }
 }

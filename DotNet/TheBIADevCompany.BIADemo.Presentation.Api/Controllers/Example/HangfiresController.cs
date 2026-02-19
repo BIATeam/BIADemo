@@ -24,14 +24,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     public class HangfiresController : BiaControllerBase
     {
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
+        private readonly IBiaFileDownloaderService fileDownloaderService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService)
+        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService, IBiaFileDownloaderService fileDownloaderService)
         {
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
+            this.fileDownloaderService = fileDownloaderService;
         }
 
         /// <summary>
@@ -91,6 +93,18 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
             {
                 return this.NotFound();
             }
+        }
+
+        /// <summary>
+        /// Prepare the background download of example file.
+        /// </summary>
+        /// <returns>No content.</returns>
+        [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> PrepareBackgroundDownloadFileExample()
+        {
+            await this.fileDownloaderService.PrepareBackgroundDownloadAsync<IBiaDemoTestHangfireService>(this.biaClaimsPrincipalService.GetUserId(), x => x.GenerateExampleFileAsync());
+            return this.NoContent();
         }
     }
 }

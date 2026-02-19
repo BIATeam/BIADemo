@@ -1,11 +1,17 @@
 import { createAction, props } from '@ngrx/store';
 
 export const failure = createAction(
-  '[Notifications] Failure',
+  '[Hangfire] Failure',
   props<{ error: any }>()
 );
 
 export const randomReviewPlane = createAction(
-  '[Notifications] Call worker with notification',
+  '[Hangfire] Call worker with notification',
   props<{ teamId: number }>()
 );
+
+export const prepareBackgroundDownloadFileExample = createAction(
+  '[Hangfire] Prepare background download file example'
+);
+
+export const success = createAction('[Hangfire] Success');
