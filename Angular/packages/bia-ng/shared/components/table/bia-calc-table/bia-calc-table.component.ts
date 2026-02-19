@@ -24,6 +24,7 @@ import {
 import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
+import { MultiSelect } from 'primeng/multiselect';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
@@ -301,6 +302,11 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       }
       this.isInComplexInput = false;
     }
+  }
+
+  onPanelHide(multiselect: MultiSelect) {
+    multiselect.el.nativeElement.querySelector('input')?.focus();
+    this.onComplexInput(false);
   }
 
   public getParentComponent(

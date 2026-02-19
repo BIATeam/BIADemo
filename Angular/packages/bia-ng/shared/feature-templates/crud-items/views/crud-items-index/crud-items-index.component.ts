@@ -34,6 +34,7 @@ import {
 } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem, PrimeTemplate, SortMeta } from 'primeng/api';
+import { MultiSelect } from 'primeng/multiselect';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { filter, skip, take, tap } from 'rxjs/operators';
@@ -468,6 +469,12 @@ export class CrudItemsIndexComponent<
   onComplexInput(isIn: boolean) {
     if (this.crudConfiguration.useCalcMode) {
       this.crudItemTableComponent.onComplexInput(isIn);
+    }
+  }
+
+  onPanelHide(multiselect: MultiSelect) {
+    if (this.crudConfiguration.useCalcMode) {
+      this.crudItemTableComponent.onPanelHide(multiselect);
     }
   }
 

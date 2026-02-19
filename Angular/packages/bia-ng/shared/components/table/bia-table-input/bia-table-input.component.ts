@@ -62,6 +62,7 @@ export class BiaTableInputComponent<CrudItem>
 
   @Output() valueChange = new EventEmitter<void>();
   @Output() complexInput = new EventEmitter<boolean>();
+  @Output() panelHide = new EventEmitter<MultiSelect>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
@@ -105,8 +106,7 @@ export class BiaTableInputComponent<CrudItem>
   }
 
   onPanelHide(multiselect: MultiSelect) {
-    this.onComplexInput(false);
-    multiselect.el.nativeElement.querySelector('input')?.focus();
+    this.panelHide.emit(multiselect);
   }
 
   onMouseDown(element: any, event: MouseEvent) {

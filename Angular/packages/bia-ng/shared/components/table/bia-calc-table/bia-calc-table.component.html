@@ -243,7 +243,8 @@
                       [form]="form"
                       [dictOptionDtos]="dictOptionDtos"
                       (valueChange)="onChange()"
-                      (complexInput)="onComplexInput($event)">
+                      (complexInput)="onComplexInput($event)"
+                      (panelHide)="onPanelHide($event)">
                       <ng-template pTemplate="specificInput">
                         <ng-container
                           *ngTemplateOutlet="
@@ -389,7 +390,8 @@
                       [dictOptionDtos]="dictOptionDtos"
                       [focusByDefault]="i === firstEditableFieldIndex"
                       (valueChange)="onChange()"
-                      (complexInput)="onComplexInput($event)">
+                      (complexInput)="onComplexInput($event)"
+                      (panelHide)="onPanelHide($event)">
                       <ng-template pTemplate="specificInput">
                         <ng-container
                           *ngTemplateOutlet="
