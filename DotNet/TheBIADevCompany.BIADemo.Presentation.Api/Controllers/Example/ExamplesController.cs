@@ -17,6 +17,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Examples;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
     /// The API controller used to manage examples.
@@ -67,9 +68,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         /// <returns>No content.</returns>
         [HttpPost("[action]")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public IActionResult PrepareDownloadFileExample()
+        public async Task<IActionResult> PrepareDownloadFileExample()
         {
-            this.fileDownloaderService.PrepareDownload<IExampleBackgroundFileGeneratorService>(this.biaClaimsPrincipalService.GetUserId());
+            await this.fileDownloaderService.PrepareBackgroundDownloadAsync<IExampleBackgroundFileGeneratorService>(this.biaClaimsPrincipalService.GetUserId());
             return this.NoContent();
         }
     }

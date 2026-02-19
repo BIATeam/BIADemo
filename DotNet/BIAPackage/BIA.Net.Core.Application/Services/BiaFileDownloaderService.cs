@@ -15,10 +15,12 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.File.Entities;
     using BIA.Net.Core.Domain.File.Mappers;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.User.Entities;
     using Hangfire;
     using Hangfire.States;
     using Microsoft.Extensions.DependencyInjection;
@@ -29,26 +31,29 @@ namespace BIA.Net.Core.Application.Services
     /// <summary>
     /// File downloader service that prepares file download and notifies the user when the file is ready to be downloaded.
     /// </summary>
+    /// <typeparam name="TUser">Type of the user entity.</typeparam>
     /// <typeparam name="TINotificationAppService">Interface for the notification application service.</typeparam>
     /// <typeparam name="TNotification">Type of the notification.</typeparam>
     /// <typeparam name="TNotificationDto">Type of the notification DTO.</typeparam>
     /// <typeparam name="TNotificationListItemDto">Type of the notification list item DTO.</typeparam>
-    public class BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
+    public class BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
+        where TUser : BaseEntityUser, new()
         where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification>
         where TNotification : BaseNotification, new()
         where TNotificationDto : BaseNotificationDto, new()
         where TNotificationListItemDto : BaseNotificationListItemDto, new()
     {
         private readonly TINotificationAppService notificationAppService;
-        private readonly ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
+        private readonly ILogger<BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
         private readonly FileDownloadDataMapper fileDownloadDataMapper;
         private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
+        private readonly ITGenericRepository<TUser, int> userRepository;
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
+        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
         /// </summary>
         /// <param name="notificationAppService">The notification application service.</param>
         /// <param name="logger">The logger.</param>
@@ -57,14 +62,16 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
         /// <param name="serviceProvider">The service provider for resolving generators and their dependencies.</param>
         /// <param name="backgroundJobClient">Hangfire job client.</param>
+        /// <param name="userRepository">The user repository.</param>
         public BiaFileDownloaderService(
             TINotificationAppService notificationAppService,
-            ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
+            ILogger<BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
             FileDownloadDataMapper fileDownloadDataMapper,
             ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
             IFileDownloadTokenRepository fileDownloadTokenRepository,
             IServiceProvider serviceProvider,
-            IBackgroundJobClient backgroundJobClient)
+            IBackgroundJobClient backgroundJobClient,
+            ITGenericRepository<TUser, int> userRepository)
         {
             this.notificationAppService = notificationAppService;
             this.logger = logger;
@@ -73,20 +80,27 @@ namespace BIA.Net.Core.Application.Services
             this.fileDownloadTokenRepository = fileDownloadTokenRepository;
             this.serviceProvider = serviceProvider;
             this.backgroundJobClient = backgroundJobClient;
+            this.userRepository = userRepository;
         }
 
         /// <inheritdoc/>
-        public void PrepareDownload<TBackgroundFileGeneratorService>(int requestedByUserId)
+        public async Task PrepareBackgroundDownloadAsync<TBackgroundFileGeneratorService>(int requestedByUserId)
             where TBackgroundFileGeneratorService : IBiaBackgroundFileGeneratorService
         {
+            var requestedByUser = await this.userRepository.GetEntityAsync(requestedByUserId, isReadOnlyMode: true) ?? throw new ElementNotFoundException($"User with ID {requestedByUserId} not found");
             var generatorType = typeof(TBackgroundFileGeneratorService);
-            this.backgroundJobClient.Enqueue<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>(
-                x => x.PrepareDownloadJobAsync(generatorType, requestedByUserId));
+            this.backgroundJobClient.Enqueue<BiaFileDownloaderService<TUser, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>>(
+                x => x.PrepareBackgroundDownloadJobAsync(generatorType, requestedByUser));
         }
 
-        /// <inheritdoc/>
-        [JobDisplayName("Prepare Download - User {1}")]
-        public async Task PrepareDownloadJobAsync(Type generatorType, int requestedByUserId)
+        /// <summary>
+        /// Job method that generates the file and notifies the user when it's ready. This method is executed in the background by Hangfire.
+        /// </summary>
+        /// <param name="generatorType">Type of the background file generator service.</param>
+        /// <param name="requestedByUser">The user data who requested the download.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        [JobDisplayName("Prepare File Download")]
+        public async Task PrepareBackgroundDownloadJobAsync(Type generatorType, BaseEntityUser requestedByUser)
         {
             try
             {
@@ -97,15 +111,15 @@ namespace BIA.Net.Core.Application.Services
 
                 var generator = (IBiaBackgroundFileGeneratorService)this.serviceProvider.GetRequiredService(generatorType);
                 var fileDownloadDataDto = await generator.GenerateAsync();
-                fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUserId };
+                fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUser.Id, Display = requestedByUser.Login };
                 fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
-                await this.NotifyDownloadReadyAsync(fileDownloadDataDto, requestedByUserId);
+                await this.NotifyDownloadReadyAsync(fileDownloadDataDto, requestedByUser);
             }
             catch (Exception ex)
             {
                 if (this.logger.IsEnabled(LogLevel.Error))
                 {
-                    this.logger.LogError(ex, "Error in PrepareDownload for user {UserId}", requestedByUserId);
+                    this.logger.LogError(ex, "Error in PrepareDownload for user {UserId}", requestedByUser);
                 }
 
                 throw;
@@ -158,24 +172,24 @@ namespace BIA.Net.Core.Application.Services
             }
         }
 
-        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
+        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, BaseEntityUser requestedByUser)
         {
             return new TNotificationDto
             {
-                CreatedBy = new OptionDto { Id = requestedByUserId },
+                CreatedBy = new OptionDto { Id = requestedByUser.Id, Display = requestedByUser.Login },
                 CreatedDate = DateTime.UtcNow,
                 Description = "You can now download the file !",
                 Title = $"Download ready for {fileDownloadDataDto.FileName}",
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
                 JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", DownloadFileGuid = fileDownloadDataDto.Id }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
-                NotifiedUsers = [new() { Id = requestedByUserId }],
+                NotifiedUsers = [new() { Id = requestedByUser.Id, Display = requestedByUser.Login }],
                 NotificationTranslations = [],
                 NotifiedTeams = [],
             };
         }
 
-        private async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
+        private async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, BaseEntityUser requestedByUser)
         {
             try
             {
@@ -200,14 +214,14 @@ namespace BIA.Net.Core.Application.Services
                 await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
 
                 fileDownloadDataDto.Id = fileDownloadData.Id;
-                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
+                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUser);
                 await this.notificationAppService.AddAsync(notification);
             }
             catch (Exception ex)
             {
                 if (this.logger.IsEnabled(LogLevel.Error))
                 {
-                    this.logger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUserId);
+                    this.logger.LogError(ex, "Error preparing file download for user {UserId}", requestedByUser);
                 }
             }
         }
