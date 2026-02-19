@@ -279,12 +279,12 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     // stop the onFocusout after this code this.currentRow?.focus();
     // because it is launched by the onfocusout of the tr
     if (
-      event.relatedTarget &&
       this.complexInputState !== 'active' &&
-      this.getParentComponent(
-        event.relatedTarget as Element,
-        'bia-selectable-row'
-      ) !== tr
+      (event.relatedTarget === null ||
+        this.getParentComponent(
+          event.relatedTarget as Element,
+          'bia-selectable-row'
+        ) !== tr)
     ) {
       this.initEditableRow(null);
     }
