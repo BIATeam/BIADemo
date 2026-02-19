@@ -95,6 +95,36 @@ function CopyBiaFolder {
   }
 }
 
+# Removes <!--BIADEMO-->-marked XML nodes referencing DownloadFileExample.txt in .csproj files
+function RemoveBIADemoDownloadFileExampleNodes {
+  Get-ChildItem -File -Recurse -include *.csproj | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object {
+    $file = $_.FullName
+    $oldContent = [System.IO.File]::ReadAllText($file)
+
+    if (-not $oldContent.Contains('DownloadFileExample.txt')) { return }
+
+    # Match any <!--BIADEMO-->-prefixed XML node (multi-line), only remove if it contains DownloadFileExample.txt
+    $pattern = '[ \t]*<!--BIADEMO-->\r?\n[ \t]*<(\w+)[^>]*>[\s\S]*?</\1>[ \t]*\r?\n?'
+    $evaluator = [System.Text.RegularExpressions.MatchEvaluator] {
+      param($match)
+      if ($match.Value -match 'DownloadFileExample\.txt') { return '' }
+      return $match.Value
+    }
+    $newContent = [System.Text.RegularExpressions.Regex]::Replace(
+      $oldContent,
+      $pattern,
+      $evaluator,
+      [System.Text.RegularExpressions.RegexOptions]::Singleline
+    )
+
+    if ($oldContent -ne $newContent) {
+      $fileRel = Resolve-Path -Path "$file" -Relative
+      Write-Verbose "Remove BIADemo XML nodes in $fileRel" -Verbose
+      [System.IO.File]::WriteAllText($file, $newContent)
+    }
+  }
+}
+
 
 ###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
@@ -115,6 +145,8 @@ Write-Host "Remove *\bin"
 RemoveItemFolder -path '*\bin'
 Write-Host "Remove *\obj"
 RemoveItemFolder -path '*\obj'
+Write-Host "Remove *\Resources"
+RemoveItemFolder -path '*\Resources'
 
 
 Write-Host "Remove Migrations"
@@ -130,6 +162,9 @@ RemoveEmptyFolder "."
 
 Write-Host "Remove code example partial files"
 RemoveCodeExample
+
+Write-Host "Remove BIADemo DownloadFileExample nodes in csproj"
+RemoveBIADemoDownloadFileExampleNodes
 
 Write-Host "Remove comment except BIADemo"
 RemoveCommentExceptBIADemo

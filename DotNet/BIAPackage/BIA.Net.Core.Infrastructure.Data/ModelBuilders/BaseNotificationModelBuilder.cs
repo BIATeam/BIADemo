@@ -54,6 +54,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Success, Code = "success", Label = "Success" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Warning, Code = "warn", Label = "Warn" });
             modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Error, Code = "error", Label = "Error" });
+            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.DownloadReady, Code = "downloadr", Label = "Download Ready" });
         }
 
         /// <summary>

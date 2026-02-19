@@ -1,6 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
 import {
   BiaMessageService,
   biaSuccessWaitRefreshSignalR,
@@ -10,10 +9,9 @@ import { catchError, exhaustMap, map, switchMap } from 'rxjs/operators';
 import { HangfireDas } from '../service/hangfire-das.service';
 import {
   failure,
-  generateErrorSuccess,
-  generateHandledError,
-  generateUnhandledError,
+  prepareBackgroundDownloadFileExample,
   randomReviewPlane,
+  success,
 } from './hangfire-actions';
 
 /**
@@ -42,30 +40,20 @@ export class HangfireEffects {
     )
   );
 
-  generateUnhandledError$ = createEffect(() =>
+  prepareBackgroundDownloadFile$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(generateUnhandledError),
+      ofType(prepareBackgroundDownloadFileExample),
       exhaustMap(() =>
-        this.hangfireDas.generateUnhandledError().pipe(
-          map((): Action => generateErrorSuccess()),
+        this.hangfireDas.prepareBackgroundDownloadFileExample().pipe(
+          map(() => {
+            this.biaMessageService.showSuccess(
+              'File is being prepared, you will be notified when it is ready for download'
+            );
+            return success();
+          }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
-          })
-        )
-      )
-    )
-  );
-
-  generateHandledError$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(generateHandledError),
-      exhaustMap(() =>
-        this.hangfireDas.generateHandledError().pipe(
-          map((): Action => generateErrorSuccess()),
-          catchError(err => {
-            this.biaMessageService.showErrorHttpResponse(err);
-            return of(failure({ error: err }));
+            return of(err);
           })
         )
       )

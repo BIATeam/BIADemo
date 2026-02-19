@@ -177,6 +177,56 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                     b.ToTable("DistCache");
                 });
 
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileContentType")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("RequestByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RequestDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequestByUserId");
+
+                    b.ToTable("FileDownloadData");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadToken", b =>
+                {
+                    b.Property<Guid>("FileGuid")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("FileGuid", "Token");
+
+                    b.ToTable("FileDownloadTokens");
+                });
+
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>
                 {
                     b.Property<int>("Id")
@@ -342,6 +392,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Id = 5,
                             Code = "error",
                             Label = "Error"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Code = "downloadr",
+                            Label = "Download Ready"
                         });
                 });
 
@@ -681,6 +737,27 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                             Label = "Fehler",
                             LanguageId = 4,
                             NotificationTypeId = 5
+                        },
+                        new
+                        {
+                            Id = 601,
+                            Label = "Téléchargement prêt",
+                            LanguageId = 2,
+                            NotificationTypeId = 6
+                        },
+                        new
+                        {
+                            Id = 602,
+                            Label = "Descarga lista",
+                            LanguageId = 3,
+                            NotificationTypeId = 6
+                        },
+                        new
+                        {
+                            Id = 603,
+                            Label = "Download bereit",
+                            LanguageId = 4,
+                            NotificationTypeId = 6
                         });
                 });
 
@@ -2405,6 +2482,28 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .IsRequired();
 
                     b.Navigation("Type");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadData", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.User.Entities.BaseEntityUser", "RequestByUser")
+                        .WithMany()
+                        .HasForeignKey("RequestByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RequestByUser");
+                });
+
+            modelBuilder.Entity("BIA.Net.Core.Domain.File.Entities.FileDownloadToken", b =>
+                {
+                    b.HasOne("BIA.Net.Core.Domain.File.Entities.FileDownloadData", "FileDownloadData")
+                        .WithMany()
+                        .HasForeignKey("FileGuid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FileDownloadData");
                 });
 
             modelBuilder.Entity("BIA.Net.Core.Domain.Notification.Entities.BaseNotification", b =>

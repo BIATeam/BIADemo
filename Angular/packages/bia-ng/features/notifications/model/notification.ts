@@ -48,4 +48,5 @@ export interface NotificationData {
   route: string[] | null;
   display: string;
   teams: NotificationTeam[] | null;
+  downloadFileGuid: string | null;
 }

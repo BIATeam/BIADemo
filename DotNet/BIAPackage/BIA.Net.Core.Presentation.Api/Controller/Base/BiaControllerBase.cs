@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Base
 {
     using System.Linq;
     using System.Security.Claims;
+    using System.Threading.Tasks;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;

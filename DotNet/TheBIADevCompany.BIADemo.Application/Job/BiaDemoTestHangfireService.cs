@@ -6,11 +6,14 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
@@ -209,6 +212,17 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 };
                 await this.notificationAppService.AddAsync(notification);
             }
+        }
+
+        /// <inheritdoc/>
+        public async Task<FileDownloadDataDto> GenerateExampleFileAsync(string fileName)
+        {
+            await Task.Delay(5000);
+
+            var currentAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+            var downloadFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadFileExample.txt");
+            return new FileDownloadDataDto() { FilePath = downloadFileExamplePath, FileContentType = "text/plain; charset=utf-8", FileName = fileName };
         }
 
         /// <summary>

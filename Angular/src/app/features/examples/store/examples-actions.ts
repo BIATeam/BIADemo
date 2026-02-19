@@ -1,0 +1,29 @@
+import { createAction } from '@ngrx/store';
+
+export const generateUnhandledError = createAction(
+  '[Examples] Generate unhandled error'
+);
+
+export const generateHandledError = createAction(
+  '[Examples] Generate handled error'
+);
+
+export const generateErrorSuccess = createAction(
+  '[Examples] Generate error success'
+);
+
+export const generateErrorFailure = createAction(
+  '[Examples] Generate error failure'
+);
+
+export const generateFileDownloadNotification = createAction(
+  '[Examples] Generate file download notification'
+);
+
+export const generateFileDownloadNotificationSuccess = createAction(
+  '[Examples] Generate file download notification success'
+);
+
+export const generateFileDownloadNotificationFailure = createAction(
+  '[Examples] Generate file download notification failure'
+);

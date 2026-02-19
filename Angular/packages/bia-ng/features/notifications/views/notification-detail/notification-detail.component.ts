@@ -9,7 +9,11 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
+import {
+  AuthService,
+  BiaFileDownloaderService,
+  BiaPermission,
+} from 'packages/bia-ng/core/public-api';
 import { AuthInfo } from 'packages/bia-ng/models/public-api';
 import {
   NotificationTeamWarningComponent,
@@ -47,7 +51,8 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
     protected router: Router,
     protected activatedRoute: ActivatedRoute,
     protected authService: AuthService,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    protected fileDownloaderService: BiaFileDownloaderService
   ) {}
 
   ngOnInit() {
@@ -86,7 +91,7 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
 
   canAction(notification: Notification) {
     if (notification.data) {
-      if (notification.data.route) {
+      if (notification.data.route || notification.data.downloadFileGuid) {
         return true;
       }
     }
@@ -111,6 +116,10 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
           });
         }
         this.router.navigate(data.route);
+      }
+
+      if (data?.downloadFileGuid) {
+        this.fileDownloaderService.downloadFile(data.downloadFileGuid);
       }
     }
   }

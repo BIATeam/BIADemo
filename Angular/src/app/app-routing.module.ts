@@ -184,6 +184,17 @@ const routes: Routes = [
                 m => m.HangfireModule
               ),
           },
+          {
+            path: 'examples',
+            data: {
+              breadcrumb: 'app.examples',
+              canNavigate: true,
+            },
+            loadChildren: () =>
+              import('./features/examples/examples.module').then(
+                m => m.ExamplesModule
+              ),
+          },
           // End BIADemo
           {
             path: 'sites',
