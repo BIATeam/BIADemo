@@ -278,18 +278,16 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   public onFocusout(event: FocusEvent, tr: HTMLTableRowElement) {
     // stop the onFocusout after this code this.currentRow?.focus();
     // because it is launched by the onfocusout of the tr
-    setTimeout(() => {
-      if (
-        event.relatedTarget &&
-        this.complexInputState !== 'active' &&
-        this.getParentComponent(
-          event.relatedTarget as Element,
-          'bia-selectable-row'
-        ) !== tr
-      ) {
-        this.initEditableRow(null);
-      }
-    }, 200);
+    if (
+      event.relatedTarget &&
+      this.complexInputState !== 'active' &&
+      this.getParentComponent(
+        event.relatedTarget as Element,
+        'bia-selectable-row'
+      ) !== tr
+    ) {
+      this.initEditableRow(null);
+    }
   }
 
   public onComplexInput(isIn: boolean) {
