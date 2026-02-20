@@ -247,10 +247,26 @@
                 [dictOptionDtos]="dictOptionDtos"
                 [editingRowId]="editingRowId"
                 [editFooterSignal]="editFooterSignal"
-                [specificInputTemplate]="specificInputTemplate"
-                [specificOutputTemplate]="specificOutputTemplate"
                 [onChange]="onChange.bind(this)"
                 [onComplexInput]="onComplexInput.bind(this)">
+                <ng-template pTemplate="specificOutput">
+                  <ng-container
+                    *ngTemplateOutlet="
+                      specificOutputTemplate;
+                      context: {
+                        rowData: footerRowData,
+                        field: col,
+                        data: getCellData(footerRowData, col),
+                      }
+                    "></ng-container>
+                </ng-template>
+                <ng-template pTemplate="specificInput">
+                  <ng-container
+                    *ngTemplateOutlet="
+                      specificInputTemplate;
+                      context: { field: col, form: form }
+                    "></ng-container>
+                </ng-template>
               </bia-calc-table-cell>
             </td>
           }
