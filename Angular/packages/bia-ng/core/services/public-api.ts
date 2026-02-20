@@ -3,6 +3,7 @@ export * from './auth.service';
 export * from './bia-app-constants.service';
 export * from './bia-app-init.service';
 export * from './bia-barcode-scanner.service';
+export * from './bia-data-change.service';
 export * from './bia-dialog.service';
 export * from './bia-environment.service';
 export * from './bia-file-downloader.service';

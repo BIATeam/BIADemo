@@ -1,11 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  BiaDataChangeService,
   BiaMessageService,
   BiaOnlineOfflineService,
 } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { enableSignalRRefresh, storeKey } from '../airport-option.contants';
 import { AirportOptionDas } from '../services/airport-option-das.service';
 import { DomainAirportOptionsActions } from './airport-options-actions';
 /**
@@ -24,6 +26,11 @@ export class AirportOptionsEffects {
       /* Hit the Airports Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Airports Reducers' will take care of the rest */
+      filter(
+        () =>
+          enableSignalRRefresh !== true ||
+          this.dataChangeService.needsReload(storeKey) === true
+      ),
       switchMap(() =>
         this.airportDas
           .getList({
@@ -31,13 +38,14 @@ export class AirportOptionsEffects {
             offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
           .pipe(
-            map(airports =>
-              DomainAirportOptionsActions.loadAllSuccess({
+            map(airports => {
+              this.dataChangeService.markReloaded(storeKey);
+              return DomainAirportOptionsActions.loadAllSuccess({
                 airports: airports?.sort((a, b) =>
                   a.display.localeCompare(b.display)
                 ),
-              })
-            ),
+              });
+            }),
             catchError(err => {
               if (
                 BiaOnlineOfflineService.isModeEnabled !== true ||
@@ -55,6 +63,7 @@ export class AirportOptionsEffects {
   constructor(
     private actions$: Actions,
     private airportDas: AirportOptionDas,
-    private biaMessageService: BiaMessageService
+    private biaMessageService: BiaMessageService,
+    private dataChangeService: BiaDataChangeService
   ) {}
 }

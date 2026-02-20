@@ -11,7 +11,7 @@ import Keycloak from 'keycloak-js';
 import { AppSettings, AuthInfo } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, filter, first, switchMap } from 'rxjs/operators';
+import { catchError, filter, finalize, first, switchMap } from 'rxjs/operators';
 import { AppSettingsDas } from '../app-settings/services/app-settings-das.service';
 import { AppSettingsService } from '../app-settings/services/app-settings.service';
 import { CoreAppSettingsActions } from '../app-settings/store/app-settings-actions';
@@ -19,6 +19,7 @@ import { getAppSettings } from '../app-settings/store/app-settings.state';
 import { NotificationSignalRService } from '../notification/services/notification-signalr.service';
 import { AuthService } from './auth.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
+import { BiaDataChangeService } from './bia-data-change.service';
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +39,7 @@ export class BiaAppInitService implements OnDestroy {
     protected appSettingsDas: AppSettingsDas,
     protected store: Store<BiaAppState>,
     protected notificationSignalRService: NotificationSignalRService,
+    protected dataChangeService: BiaDataChangeService,
     protected appSettingsService: AppSettingsService
   ) {
     this.initKeycloak();
@@ -120,6 +122,7 @@ export class BiaAppInitService implements OnDestroy {
     console.info('Login from app init.');
     return this.authService.login().pipe(
       first(),
+      finalize(() => this.dataChangeService.initialize()),
       catchError(error => this.catchError(error))
     );
   }
@@ -149,5 +152,6 @@ export class BiaAppInitService implements OnDestroy {
     if (BiaAppConstantsService.allEnvironments.enableNotifications === true) {
       this.notificationSignalRService.destroy();
     }
+    this.dataChangeService.destroy();
   }
 }
