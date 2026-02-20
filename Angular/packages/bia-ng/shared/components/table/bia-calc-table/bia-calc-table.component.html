@@ -254,9 +254,9 @@
                     *ngTemplateOutlet="
                       specificOutputTemplate;
                       context: {
-                        rowData: footerRowData,
+                        rowData: rowData,
                         field: col,
-                        data: getCellData(footerRowData, col),
+                        data: getCellData(rowData, col),
                       }
                     "></ng-container>
                 </ng-template>
