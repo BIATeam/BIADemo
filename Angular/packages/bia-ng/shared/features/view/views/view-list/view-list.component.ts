@@ -1,4 +1,4 @@
-﻿import { CommonModule } from '@angular/common';
+﻿
 import {
   Component,
   EventEmitter,
@@ -47,10 +47,9 @@ import { ManageViewsDialogComponent } from '../manage-views-dialog/manage-views-
     TranslateModule,
     FloatLabel,
     ButtonDirective,
-    CommonModule,
     Tooltip,
-    ManageViewsDialogComponent,
-  ],
+    ManageViewsDialogComponent
+],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   readonly currentView = -10000000;
