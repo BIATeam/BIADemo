@@ -1,11 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  BiaDataChangeService,
   BiaMessageService,
   BiaOnlineOfflineService,
 } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { enableSignalRRefresh, storeKey } from '../plane-type-option.constants';
 import { PlaneTypeOptionDas } from '../services/plane-type-option-das.service';
 import { DomainPlaneTypeOptionsActions } from './plane-type-options-actions';
 /**
@@ -24,20 +26,26 @@ export class PlaneTypeOptionsEffects {
       /* Hit the PlaneTypes Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'PlaneTypes Reducers' will take care of the rest */
+      filter(
+        () =>
+          enableSignalRRefresh !== true ||
+          this.dataChangeService.needsReload(storeKey) === true
+      ),
       switchMap(() =>
-        this.planeTypeOptionDas
+        this.airportDas
           .getList({
             endpoint: 'allOptions',
             offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
           .pipe(
-            map(planeTypes =>
-              DomainPlaneTypeOptionsActions.loadAllSuccess({
+            map(planeTypes => {
+              this.dataChangeService.markReloaded(storeKey);
+              return DomainPlaneTypeOptionsActions.loadAllSuccess({
                 planeTypes: planeTypes?.sort((a, b) =>
                   a.display.localeCompare(b.display)
                 ),
-              })
-            ),
+              });
+            }),
             catchError(err => {
               if (
                 BiaOnlineOfflineService.isModeEnabled !== true ||
@@ -54,7 +62,8 @@ export class PlaneTypeOptionsEffects {
 
   constructor(
     private actions$: Actions,
-    private planeTypeOptionDas: PlaneTypeOptionDas,
-    private biaMessageService: BiaMessageService
+    private airportDas: PlaneTypeOptionDas,
+    private biaMessageService: BiaMessageService,
+    private dataChangeService: BiaDataChangeService
   ) {}
 }
