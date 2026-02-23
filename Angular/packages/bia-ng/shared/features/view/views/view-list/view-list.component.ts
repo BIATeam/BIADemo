@@ -1,5 +1,4 @@
-﻿
-import {
+﻿import {
   Component,
   EventEmitter,
   Input,
@@ -48,8 +47,8 @@ import { ManageViewsDialogComponent } from '../manage-views-dialog/manage-views-
     FloatLabel,
     ButtonDirective,
     Tooltip,
-    ManageViewsDialogComponent
-],
+    ManageViewsDialogComponent,
+  ],
 })
 export class ViewListComponent implements OnInit, OnChanges, OnDestroy {
   readonly currentView = -10000000;
