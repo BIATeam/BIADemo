@@ -14,7 +14,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using BIA.Net.Core.Application.Services;
 #endif
     using BIA.Net.Core.Common;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
@@ -22,7 +21,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Fleet;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
 
@@ -123,7 +121,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var createdDto = await this.airportService.AddAsync(dto);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
                 await this.SendEntityChangedAsync();
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
@@ -158,7 +155,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var updatedDto = await this.airportService.UpdateAsync(dto);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
                 await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "update-airport", updatedDto);
                 await this.SendEntityChangedAsync();
 #endif
@@ -200,7 +196,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 await this.airportService.RemoveAsync(id);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
                 await this.SendEntityChangedAsync();
 #endif
                 return this.Ok();
@@ -237,7 +232,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 }
 
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
                 await this.SendEntityChangedAsync();
 #endif
                 return this.Ok();
@@ -271,7 +265,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 await this.airportService.SaveAsync(dtoList);
 #if UseHubForClientInAirport
-                await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
                 await this.SendEntityChangedAsync();
 #endif
                 return this.Ok();
@@ -298,13 +291,20 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Airports{BiaConstants.Csv.Extension}");
         }
 
+#if UseHubForClientInAirport
         /// <summary>
-        /// Notifies clients that airport have changed by sending the 'OnEntityChanged' SignalR event.
+        /// Notifies clients that entity have changed by sending the 'OnEntityChanged' SignalR event.
         /// </summary>
         /// <returns>A task representing the asynchronous operation.</returns>
         private async Task SendEntityChangedAsync()
         {
-            await this.clientForHubService.SendEntityChangedAsync("domain-airport-options");
+            await this.clientForHubService.SendTargetedMessage(string.Empty, "airports", "refresh-airports");
+
+            if (this.HasAssociatedOptionController())
+            {
+                await this.clientForHubService.SendEntityChangedAsync("domain-airport-options");
+            }
         }
+#endif
     }
 }
