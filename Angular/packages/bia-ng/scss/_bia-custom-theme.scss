@@ -106,7 +106,7 @@ bia-ultima-layout {
   --sidebar-width: 17rem;
 }
 
-.layout-container {
+.layout-wrapper {
   &.env-dev {
     --environment-color: #{color-mix(
         in srgb,
@@ -539,16 +539,16 @@ bia-form-layout .p-tabs .p-tabpanel > .bia-form-row {
   padding-bottom: 0.75rem;
 }
 
-.layout-container.layout-horizontal .bia-ultima-menu {
+.layout-wrapper.layout-horizontal .bia-ultima-menu {
   display: flex;
   align-items: center;
 }
 
-.layout-container.layout-horizontal .layout-menu {
+.layout-wrapper.layout-horizontal .layout-menu {
   overflow: auto;
 }
 
-.layout-container.layout-horizontal .layout-menu::-webkit-scrollbar {
+.layout-wrapper.layout-horizontal .layout-menu::-webkit-scrollbar {
   display: none;
 }
 
@@ -557,12 +557,12 @@ bia-form-layout .p-tabs .p-tabpanel > .bia-form-row {
 }
 
 @media screen and (min-width: 992px) {
-  .layout-container.layout-slim-plus
+  .layout-wrapper.layout-slim-plus
     .layout-menu-profile
     > button
     .layout-menu-profile-avatar
     span,
-  .layout-container.layout-slim
+  .layout-wrapper.layout-slim
     .layout-menu-profile
     > button
     .layout-menu-profile-avatar
