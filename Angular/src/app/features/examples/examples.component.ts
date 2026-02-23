@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { LocaleDatePipe } from 'packages/bia-ng/shared/public-api';
 import { ButtonDirective } from 'primeng/button';
