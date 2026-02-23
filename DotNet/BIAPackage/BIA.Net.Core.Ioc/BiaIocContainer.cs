@@ -95,18 +95,18 @@ namespace BIA.Net.Core.Ioc
         /// The included/excluded service names are taken into account during the filtering process.
         /// </remarks>
         public static void RegisterServicesFromAssembly(
-            IServiceCollection collection,
-            string assemblyName,
-            string interfaceAssemblyName = null,
-            ServiceLifetime serviceLifetime = ServiceLifetime.Scoped,
-            IEnumerable<string> excludedServiceNames = null,
-            IEnumerable<string> includedServiceNames = null)
+           IServiceCollection collection,
+           string assemblyName,
+           string interfaceAssemblyName = null,
+           ServiceLifetime serviceLifetime = ServiceLifetime.Scoped,
+           IEnumerable<string> excludedServiceNames = null,
+           IEnumerable<string> includedServiceNames = null)
         {
             Assembly classAssembly = Assembly.Load(assemblyName);
             Assembly interfaceAssembly = !string.IsNullOrWhiteSpace(interfaceAssemblyName) ? Assembly.Load(interfaceAssemblyName) : classAssembly;
 
-            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsClass && !type.IsAbstract);
-            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsInterface);
+            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
+            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
 
             if (excludedServiceNames != null)
             {
@@ -123,7 +123,21 @@ namespace BIA.Net.Core.Ioc
             var classesImplementationsByInterface = new Dictionary<Type, List<Type>>();
             foreach (var interfaceType in interfaceTypes)
             {
-                classesImplementationsByInterface[interfaceType] = [.. classTypes.Where(c => c.IsAssignableTo(interfaceType))];
+                if (interfaceType.IsGenericTypeDefinition)
+                {
+                    classesImplementationsByInterface[interfaceType] = classTypes.Where(c =>
+                        c.IsGenericTypeDefinition &&
+                        c.GetGenericArguments().Length == interfaceType.GetGenericArguments().Length &&
+                        c.GetInterfaces()
+                            .Where(i => i.IsGenericType)
+                            .Any(i => i.GetGenericTypeDefinition() == interfaceType)).ToList();
+                }
+                else
+                {
+                    classesImplementationsByInterface[interfaceType] = classTypes.Where(c =>
+                        !c.IsGenericTypeDefinition &&
+                        c.IsAssignableTo(interfaceType)).ToList();
+                }
             }
 
             foreach (var kvp in classesImplementationsByInterface)
