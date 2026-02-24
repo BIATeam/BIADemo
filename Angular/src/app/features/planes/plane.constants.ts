@@ -21,7 +21,7 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   displayHistorical: true,
   // Begin BIAToolKit Generation Ignore
   isCloneable: true,
-  featureNameSingular: 'plane',
+  featureNameSingular: 'app.plane',
   // End BIAToolKit Generation Ignore
   useCalcMode: true,
   useSignalR: false,

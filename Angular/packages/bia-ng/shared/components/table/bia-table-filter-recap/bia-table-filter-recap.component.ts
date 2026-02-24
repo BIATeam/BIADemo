@@ -1,5 +1,4 @@
-﻿import { CommonModule } from '@angular/common';
-import {
+﻿import {
   ChangeDetectionStrategy,
   Component,
   Input,
@@ -18,13 +17,7 @@ import { FormatValuePipe } from '../../../pipes/format-value.pipe';
   styleUrls: ['./bia-table-filter-recap.component.scss'],
   changeDetection: ChangeDetectionStrategy.Default,
   encapsulation: ViewEncapsulation.None,
-  imports: [
-    TableModule,
-    FormsModule,
-    TranslateModule,
-    FormatValuePipe,
-    CommonModule,
-  ],
+  imports: [TableModule, FormsModule, TranslateModule, FormatValuePipe],
 })
 export class BiaTableFilterRecapComponent<TDto> {
   @Input() filterArray: FilterMetadata[] | null;

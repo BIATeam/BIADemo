@@ -26,6 +26,7 @@ export class BiaClientTimeZoneInterceptor implements HttpInterceptor {
 
     const cloned = req.clone({
       setHeaders: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
         'X-Client-TimeZone': this.timeZone,
       },
     });

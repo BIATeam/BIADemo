@@ -3,6 +3,7 @@
   LOCALE_ID,
   enableProdMode,
   importProvidersFrom,
+  provideZoneChangeDetection,
 } from '@angular/core';
 
 import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
@@ -24,7 +25,6 @@ import {
   provideKeycloakAngular,
 } from 'packages/bia-ng/core/public-api';
 import { ViewsEffects, ViewsStore } from 'packages/bia-ng/shared/public-api';
-import { LicenseManager } from 'primeng/api';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { buildSpecificModules } from './app/build-specifics/bia-build-specifics';
@@ -43,12 +43,13 @@ if (environment.production) {
 }
 
 async function bootstrap() {
-  await verifyPrimeNgLicense();
+  //await verifyPrimeNgLicense();
   const keycloakConfig = await loadKeycloakConfig();
 
   try {
     await bootstrapApplication(AppComponent, {
       providers: [
+        provideZoneChangeDetection(),
         importProvidersFrom(
           LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
             serverProvider: {
@@ -100,28 +101,28 @@ async function bootstrap() {
   }
 }
 
-async function verifyPrimeNgLicense() {
-  try {
-    const response = await fetch(
-      'assets/bia/primeng/license/primeng-license.json'
-    );
-    if (!response.ok) {
-      console.warn('PrimeNG license file not found.');
-      return;
-    }
+// async function verifyPrimeNgLicense() {
+//   try {
+//     const response = await fetch(
+//       'assets/bia/primeng/license/primeng-license.json'
+//     );
+//     if (!response.ok) {
+//       console.warn('PrimeNG license file not found.');
+//       return;
+//     }
 
-    const licensePayload: { licenseKey?: string; passKey?: string } =
-      await response.json();
-    if (!licensePayload.licenseKey || !licensePayload.passKey) {
-      console.warn('PrimeNG license file is missing required fields.');
-      return;
-    }
+//     const licensePayload: { licenseKey?: string; passKey?: string } =
+//       await response.json();
+//     if (!licensePayload.licenseKey || !licensePayload.passKey) {
+//       console.warn('PrimeNG license file is missing required fields.');
+//       return;
+//     }
 
-    LicenseManager.verify(licensePayload.licenseKey, licensePayload.passKey);
-  } catch (error) {
-    console.error('Failed to verify PrimeNG license.', error);
-  }
-}
+//     LicenseManager.verify(licensePayload.licenseKey, licensePayload.passKey);
+//   } catch (error) {
+//     console.error('Failed to verify PrimeNG license.', error);
+//   }
+// }
 
 // Start the bootstrap process
 bootstrap();

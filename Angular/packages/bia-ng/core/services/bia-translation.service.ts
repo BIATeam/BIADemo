@@ -1,11 +1,15 @@
 ﻿import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
+import {
+  mergeDeep,
+  TranslateService,
+  TranslateStore,
+} from '@ngx-translate/core';
 import { AppSettings } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { PrimeNG } from 'primeng/config';
 import { DatePicker } from 'primeng/datepicker';
-import { BehaviorSubject, Observable, combineLatest, forkJoin, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { distinctUntilChanged, map, skip, tap } from 'rxjs/operators';
 import { getAppSettings } from '../app-settings/store/app-settings.state';
 import { AuthService } from './auth.service';
@@ -91,6 +95,7 @@ export class BiaTranslationService {
 
   constructor(
     protected translate: TranslateService,
+    protected translateStore: TranslateStore,
     @Inject(LOCALE_ID) localeId: string,
     protected store: Store<BiaAppState>,
     protected primeNgConfig: PrimeNG,
@@ -131,11 +136,12 @@ export class BiaTranslationService {
       throw new Error('invalid translation file');
     }
     const lang = data[TRANSLATION_LANG_KEY];
-    this.biaLocales[lang] = this.biaLocales[lang] ?? {
-      ...this.biaLocales[lang],
-      ...data,
-    };
-    this.translate.setTranslation(lang, data, true);
+    const currentTranslation = this.translateStore.getTranslations(lang);
+    this.biaLocales[lang] = mergeDeep(
+      currentTranslation as Readonly<unknown>,
+      data
+    );
+    this.translate.setTranslation(lang, this.biaLocales[lang], true);
   }
 
   // Because we add some translations (registerLocaleData), ngx-translate doesn't modules translations
@@ -159,9 +165,14 @@ export class BiaTranslationService {
         lang$ = this.translate.use(lang);
       }
       lang$.subscribe(() => {
+        const currentTranslations = this.translateStore.getTranslations(lang);
         const biaLocale = this.biaLocales[lang];
         if (biaLocale) {
-          this.translate.setTranslation(lang, biaLocale, true);
+          this.biaLocales[lang] = mergeDeep(
+            biaLocale,
+            currentTranslations as Readonly<unknown>
+          );
+          this.translate.setTranslation(lang, this.biaLocales[lang], true);
         }
         this.translate.use(lang);
         this.translate
