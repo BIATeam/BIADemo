@@ -224,7 +224,9 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
     ),
     Object.assign(new BiaFieldConfig('planeType', 'plane.planeType'), {
       type: PropType.OneToMany,
+      // Begin BIAToolKit Generation Ignore
       allowSelectFilter: true,
+      // End BIAToolKit Generation Ignore
     }),
     Object.assign(
       new BiaFieldConfig('similarPlaneTypes', 'plane.similarPlaneTypes'),
