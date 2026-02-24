@@ -1,9 +1,9 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, HostBinding } from '@angular/core';
+import { CoreTeamsStore } from '@bia-team/bia-ng/core';
+import { Team } from '@bia-team/bia-ng/models';
+import { LocaleDatePipe } from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
-import { CoreTeamsStore } from 'packages/bia-ng/core/public-api';
-import { Team } from 'packages/bia-ng/models/public-api';
-import { LocaleDatePipe } from 'packages/bia-ng/shared/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { Observable } from 'rxjs';

@@ -1,13 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import {
   DomainRoleOptionsActions,
   DomainRoleOptionsStore,
   DomainUserOptionsActions,
   DomainUserOptionsStore,
-} from 'packages/bia-ng/domains/public-api';
-import { OptionDto } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
+} from '@bia-team/bia-ng/domains';
+import { OptionDto } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Store } from '@ngrx/store';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DictOptionDto } from '../../../components/table/bia-table/dict-option-dto';

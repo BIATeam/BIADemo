@@ -13,9 +13,9 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { AuthService, BiaOptionService } from '@bia-team/bia-ng/core';
+import { OptionDto } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';
-import { AuthService, BiaOptionService } from 'packages/bia-ng/core/public-api';
-import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';
 import { DatePicker } from 'primeng/datepicker';
