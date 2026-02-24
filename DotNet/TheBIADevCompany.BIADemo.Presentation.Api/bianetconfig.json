@@ -53,9 +53,6 @@
       "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3",
     },
     "Roles": [],
-    "UserProfile": {
-      "url": "http://localhost/DMIndex/UserProfile/GetUserProfile"
-    },
     "Cultures": [
       {
         "Label": "English",
