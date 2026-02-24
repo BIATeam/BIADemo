@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Threading.Tasks;
 #endif
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
@@ -21,7 +22,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 #if BIA_FRONT_FEATURE
-    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Service;
@@ -35,8 +35,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
-
-    // End BIADemo
 
     // End BIADemo
 
