@@ -1,5 +1,11 @@
 {
   "@@lang": "en",
+  "app": {
+    "members": "Members",
+    "teams": "Teams",
+    "users": "Users",
+    "notifications": "Notifications"
+  },
   "bia": {
     "action": "Action",
     "actions": "Actions",
@@ -223,6 +229,64 @@
     "listOf": "List of announcements",
     "read": "Announcement details",
     "edit": "Edit announcement"
+  },
+  "member": {
+    "add": "Add member",
+    "import": "Import members",
+    "isActive": "Active",
+    "listOf": "List of members",
+    "manage": "Manage member",
+    "roles": "Roles",
+    "user": "User",
+    "teams": "Teams"
+  },
+  "msg": {
+    "hideFilters": "Hide filters",
+    "showFilters": "Show filters",
+    "welcome": "BIA is a component library, built with the Angular framework"
+  },
+  "translation": {
+    "defaultLanguage": "Default (English)"
+  },
+  "user": {
+    "add": "Add user",
+    "edit": "Edit user",
+    "firstName": "First Name",
+    "import": "Import users",
+    "lastName": "Last Name",
+    "listOf": "List of users",
+    "login": "Login",
+    "cannotAddMember": "Cannot add member ${login} on ldap repository."
+  },
+  "notification": {
+    "action": "Action",
+    "add": "Add notification",
+    "listOf": "Notifications",
+    "title": "Title",
+    "detail": "Notification detail",
+    "description": "Description",
+    "createdDate": "Date",
+    "type": {
+      "title": "Type",
+      "task": "Task",
+      "info": "Information",
+      "success": "Success",
+      "warn": "Warning",
+      "error": "Error"
+    },
+    "read": "Read",
+    "createdBy": "Created by",
+    "notifiedPermissions": "Notified permissions",
+    "notifiedTeams": "Notified teams",
+    "notifiedUsers": "Notified users",
+    "jData": "Data in JSON",
+    "setUnread": "Mark as unread",
+    "success": {
+      "deprecated:": "transaltion will be done in database in next version",
+      "title": "Notification sent successfully",
+      "description": "Description to be customised in i18n traductions for each feature"
+    },
+    "edit": "Edit notification"
   },
   "primeng": {
     "accept": "Yes",
