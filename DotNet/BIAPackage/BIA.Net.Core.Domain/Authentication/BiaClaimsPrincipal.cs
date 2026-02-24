@@ -21,16 +21,6 @@ namespace BIA.Net.Core.Domain.Authentication
     public class BiaClaimsPrincipal : ClaimsPrincipal
     {
         /// <summary>
-        /// The role identifier.
-        /// </summary>
-        public const string RoleIds = "urn:bia:claims:role_ids";
-
-        /// <summary>
-        /// Claim type for compact permission IDs.
-        /// </summary>
-        public const string PermissionIds = "urn:bia:claims:permission_ids";
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="BiaClaimsPrincipal"/> class.
         /// </summary>
         public BiaClaimsPrincipal()
@@ -128,7 +118,7 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <returns>The user roles.</returns>
         public virtual IEnumerable<int> GetRoleIds()
         {
-            return this.GetClaimValueJsonAs<IEnumerable<int>>(RoleIds);
+            return this.GetClaimValueJsonAs<IEnumerable<int>>(BiaConstants.Claims.RoleIds);
         }
 
         /// <summary>
@@ -170,7 +160,7 @@ namespace BIA.Net.Core.Domain.Authentication
         /// <returns>The user roles.</returns>
         public virtual IEnumerable<int> GetPermissionIds()
         {
-            return this.GetClaimValueJsonAs<IEnumerable<int>>(PermissionIds);
+            return this.GetClaimValueJsonAs<IEnumerable<int>>(BiaConstants.Claims.PermissionIds);
         }
     }
 }
