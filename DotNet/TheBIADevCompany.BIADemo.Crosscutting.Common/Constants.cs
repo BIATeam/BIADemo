@@ -35,7 +35,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// <summary>
             /// The framework version.
             /// </summary>
-            public const string FrameworkVersion = "6.0.3";
+            public const string FrameworkVersion = "6.1.0";
 
             /// <summary>
             /// The environment.
