@@ -1,4 +1,4 @@
-﻿import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   BiaDataChangeService,
@@ -7,7 +7,7 @@ import {
 } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { enableSignalRRefresh, storeKey } from '../airport-option.contants';
+import { enableSignalrRefresh, storeKey } from '../airport-option.contants';
 import { AirportOptionDas } from '../services/airport-option-das.service';
 import { DomainAirportOptionsActions } from './airport-options-actions';
 /**
@@ -28,11 +28,11 @@ export class AirportOptionsEffects {
       /* 'Airports Reducers' will take care of the rest */
       filter(
         () =>
-          enableSignalRRefresh !== true ||
+          enableSignalrRefresh !== true ||
           this.dataChangeService.needsReload(storeKey) === true
       ),
       switchMap(() =>
-        this.airportDas
+        this.airportOptionDas
           .getList({
             endpoint: 'allOptions',
             offlineMode: BiaOnlineOfflineService.isModeEnabled,
@@ -62,7 +62,7 @@ export class AirportOptionsEffects {
 
   constructor(
     private actions$: Actions,
-    private airportDas: AirportOptionDas,
+    private airportOptionDas: AirportOptionDas,
     private biaMessageService: BiaMessageService,
     private dataChangeService: BiaDataChangeService
   ) {}
