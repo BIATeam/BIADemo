@@ -138,7 +138,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         public OptionDto PlaneType { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of similar types.
+        /// Gets or sets the list of similar plane types.
         /// </summary>
         [BiaDtoField(Required = false, ItemType = "PlaneType")]
         public ICollection<OptionDto> SimilarPlaneTypes { get; set; }

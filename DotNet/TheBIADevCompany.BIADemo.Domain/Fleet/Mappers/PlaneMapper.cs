@@ -128,21 +128,21 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             // Map relationship *-* : SimilarPlaneTypes
             if (dto.SimilarPlaneTypes != null && dto.SimilarPlaneTypes.Count != 0)
             {
-                foreach (var similarTypeDto in dto.SimilarPlaneTypes.Where(x => x.DtoState == DtoState.Deleted))
+                foreach (var similarPlaneTypeDto in dto.SimilarPlaneTypes.Where(x => x.DtoState == DtoState.Deleted))
                 {
-                    var similarType = entity.SimilarPlaneTypes.FirstOrDefault(x => x.Id == similarTypeDto.Id);
-                    if (similarType != null)
+                    var similarPlaneType = entity.SimilarPlaneTypes.FirstOrDefault(x => x.Id == similarPlaneTypeDto.Id);
+                    if (similarPlaneType != null)
                     {
-                        entity.SimilarPlaneTypes.Remove(similarType);
+                        entity.SimilarPlaneTypes.Remove(similarPlaneType);
                     }
                 }
 
                 entity.SimilarPlanePlaneTypes = entity.SimilarPlanePlaneTypes ?? new List<PlanePlaneType>();
-                foreach (var similarTypeDto in dto.SimilarPlaneTypes.Where(x => x.DtoState == DtoState.Added))
+                foreach (var similarPlaneTypeDto in dto.SimilarPlaneTypes.Where(x => x.DtoState == DtoState.Added))
                 {
                     entity.SimilarPlanePlaneTypes.Add(new PlanePlaneType
                     {
-                        PlaneTypeId = similarTypeDto.Id,
+                        PlaneTypeId = similarPlaneTypeDto.Id,
                         PlaneId = dto.Id,
                     });
                 }
@@ -384,7 +384,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             public const string PlaneType = "planeType";
 
             /// <summary>
-            /// Header name for similar types.
+            /// Header name for similar plane types.
             /// </summary>
             public const string SimilarPlaneTypes = "similarPlaneTypes";
 
