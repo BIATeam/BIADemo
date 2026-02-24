@@ -2,7 +2,7 @@
 // <copyright file="PlanesTypesController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
-#define UseHubForClientInPlaneType
+// #define UseHubForClientInPlaneType
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 {
@@ -124,7 +124,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 var createdDto = await this.planeTypeService.AddAsync(dto);
 #if UseHubForClientInPlaneType
                 await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh -planetypes", string.Empty);
-                await this.SendEntityChangedAsync();
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -159,7 +158,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 var updatedDto = await this.planeTypeService.UpdateAsync(dto);
 #if UseHubForClientInPlaneType
                 await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh-planetypes", string.Empty);
-                await this.SendEntityChangedAsync();
 #endif
                 return this.Ok(updatedDto);
             }
@@ -236,7 +234,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 
 #if UseHubForClientInPlaneType
                 await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh-planetypes", string.Empty);
-                await this.SendEntityChangedAsync();
 #endif
                 return this.Ok();
             }
@@ -270,7 +267,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 await this.planeTypeService.SaveAsync(dtoList);
 #if UseHubForClientInPlaneType
                 await this.clientForHubService.SendMessage(new TargetedFeatureDto { FeatureName = "planetypes" }, "refresh-planetypes", string.Empty);
-                await this.SendEntityChangedAsync();
 #endif
                 return this.Ok();
             }
@@ -294,11 +290,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         {
             byte[] buffer = await this.planeTypeService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Planes{BiaConstants.Csv.Extension}");
-        }
-
-        private async Task SendEntityChangedAsync()
-        {
-            await this.clientForHubService.SendEntityChangedAsync("domain-plane-type-options");
         }
     }
 }
