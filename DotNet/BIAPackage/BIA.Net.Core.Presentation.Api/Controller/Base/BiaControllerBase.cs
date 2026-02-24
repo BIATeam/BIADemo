@@ -7,6 +7,8 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Base
     using System.Collections.Generic;
     using System.Linq;
     using System.Security.Claims;
+    using System.Threading.Tasks;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -22,7 +24,20 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Base
     [Authorize(AuthenticationSchemes = AuthenticationConfiguration.JwtBearerDefault)]
     public abstract class BiaControllerBase : ControllerBase
     {
+        /// <summary>
+        /// The option controller existence cache.
+        /// </summary>
         private static readonly Dictionary<string, bool> OptionControllerExistenceCache = new Dictionary<string, bool>();
+
+        /// <summary>
+        /// Gets or sets the name of the entity.
+        /// </summary>
+        protected string EntityName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the entity name plural.
+        /// </summary>
+        protected string EntityNamePlural { get; set; }
 
         /// <summary>
         /// Check autorize based on teamTypeId.
@@ -65,6 +80,44 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Base
             OptionControllerExistenceCache.Add(cacheKey, found);
 
             return found;
+        }
+
+        /// <summary>
+        /// Notifies clients that an entity has changed.
+        /// </summary>
+        /// <param name="clientForHubService">The client for hub service.</param>
+        /// <param name="parentKey">The parent key (optional).</param>
+        /// <param name="parentKeys">The parent keys (optional).</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        protected async Task SendEntityChangedAsync(
+            IClientForHubService clientForHubService,
+            string parentKey = null,
+            List<string> parentKeys = null)
+        {
+            if (clientForHubService == null ||
+                string.IsNullOrWhiteSpace(this.EntityName) ||
+                string.IsNullOrWhiteSpace(this.EntityNamePlural))
+            {
+                return;
+            }
+
+            string actionRefresh = "refresh-" + this.EntityNamePlural;
+            if (!string.IsNullOrWhiteSpace(parentKey))
+            {
+                await clientForHubService.SendTargetedMessage(parentKey, this.EntityNamePlural, actionRefresh);
+            }
+            else if (parentKeys?.Any() == true)
+            {
+                foreach (string key in parentKeys.Where(x => !string.IsNullOrWhiteSpace(x)))
+                {
+                    await clientForHubService.SendTargetedMessage(key, this.EntityNamePlural, actionRefresh);
+                }
+            }
+
+            if (this.HasAssociatedOptionController())
+            {
+                await clientForHubService.SendEntityChangedAsync($"domain-{this.EntityName}-options");
+            }
         }
 
         /// <summary>
