@@ -90,4 +90,8 @@
   @if (layoutService.state.staticMenuMobileActive) {
     <div class="layout-mask"></div>
   }
+
+  @if (showFps) {
+    <div class="layout-fps-indicator">FPS: {{ fps() }}</div>
+  }
 </div>

@@ -9,6 +9,8 @@ namespace BIA.Net.Core.Application.User
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Permission;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Helpers;
@@ -27,7 +29,7 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
     /// <typeparam name="TAdditionalInfoDto">The type of additional info dto.</typeparam>
     /// <typeparam name="TUserDataDto">The type of user data dto.</typeparam>
-    public class BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto> : IBaseAuthAppService
+    public abstract class BaseAuthAppService<TUserFromDirectoryDto, TUserFromDirectory, TAdditionalInfoDto, TUserDataDto> : IBaseAuthAppService
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
         where TAdditionalInfoDto : BaseAdditionalInfoDto, new()
@@ -48,7 +50,8 @@ namespace BIA.Net.Core.Application.User
         /// <param name="biaNetconfiguration">The bia netconfiguration.</param>
         /// <param name="userDirectoryHelper">The user directory helper.</param>
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
-        public BaseAuthAppService(
+        /// <param name="permissionService">The permission service.</param>
+        protected BaseAuthAppService(
             IJwtFactory jwtFactory,
             IPrincipal principal,
             IUserPermissionDomainService userPermissionDomainService,
@@ -56,7 +59,8 @@ namespace BIA.Net.Core.Application.User
             IConfiguration configuration,
             IOptions<BiaNetSection> biaNetconfiguration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
-            ILdapRepositoryHelper ldapRepositoryHelper)
+            ILdapRepositoryHelper ldapRepositoryHelper,
+            IPermissionService permissionService)
         {
             this.JwtFactory = jwtFactory;
             this.ClaimsPrincipal = principal as BiaClaimsPrincipal;
@@ -65,6 +69,7 @@ namespace BIA.Net.Core.Application.User
             this.UserDirectoryHelper = userDirectoryHelper;
             this.LdapDomains = biaNetconfiguration.Value.Authentication?.LdapDomains;
             this.LdapRepositoryHelper = ldapRepositoryHelper;
+            this.PermissionService = permissionService;
             this.Configuration = configuration;
         }
 
@@ -104,6 +109,11 @@ namespace BIA.Net.Core.Application.User
         protected ILdapRepositoryHelper LdapRepositoryHelper { get; }
 
         /// <summary>
+        /// The permission service.
+        /// </summary>
+        protected IPermissionService PermissionService { get; }
+
+        /// <summary>
         /// The configuration.
         /// </summary>
         protected IConfiguration Configuration { get; }
@@ -128,15 +138,12 @@ namespace BIA.Net.Core.Application.User
             // Check User Permissions
             this.CheckUserPermissions(userPermissions);
 
-            // Sort User Permissions
-            userPermissions.Sort();
-
             // Create Token Dto
             TokenDto<TUserDataDto> tokenDto = new TokenDto<TUserDataDto>()
             {
                 IdentityKey = login,
-                RoleIds = new List<int>(),
-                Permissions = userPermissions,
+                RoleIds = [],
+                PermissionIds = this.GetPermissionIds(userPermissions),
                 UserData = this.CreateUserData(null),
             };
 
@@ -282,6 +289,16 @@ namespace BIA.Net.Core.Application.User
         protected virtual TAdditionalInfoDto CreateAdditionalInfo()
         {
             return new TAdditionalInfoDto();
+        }
+
+        /// <summary>
+        /// Get permissions identifiers from user's permission names.
+        /// </summary>
+        /// <param name="userPermissions">The user's permission names.</param>
+        /// <returns>List of integers.</returns>
+        protected virtual IEnumerable<int> GetPermissionIds(List<string> userPermissions)
+        {
+            return this.PermissionService.ConvertToIds(userPermissions).Order();
         }
     }
 }

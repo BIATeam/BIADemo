@@ -12,6 +12,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
     using BIA.Net.Core.Application.User;
 #endif
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
@@ -34,10 +35,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
 #endif
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
@@ -53,6 +55,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #endif
     using TheBIADevCompany.BIADemo.Domain.User.Models;
 #if BIA_USE_DATABASE
+    using BIA.Net.Core.Infrastructure.Data.Helpers;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
@@ -111,6 +114,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
+            // Permissions
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
+            collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
+            collection.AddSingleton<IPermissionService, PermissionService>();
 #if BIA_FRONT_FEATURE
             collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
@@ -248,6 +255,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             collection.AddSingleton<IAuditFeature, AuditFeature>();
+            collection.AddScoped<IBiaHybridCache, BiaHybridCache>();
 
             // IT'S NOT NECESSARY TO DECLARE QueryCustomizer/Repository (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             BiaIocContainer.RegisterServicesFromAssembly(

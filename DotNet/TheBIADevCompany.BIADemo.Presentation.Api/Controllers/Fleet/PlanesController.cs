@@ -21,6 +21,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
 
     /// <summary>
@@ -72,7 +73,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.ListAccess)]
+        [Authorize(Roles = nameof(PermissionId.Plane_List_Access))]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.planeService.GetRangeAsync(filters);
@@ -90,7 +91,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Read)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -119,7 +120,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Create)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Create))]
         public async Task<IActionResult> Add([FromBody] PlaneDto dto)
         {
             try
@@ -153,7 +154,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Update)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Update))]
         public async Task<IActionResult> Update(int id, [FromBody] PlaneDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -197,7 +198,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Delete)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Delete))]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -229,7 +230,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Delete)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Delete))]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -266,7 +267,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Save)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Save))]
         public async Task<IActionResult> Save(IEnumerable<PlaneDto> dtos)
         {
             var dtoList = dtos.ToList();
@@ -306,7 +307,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        [Authorize(Roles = Rights.Planes.ListAccess)]
+        [Authorize(Roles = nameof(PermissionId.Plane_List_Access))]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.planeService.GetCsvAsync(filters);
@@ -323,7 +324,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Fix)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Fix))]
         public virtual async Task<IActionResult> Fix(int id, [FromBody] bool isFixed)
         {
             try
@@ -346,7 +347,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Planes.Read)]
+        [Authorize(Roles = nameof(PermissionId.Plane_Read))]
         public virtual async Task<IActionResult> GetHistorical(int id)
         {
             try

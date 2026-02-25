@@ -38,8 +38,8 @@ namespace TheBIADevCompany.BIADemo.Domain.Bia.Base.Mappers
         public BaseTeamMapper(IPrincipal principal)
             : base(principal)
         {
-            Debug.Assert(typeof(IEntityTeam).IsAssignableFrom(typeof(TTeam)), typeof(TTeam) + " should imùplement IEntityTeam");
-            Debug.Assert(typeof(IDtoTeam).IsAssignableFrom(typeof(TTeamDto)), typeof(TTeamDto) + " should imùplement IDtoTeam");
+            Debug.Assert(typeof(IEntityTeam).IsAssignableFrom(typeof(TTeam)), typeof(TTeam) + " should implement IEntityTeam");
+            Debug.Assert(typeof(IDtoTeam).IsAssignableFrom(typeof(TTeamDto)), typeof(TTeamDto) + " should implement IDtoTeam");
 
             this.UserRoleIds = (principal as BiaClaimsPrincipal).GetRoleIds();
             this.AdminRoleIds = TeamConfig.Config.Where(tc => tc.TeamTypeId == this.TeamType).Select(tc => tc.AdminRoleIds).FirstOrDefault() ?? [];

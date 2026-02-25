@@ -5,7 +5,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
 {
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Notification;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
@@ -40,7 +39,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = BiaRights.NotificationTypes.Options)]
+        [Authorize(Roles = nameof(BiaPermissionId.NotificationType_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.notificationTypeService.GetAllOptionsAsync();

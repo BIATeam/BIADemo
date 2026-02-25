@@ -16,6 +16,7 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
     /// <summary>
     /// Store object in application instance or distributed with the IDistributedCache service that you find with same key.
     /// </summary>
+    [Obsolete("Use instead BIA.Net.Core.Infrastructure.Data.Helpers.BiaHybridCache")]
     public class BiaHybridCache : IBiaHybridCache
     {
         /// <summary>

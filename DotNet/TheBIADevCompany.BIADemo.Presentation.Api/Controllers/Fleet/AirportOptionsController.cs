@@ -1,4 +1,4 @@
-// BIADemo only
+﻿// BIADemo only
 // <copyright file="AirportOptionsController.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The API controller used to manage Airport options.
@@ -42,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Airports.Options)]
+        [Authorize(Roles = nameof(PermissionId.Airport_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.airportOptionService.GetAllOptionsAsync();

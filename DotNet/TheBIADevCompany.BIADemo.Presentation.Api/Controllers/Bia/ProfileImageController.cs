@@ -6,8 +6,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
     using System.Drawing;
     using System.IO;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -46,7 +46,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// <returns>Bytes of the image.</returns>
         [HttpGet("get")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [Authorize(Roles = BiaRights.ProfileImage.Get)]
+        [Authorize(Roles = nameof(BiaPermissionId.ProfileImage_Get))]
         public async Task<IActionResult> Get()
         {
             var image = await this.profileImageService.GetAsync(this.configuration.Value.ProfileConfiguration?.ProfileImageUrlOrPath);

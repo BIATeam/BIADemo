@@ -9,7 +9,7 @@ namespace BIA.Net.Core.Application.View
     using System.Linq;
     using System.Security.Principal;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Common;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.User;
@@ -58,7 +58,7 @@ namespace BIA.Net.Core.Application.View
             int currentUserId = this.principal.GetUserId();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
 
-            if (currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true)
+            if (currentUserPermissions?.Any(x => x == nameof(BiaPermissionId.Team_Access_All)) == true)
             {
                 return await this.Repository.GetResultAsync(
                     ViewMapper.EntityToDto(currentUserId),
@@ -89,7 +89,7 @@ namespace BIA.Net.Core.Application.View
             int currentUserId = this.principal.GetUserId();
             IEnumerable<string> currentUserPermissions = this.principal.GetUserPermissions();
 
-            if (currentUserPermissions?.Any(x => x == BiaRights.Teams.AccessAll) == true)
+            if (currentUserPermissions?.Any(x => x == nameof(BiaPermissionId.Team_Access_All)) == true)
             {
                 return await this.Repository.GetAllResultAsync(
                     ViewMapper.EntityToDto(currentUserId),

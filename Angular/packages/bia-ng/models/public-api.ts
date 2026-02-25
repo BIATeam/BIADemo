@@ -23,6 +23,7 @@ export * from './layout/public-api';
 export * from './ldap-domain';
 export * from './option-dto';
 export * from './paging-filter-format';
+export * from './permission-info';
 export * from './prime-locale';
 export * from './role';
 export * from './target-feature';

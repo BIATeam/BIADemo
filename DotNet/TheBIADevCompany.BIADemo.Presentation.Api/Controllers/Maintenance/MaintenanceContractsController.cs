@@ -22,6 +22,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Maintenance;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Maintenance;
 
     /// <summary>
@@ -84,7 +85,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.MaintenanceContracts.ListAccess)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_List_Access))]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.maintenanceContractService.GetRangeAsync(filters);
@@ -102,7 +103,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.MaintenanceContracts.Read)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -131,7 +132,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.MaintenanceContracts.Create)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_Create))]
         public async Task<IActionResult> Add([FromBody] MaintenanceContractDto dto)
         {
             try
@@ -168,7 +169,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.MaintenanceContracts.Update)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_Update))]
         public async Task<IActionResult> Update(int id, [FromBody] MaintenanceContractDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -213,7 +214,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.MaintenanceContracts.Delete)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_Delete))]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -245,7 +246,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.MaintenanceContracts.Delete)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_Delete))]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -280,7 +281,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.MaintenanceContracts.Save)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_Save))]
         public async Task<IActionResult> Save(IEnumerable<MaintenanceContractDto> dtos)
         {
             var dtoList = dtos.ToList();
@@ -294,9 +295,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
                 await this.maintenanceContractService.SaveSafeAsync(
                    dtos: dtoList,
                    principal: this.biaClaimsPrincipalService.GetBiaClaimsPrincipal(),
-                   rightAdd: Rights.MaintenanceContracts.Create,
-                   rightUpdate: Rights.MaintenanceContracts.Update,
-                   rightDelete: Rights.MaintenanceContracts.Delete);
+                   rightAdd: nameof(PermissionId.MaintenanceContract_Create),
+                   rightUpdate: nameof(PermissionId.MaintenanceContract_Update),
+                   rightDelete: nameof(PermissionId.MaintenanceContract_Delete));
 #if UseHubForClientInMaintenanceContract
 #endif
                 return this.Ok();
@@ -325,7 +326,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        [Authorize(Roles = Rights.MaintenanceContracts.ListAccess)]
+        [Authorize(Roles = nameof(PermissionId.MaintenanceContract_List_Access))]
         public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
         {
             byte[] buffer = await this.maintenanceContractService.GetCsvAsync(filters);

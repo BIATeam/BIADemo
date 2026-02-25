@@ -42,16 +42,6 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
-        path: 'view',
-        data: {
-          featureConfiguration: flightCRUDConfiguration,
-          featureServiceType: FlightService,
-          leftWidth: 60,
-        },
-        loadChildren: () =>
-          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
-      },
-      {
         path: 'import',
         data: {
           breadcrumb: 'flight.import',
@@ -67,6 +57,16 @@ export const ROUTES: Routes = [
         },
         component: FlightImportComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureConfiguration: flightCRUDConfiguration,
+          featureServiceType: FlightService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

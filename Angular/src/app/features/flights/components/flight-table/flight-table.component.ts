@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService, BiaMessageService } from '@bia-team/bia-ng/core';
 import {
+  BiaCalcTableCellComponent,
   BiaFrozenColumnDirective,
   BiaTableFilterComponent,
   BiaTableFooterControllerComponent,
@@ -45,6 +46,7 @@ import { Flight } from '../../model/flight';
     BiaTableOutputComponent,
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class FlightTableComponent extends CrudItemTableComponent<Flight> {

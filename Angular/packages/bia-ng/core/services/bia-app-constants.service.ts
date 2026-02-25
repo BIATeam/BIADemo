@@ -13,6 +13,9 @@ export class BiaAppConstantsService {
   public static teamTypeRightPrefix: { key: number; value: string }[] = [];
   public static defaultTranslations: number[] = [];
   public static defaultPopupMinWidth: string = '60vw';
+  public static showFps: boolean = false;
+  public static loginParamSource: string | undefined;
+  public static announcementDisplayDurationMs: number = 10000;
 
   public static storageAppSettingsKey = () => {
     return `${BiaAppConstantsService.allEnvironments.companyName}.${BiaAppConstantsService.allEnvironments.appTitle}.AppSettings`;
@@ -28,7 +31,10 @@ export class BiaAppConstantsService {
     defaultPageSize: number,
     teamTypeRightPrefix: { key: number; value: string }[],
     defaultTranslations: number[],
-    defaultPopupMinWidth: string
+    defaultPopupMinWidth: string,
+    showFps: boolean,
+    loginParamSource: string | undefined,
+    announcementDisplayDurationMs: number
   ) {
     BiaAppConstantsService.allEnvironments = allEnvironments;
     BiaAppConstantsService.environment = environment;
@@ -38,5 +44,9 @@ export class BiaAppConstantsService {
     BiaAppConstantsService.teamTypeRightPrefix = teamTypeRightPrefix;
     BiaAppConstantsService.defaultTranslations = defaultTranslations;
     BiaAppConstantsService.defaultPopupMinWidth = defaultPopupMinWidth;
+    BiaAppConstantsService.showFps = showFps;
+    BiaAppConstantsService.loginParamSource = loginParamSource;
+    BiaAppConstantsService.announcementDisplayDurationMs =
+      announcementDisplayDurationMs;
   }
 }

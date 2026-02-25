@@ -15,8 +15,8 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// <summary>
         /// Permission.
         /// </summary>
-        [JsonProperty("permission")]
-        public string Permission { get; set; }
+        [JsonProperty("permissionId")]
+        public int PermissionId { get; set; }
 
         /// <summary>
         /// List of team ids.

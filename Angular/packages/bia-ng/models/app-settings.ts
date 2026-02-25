@@ -1,4 +1,5 @@
 ﻿import { EnvironmentType, RoleMode } from '@bia-team/bia-ng/models/enum';
+import { PermissionInfo } from './permission-info';
 
 export interface AppSettings {
   keycloak: Keycloak;
@@ -8,6 +9,7 @@ export interface AppSettings {
   profileConfiguration?: ProfileConfiguration;
   iframeConfiguration?: IframeConfiguration;
   teamsConfig: TeamConfigDto[];
+  permissions: PermissionInfo[];
 }
 
 export interface TeamConfigDto {

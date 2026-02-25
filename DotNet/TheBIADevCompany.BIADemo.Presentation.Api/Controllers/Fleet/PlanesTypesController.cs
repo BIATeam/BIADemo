@@ -23,6 +23,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Fleet;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
 
     /// <summary>
@@ -69,7 +70,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.ListAccess)]
+        [Authorize(Roles = nameof(PermissionId.PlaneType_List_Access))]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.planeTypeService.GetRangeAsync(filters);
@@ -87,7 +88,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Read)]
+        [Authorize(Roles = nameof(PermissionId.PlaneType_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -115,7 +116,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Create)]
+        [Authorize(Roles = nameof(PermissionId.PlaneType_Create))]
         public async Task<IActionResult> Add([FromBody] PlaneTypeDto dto)
         {
             try
@@ -144,7 +145,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Update)]
+        [Authorize(Roles = nameof(PermissionId.PlaneType_Update))]
         public async Task<IActionResult> Update(int id, [FromBody] PlaneTypeDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -184,7 +185,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Delete)]
+        [Authorize(Roles = nameof(PermissionId.PlaneType_Delete))]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -216,7 +217,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Delete)]
+        [Authorize(Roles = nameof(PermissionId.PlaneType_Delete))]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -252,7 +253,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.PlanesTypes.Save)]
+        [Authorize(Roles = nameof(PermissionId.PlaneType_Save))]
         public async Task<IActionResult> Save(IEnumerable<PlaneTypeDto> dtos)
         {
             var dtoList = dtos.ToList();

@@ -4,11 +4,13 @@
 
 namespace BIA.Net.Core.Infrastructure.Service.Repositories.Helper
 {
+    using System;
     using System.Threading.Tasks;
 
     /// <summary>
     /// IBiaHybridCache.
     /// </summary>
+    [Obsolete("Use instead BIA.Net.Core.Domain.RepoContract.IBiaHybridCache")]
     public interface IBiaHybridCache
     {
         /// <summary>

@@ -9,10 +9,12 @@ namespace BIA.Net.Core.Ioc
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
+    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.BiaApi;
@@ -86,17 +88,19 @@ namespace BIA.Net.Core.Ioc
         /// <param name="excludedServiceNames">A list of class type names to be excluded from service registration, if any.</param>
         /// <param name="includedServiceNames">A list of class type names to be included for service registration, if any.</param>
         /// <remarks>
-        ///  This method scans the provided class assembly and maps each class to its interface based on naming convention ("I" + ClassName).
-        ///  The mapped pairs are then registered to the IServiceCollection based on the specified ServiceLifetime.
-        ///  The included/excluded service names are taken into account during this process.
+        /// This method scans the provided class assembly and identifies all concrete classes (non-generic, non-abstract).
+        /// For each interface found in the interface assembly, it discovers all classes that implement that interface.
+        /// Each interface-implementation pair is then registered to the IServiceCollection based on the specified ServiceLifetime,
+        /// but only if the interface is not already registered in the collection.
+        /// The included/excluded service names are taken into account during the filtering process.
         /// </remarks>
         public static void RegisterServicesFromAssembly(
-            IServiceCollection collection,
-            string assemblyName,
-            string interfaceAssemblyName = null,
-            ServiceLifetime serviceLifetime = ServiceLifetime.Scoped,
-            IEnumerable<string> excludedServiceNames = null,
-            IEnumerable<string> includedServiceNames = null)
+           IServiceCollection collection,
+           string assemblyName,
+           string interfaceAssemblyName = null,
+           ServiceLifetime serviceLifetime = ServiceLifetime.Scoped,
+           IEnumerable<string> excludedServiceNames = null,
+           IEnumerable<string> includedServiceNames = null)
         {
             Assembly classAssembly = Assembly.Load(assemblyName);
             Assembly interfaceAssembly = !string.IsNullOrWhiteSpace(interfaceAssemblyName) ? Assembly.Load(interfaceAssemblyName) : classAssembly;
@@ -104,31 +108,58 @@ namespace BIA.Net.Core.Ioc
             IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
             IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
 
-            IEnumerable<(Type ClassType, Type InterfaceType)> mappings = from classType in classTypes
-                                                                         join interfaceType in interfaceTypes
-                                                                         on "I" + classType.Name equals interfaceType.Name
-                                                                         where (excludedServiceNames == null || !excludedServiceNames.Contains(classType.Name)) &&
-                                                                               (includedServiceNames == null || includedServiceNames.Contains(classType.Name))
-                                                                         select (classType, interfaceType);
-
-            foreach (var (classType, interfaceType) in mappings)
+            if (excludedServiceNames != null)
             {
+                classTypes = classTypes.Where(c => !excludedServiceNames.Contains(c.Name));
+                interfaceTypes = interfaceTypes.Where(i => !excludedServiceNames.Contains(i.Name));
+            }
+
+            if (includedServiceNames != null)
+            {
+                classTypes = classTypes.Where(c => includedServiceNames.Contains(c.Name));
+                interfaceTypes = interfaceTypes.Where(i => includedServiceNames.Contains(i.Name));
+            }
+
+            var classesImplementationsByInterface = new Dictionary<Type, List<Type>>();
+            foreach (var interfaceType in interfaceTypes)
+            {
+                if (interfaceType.IsGenericTypeDefinition)
+                {
+                    classesImplementationsByInterface[interfaceType] = classTypes.Where(c =>
+                        c.IsGenericTypeDefinition &&
+                        c.GetGenericArguments().Length == interfaceType.GetGenericArguments().Length &&
+                        c.GetInterfaces()
+                            .Where(i => i.IsGenericType)
+                            .Any(i => i.GetGenericTypeDefinition() == interfaceType)).ToList();
+                }
+                else
+                {
+                    classesImplementationsByInterface[interfaceType] = classTypes.Where(c =>
+                        !c.IsGenericTypeDefinition &&
+                        c.IsAssignableTo(interfaceType)).ToList();
+                }
+            }
+
+            foreach (var kvp in classesImplementationsByInterface)
+            {
+                var interfaceType = kvp.Key;
+
                 if (!collection.Any(s => s.ServiceType == interfaceType))
                 {
-                    switch (serviceLifetime)
+                    foreach (var classType in kvp.Value)
                     {
-                        case ServiceLifetime.Singleton:
-                            collection.AddSingleton(interfaceType, classType);
-                            break;
-                        case ServiceLifetime.Scoped:
-                            collection.AddScoped(interfaceType, classType);
-                            break;
-                        case ServiceLifetime.Transient:
-                            collection.AddTransient(interfaceType, classType);
-                            break;
-                        default:
-                            collection.AddScoped(interfaceType, classType);
-                            break;
+                        switch (serviceLifetime)
+                        {
+                            case ServiceLifetime.Singleton:
+                                collection.AddSingleton(interfaceType, classType);
+                                break;
+                            case ServiceLifetime.Transient:
+                                collection.AddTransient(interfaceType, classType);
+                                break;
+                            default:
+                                collection.AddScoped(interfaceType, classType);
+                                break;
+                        }
                     }
                 }
             }
@@ -198,8 +229,6 @@ namespace BIA.Net.Core.Ioc
             {
                 collection.AddTransient<IBiaDistributedCache, BiaLocalCache>();
             }
-
-            collection.AddTransient<IBiaHybridCache, BiaHybridCache>();
 
             collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() =>
                 CreateHttpClientHandler(biaNetSection));

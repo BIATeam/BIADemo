@@ -35,7 +35,7 @@ namespace BIA.Net.Core.Domain.Service
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
     using static BIA.Net.Core.Common.BiaConstants;
-    using static BIA.Net.Core.Common.BiaRights;
+    using static BIA.Net.Core.Common.BiaPermissionSuffixes;
 
     /// <summary>
     /// Base class for a service that need an implementation of a <see cref="DomainServiceBase{TEntity, TKey}"/> with operations.

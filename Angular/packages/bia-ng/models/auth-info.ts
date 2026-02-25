@@ -7,6 +7,7 @@ export class LoginParamDto {
   additionalInfos: boolean;
   isFirstLogin: boolean;
   baseUserIdentity?: string;
+  source?: string;
 }
 
 export interface UserProfile {
@@ -31,8 +32,8 @@ export class CurrentTeamDto {
   useDefaultRoles: boolean;
 }
 
-export class PermissionTeams {
-  permission: string;
+export interface PermissionTeams {
+  permissionId: number;
   teamIds: number[];
   isGlobal: boolean;
 }

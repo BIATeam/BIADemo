@@ -41,16 +41,6 @@ export const ROUTES: Routes = [
         canActivate: [PermissionGuard],
       },
       {
-        path: 'view',
-        data: {
-          featureConfiguration: pilotCRUDConfiguration,
-          featureServiceType: PilotService,
-          leftWidth: 60,
-        },
-        loadChildren: () =>
-          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
-      },
-      {
         path: 'import',
         data: {
           breadcrumb: 'pilot.import',
@@ -66,6 +56,16 @@ export const ROUTES: Routes = [
         },
         component: PilotImportComponent,
         canActivate: [PermissionGuard],
+      },
+      {
+        path: 'view',
+        data: {
+          featureConfiguration: pilotCRUDConfiguration,
+          featureServiceType: PilotService,
+          leftWidth: 60,
+        },
+        loadChildren: () =>
+          import('../../shared/bia-shared/view.module').then(m => m.ViewModule),
       },
       {
         path: ':crudItemId',

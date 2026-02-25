@@ -12,6 +12,7 @@ import {
   BiaOptionService,
 } from '@bia-team/bia-ng/core';
 import {
+  BiaCalcTableCellComponent,
   BiaCalcTableComponent,
   BiaFrozenColumnDirective,
   BiaTableFilterComponent,
@@ -51,6 +52,7 @@ import { Plane } from '../../model/plane';
     BiaTableOutputComponent,
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class PlaneTableComponent

@@ -8,11 +8,14 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Authentication;
+    using BIA.Net.Core.Application.Permission;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Helpers;
     using Microsoft.AspNetCore.Authentication;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Authorization;
@@ -84,6 +87,20 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                         context.Response.StatusCode = 498; // 498 = Token expired/invalid
                         await context.Response.WriteAsync("Un-Authorized");
                     });
+
+                    return Task.CompletedTask;
+                },
+                OnTokenValidated = context =>
+                {
+                    if (context.Principal?.Identity is ClaimsIdentity identity)
+                    {
+                        var permissionService = context.HttpContext.RequestServices.GetService<IPermissionService>();
+                        var permissionNames = permissionService.ConvertToNames(context.Principal.GetClaimValueJsonAs<IEnumerable<int>>(BiaConstants.Claims.PermissionIds));
+                        foreach (var permissionName in permissionNames)
+                        {
+                            identity.AddClaim(new Claim(ClaimTypes.Role, permissionName));
+                        }
+                    }
 
                     return Task.CompletedTask;
                 },

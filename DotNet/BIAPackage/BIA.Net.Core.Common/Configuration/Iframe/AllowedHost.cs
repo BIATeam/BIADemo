@@ -5,7 +5,7 @@
 namespace BIA.Net.Core.Common.Configuration.Iframe
 {
     /// <summary>
-    /// The Language configuration.
+    /// Represents an authorized host that is allowed to communicate with this iframe.
     /// </summary>
     public class AllowedHost
     {

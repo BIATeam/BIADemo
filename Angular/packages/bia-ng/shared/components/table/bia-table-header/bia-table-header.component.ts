@@ -409,16 +409,20 @@ export class BiaTableHeaderComponent
     }
 
     this.parentContainerResizeObserver = new ResizeObserver(() => {
-      this.onParentContainerResized(
-        this.selectionActionsDiv.nativeElement,
-        this.selectionActions
-      );
+      if (this.selectionActionsDiv) {
+        this.onParentContainerResized(
+          this.selectionActionsDiv.nativeElement,
+          this.selectionActions
+        );
+      }
       clearTimeout(this.listActionsResizeTimeoutId);
       this.listActionsResizeTimeoutId = setTimeout(() => {
-        this.onParentContainerResized(
-          this.listActionsDiv.nativeElement,
-          this.listActions
-        );
+        if (this.listActionsDiv) {
+          this.onParentContainerResized(
+            this.listActionsDiv.nativeElement,
+            this.listActions
+          );
+        }
       }, 100);
     });
     this.parentContainerResizeObserver.observe(parentContainer);

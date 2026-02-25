@@ -47,6 +47,7 @@ namespace BIA.Net.Core.Presentation.Common.Features
             }
 
             services.AddMemoryCache();
+            services.AddHybridCache();
 
             return services;
         }

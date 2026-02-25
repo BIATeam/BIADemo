@@ -5,12 +5,14 @@
 namespace BIA.Net.Core.Application.Authentication
 {
     using System;
+    using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Security.Claims;
     using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
@@ -49,16 +51,16 @@ namespace BIA.Net.Core.Application.Authentication
         public SigningCredentials SigningCredentials { get; set; }
 
         /// <summary>
-        /// Check if a role is in a given jwt token.
+        /// Check if a permission is in a given jwt token.
         /// </summary>
         /// <param name="jwtToken">The jwt token.</param>
-        /// <param name="roleToCheck">The role to look for in the token.</param>
+        /// <param name="permissionToCheck">The permission to look for in the token.</param>
         /// <returns>If the role is in the token.</returns>
-        public static bool HasRole(string jwtToken, string roleToCheck)
+        public static bool HasPermission(string jwtToken, int permissionToCheck)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.ReadJwtToken(jwtToken);
-            return token.Claims.Any(c => c.Type == BiaClaimsPrincipal.Role && c.Value == roleToCheck);
+            return token.Claims.Any(c => c.Type == BiaConstants.Claims.PermissionIds && c.Value == permissionToCheck.ToString());
         }
 
         /// <summary>
@@ -98,9 +100,13 @@ namespace BIA.Net.Core.Application.Authentication
         public ClaimsIdentity GenerateClaimsIdentity<TUserDataDto>(TokenDto<TUserDataDto> tokenDto)
             where TUserDataDto : BaseUserDataDto
         {
-            var claims = tokenDto.Permissions.Select(s => new Claim(ClaimTypes.Role, s)).ToList();
-            claims.AddRange(tokenDto.RoleIds.Select(s => new Claim(BiaClaimsPrincipal.RoleId, s.ToString())).ToList());
-            claims.Add(new Claim(ClaimTypes.Sid, tokenDto.Id.ToString()));
+            var claims = new List<Claim>
+            {
+                new(ClaimTypes.Sid, tokenDto.Id.ToString()),
+                new(BiaConstants.Claims.PermissionIds, JsonConvert.SerializeObject(tokenDto.PermissionIds)),
+                new(BiaConstants.Claims.RoleIds, JsonConvert.SerializeObject(tokenDto.RoleIds)),
+            };
+
             if (tokenDto.UserData != null)
             {
                 claims.Add(new Claim(ClaimTypes.UserData, JsonConvert.SerializeObject(tokenDto.UserData)));

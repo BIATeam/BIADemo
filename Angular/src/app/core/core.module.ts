@@ -10,10 +10,13 @@ import biaLocaleEn from '../../assets/bia/i18n/en.json';
 import biaLocaleEs from '../../assets/bia/i18n/es.json';
 import biaLocaleFr from '../../assets/bia/i18n/fr.json';
 import {
+  ANNOUNCEMENT_DISPLAY_DURATION_MS,
   APP_SUPPORTED_TRANSLATIONS,
   APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
   DEFAULT_PAGE_SIZE,
   DEFAULT_POPUP_MINWIDTH,
+  LOGIN_PARAM_SOURCE,
+  SHOW_FPS,
   TeamTypeRightPrefix,
 } from '../shared/constants';
 import { NAVIGATION } from '../shared/navigation';
@@ -39,7 +42,10 @@ const ONLINEOFFLINE =
       DEFAULT_PAGE_SIZE,
       TeamTypeRightPrefix,
       APP_TANSLATION_IDS_TO_NOT_ADD_MANUALY,
-      DEFAULT_POPUP_MINWIDTH
+      DEFAULT_POPUP_MINWIDTH,
+      SHOW_FPS,
+      LOGIN_PARAM_SOURCE,
+      ANNOUNCEMENT_DISPLAY_DURATION_MS
     ),
   ],
   providers: [...ONLINEOFFLINE],

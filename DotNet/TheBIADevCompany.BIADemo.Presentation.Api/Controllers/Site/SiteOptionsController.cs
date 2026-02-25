@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
 
     /// <summary>
     /// The API controller used to manage site options.
@@ -42,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Sites.Options)]
+        [Authorize(Roles = nameof(PermissionId.Site_Options))]
         public async Task<IActionResult> GetAllOptions()
         {
             var results = await this.siteOptionService.GetAllOptionsAsync();

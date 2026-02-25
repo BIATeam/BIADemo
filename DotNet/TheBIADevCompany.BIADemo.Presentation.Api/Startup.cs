@@ -5,10 +5,13 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
+    using System.Reflection.PortableExecutable;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Ioc.HealthChecks;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
@@ -128,7 +131,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                     .WithExposedHeaders(BiaConstants.HttpHeaders.TotalCount));
             }
 
-            app.UseResponseCompression();
+            app.UseWhen(
+                context => !context.Request.Path.StartsWithSegments("/hangfireAdmin")
+                        && !context.Request.Path.StartsWithSegments("/hangfire"),
+                appBuilder => appBuilder.UseResponseCompression());
             app.UseRequestDecompression();
 
             app.UseRouting();
@@ -137,8 +143,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             app.UseAuthorization();
 
             HangfireDashboardAuthorizations hangfireDashboardAuthorizations = new();
-            hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, "Background_Task_Admin", this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
-            hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, "Background_Task_Read_Only", this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
+            hangfireDashboardAuthorizations.Authorization = new[] { new HangfireAuthorizationFilter(false, nameof(BiaPermissionId.Background_Task_Admin), this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
+            hangfireDashboardAuthorizations.AuthorizationReadOnly = new[] { new HangfireAuthorizationFilter(true, nameof(BiaPermissionId.Background_Task_Read_Only), this.biaNetSection.Jwt?.SecretKey, jwtFactory) };
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
             if (this.biaNetSection.CommonFeatures?.AuditConfiguration?.IsActive == true)
             {

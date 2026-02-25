@@ -18,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
+    using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;
 
     /// <summary>
@@ -59,7 +60,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         /// <returns>The list of site info DTO.</returns>
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [Authorize(Roles = Rights.Sites.ListAccess)]
+        [Authorize(Roles = nameof(PermissionId.Site_List_Access))]
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto<TeamAdvancedFilterDto> filters)
         {
             var (results, total) = await this.siteService.GetRangeAsync(filters);
@@ -79,7 +80,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Sites.Read)]
+        [Authorize(Roles = nameof(PermissionId.Site_Read))]
         public async Task<IActionResult> Get(int id)
         {
             if (id == 0)
@@ -107,7 +108,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Sites.Create)]
+        [Authorize(Roles = nameof(PermissionId.Site_Create))]
         public async Task<IActionResult> Add([FromBody] SiteDto dto)
         {
             try
@@ -133,7 +134,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Sites.Update)]
+        [Authorize(Roles = nameof(PermissionId.Site_Update))]
         public async Task<IActionResult> Update(int id, [FromBody] SiteDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
@@ -170,7 +171,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Sites.Delete)]
+        [Authorize(Roles = nameof(PermissionId.Site_Delete))]
         public async Task<IActionResult> Remove(int id)
         {
             if (id == 0)
@@ -199,7 +200,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Sites.Delete)]
+        [Authorize(Roles = nameof(PermissionId.Site_Delete))]
         public async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
@@ -232,7 +233,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Site
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        [Authorize(Roles = Rights.Sites.Save)]
+        [Authorize(Roles = nameof(PermissionId.Site_Save))]
         public async Task<IActionResult> Save(IEnumerable<SiteDto> dtos)
         {
             var dtoList = dtos.ToList();
