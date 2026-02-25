@@ -130,6 +130,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                             string projectName = configuration["Project:Name"];
                             RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
                             RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
+                            RecurringJob.AddOrUpdate<CleanFileDownloadDataTask>($"{projectName}.{typeof(CleanFileDownloadDataTask).Name}", t => t.Run(), configuration["Tasks:CleanFileDownloadData:CRON"]);
 
                             // Begin BIADemo
                             RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);

@@ -168,10 +168,11 @@ namespace BIA.Net.Core.Application.Services
         {
             try
             {
+                var notificationTypeDownloadReady = (int)BiaNotificationTypeId.DownloadReady;
                 var notificationsToDelete = await this.notificationAppService.GetAsync(
                     includes: [n => n.NotifiedUsers],
                     filter:
-                        n => n.TypeId == (int)BiaNotificationTypeId.DownloadReady
+                        n => n.TypeId == notificationTypeDownloadReady
                         && n.CreatedById == fileDownloadData.RequestByUserId
                         && n.JData.Contains(fileDownloadData.Id.ToString()));
 
@@ -192,7 +193,7 @@ namespace BIA.Net.Core.Application.Services
             {
                 if (this.logger.IsEnabled(LogLevel.Error))
                 {
-                    this.logger.LogError(ex, "Error deleting expired file at path {FilePath}", fileDownloadData.FilePath);
+                    this.logger.LogError(ex, "Error deleting expired file with id {Id}", fileDownloadData.Id);
                 }
 
                 throw;
