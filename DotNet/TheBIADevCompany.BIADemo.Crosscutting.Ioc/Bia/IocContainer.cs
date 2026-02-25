@@ -35,7 +35,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
@@ -45,12 +44,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #endif
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 #if BIA_FRONT_FEATURE
-
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
-
-    // End BIADemo
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Mappers;
 #endif
@@ -59,7 +52,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Infrastructure.Data.Helpers;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Repositories;
 #endif
     using BIA.Net.Core.Application.Services;
     using TheBIADevCompany.BIADemo.Application.Notification;
@@ -122,22 +114,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
             collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
 #endif
-#if BIA_FRONT_FEATURE || BIA_USE_DATABASE
-
-            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
-            BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
-                assemblyName: "BIA.Net.Core.Application",
-                serviceLifetime: ServiceLifetime.Transient,
-                excludedServiceNames: [nameof(IBiaFileDownloaderService)]);
-#endif
-
-            // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
-            BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
-                assemblyName: "TheBIADevCompany.BIADemo.Application",
-                excludedServiceNames: new List<string>() { nameof(AuthAppService) },
-                serviceLifetime: ServiceLifetime.Transient);
 
             if (isApi)
             {
@@ -146,6 +122,30 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
             collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
+        }
+
+        private static void BiaConfigureApplicationContainerAutoRegister(
+            IServiceCollection collection,
+            ServiceLifetime serviceLifetime = ServiceLifetime.Transient,
+            IEnumerable<string> excludedServiceNames = null,
+            IEnumerable<string> includedServiceNames = null)
+        {
+#if BIA_FRONT_FEATURE || BIA_USE_DATABASE
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "BIA.Net.Core.Application",
+                serviceLifetime: ServiceLifetime.Transient,
+                excludedServiceNames: [nameof(IBiaFileDownloaderService)]);
+#endif
+
+            List<string> excludedServiceNameList = excludedServiceNames?.ToList() ?? new List<string>();
+            excludedServiceNameList.Add(nameof(AuthAppService));
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Application",
+                serviceLifetime: serviceLifetime,
+                includedServiceNames: includedServiceNames,
+                excludedServiceNames: excludedServiceNameList);
         }
 
         private static void BiaConfigureDomainContainer(IServiceCollection collection)
@@ -344,19 +344,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                     collection.AddTransient<IClientForHubRepository, InternalClientForSignalRRepository<HubForClients>>();
                 }
             }
-
-            // Begin BIADemo
-            collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
-            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
-
-            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>()
-                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection)).AddStandardResilienceHandler();
-            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>()
-                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false)).AddStandardResilienceHandler();
-            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>()
-                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
-
-            // End BIADemo
 #endif
         }
     }

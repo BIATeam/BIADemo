@@ -5,8 +5,20 @@
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
     using BIA.Net.Core.Common.Configuration;
+
+    // Begin BIADemo
+    using BIA.Net.Core.Ioc;
+
+    // End BIADemo
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+
+    // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.RepoContract;
+    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
+
+    // End BIADemo
 
     /// <summary>
     /// The IoC Container.
@@ -29,6 +41,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
         {
             BiaConfigureApplicationContainer(collection, isApi);
+            BiaConfigureApplicationContainerAutoRegister(collection);
         }
 
         private static void ConfigureDomainContainer(IServiceCollection collection)
@@ -54,6 +67,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
         {
             BiaConfigureInfrastructureServiceContainer(collection, biaNetSection, isUnitTest);
+
+            // Begin BIADemo
+            collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
+            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
+
+            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection)).AddStandardResilienceHandler();
+            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false)).AddStandardResilienceHandler();
+            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
+
+            // End BIADemo
         }
     }
 }
