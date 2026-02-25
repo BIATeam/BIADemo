@@ -57,7 +57,6 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="fileDownloadDataRepository">The file download data repository.</param>
         /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
         /// <param name="backgroundJobClient">Hangfire job client.</param>
-        /// <param name="userRepository">The user repository.</param>
         public BiaFileDownloaderService(
             TINotificationAppService notificationAppService,
             ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
