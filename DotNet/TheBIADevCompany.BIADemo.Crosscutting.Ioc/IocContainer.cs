@@ -150,6 +150,12 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+            collection.Configure<BiaFileDownloaderOptions>(options =>
+            {
+                options.FrenchLanguageId = Constants.LanguageId.French;
+                options.EnglishLanguageId = Constants.LanguageId.English;
+                options.SpanishLanguageId = Constants.LanguageId.Spanish;
+            });
             collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 

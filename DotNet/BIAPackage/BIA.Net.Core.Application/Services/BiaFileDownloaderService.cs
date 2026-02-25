@@ -5,9 +5,11 @@
 namespace BIA.Net.Core.Application.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Job;
@@ -23,8 +25,10 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.File.Mappers;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.RepoContract;
+    using BIA.Net.Core.Domain.Service;
     using Hangfire;
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
@@ -47,6 +51,8 @@ namespace BIA.Net.Core.Application.Services
         private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
+        private readonly UserContext userContext;
+        private readonly BiaFileDownloaderOptions options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
@@ -57,13 +63,17 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="fileDownloadDataRepository">The file download data repository.</param>
         /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
         /// <param name="backgroundJobClient">Hangfire job client.</param>
+        /// <param name="userContext">The user context.</param>
+        /// <param name="options">The file downloader options (language IDs, etc.).</param>
         public BiaFileDownloaderService(
             TINotificationAppService notificationAppService,
             ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
             FileDownloadDataMapper fileDownloadDataMapper,
             ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
             IFileDownloadTokenRepository fileDownloadTokenRepository,
-            IBackgroundJobClient backgroundJobClient)
+            IBackgroundJobClient backgroundJobClient,
+            UserContext userContext,
+            IOptions<BiaFileDownloaderOptions> options)
         {
             this.notificationAppService = notificationAppService;
             this.logger = logger;
@@ -71,6 +81,8 @@ namespace BIA.Net.Core.Application.Services
             this.fileDownloadDataRepository = fileDownloadDataRepository;
             this.fileDownloadTokenRepository = fileDownloadTokenRepository;
             this.backgroundJobClient = backgroundJobClient;
+            this.userContext = userContext;
+            this.options = options.Value;
         }
 
         /// <inheritdoc/>
@@ -220,21 +232,52 @@ namespace BIA.Net.Core.Application.Services
             }
         }
 
-        private static TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
+        private TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
         {
+            var notificationTranslations = this.GetNotificationTranslations(fileDownloadDataDto.FileName);
+            var notificationTranslationEnglish = notificationTranslations.First(nt => nt.LanguageId == this.options.EnglishLanguageId);
+
             return new TNotificationDto
             {
                 CreatedBy = new OptionDto { Id = requestedByUserId },
                 CreatedDate = DateTime.UtcNow,
-                Description = "You can now download the file !",
-                Title = $"Download ready for {fileDownloadDataDto.FileName}",
+                Description = notificationTranslationEnglish.Description,
+                Title = notificationTranslationEnglish.Title,
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
                 JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", DownloadFileGuid = fileDownloadDataDto.Id }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotifiedUsers = [new() { Id = requestedByUserId }],
-                NotificationTranslations = [],
+                NotificationTranslations = notificationTranslations,
                 NotifiedTeams = [],
             };
+        }
+
+        private List<NotificationTranslationDto> GetNotificationTranslations(string fileName)
+        {
+            return
+            [
+                new NotificationTranslationDto
+                {
+                    LanguageId = this.options.FrenchLanguageId,
+                    Title = "Téléchargement prêt",
+                    Description = $"Votre fichier '{fileName}' est prêt à être téléchargé.",
+                    DtoState = Domain.Dto.Base.DtoState.Added,
+                },
+                new NotificationTranslationDto
+                {
+                    LanguageId = this.options.EnglishLanguageId,
+                    Title = "Download ready",
+                    Description = $"Your file '{fileName}' is ready to be downloaded.",
+                    DtoState = Domain.Dto.Base.DtoState.Added,
+                },
+                new NotificationTranslationDto
+                {
+                    LanguageId = this.options.SpanishLanguageId,
+                    Title = "Descarga lista",
+                    Description = $"Su archivo '{fileName}' está listo para ser descargado.",
+                    DtoState = Domain.Dto.Base.DtoState.Added,
+                },
+            ];
         }
 
         private async Task EnsureDownloadAvailability(FileDownloadDataDto fileDownloadData)
