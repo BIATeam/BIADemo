@@ -1,10 +1,12 @@
-﻿// <copyright file="FilesController.cs" company="PlaceholderCompany">
+﻿using Microsoft.AspNetCore.Http;
+// <copyright file="FilesController.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -49,10 +51,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// <param name="guid">The file GUID to download and generate the token for.</param>
         /// <returns>The generated token.</returns>
         [HttpGet("{guid}/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> GetDownloadToken([FromRoute] string guid)
         {
-            var token = await this.biaFileDownloaderService.GenerateDownloadToken(Guid.Parse(guid), this.biaClaimsPrincipal.GetUserId());
-            return this.Ok(token);
+            try
+            {
+                var token = await this.biaFileDownloaderService.GenerateDownloadToken(Guid.Parse(guid), this.biaClaimsPrincipal.GetUserId());
+                return this.Ok(token);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return this.Unauthorized();
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
         }
     }
 }

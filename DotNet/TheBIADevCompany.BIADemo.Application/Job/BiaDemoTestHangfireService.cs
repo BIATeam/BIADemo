@@ -222,7 +222,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             var currentAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
             var downloadFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadFileExample.txt");
-            return new FileDownloadDataDto() { FilePath = downloadFileExamplePath, FileContentType = "text/plain; charset=utf-8", FileName = fileName };
+            return FileDownloadDataDto.Create(fileName, "text/plain; charset=utf-8", downloadFileExamplePath);
         }
 
         /// <summary>

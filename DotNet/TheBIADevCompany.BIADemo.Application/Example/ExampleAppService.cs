@@ -30,7 +30,7 @@ namespace TheBIADevCompany.BIADemo.Application.Example
             var currentAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
 
             var downloadFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadFileExample.txt");
-            var fileDownloadData = new FileDownloadDataDto() { FilePath = downloadFileExamplePath, FileContentType = "text/plain; charset=utf-8", FileName = "FileExample.txt" };
+            var fileDownloadData = FileDownloadDataDto.Create("FileExample.txt", "text/plain; charset=utf-8", downloadFileExamplePath);
 
             await this.fileDownloaderService.NotifyDownloadReadyAsync(fileDownloadData, requestedByUserId);
         }

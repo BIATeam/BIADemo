@@ -42,5 +42,10 @@ namespace BIA.Net.Core.Domain.File.Entities
         /// Gets or sets the user that requested the download.
         /// </summary>
         public virtual BaseEntityUser RequestByUser { get; set; }
+
+        /// <summary>
+        /// Gets or sets the date and time when availability expires.
+        /// </summary>
+        public DateTime? ExpiredAtDateTime { get; set; }
     }
 }

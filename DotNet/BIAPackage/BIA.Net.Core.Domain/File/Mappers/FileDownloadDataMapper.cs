@@ -34,6 +34,7 @@ namespace BIA.Net.Core.Domain.File.Mappers
                     Id = entity.RequestByUser.Id,
                     Display = entity.RequestByUser.FirstName + " " + entity.RequestByUser.LastName,
                 },
+                AvailabilityDuration = entity.ExpiredAtDateTime.HasValue ? entity.ExpiredAtDateTime.Value - entity.RequestDateTime : null,
             });
         }
 
@@ -51,6 +52,7 @@ namespace BIA.Net.Core.Domain.File.Mappers
             entity.FilePath = dto.FilePath;
             entity.RequestDateTime = dto.RequestDateTime;
             entity.RequestByUserId = dto.RequestByUser.Id;
+            entity.ExpiredAtDateTime = dto.AvailabilityDuration.HasValue ? dto.RequestDateTime.Add(dto.AvailabilityDuration.Value) : null;
         }
     }
 }

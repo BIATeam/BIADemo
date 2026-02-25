@@ -82,5 +82,10 @@ namespace BIA.Net.Core.Common.Error
         /// Error id when a view cannot be added for selected teams.
         /// </summary>
         CannotAddViewForSelectedTeams,
+
+        /// <summary>
+        /// Error id when a file to download has expired and is no longer available for download.
+        /// </summary>
+        FileToDownloadExpired,
     }
 }
