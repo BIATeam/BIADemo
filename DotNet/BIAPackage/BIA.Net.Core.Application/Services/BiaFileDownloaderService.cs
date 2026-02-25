@@ -146,11 +146,7 @@ namespace BIA.Net.Core.Application.Services
                     throw new UnauthorizedAccessException("User is not authorized to download this file");
                 }
 
-                if (fileDownloadData.ExpiredAtDateTime > DateTime.UtcNow)
-                {
-                    await this.OnFileToDownloadExpired(fileDownloadData);
-                    throw FrontUserException.Create(BiaErrorId.FileToDownloadExpired);
-                }
+                await this.EnsureDownloadAvailability(fileDownloadData);
 
                 var token = Convert.ToHexString(Encoding.UTF8.GetBytes($"{fileDownloadData.FileName}:{requestedByUserId}:{DateTime.UtcNow.Ticks}"));
                 await this.fileDownloadTokenRepository.AddAsync(new() { FileGuid = fileGuid, Token = token, CreatedAt = DateTime.UtcNow });
@@ -168,12 +164,49 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
+        public async Task OnFileToDownloadExpired(FileDownloadData fileDownloadData)
+        {
+            try
+            {
+                var notificationsToDelete = await this.notificationAppService.GetAsync(
+                    includes: [n => n.NotifiedUsers],
+                    filter:
+                        n => n.TypeId == (int)BiaNotificationTypeId.DownloadReady
+                        && n.NotifiedUsers.Any(nu => nu.UserId == fileDownloadData.RequestByUserId)
+                        && n.JData.Contains(fileDownloadData.Id.ToString()));
+
+                if (notificationsToDelete is not null)
+                {
+                    await this.notificationAppService.RemoveAsync(notificationsToDelete.Id);
+                }
+
+                this.fileDownloadDataRepository.Remove(fileDownloadData);
+                await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
+
+                if (File.Exists(fileDownloadData.FilePath))
+                {
+                    File.Delete(fileDownloadData.FilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (this.logger.IsEnabled(LogLevel.Error))
+                {
+                    this.logger.LogError(ex, "Error deleting expired file at path {FilePath}", fileDownloadData.FilePath);
+                }
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task<FileDownloadDataDto> GetFileDownloadData(Guid fileGuid, string token)
         {
             try
             {
                 var fileDownloadToken = await this.fileDownloadTokenRepository.GetAsync(fileGuid, token) ?? throw new ElementNotFoundException("Unable to retrieve file download token");
                 await this.fileDownloadTokenRepository.RemoveAsync(fileDownloadToken);
+
+                await this.EnsureDownloadAvailability(fileDownloadToken.FileDownloadData);
+
                 return this.fileDownloadDataMapper.EntityToDto().Compile().Invoke(fileDownloadToken.FileDownloadData);
             }
             catch (Exception ex)
@@ -204,36 +237,12 @@ namespace BIA.Net.Core.Application.Services
             };
         }
 
-        private async Task OnFileToDownloadExpired(FileDownloadData fileDownloadData)
+        private async Task EnsureDownloadAvailability(FileDownloadData fileDownloadData)
         {
-            try
+            if (fileDownloadData.ExpiredAtDateTime > DateTime.UtcNow)
             {
-                var notificationsToDelete = await this.notificationAppService.GetAsync(
-                    includes: [n => n.NotifiedUsers],
-                    filter:
-                        n => n.TypeId == (int)BiaNotificationTypeId.DownloadReady
-                        && n.NotifiedUsers.Any(nu => nu.UserId == fileDownloadData.RequestByUserId)
-                        && n.JData.Contains(fileDownloadData.Id.ToString()));
-
-                if (notificationsToDelete is not null)
-                {
-                    await this.notificationAppService.RemoveAsync(notificationsToDelete.Id);
-                }
-
-                this.fileDownloadDataRepository.Remove(fileDownloadData);
-                await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
-
-                if (File.Exists(fileDownloadData.FilePath))
-                {
-                    File.Delete(fileDownloadData.FilePath);
-                }
-            }
-            catch (Exception ex)
-            {
-                if (this.logger.IsEnabled(LogLevel.Error))
-                {
-                    this.logger.LogError(ex, "Error deleting expired file at path {FilePath}", fileDownloadData.FilePath);
-                }
+                await this.OnFileToDownloadExpired(fileDownloadData);
+                throw FrontUserException.Create(BiaErrorId.FileToDownloadExpired);
             }
         }
     }

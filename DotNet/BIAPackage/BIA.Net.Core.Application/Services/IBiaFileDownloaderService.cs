@@ -9,6 +9,7 @@ namespace BIA.Net.Core.Application.Services
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.User;
+    using BIA.Net.Core.Domain.File.Entities;
     using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
@@ -48,5 +49,12 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="token">The download token.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains the file download data.</returns>
         Task<FileDownloadDataDto> GetFileDownloadData(Guid fileGuid, string token);
+
+        /// <summary>
+        /// Handles the expiration event for a file download. Delete the file from the storage and remove the file download data from the database.
+        /// </summary>
+        /// <param name="fileDownloadData">Information about the expired file download.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        Task OnFileToDownloadExpired(FileDownloadData fileDownloadData);
     }
 }
