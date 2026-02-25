@@ -27,11 +27,11 @@ namespace TheBIADevCompany.BIADemo.Application.Example
         /// <inheritdoc/>
         public async Task NotifyDownloadReadyFileExample(int requestedByUserId)
         {
-            var currentAssemblyLocation = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            var tempFilePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}_FileExample.txt");
+            const string content = "This is an example file.";
+            await File.WriteAllTextAsync(tempFilePath, content);
 
-            var downloadFileExamplePath = Path.Combine(Path.GetDirectoryName(currentAssemblyLocation), "Resources", "DownloadFileExample.txt");
-            var fileDownloadData = FileDownloadDataDto.Create("FileExample.txt", "text/plain; charset=utf-8", downloadFileExamplePath);
-
+            var fileDownloadData = FileDownloadDataDto.Create("FileExample.txt", "text/plain; charset=utf-8", tempFilePath, TimeSpan.FromMinutes(1));
             await this.fileDownloaderService.NotifyDownloadReadyAsync(fileDownloadData, requestedByUserId);
         }
     }

@@ -104,7 +104,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult PrepareBackgroundDownloadFileExample()
         {
-            this.fileDownloaderService.PrepareBackgroundDownload<IBiaDemoTestHangfireService>(this.biaClaimsPrincipalService.GetUserId(), x => x.GenerateExampleFileAsync("BackgroundGeneratedFileExample.txt"));
+            this.fileDownloaderService.PrepareBackgroundDownload<IBiaDemoTestHangfireService>(this.biaClaimsPrincipalService.GetUserId(), x => x.GenerateExampleFileAsync("GeneratedFileExample.txt"));
             return this.NoContent();
         }
     }
