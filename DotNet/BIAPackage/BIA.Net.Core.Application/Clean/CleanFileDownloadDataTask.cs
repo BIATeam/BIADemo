@@ -40,7 +40,6 @@ namespace BIA.Net.Core.Application.Clean
         /// <inheritdoc/>
         protected override async Task RunMonitoredTask()
         {
-            this.Logger.LogInformation("Start Clean File Download Data Task");
             var fileDownloadDataToDelete = await this.fileDownloadDataRepository.GetAllEntityAsync(filter: fd => fd.ExpiredAtDateTime.HasValue && fd.ExpiredAtDateTime.Value < DateTime.UtcNow);
             foreach (var fileDownloadData in fileDownloadDataToDelete)
             {
@@ -55,8 +54,6 @@ namespace BIA.Net.Core.Application.Clean
                     this.Logger.LogError(ex, "An error occurred while deleting file to download with id {Id}", fileDownloadData.Id);
                 }
             }
-
-            this.Logger.LogInformation("End Clean File Download Data Task");
         }
     }
 }
