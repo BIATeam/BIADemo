@@ -14,14 +14,17 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaAppConstantsService,
   BiaOptionService,
-} from '@bia-team/bia-ng/core';
-import { BaseDto, OptionDto } from '@bia-team/bia-ng/models';
-import { DtoState } from '@bia-team/bia-ng/models/enum';
-import { DictOptionDto, JsonValidator } from '@bia-team/bia-ng/shared';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
+import { BaseDto, OptionDto } from 'packages/bia-ng/models/public-api';
+import {
+  DictOptionDto,
+  JsonValidator,
+} from 'packages/bia-ng/shared/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Checkbox } from 'primeng/checkbox';

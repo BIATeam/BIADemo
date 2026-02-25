@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
-import { BiaTranslationService } from '@bia-team/bia-ng/core';
-import { IframeConfig } from '@bia-team/bia-ng/models';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
+import { IframeConfig } from 'packages/bia-ng/models/public-api';
 import { BiaThemeService } from '../../components/layout/services/bia-theme.service';
 import { BiaLayoutService } from '../../components/layout/services/layout.service';
 import { IframeCommunicationService } from './iframe-communication.service';

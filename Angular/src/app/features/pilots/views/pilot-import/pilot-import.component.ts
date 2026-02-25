@@ -16,7 +16,7 @@ import { PilotService } from '../../services/pilot.service';
 @Component({
   selector: 'app-pilot-import',
   templateUrl:
-    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
   providers: [
     CrudItemImportService,

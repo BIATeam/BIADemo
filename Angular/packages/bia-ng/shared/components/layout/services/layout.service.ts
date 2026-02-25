@@ -17,12 +17,12 @@ import {
 import {
   BiaAppConstantsService,
   STORAGE_CULTURE_KEY,
-} from '@bia-team/bia-ng/core';
+} from 'packages/bia-ng/core/public-api';
 import {
   AppConfig,
   BiaNavigation,
   ConfigDisplay,
-} from '@bia-team/bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { MenuItem } from 'primeng/api';
 import { BehaviorSubject, Subject, debounceTime } from 'rxjs';
 import { AnnouncementLayoutService } from './announcement-layout.service';
