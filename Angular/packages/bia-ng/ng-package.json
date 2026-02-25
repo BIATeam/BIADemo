@@ -17,6 +17,16 @@
       "input": "shared",
       "glob": "**/*.scss",
       "output": "templates"
+    },
+    {
+      "input": "features",
+      "glob": "**/*.html",
+      "output": "templates/features"
+    },
+    {
+      "input": "features",
+      "glob": "**/*.scss",
+      "output": "templates/features"
     }
   ]
 }
