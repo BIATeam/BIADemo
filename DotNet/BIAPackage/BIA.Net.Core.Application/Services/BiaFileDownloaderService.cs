@@ -18,6 +18,7 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
+    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.File.Entities;
     using BIA.Net.Core.Domain.File.Mappers;
     using BIA.Net.Core.Domain.Notification.Entities;
@@ -140,8 +141,10 @@ namespace BIA.Net.Core.Application.Services
         {
             try
             {
-                var fileDownloadData = await this.fileDownloadDataRepository.GetEntityAsync(fileGuid) ?? throw new ElementNotFoundException("Unable to retrieve file download data");
-                if (fileDownloadData.RequestByUserId != requestedByUserId)
+                var fileDownloadData = await this.fileDownloadDataRepository.GetResultAsync(this.fileDownloadDataMapper.EntityToDto(), fileGuid, isReadOnlyMode: true)
+                    ?? throw new ElementNotFoundException("Unable to retrieve file download data");
+
+                if (fileDownloadData.RequestByUser.Id != requestedByUserId)
                 {
                     throw new UnauthorizedAccessException("User is not authorized to download this file");
                 }
@@ -164,25 +167,19 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task OnFileToDownloadExpired(FileDownloadData fileDownloadData)
+        public async Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData)
         {
             try
             {
-                var notificationTypeDownloadReady = (int)BiaNotificationTypeId.DownloadReady;
                 var notificationsToDelete = await this.notificationAppService.GetAsync(
-                    includes: [n => n.NotifiedUsers],
+                    isReadOnlyMode: true,
                     filter:
-                        n => n.TypeId == notificationTypeDownloadReady
-                        && n.CreatedById == fileDownloadData.RequestByUserId
+                        n => n.TypeId == (int)BiaNotificationTypeId.DownloadReady
+                        && n.CreatedById == fileDownloadData.RequestByUser.Id
                         && n.JData.Contains(fileDownloadData.Id.ToString()));
 
-                if (notificationsToDelete is not null)
-                {
-                    await this.notificationAppService.RemoveAsync(notificationsToDelete.Id);
-                }
-
-                this.fileDownloadDataRepository.Remove(fileDownloadData);
-                await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
+                await this.notificationAppService.RemoveAsync(notificationsToDelete.Id);
+                await this.fileDownloadDataRepository.DeleteByIdsAsync([fileDownloadData.Id]);
 
                 if (File.Exists(fileDownloadData.FilePath))
                 {
@@ -208,9 +205,10 @@ namespace BIA.Net.Core.Application.Services
                 var fileDownloadToken = await this.fileDownloadTokenRepository.GetAsync(fileGuid, token) ?? throw new ElementNotFoundException("Unable to retrieve file download token");
                 await this.fileDownloadTokenRepository.RemoveAsync(fileDownloadToken);
 
-                await this.EnsureDownloadAvailability(fileDownloadToken.FileDownloadData);
+                var fileDownloadDataDto = this.fileDownloadDataMapper.EntityToDto().Compile().Invoke(fileDownloadToken.FileDownloadData);
+                await this.EnsureDownloadAvailability(fileDownloadDataDto);
 
-                return this.fileDownloadDataMapper.EntityToDto().Compile().Invoke(fileDownloadToken.FileDownloadData);
+                return fileDownloadDataDto;
             }
             catch (Exception ex)
             {
@@ -240,11 +238,11 @@ namespace BIA.Net.Core.Application.Services
             };
         }
 
-        private async Task EnsureDownloadAvailability(FileDownloadData fileDownloadData)
+        private async Task EnsureDownloadAvailability(FileDownloadDataDto fileDownloadData)
         {
-            if (fileDownloadData.ExpiredAtDateTime < DateTime.UtcNow)
+            if (fileDownloadData.AvailabilityDuration.HasValue && fileDownloadData.RequestDateTime.Add(fileDownloadData.AvailabilityDuration.Value) < DateTime.UtcNow)
             {
-                await this.OnFileToDownloadExpired(fileDownloadData);
+                await this.RemoveFileToDownload(fileDownloadData);
                 throw FrontUserException.Create(BiaErrorId.FileToDownloadExpired);
             }
         }

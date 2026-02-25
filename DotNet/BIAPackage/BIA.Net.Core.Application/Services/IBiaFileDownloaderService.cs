@@ -51,10 +51,10 @@ namespace BIA.Net.Core.Application.Services
         Task<FileDownloadDataDto> GetFileDownloadData(Guid fileGuid, string token);
 
         /// <summary>
-        /// Handles the expiration event for a file download. Delete the file from the storage and remove the file download data from the database.
+        /// Delete the file from the storage and remove the file download data from the database.
         /// </summary>
         /// <param name="fileDownloadData">Information about the expired file download.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task OnFileToDownloadExpired(FileDownloadData fileDownloadData);
+        Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData);
     }
 }
