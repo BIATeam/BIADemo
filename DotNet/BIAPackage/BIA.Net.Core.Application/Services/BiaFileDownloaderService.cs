@@ -172,7 +172,7 @@ namespace BIA.Net.Core.Application.Services
                     includes: [n => n.NotifiedUsers],
                     filter:
                         n => n.TypeId == (int)BiaNotificationTypeId.DownloadReady
-                        && n.NotifiedUsers.Any(nu => nu.UserId == fileDownloadData.RequestByUserId)
+                        && n.CreatedById == fileDownloadData.RequestByUserId
                         && n.JData.Contains(fileDownloadData.Id.ToString()));
 
                 if (notificationsToDelete is not null)
@@ -194,6 +194,8 @@ namespace BIA.Net.Core.Application.Services
                 {
                     this.logger.LogError(ex, "Error deleting expired file at path {FilePath}", fileDownloadData.FilePath);
                 }
+
+                throw;
             }
         }
 
@@ -239,7 +241,7 @@ namespace BIA.Net.Core.Application.Services
 
         private async Task EnsureDownloadAvailability(FileDownloadData fileDownloadData)
         {
-            if (fileDownloadData.ExpiredAtDateTime > DateTime.UtcNow)
+            if (fileDownloadData.ExpiredAtDateTime < DateTime.UtcNow)
             {
                 await this.OnFileToDownloadExpired(fileDownloadData);
                 throw FrontUserException.Create(BiaErrorId.FileToDownloadExpired);
