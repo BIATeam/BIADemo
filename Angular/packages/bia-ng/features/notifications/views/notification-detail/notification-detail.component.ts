@@ -119,7 +119,10 @@ export class NotificationDetailComponent implements OnInit, OnDestroy {
       }
 
       if (data?.downloadFileGuid) {
-        this.fileDownloaderService.downloadFile(data.downloadFileGuid);
+        this.fileDownloaderService.downloadFile(
+          data.downloadFileGuid,
+          this.onCancelled.bind(this)
+        );
       }
     }
   }

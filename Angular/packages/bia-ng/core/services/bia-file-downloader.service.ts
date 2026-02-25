@@ -1,6 +1,6 @@
 import { DestroyRef, Injectable, Injector, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, first, map } from 'rxjs';
+import { catchError, finalize, first, map } from 'rxjs';
 import { BiaMessageService } from './bia-message.service';
 import { GenericDas } from './generic-das.service';
 
@@ -15,7 +15,7 @@ export class BiaFileDownloaderService extends GenericDas {
     super(injector, 'files');
   }
 
-  public downloadFile(guid: string): void {
+  public downloadFile(guid: string, onComplete?: () => void): void {
     this.getItem<string>({ endpoint: `${guid}/getdownloadtoken` })
       .pipe(
         first(),
@@ -27,6 +27,9 @@ export class BiaFileDownloaderService extends GenericDas {
         catchError(err => {
           this.biaMessageService.showErrorHttpResponse(err);
           return [];
+        }),
+        finalize(() => {
+          onComplete?.();
         }),
         takeUntilDestroyed(this.destroyRef)
       )
