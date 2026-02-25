@@ -50,15 +50,15 @@
     "Jwt": {
       "Issuer": "BIADemoApi",
       //Regenerate the SecretKey at each installation => It force reauthent => Checks the client version during authentication => and force the client to refresh
-      "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3",
+      "SecretKey": "7C14439A64673E9AF75EE7AF5B71A7C8D901C90B078EB7F2315C153D31B6275B22663F51A898EEEC7027A2911D7D643038AAFE768AF2E47F8488B6129F66AFA3"
     },
     "Roles": [],
     "Cultures": [
       {
         "Label": "English",
         "Code": "en-GB",
-        "AcceptedCodes": ["en-GB", "default", "en"],
-        "IsDefaultForCountryCodes": ["GB"],
+        "AcceptedCodes": [ "en-GB", "default", "en" ],
+        "IsDefaultForCountryCodes": [ "GB" ],
         "DateFormat": "dd/MM/yyyy",
         "TimeFormat": "HH:mm",
         "TimeFormatSec": "HH:mm:ss",
@@ -68,8 +68,8 @@
       {
         "Label": "English US",
         "Code": "en-US",
-        "AcceptedCodes": ["en-US"],
-        "IsDefaultForCountryCodes": ["US"],
+        "AcceptedCodes": [ "en-US" ],
+        "IsDefaultForCountryCodes": [ "US" ],
         "DateFormat": "MM/dd/yyyy",
         "TimeFormat": "h:mm a",
         "TimeFormatSec": "h:mm:ss a",
@@ -79,8 +79,8 @@
       {
         "Label": "Deutsh",
         "Code": "de-DE",
-        "AcceptedCodes": ["de-DE", "de"],
-        "IsDefaultForCountryCodes": ["DE"],
+        "AcceptedCodes": [ "de-DE", "de" ],
+        "IsDefaultForCountryCodes": [ "DE" ],
         "DateFormat": "dd.MM.yyyy",
         "TimeFormat": "HH:mm",
         "TimeFormatSec": "HH:mm:ss a",
@@ -90,8 +90,8 @@
       {
         "Label": "Española",
         "Code": "es-ES",
-        "AcceptedCodes": ["es-ES", "es"],
-        "IsDefaultForCountryCodes": ["ES"],
+        "AcceptedCodes": [ "es-ES", "es" ],
+        "IsDefaultForCountryCodes": [ "ES" ],
         "DateFormat": "dd/MM/yyyy",
         "TimeFormat": "H:mm",
         "TimeFormatSec": "H:mm:ss",
@@ -101,8 +101,8 @@
       {
         "Label": "Española MX",
         "Code": "es-MX",
-        "AcceptedCodes": ["es-MX"],
-        "IsDefaultForCountryCodes": ["MX"],
+        "AcceptedCodes": [ "es-MX" ],
+        "IsDefaultForCountryCodes": [ "MX" ],
         "DateFormat": "dd/MM/yyyy",
         "TimeFormat": "hh:mm a",
         "TimeFormatSec": "hh:mm:ss a",
@@ -112,8 +112,8 @@
       {
         "Label": "Français",
         "Code": "fr-FR",
-        "AcceptedCodes": ["fr-FR", "fr"],
-        "IsDefaultForCountryCodes": ["FR", "MA"],
+        "AcceptedCodes": [ "fr-FR", "fr" ],
+        "IsDefaultForCountryCodes": [ "FR", "MA" ],
         "DateFormat": "dd/MM/yyyy",
         "TimeFormat": "HH:mm",
         "TimeFormatSec": "HH:mm:ss",
@@ -132,44 +132,84 @@
       // BIAToolKit - Begin Partial Config Plane
       // Plane
       {
-        "Names": ["Plane_List_Access", "Plane_Read"],
-        "Roles": ["Admin", "Site_Member"]
+        "Names": [
+          "Plane_List_Access",
+          "Plane_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
       },
       {
-        "Names": ["Plane_Update", "Plane_Save"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Plane_Update",
+          "Plane_Save"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       {
-        "Names": ["Plane_Create", "Plane_Delete", "Plane_Fix"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Plane_Create",
+          "Plane_Fix",
+          "Plane_Delete"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       // BIAToolKit - End Partial Config Plane
       // BIAToolKit - Begin Partial Config Engine
       // Engine
       {
-        "Names": ["Engine_List_Access", "Engine_Read"],
-        "Roles": ["Admin", "Site_Member"]
+        "Names": [
+          "Engine_List_Access",
+          "Engine_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
       },
       {
-        "Names": ["Engine_Update", "Engine_Save"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Engine_Update",
+          "Engine_Save"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       {
-        "Names": ["Engine_Create", "Engine_Delete", "Engine_Fix"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Engine_Create",
+          "Engine_Fix",
+          "Engine_Delete"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       // BIAToolKit - End Partial Config Engine
       // BIAToolKit - Begin Partial ConfigForOption Country
       // Country
       {
         "Name": "Country_Options",
-        "Roles": ["Admin", "User"]
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       // BIAToolKit - End Partial ConfigForOption Country
       // Airport
       {
         "Name": "Airport_Options",
-        "Roles": ["Admin", "User"]
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       {
         "Names": [
@@ -180,7 +220,9 @@
           "Airport_Delete",
           "Airport_Save"
         ],
-        "Roles": ["Admin"]
+        "Roles": [
+          "Admin"
+        ]
       },
       // BIAToolKit - Begin Partial Config AircraftMaintenanceCompany
       // AircraftMaintenanceCompany
@@ -189,25 +231,38 @@
           "AircraftMaintenanceCompany_Create",
           "AircraftMaintenanceCompany_Delete"
         ],
-        "Roles": ["Admin"]
+        "Roles": [
+          "Admin"
+        ]
       },
       {
         "Names": [
           "AircraftMaintenanceCompany_Update",
           "AircraftMaintenanceCompany_Save"
         ],
-        "Roles": ["Admin", "AircraftMaintenanceCompany_Admin"]
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Admin"
+        ]
       },
       {
-        "Names": ["AircraftMaintenanceCompany_List_Access"],
-        "Roles": ["Admin", "AircraftMaintenanceCompany_MemberOfOne"]
+        "Names": [
+          "AircraftMaintenanceCompany_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_MemberOfOne"
+        ]
       },
       {
         "Names": [
           "AircraftMaintenanceCompany_Read",
           "AircraftMaintenanceCompany_Member_List_Access"
         ],
-        "Roles": ["Admin", "AircraftMaintenanceCompany_Member"]
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Member"
+        ]
       },
       {
         "Names": [
@@ -245,7 +300,10 @@
       // PlaneType
       {
         "Name": "PlaneType_Options",
-        "Roles": ["Admin", "User"]
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       // BIAToolKit - End Partial ConfigForOption PlaneType
       // BIAToolKit - Begin Partial Config MaintenanceTeam
@@ -253,8 +311,8 @@
       {
         "Names": [
           "MaintenanceTeam_Create",
-          "MaintenanceTeam_Delete",
-          "MaintenanceTeam_Fix"
+          "MaintenanceTeam_Fix",
+          "MaintenanceTeam_Delete"
         ],
         "Roles": [
           "Admin",
@@ -265,7 +323,10 @@
         ]
       },
       {
-        "Names": ["MaintenanceTeam_Update", "MaintenanceTeam_Save"],
+        "Names": [
+          "MaintenanceTeam_Update",
+          "MaintenanceTeam_Save"
+        ],
         "Roles": [
           "Admin",
           "AircraftMaintenanceCompany_Admin",
@@ -276,7 +337,9 @@
         ]
       },
       {
-        "Names": ["MaintenanceTeam_List_Access"],
+        "Names": [
+          "MaintenanceTeam_List_Access"
+        ],
         "Roles": [
           "Admin",
           "AircraftMaintenanceCompany_Member",
@@ -284,7 +347,10 @@
         ]
       },
       {
-        "Names": ["MaintenanceTeam_Read", "MaintenanceTeam_Member_List_Access"],
+        "Names": [
+          "MaintenanceTeam_Read",
+          "MaintenanceTeam_Member_List_Access"
+        ],
         "Roles": [
           "Admin",
           "AircraftMaintenanceCompany_Member",
@@ -328,31 +394,65 @@
       // BIAToolKit - Begin Partial Config Pilot
       // Pilot
       {
-        "Names": ["Pilot_List_Access", "Pilot_Read"],
-        "Roles": ["Admin", "Site_Member"]
+        "Names": [
+          "Pilot_List_Access",
+          "Pilot_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
       },
       {
-        "Names": ["Pilot_Update", "Pilot_Save"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Pilot_Update",
+          "Pilot_Save"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       {
-        "Names": ["Pilot_Create", "Pilot_Delete", "Pilot_Fix"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Pilot_Create",
+          "Pilot_Fix",
+          "Pilot_Delete"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       // BIAToolKit - End Partial Config Pilot
       // BIAToolKit - Begin Partial Config Flight
       // Flight
       {
-        "Names": ["Flight_List_Access", "Flight_Read"],
-        "Roles": ["Admin", "Site_Member"]
+        "Names": [
+          "Flight_List_Access",
+          "Flight_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
       },
       {
-        "Names": ["Flight_Update", "Flight_Save"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Flight_Update",
+          "Flight_Save"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       {
-        "Names": ["Flight_Create", "Flight_Delete", "Flight_Fix"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "Flight_Create",
+          "Flight_Fix",
+          "Flight_Delete"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       // BIAToolKit - End Partial Config Flight
       // End BIAToolKit Generation Ignore
@@ -361,17 +461,26 @@
       // Site
       {
         "Name": "Site_Options",
-        "Roles": ["Admin", "User"]
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       // AircraftMaintenanceCompany
       {
         "Name": "AircraftMaintenanceCompany_Options",
-        "Roles": ["Admin", "User"]
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       // Plane
       {
         "Name": "Plane_Options",
-        "Roles": ["Admin", "User"]
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       // MaintenanceContract
       {
@@ -379,25 +488,48 @@
           "MaintenanceContract_List_Access",
           "MaintenanceContract_Read"
         ],
-        "Roles": ["Admin", "Site_Member"]
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
       },
       {
-        "Names": ["MaintenanceContract_Update", "MaintenanceContract_Save"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "MaintenanceContract_Update",
+          "MaintenanceContract_Save"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       {
-        "Names": ["MaintenanceContract_Create", "MaintenanceContract_Delete"],
-        "Roles": ["Site_Admin"]
+        "Names": [
+          "MaintenanceContract_Create",
+          "MaintenanceContract_Delete"
+        ],
+        "Roles": [
+          "Site_Admin"
+        ]
       },
       // Hangfire
       {
-        "Names": ["Hangfire_Run_Worker", "Hangfire_Access"],
-        "Roles": ["Admin", "Site_Admin", "Site_Member"]
+        "Names": [
+          "Hangfire_Run_Worker",
+          "Hangfire_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
       },
       // Part
       {
         "Name": "Part_Options",
-        "Roles": ["Admin", "Site_Member"]
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
       },
       // PlaneType
       {
@@ -409,18 +541,29 @@
           "PlaneType_Delete",
           "PlaneType_Save"
         ],
-        "Roles": ["Admin"]
+        "Roles": [
+          "Admin"
+        ]
       },
       // End BIADemo
       // Home
       {
         "Name": "Home_Access",
-        "Roles": ["Admin", "Site_Admin", "Site_Member", "User"]
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member",
+          "User"
+        ]
       },
       // Log
       {
         "Name": "Logs_Create",
-        "Roles": ["Admin", "Site_Admin", "Site_Member"]
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
       },
       // Member
       //{
@@ -434,31 +577,55 @@
       //},
       // Role
       {
-        "Names": ["Roles_Options"],
-        "Roles": ["Admin", "UserManager", "User"]
+        "Names": [
+          "Roles_Options"
+        ],
+        "Roles": [
+          "Admin",
+          "UserManager",
+          "User"
+        ]
       },
       {
-        "Names": ["Roles_List"],
-        "Roles": ["Admin", "Site_Admin"]
+        "Names": [
+          "Roles_List"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
       },
       {
         "Name": "Roles_List_For_Current_User",
-        "Roles": ["User", "Admin", "Site_Admin"]
+        "Roles": [
+          "User",
+          "Admin",
+          "Site_Admin"
+        ]
       },
       // Language
       {
         "Name": "Languages_Options",
-        "Roles": ["User", "Admin"]
+        "Roles": [
+          "User",
+          "Admin"
+        ]
       },
       // Ldap Domain
       {
         "Name": "LdapDomains_List",
-        "Roles": ["Admin", "UserManager", "Site_Admin"]
+        "Roles": [
+          "Admin",
+          "UserManager",
+          "Site_Admin"
+        ]
       },
       // ProfileImage
       {
         "Name": "ProfileImage_Get",
-        "Roles": ["User"]
+        "Roles": [
+          "User"
+        ]
       },
       // Site
       {
@@ -469,11 +636,20 @@
           "Site_Delete",
           "Site_Save"
         ],
-        "Roles": ["Admin"]
+        "Roles": [
+          "Admin"
+        ]
       },
       {
-        "Names": ["Site_List_Access", "Site_Read", "Site_Member_List_Access"],
-        "Roles": ["Admin", "Site_Member"]
+        "Names": [
+          "Site_List_Access",
+          "Site_Read",
+          "Site_Member_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
       },
       {
         "Names": [
@@ -483,7 +659,10 @@
           "Site_Member_Delete",
           "Site_Member_Save"
         ],
-        "Roles": ["Admin", "Site_Admin"]
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
       },
       {
         "Names": [
@@ -491,39 +670,76 @@
           "Site_View_Update_TeamView",
           "Site_View_Set_Default_TeamView"
         ],
-        "Roles": ["Admin", "Site_Admin"]
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
       },
       {
-        "Names": ["Site_View_Assign_To_Team"],
-        "Roles": ["Admin", "Site_Admin"],
+        "Names": [
+          "Site_View_Assign_To_Team"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ],
         "IsTransversal": true
       },
       // Team
       {
-        "Names": ["Team_Access_All"],
-        "Roles": ["Admin"]
+        "Names": [
+          "Team_Access_All"
+        ],
+        "Roles": [
+          "Admin"
+        ]
       },
       {
-        "Names": ["Team_List_Access", "Team_Options"],
-        "Roles": ["User"]
+        "Names": [
+          "Team_List_Access",
+          "Team_Options"
+        ],
+        "Roles": [
+          "User"
+        ]
       },
       {
         "Name": "Team_Set_Default_Team",
-        "Roles": ["Admin", "Site_Admin", "Site_Member"]
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
       },
       {
         "Name": "Team_Set_Default_Roles",
-        "Roles": ["User", "Admin", "Site_Admin", "Site_Member"]
+        "Roles": [
+          "User",
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
       },
       // User
       {
-        "Names": ["User_Options"],
-        "Roles": ["Admin", "User"]
+        "Names": [
+          "User_Options"
+        ],
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       // View
       {
-        "Names": ["View_List", "View_Read"],
-        "Roles": ["Admin", "User"]
+        "Names": [
+          "View_List",
+          "View_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       {
         "Names": [
@@ -532,7 +748,9 @@
           "View_Delete_UserView",
           "View_Set_Default_UserView"
         ],
-        "Roles": ["User"]
+        "Roles": [
+          "User"
+        ]
       },
       // Notifications
       {
@@ -542,26 +760,43 @@
           "Notification_Read",
           "NotificationType_Options"
         ],
-        "Roles": ["Admin", "User"]
+        "Roles": [
+          "Admin",
+          "User"
+        ]
       },
       {
-        "Names": ["Notification_Update", "Notification_Create"],
-        "Roles": ["Admin"]
+        "Names": [
+          "Notification_Update",
+          "Notification_Create"
+        ],
+        "Roles": [
+          "Admin"
+        ]
       },
       // SupportAdmin
       {
-        "Names": ["Impersonation_Connection_Rights"],
-        "Roles": ["SupportAdmin"]
+        "Names": [
+          "Impersonation_Connection_Rights"
+        ],
+        "Roles": [
+          "SupportAdmin"
+        ]
       },
       {
         "Name": "Background_Task_Admin",
         "LightToken": true,
-        "Roles": ["Admin", "Back_Admin"]
+        "Roles": [
+          "Admin",
+          "Back_Admin"
+        ]
       },
       {
         "Name": "Background_Task_Read_Only",
         "LightToken": true,
-        "Roles": ["Back_Read_Only"]
+        "Roles": [
+          "Back_Read_Only"
+        ]
       },
       // Announcement
       {
@@ -572,12 +807,16 @@
           "Announcement_Create",
           "Announcement_Delete"
         ],
-        "Roles": ["Admin"]
+        "Roles": [
+          "Admin"
+        ]
       },
       // AnnouncementType
       {
         "Name": "AnnouncementType_Options",
-        "Roles": ["Admin"]
+        "Roles": [
+          "Admin"
+        ]
       }
     ]
     // endif

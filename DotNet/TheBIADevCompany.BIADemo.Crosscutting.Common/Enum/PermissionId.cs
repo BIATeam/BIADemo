@@ -101,11 +101,363 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         Site_Options,
 #endif
 
-        // BIAToolKit - Begin Permissions
-        // BIAToolKit - End Permissions
+        // BIAToolKit - Begin PermissionId
+        // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial PermissionId Plane
 
-        // BIAToolKit - Begin PermissionsForOption
-        // BIAToolKit - End PermissionsForOption
+        /// <summary>
+        /// Plane Create.
+        /// </summary>
+        Plane_Create,
+
+        /// <summary>
+        /// Plane Delete.
+        /// </summary>
+        Plane_Delete,
+
+        /// <summary>
+        /// Plane List Access.
+        /// </summary>
+        Plane_List_Access,
+
+        /// <summary>
+        /// Plane Read.
+        /// </summary>
+        Plane_Read,
+
+        /// <summary>
+        /// Plane Save.
+        /// </summary>
+        Plane_Save,
+
+        /// <summary>
+        /// Plane Update.
+        /// </summary>
+        Plane_Update,
+
+        /// <summary>
+        /// Plane Fix.
+        /// </summary>
+        Plane_Fix,
+
+        // BIAToolKit - End Partial PermissionId Plane
+        // BIAToolKit - Begin Partial PermissionId Engine
+
+        /// <summary>
+        /// Engine Create.
+        /// </summary>
+        Engine_Create,
+
+        /// <summary>
+        /// Engine Delete.
+        /// </summary>
+        Engine_Delete,
+
+        /// <summary>
+        /// Engine List Access.
+        /// </summary>
+        Engine_List_Access,
+
+        /// <summary>
+        /// Engine Read.
+        /// </summary>
+        Engine_Read,
+
+        /// <summary>
+        /// Engine Save.
+        /// </summary>
+        Engine_Save,
+
+        /// <summary>
+        /// Engine Update.
+        /// </summary>
+        Engine_Update,
+
+        /// <summary>
+        /// Engine Fix.
+        /// </summary>
+        Engine_Fix,
+
+        // BIAToolKit - End Partial PermissionId Engine
+        // BIAToolKit - Begin Partial PermissionId AircraftMaintenanceCompany
+
+        /// <summary>
+        /// Aircraft Maintenance Company Create.
+        /// </summary>
+        AircraftMaintenanceCompany_Create,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Delete.
+        /// </summary>
+        AircraftMaintenanceCompany_Delete,
+
+        /// <summary>
+        /// Aircraft Maintenance Company List Access.
+        /// </summary>
+        AircraftMaintenanceCompany_List_Access,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Read.
+        /// </summary>
+        AircraftMaintenanceCompany_Read,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Save.
+        /// </summary>
+        AircraftMaintenanceCompany_Save,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Update.
+        /// </summary>
+        AircraftMaintenanceCompany_Update,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Member Update.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_Update,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Member Delete.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_Delete,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Member Save.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_Save,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Member Create.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_Create,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Member Read.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_Read,
+
+        /// <summary>
+        /// Aircraft Maintenance Company Member List Access.
+        /// </summary>
+        AircraftMaintenanceCompany_Member_List_Access,
+
+        /// <summary>
+        /// Aircraft Maintenance Company View Add Team View.
+        /// </summary>
+        AircraftMaintenanceCompany_View_Add_TeamView,
+
+        /// <summary>
+        /// Aircraft Maintenance Company View Update Team View.
+        /// </summary>
+        AircraftMaintenanceCompany_View_Update_TeamView,
+
+        /// <summary>
+        /// Aircraft Maintenance Company View Set Default Team View.
+        /// </summary>
+        AircraftMaintenanceCompany_View_Set_Default_TeamView,
+
+        /// <summary>
+        /// Aircraft Maintenance Company View Assign To Team.
+        /// </summary>
+        AircraftMaintenanceCompany_View_Assign_To_Team,
+
+        // BIAToolKit - End Partial PermissionId AircraftMaintenanceCompany
+        // BIAToolKit - Begin Partial PermissionId MaintenanceTeam
+
+        /// <summary>
+        /// Maintenance Team Create.
+        /// </summary>
+        MaintenanceTeam_Create,
+
+        /// <summary>
+        /// Maintenance Team Delete.
+        /// </summary>
+        MaintenanceTeam_Delete,
+
+        /// <summary>
+        /// Maintenance Team List Access.
+        /// </summary>
+        MaintenanceTeam_List_Access,
+
+        /// <summary>
+        /// Maintenance Team Read.
+        /// </summary>
+        MaintenanceTeam_Read,
+
+        /// <summary>
+        /// Maintenance Team Save.
+        /// </summary>
+        MaintenanceTeam_Save,
+
+        /// <summary>
+        /// Maintenance Team Update.
+        /// </summary>
+        MaintenanceTeam_Update,
+
+        /// <summary>
+        /// Maintenance Team Member Update.
+        /// </summary>
+        MaintenanceTeam_Member_Update,
+
+        /// <summary>
+        /// Maintenance Team Member Delete.
+        /// </summary>
+        MaintenanceTeam_Member_Delete,
+
+        /// <summary>
+        /// Maintenance Team Member Save.
+        /// </summary>
+        MaintenanceTeam_Member_Save,
+
+        /// <summary>
+        /// Maintenance Team Member Create.
+        /// </summary>
+        MaintenanceTeam_Member_Create,
+
+        /// <summary>
+        /// Maintenance Team Member Read.
+        /// </summary>
+        MaintenanceTeam_Member_Read,
+
+        /// <summary>
+        /// Maintenance Team Member List Access.
+        /// </summary>
+        MaintenanceTeam_Member_List_Access,
+
+        /// <summary>
+        /// Maintenance Team View Add Team View.
+        /// </summary>
+        MaintenanceTeam_View_Add_TeamView,
+
+        /// <summary>
+        /// Maintenance Team View Update Team View.
+        /// </summary>
+        MaintenanceTeam_View_Update_TeamView,
+
+        /// <summary>
+        /// Maintenance Team View Set Default Team View.
+        /// </summary>
+        MaintenanceTeam_View_Set_Default_TeamView,
+
+        /// <summary>
+        /// Maintenance Team View Assign To Team.
+        /// </summary>
+        MaintenanceTeam_View_Assign_To_Team,
+
+        /// <summary>
+        /// Maintenance Team Fix.
+        /// </summary>
+        MaintenanceTeam_Fix,
+
+        // BIAToolKit - End Partial PermissionId MaintenanceTeam
+        // BIAToolKit - Begin Partial PermissionId Pilot
+
+        /// <summary>
+        /// Pilot Create.
+        /// </summary>
+        Pilot_Create,
+
+        /// <summary>
+        /// Pilot Delete.
+        /// </summary>
+        Pilot_Delete,
+
+        /// <summary>
+        /// Pilot List Access.
+        /// </summary>
+        Pilot_List_Access,
+
+        /// <summary>
+        /// Pilot Read.
+        /// </summary>
+        Pilot_Read,
+
+        /// <summary>
+        /// Pilot Save.
+        /// </summary>
+        Pilot_Save,
+
+        /// <summary>
+        /// Pilot Update.
+        /// </summary>
+        Pilot_Update,
+
+        /// <summary>
+        /// Pilot Fix.
+        /// </summary>
+        Pilot_Fix,
+
+        // BIAToolKit - End Partial PermissionId Pilot
+        // BIAToolKit - Begin Partial PermissionId Flight
+
+        /// <summary>
+        /// Flight Create.
+        /// </summary>
+        Flight_Create,
+
+        /// <summary>
+        /// Flight Delete.
+        /// </summary>
+        Flight_Delete,
+
+        /// <summary>
+        /// Flight List Access.
+        /// </summary>
+        Flight_List_Access,
+
+        /// <summary>
+        /// Flight Read.
+        /// </summary>
+        Flight_Read,
+
+        /// <summary>
+        /// Flight Save.
+        /// </summary>
+        Flight_Save,
+
+        /// <summary>
+        /// Flight Update.
+        /// </summary>
+        Flight_Update,
+
+        /// <summary>
+        /// Flight Fix.
+        /// </summary>
+        Flight_Fix,
+
+        // BIAToolKit - End Partial PermissionId Flight
+        // End BIAToolKit Generation Ignore
+        // BIAToolKit - End PermissionId
+
+        // BIAToolKit - Begin PermissionIdForOption
+        // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial PermissionIdForOption Country
+
+        /// <summary>
+        /// Country Options.
+        /// </summary>
+        Country_Options,
+
+        // BIAToolKit - End Partial PermissionIdForOption Country
+
+        // BIAToolKit - Begin Partial PermissionIdForOption Airport
+
+        /// <summary>
+        /// Airport Options.
+        /// </summary>
+        Airport_Options,
+
+        // BIAToolKit - End Partial PermissionIdForOption Airport
+        // BIAToolKit - Begin Partial PermissionIdForOption PlaneType
+
+        /// <summary>
+        /// Plane Type Options.
+        /// </summary>
+        PlaneType_Options,
+
+        // BIAToolKit - End Partial PermissionIdForOption PlaneType
+        // End BIAToolKit Generation Ignore
+        // BIAToolKit - End PermissionIdForOption
 
         // Begin BIADemo
 
@@ -225,355 +577,5 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         Airport_Update,
 
         // End BIADemo
-        // Begin BIAToolKit Generation Ignore
-        // BIAToolKit - Begin Partial Permissions Plane
-
-        /// <summary>
-        /// Plane Create.
-        /// </summary>
-        Plane_Create,
-
-        /// <summary>
-        /// Plane Delete.
-        /// </summary>
-        Plane_Delete,
-
-        /// <summary>
-        /// Plane List Access.
-        /// </summary>
-        Plane_List_Access,
-
-        /// <summary>
-        /// Plane Read.
-        /// </summary>
-        Plane_Read,
-
-        /// <summary>
-        /// Plane Save.
-        /// </summary>
-        Plane_Save,
-
-        /// <summary>
-        /// Plane Update.
-        /// </summary>
-        Plane_Update,
-
-        /// <summary>
-        /// Plane Fix.
-        /// </summary>
-        Plane_Fix,
-
-        // BIAToolKit - End Partial Permissions Plane
-        // BIAToolKit - Begin Partial Permissions Engine
-
-        /// <summary>
-        /// Engine Create.
-        /// </summary>
-        Engine_Create,
-
-        /// <summary>
-        /// Engine Delete.
-        /// </summary>
-        Engine_Delete,
-
-        /// <summary>
-        /// Engine List Access.
-        /// </summary>
-        Engine_List_Access,
-
-        /// <summary>
-        /// Engine Read.
-        /// </summary>
-        Engine_Read,
-
-        /// <summary>
-        /// Engine Save.
-        /// </summary>
-        Engine_Save,
-
-        /// <summary>
-        /// Engine Update.
-        /// </summary>
-        Engine_Update,
-
-        /// <summary>
-        /// Engine Fix.
-        /// </summary>
-        Engine_Fix,
-
-        // BIAToolKit - End Partial Permissions Engine
-        // BIAToolKit - Begin Partial Permissions AircraftMaintenanceCompany
-
-        /// <summary>
-        /// Aircraft Maintenance Company Create.
-        /// </summary>
-        AircraftMaintenanceCompany_Create,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Delete.
-        /// </summary>
-        AircraftMaintenanceCompany_Delete,
-
-        /// <summary>
-        /// Aircraft Maintenance Company List Access.
-        /// </summary>
-        AircraftMaintenanceCompany_List_Access,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Read.
-        /// </summary>
-        AircraftMaintenanceCompany_Read,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Save.
-        /// </summary>
-        AircraftMaintenanceCompany_Save,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Update.
-        /// </summary>
-        AircraftMaintenanceCompany_Update,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Member Update.
-        /// </summary>
-        AircraftMaintenanceCompany_Member_Update,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Member Delete.
-        /// </summary>
-        AircraftMaintenanceCompany_Member_Delete,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Member Save.
-        /// </summary>
-        AircraftMaintenanceCompany_Member_Save,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Member Create.
-        /// </summary>
-        AircraftMaintenanceCompany_Member_Create,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Member Read.
-        /// </summary>
-        AircraftMaintenanceCompany_Member_Read,
-
-        /// <summary>
-        /// Aircraft Maintenance Company Member List Access.
-        /// </summary>
-        AircraftMaintenanceCompany_Member_List_Access,
-
-        /// <summary>
-        /// Aircraft Maintenance Company View Add Team View.
-        /// </summary>
-        AircraftMaintenanceCompany_View_Add_TeamView,
-
-        /// <summary>
-        /// Aircraft Maintenance Company View Update Team View.
-        /// </summary>
-        AircraftMaintenanceCompany_View_Update_TeamView,
-
-        /// <summary>
-        /// Aircraft Maintenance Company View Set Default Team View.
-        /// </summary>
-        AircraftMaintenanceCompany_View_Set_Default_TeamView,
-
-        /// <summary>
-        /// Aircraft Maintenance Company View Assign To Team.
-        /// </summary>
-        AircraftMaintenanceCompany_View_Assign_To_Team,
-
-        // BIAToolKit - End Partial Permissions AircraftMaintenanceCompany
-        // BIAToolKit - Begin Partial Permissions MaintenanceTeam
-
-        /// <summary>
-        /// Maintenance Team Create.
-        /// </summary>
-        MaintenanceTeam_Create,
-
-        /// <summary>
-        /// Maintenance Team Delete.
-        /// </summary>
-        MaintenanceTeam_Delete,
-
-        /// <summary>
-        /// Maintenance Team List Access.
-        /// </summary>
-        MaintenanceTeam_List_Access,
-
-        /// <summary>
-        /// Maintenance Team Read.
-        /// </summary>
-        MaintenanceTeam_Read,
-
-        /// <summary>
-        /// Maintenance Team Save.
-        /// </summary>
-        MaintenanceTeam_Save,
-
-        /// <summary>
-        /// Maintenance Team Update.
-        /// </summary>
-        MaintenanceTeam_Update,
-
-        /// <summary>
-        /// Maintenance Team Member Update.
-        /// </summary>
-        MaintenanceTeam_Member_Update,
-
-        /// <summary>
-        /// Maintenance Team Member Delete.
-        /// </summary>
-        MaintenanceTeam_Member_Delete,
-
-        /// <summary>
-        /// Maintenance Team Member Save.
-        /// </summary>
-        MaintenanceTeam_Member_Save,
-
-        /// <summary>
-        /// Maintenance Team Member Create.
-        /// </summary>
-        MaintenanceTeam_Member_Create,
-
-        /// <summary>
-        /// Maintenance Team Member Read.
-        /// </summary>
-        MaintenanceTeam_Member_Read,
-
-        /// <summary>
-        /// Maintenance Team Member List Access.
-        /// </summary>
-        MaintenanceTeam_Member_List_Access,
-
-        /// <summary>
-        /// Maintenance Team View Add Team View.
-        /// </summary>
-        MaintenanceTeam_View_Add_TeamView,
-
-        /// <summary>
-        /// Maintenance Team View Update Team View.
-        /// </summary>
-        MaintenanceTeam_View_Update_TeamView,
-
-        /// <summary>
-        /// Maintenance Team View Set Default Team View.
-        /// </summary>
-        MaintenanceTeam_View_Set_Default_TeamView,
-
-        /// <summary>
-        /// Maintenance Team View Assign To Team.
-        /// </summary>
-        MaintenanceTeam_View_Assign_To_Team,
-
-        /// <summary>
-        /// Maintenance Team Fix.
-        /// </summary>
-        MaintenanceTeam_Fix,
-
-        // BIAToolKit - End Partial Permissions MaintenanceTeam
-        // BIAToolKit - Begin Partial Permissions Pilot
-
-        /// <summary>
-        /// Pilot Create.
-        /// </summary>
-        Pilot_Create,
-
-        /// <summary>
-        /// Pilot Delete.
-        /// </summary>
-        Pilot_Delete,
-
-        /// <summary>
-        /// Pilot List Access.
-        /// </summary>
-        Pilot_List_Access,
-
-        /// <summary>
-        /// Pilot Read.
-        /// </summary>
-        Pilot_Read,
-
-        /// <summary>
-        /// Pilot Save.
-        /// </summary>
-        Pilot_Save,
-
-        /// <summary>
-        /// Pilot Update.
-        /// </summary>
-        Pilot_Update,
-
-        /// <summary>
-        /// Pilot Fix.
-        /// </summary>
-        Pilot_Fix,
-
-        // BIAToolKit - End Partial Permissions Pilot
-        // BIAToolKit - Begin Partial Permissions Flight
-
-        /// <summary>
-        /// Flight Create.
-        /// </summary>
-        Flight_Create,
-
-        /// <summary>
-        /// Flight Delete.
-        /// </summary>
-        Flight_Delete,
-
-        /// <summary>
-        /// Flight List Access.
-        /// </summary>
-        Flight_List_Access,
-
-        /// <summary>
-        /// Flight Read.
-        /// </summary>
-        Flight_Read,
-
-        /// <summary>
-        /// Flight Save.
-        /// </summary>
-        Flight_Save,
-
-        /// <summary>
-        /// Flight Update.
-        /// </summary>
-        Flight_Update,
-
-        /// <summary>
-        /// Flight Fix.
-        /// </summary>
-        Flight_Fix,
-
-        // BIAToolKit - End Partial Permissions Flight
-        // BIAToolKit - Begin Partial RightsForOption Country
-
-        /// <summary>
-        /// Country Options.
-        /// </summary>
-        Country_Options,
-
-        // BIAToolKit - End Partial RightsForOption Country
-
-        // BIAToolKit - Begin Partial RightsForOption Airport
-
-        /// <summary>
-        /// Airport Options.
-        /// </summary>
-        Airport_Options,
-
-        // BIAToolKit - End Partial RightsForOption Airport
-        // BIAToolKit - Begin Partial RightsForOption PlaneType
-
-        /// <summary>
-        /// Plane Type Options.
-        /// </summary>
-        PlaneType_Options,
-
-        // BIAToolKit - End Partial RightsForOption PlaneType
-        // End BIAToolKit Generation Ignore
     }
 }

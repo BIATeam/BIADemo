@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api
 {
     using System;
+    using System.Reflection.PortableExecutable;
     using BIA.Net.Core.Application.Authentication;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
@@ -130,7 +131,10 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
                     .WithExposedHeaders(BiaConstants.HttpHeaders.TotalCount));
             }
 
-            app.UseResponseCompression();
+            app.UseWhen(
+                context => !context.Request.Path.StartsWithSegments("/hangfireAdmin")
+                        && !context.Request.Path.StartsWithSegments("/hangfire"),
+                appBuilder => appBuilder.UseResponseCompression());
             app.UseRequestDecompression();
 
             app.UseRouting();

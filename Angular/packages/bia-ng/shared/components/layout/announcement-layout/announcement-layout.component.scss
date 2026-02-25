@@ -22,20 +22,72 @@
 
   .announcement-content-container {
     overflow: hidden;
-    white-space: nowrap;
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     background: var(--p-surface-300);
 
     .announcement-content {
       font-size: 15px;
-      display: inline-block;
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       will-change: transform;
-      transform: translateX(0); // valeur initiale
+      text-align: center;
+      padding: 0 1rem;
+
+      &.announcement-enter {
+        animation: slideInFromTop var(--transition-duration) ease-out forwards;
+      }
+
+      &.announcement-stay {
+        animation: stay var(--display-duration) ease-in-out forwards;
+      }
+
+      &.announcement-exit {
+        animation: slideOutToBottom var(--transition-duration) ease-in forwards;
+      }
     }
   }
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes stay {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutToBottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+:host {
+  --transition-duration: 500ms;
+  --display-duration: 3000ms;
 }
 
 :host-context(html.dark-theme) {
@@ -48,12 +100,6 @@
 }
 
 :host ::ng-deep {
-  .announcement-separator {
-    margin: 0rem 0.9rem;
-    font-size: 1.3rem;
-    color: var(--p-slate-600);
-  }
-
   .announcement-icon {
     margin-right: 0.4rem;
     font-size: 1.2rem;

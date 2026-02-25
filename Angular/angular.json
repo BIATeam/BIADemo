@@ -35,7 +35,10 @@
           "builder": "@angular/build:application",
           "options": {
             "stylePreprocessorOptions": {
-              "includePaths": ["src/styles", "packages/bia-ng/scss"]
+              "includePaths": [
+                "src/styles",
+                "node_modules/@bia-team/bia-ng/styles"
+              ]
             },
             "outputPath": {
               "base": "dist/BIADemo",
@@ -105,8 +108,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 }
               ]
             },

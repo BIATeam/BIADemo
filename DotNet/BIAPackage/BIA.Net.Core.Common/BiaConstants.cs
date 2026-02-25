@@ -231,5 +231,21 @@ namespace BIA.Net.Core.Common
             /// </summary>
             public const string IsFromRoleApi = "IsFromRoleApi";
         }
+
+        /// <summary>
+        /// Claims.
+        /// </summary>
+        public static class Claims
+        {
+            /// <summary>
+            /// The role identifier.
+            /// </summary>
+            public const string RoleIds = "urn:bia:claims:role_ids";
+
+            /// <summary>
+            /// Claim type for compact permission IDs.
+            /// </summary>
+            public const string PermissionIds = "urn:bia:claims:permission_ids";
+        }
     }
 }

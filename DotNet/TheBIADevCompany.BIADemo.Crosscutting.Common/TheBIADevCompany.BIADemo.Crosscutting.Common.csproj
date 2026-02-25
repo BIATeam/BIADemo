@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="BIA.Net.Core.Common" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
@@ -21,8 +22,5 @@
 	  <Compile Remove="**\*Error*.cs" />
 	  <Compile Remove="**\*Notification*.cs" />
 	  <Compile Remove="**\*Team*.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
   </ItemGroup>
 </Project>

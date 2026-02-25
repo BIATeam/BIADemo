@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
 		<!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->

@@ -7,6 +7,7 @@ import {
   Input,
   OnInit,
   Output,
+  signal,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
@@ -16,19 +17,17 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
 } from '@angular/forms';
+import { AuthService, BiaMessageService } from '@bia-team/bia-ng/core';
+import { BiaFieldConfig } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AuthService,
-  BiaMessageService,
-} from 'packages/bia-ng/core/public-api';
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
+import { BiaCalcTableCellComponent } from '../bia-calc-table-cell/bia-calc-table-cell.component';
 import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from '../bia-table-footer-controller/bia-table-footer-controller.component';
@@ -57,6 +56,7 @@ import { BiaTableComponent } from '../bia-table/bia-table.component';
     AsyncPipe,
     TranslateModule,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class BiaCalcTableComponent<TDto extends { id: number | string }>
@@ -72,12 +72,17 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   public form: UntypedFormGroup;
   public element: TDto = <TDto>{};
   public hasChanged = false;
-  protected currentRow: HTMLElement;
-  protected currentInput: HTMLElement;
+  protected currentRow: HTMLTableRowElement;
   protected sub = new Subscription();
-  protected isInComplexInput = false;
+  protected complexInputState: 'idle' | 'opening' | 'active' | 'closing' =
+    'idle';
+  protected isFocusingOut = false;
   public footerRowData: any;
   public editFooter = false;
+
+  // Signals pour la gestion de l'édition
+  public editingRowId = signal<number | string | null>(null);
+  public editFooterSignal = signal<boolean>(false);
 
   specificInputTemplate: TemplateRef<any>;
 
@@ -159,8 +164,8 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('initForm not Implemented');
   }
 
-  public isFooter(element: any) {
-    return element.id === 0 || element.id === '';
+  public isFooter(rowData: any): boolean {
+    return rowData?.id === 0 || rowData?.id === '';
   }
 
   public onChange() {
@@ -183,7 +188,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     }
   }
 
-  public initEditableRow(rowData: any) {
+  public initEditableRow(rowData: any, cancelRowEditing = true) {
     if (
       (this.canEdit === true || this.canAdd === true) &&
       (!rowData ||
@@ -196,7 +201,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
               this.editFooter !== true))))
     ) {
       if (this.hasChanged === true) {
-        if (!rowData || rowData.id !== this.form.value.id) {
+        if (!rowData) {
           if (this.form.valid) {
             this.onSubmit();
           } else {
@@ -206,26 +211,34 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
           }
         }
       } else {
-        this.cancel();
-        this.initRowEdit(rowData);
+        if (cancelRowEditing) {
+          this.cancel();
+          this.initRowEdit(rowData);
+        }
       }
     }
   }
 
   public initRowEdit(rowData: any) {
     if (rowData) {
+      this.complexInputState = 'idle';
       this.element = rowData;
       if (rowData.id === 0 || rowData.id === '') {
         if (this.canAdd === true) {
           this.editFooter = true;
+          this.editFooterSignal.set(true);
+          this.editingRowId.set(null);
           this.isEditing.emit(true);
         }
       } else {
         this.editFooter = false;
+        this.editFooterSignal.set(false);
         if (this.canEdit === true) {
           this.table?.initRowEdit(rowData);
+          this.editingRowId.set(rowData.id);
           this.isEditing.emit(true);
         } else {
+          this.editingRowId.set(null);
           this.isEditing.emit(false);
         }
       }
@@ -241,6 +254,8 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
       this.table.editingRowKeys = {};
     }
     this.editFooter = false;
+    this.editFooterSignal.set(false);
+    this.editingRowId.set(null);
     this.isEditing.emit(false);
   }
 
@@ -262,45 +277,66 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     throw new Error('onSubmit not Implemented');
   }
 
-  public onFocusout() {
-    // stop the onFocusout after this code this.currentRow?.focus();
-    // because it is launched by the onfocusout of the tr
-    if (this.isInComplexInput === false) {
+  public onFocusout(tr: HTMLTableRowElement) {
+    // Avoid multiple onFocuseOut triggers in too short a time
+    if (this.isFocusingOut === false) {
+      this.isFocusingOut = true;
+
+      // SetTimout is necessary because selecting an option in p-select is not immediately setting back focus to the p-select and document.activeElement isn't updated fast enough
       setTimeout(() => {
+        const clickedRowOfActiveElement = this.getParentComponent(
+          document.activeElement as Element,
+          'bia-selectable-row'
+        );
+
         if (
-          this.isInComplexInput !== true &&
-          this.getParentComponent(document.activeElement, 'bia-calc-form') ===
-            null &&
-          !document.activeElement?.className?.includes('p-select') /*&&
-          this.getParentComponent(document.activeElement, 'p-datepicker') === null*/
+          // If the complex input is active, don't close the edit mode because the user is probably trying to click on an option in the overlay
+          this.complexInputState !== 'active' &&
+          this.complexInputState !== 'opening' &&
+          // Checking if the clicked element is outside of the current edited row (in case of click on an element of the current edited row, we don't want to close the edit mode)
+          clickedRowOfActiveElement !== tr &&
+          // If the filter is active in the p-select overlay, the focus switch and stays on the p-select-filter but the overlay is not a children of the row
+          !document.activeElement?.className?.includes('p-select')
         ) {
-          this.initEditableRow(null);
+          // If it's a change of row and no change has been made to the previous row, the row editing has already been handle by the initEditableRowAndFocus and should not cancel the edition again
+          this.initEditableRow(
+            null,
+            this.hasChanged || clickedRowOfActiveElement === null
+          );
         }
+        this.isFocusingOut = false;
       }, 200);
     }
   }
 
   public onComplexInput(isIn: boolean) {
+    // If entering a complex input overlay
     if (isIn) {
+      // Saving the row and input and setting the complexInputState as active
+      this.complexInputState = 'opening';
+      this.currentRow = this.getParentComponent(
+        document.activeElement,
+        'bia-selectable-row'
+      ) as HTMLTableRowElement;
       setTimeout(() => {
-        this.isInComplexInput = true;
-        this.currentRow = this.getParentComponent(
-          document.activeElement,
-          'bia-selectable-row'
-        ) as HTMLElement;
-        this.currentInput = document.activeElement as HTMLElement;
-      });
+        if (this.complexInputState === 'opening') {
+          this.complexInputState = 'active';
+        }
+      }, 200);
     } else {
-      if (
-        // If selected element parent is the same as complex input parent, don't change focus. If not, focus complex input
-        (this.getParentComponent(
-          document.activeElement,
-          'bia-selectable-row'
-        ) as HTMLElement) !== this.currentRow
-      ) {
-        this.currentInput?.focus();
+      // Closing the complexInputState
+      if (this.complexInputState === 'active') {
+        this.complexInputState = 'closing';
       }
-      this.isInComplexInput = false;
+      // Trigger onFocusOut when complexinput is closed because is in overlay and not on tr so onFocusOut is never triggered
+      this.onFocusout(this.currentRow);
+      setTimeout(() => {
+        // Setting complexInputState to idle only if still closing.
+        // Reason: If another complex input has been opened when leaving the previous, state will be active and input won't change to idle
+        if (this.complexInputState === 'closing') {
+          this.complexInputState = 'idle';
+        }
+      }, 300);
     }
   }
 
@@ -314,6 +350,9 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
     parentClassName: string
   ): HTMLElement | null {
     if (el) {
+      if (el.classList.contains(parentClassName)) {
+        return el as HTMLElement;
+      }
       while (el.parentElement) {
         if (el.parentElement.classList.contains(parentClassName)) {
           return el.parentElement;

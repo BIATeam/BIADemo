@@ -4,7 +4,7 @@ import {
   NumberMode,
   PrimeNGFiltering,
   PropType,
-} from 'packages/bia-ng/models/enum/public-api';
+} from '@bia-team/bia-ng/models/enum';
 
 export class BiaFieldNumberFormat {
   autoLocale: string; // property automaticaly set when culture change.
@@ -90,6 +90,7 @@ export class BiaFieldConfig<TDto> {
   customDisplayFormat: boolean = true;
   multiline?: BiaFieldMultilineString;
   asLocalDateTime: boolean = false;
+  allowSelectFilter: boolean;
 
   get isDate() {
     return (
@@ -136,6 +137,7 @@ export class BiaFieldConfig<TDto> {
     this.filterWithDisplay = false;
     this.multiline = undefined;
     this.asLocalDateTime = false;
+    this.allowSelectFilter = false;
   }
 
   public clone(): BiaFieldConfig<TDto> {
@@ -169,6 +171,7 @@ export class BiaFieldConfig<TDto> {
         customDisplayFormat: this.customDisplayFormat,
         multiline: this.multiline,
         asLocalDateTime: this.asLocalDateTime,
+        allowSelectFilter: this.allowSelectFilter,
       }
     );
   }

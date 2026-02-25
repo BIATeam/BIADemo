@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Application.Authentication
     using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
@@ -59,7 +60,7 @@ namespace BIA.Net.Core.Application.Authentication
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.ReadJwtToken(jwtToken);
-            return token.Claims.Any(c => c.Type == BiaClaimsPrincipal.PermissionIds && c.Value == permissionToCheck.ToString());
+            return token.Claims.Any(c => c.Type == BiaConstants.Claims.PermissionIds && c.Value == permissionToCheck.ToString());
         }
 
         /// <summary>
@@ -102,8 +103,8 @@ namespace BIA.Net.Core.Application.Authentication
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Sid, tokenDto.Id.ToString()),
-                new(BiaClaimsPrincipal.PermissionIds, JsonConvert.SerializeObject(tokenDto.PermissionIds)),
-                new(BiaClaimsPrincipal.RoleIds, JsonConvert.SerializeObject(tokenDto.RoleIds)),
+                new(BiaConstants.Claims.PermissionIds, JsonConvert.SerializeObject(tokenDto.PermissionIds)),
+                new(BiaConstants.Claims.RoleIds, JsonConvert.SerializeObject(tokenDto.RoleIds)),
             };
 
             if (tokenDto.UserData != null)

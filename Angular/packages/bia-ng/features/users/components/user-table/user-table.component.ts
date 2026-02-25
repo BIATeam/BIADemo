@@ -5,19 +5,17 @@ import {
   ReactiveFormsModule,
   UntypedFormBuilder,
 } from '@angular/forms';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AuthService, BiaMessageService } from '@bia-team/bia-ng/core';
 import {
-  AuthService,
-  BiaMessageService,
-} from 'packages/bia-ng/core/public-api';
-import {
+  BiaCalcTableCellComponent,
   BiaFrozenColumnDirective,
   BiaTableFilterComponent,
   BiaTableFooterControllerComponent,
   BiaTableInputComponent,
   BiaTableOutputComponent,
   CrudItemTableComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
@@ -48,6 +46,7 @@ import { User } from '../../model/user';
     BiaTableOutputComponent,
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class UserTableComponent extends CrudItemTableComponent<User> {

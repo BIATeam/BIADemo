@@ -1,5 +1,5 @@
-﻿import { BiaPermission } from 'packages/bia-ng/core/public-api';
-import { BiaNavigation } from 'packages/bia-ng/models/public-api';
+﻿import { BiaPermission } from '@bia-team/bia-ng/core';
+import { BiaNavigation } from '@bia-team/bia-ng/models';
 import { Permission } from './permission';
 
 export const NAVIGATION: BiaNavigation[] = [
@@ -175,10 +175,7 @@ export const NAVIGATION: BiaNavigation[] = [
     permissions: [
       BiaPermission.Background_Task_Admin,
       BiaPermission.Background_Task_Read_Only,
-      // Begin BIADemo
-      Permission.Airport_List_Access,
-      Permission.PlaneType_List_Access,
-      // End BIADemo
+      BiaPermission.Announcement_List_Access,
     ],
     children: [
       {

@@ -1,11 +1,11 @@
 ﻿import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TranslatePipe } from '@ngx-translate/core';
-import { Announcement } from 'packages/bia-ng/models/public-api';
+import { Announcement } from '@bia-team/bia-ng/models';
 import {
   BiaFormComponent,
   CrudItemFormComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { TranslatePipe } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { EditorInitEvent, EditorModule } from 'primeng/editor';
 import { FloatLabel } from 'primeng/floatlabel';

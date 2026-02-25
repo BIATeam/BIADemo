@@ -7,17 +7,15 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { AuthService, BiaMessageService } from '@bia-team/bia-ng/core';
+import { BaseDto } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AuthService,
-  BiaMessageService,
-} from 'packages/bia-ng/core/public-api';
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { BiaCalcTableCellComponent } from '../../../../components/table/bia-calc-table-cell/bia-calc-table-cell.component';
 import { BiaCalcTableComponent } from '../../../../components/table/bia-calc-table/bia-calc-table.component';
 import { BiaFrozenColumnDirective } from '../../../../components/table/bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../../../../components/table/bia-table-filter/bia-table-filter.component';
@@ -50,6 +48,7 @@ import { CrudHelperService } from '../../../../services/crud-helper.service';
     AsyncPipe,
     TranslateModule,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>

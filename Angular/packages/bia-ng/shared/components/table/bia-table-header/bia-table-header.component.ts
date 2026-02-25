@@ -17,9 +17,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BiaDialogService } from '@bia-team/bia-ng/core';
+import { BiaButtonAndMenuItem } from '@bia-team/bia-ng/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { BiaDialogService } from 'packages/bia-ng/core/public-api';
-import { BiaButtonAndMenuItem } from 'packages/bia-ng/models/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
@@ -412,16 +412,20 @@ export class BiaTableHeaderComponent
     }
 
     this.parentContainerResizeObserver = new ResizeObserver(() => {
-      this.onParentContainerResized(
-        this.selectionActionsDiv.nativeElement,
-        this.selectionActions
-      );
+      if (this.selectionActionsDiv) {
+        this.onParentContainerResized(
+          this.selectionActionsDiv.nativeElement,
+          this.selectionActions
+        );
+      }
       clearTimeout(this.listActionsResizeTimeoutId);
       this.listActionsResizeTimeoutId = setTimeout(() => {
-        this.onParentContainerResized(
-          this.listActionsDiv.nativeElement,
-          this.listActions
-        );
+        if (this.listActionsDiv) {
+          this.onParentContainerResized(
+            this.listActionsDiv.nativeElement,
+            this.listActions
+          );
+        }
       }, 100);
     });
     this.parentContainerResizeObserver.observe(parentContainer);

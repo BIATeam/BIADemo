@@ -1,16 +1,10 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BiaPermission, PermissionGuard } from '@bia-team/bia-ng/core';
+import { AnnouncementTypeOptionModule } from '@bia-team/bia-ng/domains';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import {
-  BiaPermission,
-  PermissionGuard,
-} from 'packages/bia-ng/core/public-api';
-import { AnnouncementTypeOptionModule } from 'packages/bia-ng/domains/public-api';
-import {
-  DynamicLayoutComponent,
-  LayoutMode,
-} from 'packages/bia-ng/shared/public-api';
 import { announcementCRUDConfiguration } from './announcement.constants';
 import { FeatureAnnouncementsStore } from './store/announcement.state';
 import { AnnouncementsEffects } from './store/announcements-effects';

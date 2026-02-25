@@ -5,15 +5,13 @@ import {
   ReactiveFormsModule,
   UntypedFormBuilder,
 } from '@angular/forms';
+import { AuthService, BiaMessageService } from '@bia-team/bia-ng/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AuthService,
-  BiaMessageService,
-} from 'packages/bia-ng/core/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { BiaCalcTableCellComponent } from '../../../../components/table/bia-calc-table-cell/bia-calc-table-cell.component';
 import { BiaFrozenColumnDirective } from '../../../../components/table/bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../../../../components/table/bia-table-filter/bia-table-filter.component';
 import { BiaTableFooterControllerComponent } from '../../../../components/table/bia-table-footer-controller/bia-table-footer-controller.component';
@@ -46,6 +44,7 @@ import { Member } from '../../model/member';
     AsyncPipe,
     TranslateModule,
     BiaFrozenColumnDirective,
+    BiaCalcTableCellComponent,
   ],
 })
 export class MemberTableComponent extends CrudItemTableComponent<Member> {

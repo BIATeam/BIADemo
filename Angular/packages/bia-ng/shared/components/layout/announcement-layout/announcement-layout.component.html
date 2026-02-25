@@ -1,15 +1,14 @@
-@if (announcements) {
+@if (currentFormatedAnnouncement) {
   <div class="announcement-container">
     <div class="announcement-title">
       <span>{{ 'announcement.announcements' | translate }}</span>
       <i class="pi pi-megaphone icon-title"></i>
     </div>
 
-    <div class="announcement-content-container" #contentContainer>
+    <div class="announcement-content-container">
       <div
-        #scrollContent
-        class="announcement-content"
-        [innerHTML]="formatedAnnouncements | safeHtml"></div>
+        [class]="'announcement-content ' + getAnimationClass()"
+        [innerHTML]="currentFormatedAnnouncement.html | safeHtml"></div>
     </div>
   </div>
 }

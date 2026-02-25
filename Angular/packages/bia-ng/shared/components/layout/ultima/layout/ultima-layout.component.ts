@@ -15,8 +15,6 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   BiaAppConstantsService,
   BiaTranslationService,
@@ -25,10 +23,12 @@ import {
   ROUTE_DATA_CAN_NAVIGATE,
   ROUTE_DATA_NO_MARGIN,
   ROUTE_DATA_NO_PADDING,
-} from 'packages/bia-ng/core/public-api';
-import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
-import { Announcement, BiaNavigation } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
+} from '@bia-team/bia-ng/core';
+import { Announcement, BiaNavigation } from '@bia-team/bia-ng/models';
+import { EnvironmentType } from '@bia-team/bia-ng/models/enum';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MenuItem } from 'primeng/api';
 import { Breadcrumb } from 'primeng/breadcrumb';
 import { filter, map, Observable, Subscription } from 'rxjs';
@@ -76,6 +76,7 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   @Input() helpUrl?: string;
   @Input() reportUrl?: string;
   @Input() enableNotifications?: boolean;
+  @Input() showFps = BiaAppConstantsService.showFps;
 
   overlayMenuOpenSubscription: Subscription;
   menuOutsideClickListener: any;
@@ -96,6 +97,10 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
   showEnvironmentMessage$: Observable<boolean>;
   cssClassEnv: string;
   activeAnnouncements = signal<Announcement[]>([]);
+  fps = signal(0);
+  private fpsRafId: number | null = null;
+  private fpsSampleStart = 0;
+  private fpsFrameCount = 0;
 
   constructor(
     protected biaTranslation: BiaTranslationService,
@@ -310,6 +315,32 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
     this.activeAnnouncements =
       this.announcementLayoutService.activeAnnouncements;
     this.announcementLayoutService.init();
+    this.startFpsCounter();
+  }
+
+  protected startFpsCounter() {
+    if (!this.showFps || typeof window === 'undefined') {
+      return;
+    }
+
+    this.fpsSampleStart = performance.now();
+    this.fpsFrameCount = 0;
+
+    const tick = (now: number) => {
+      this.fpsFrameCount += 1;
+      const elapsed = now - this.fpsSampleStart;
+
+      if (elapsed >= 1000) {
+        const fpsValue = Math.round((this.fpsFrameCount * 1000) / elapsed);
+        this.fps.set(fpsValue);
+        this.fpsFrameCount = 0;
+        this.fpsSampleStart = now;
+      }
+
+      this.fpsRafId = window.requestAnimationFrame(tick);
+    };
+
+    this.fpsRafId = window.requestAnimationFrame(tick);
   }
 
   protected updateMenuItems() {
@@ -496,6 +527,11 @@ export class BiaUltimaLayoutComponent implements OnInit, OnDestroy {
 
     if (this.menuOutsideClickListener) {
       this.menuOutsideClickListener();
+    }
+
+    if (this.fpsRafId !== null) {
+      window.cancelAnimationFrame(this.fpsRafId);
+      this.fpsRafId = null;
     }
 
     this.sub.unsubscribe();

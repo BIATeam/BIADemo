@@ -1,6 +1,6 @@
-﻿import { EntityState, createEntityAdapter } from '@ngrx/entity';
+﻿import { LdapDomain } from '@bia-team/bia-ng/models';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import { LdapDomain } from 'packages/bia-ng/models/public-api';
 import { DomainLdapDomainsActions } from './ldap-domain-actions';
 
 // This adapter will allow is to manipulate LDAP domains (mostly CRUD operations)

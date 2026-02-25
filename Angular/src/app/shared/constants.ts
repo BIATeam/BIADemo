@@ -1,4 +1,4 @@
-﻿import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
+﻿import { BiaTeamTypeId } from '@bia-team/bia-ng/models/enum';
 
 /* eslint-disable @typescript-eslint/naming-convention */
 export const APP_SUPPORTED_TRANSLATIONS = [
@@ -22,6 +22,10 @@ export const THEME_DARK = 'dark';
 
 export const TABLE_FILTER_GLOBAL = 'global|';
 export const DEFAULT_POPUP_MINWIDTH = '60vw';
+export const SHOW_FPS = false;
+
+export const LOGIN_PARAM_SOURCE: string | undefined = undefined;
+export const ANNOUNCEMENT_DISPLAY_DURATION_MS = 10000;
 
 export enum ViewType {
   System = 0,

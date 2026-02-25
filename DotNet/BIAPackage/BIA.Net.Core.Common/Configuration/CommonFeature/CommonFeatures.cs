@@ -22,5 +22,10 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         /// Gets or sets the audit configuration.
         /// </summary>
         public AuditConfiguration AuditConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the hybrid cache feature configuration.
+        /// </summary>
+        public HybridCacheConfiguration HybridCache { get; set; }
     }
 }
