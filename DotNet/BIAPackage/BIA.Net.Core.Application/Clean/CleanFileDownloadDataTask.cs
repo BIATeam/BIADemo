@@ -16,7 +16,7 @@ namespace BIA.Net.Core.Application.Clean
 
     /// <summary>
     /// Hangfire task to clean expired file to download data by deleting the database entry and the file in the storage.
-    /// /// </summary>
+    /// </summary>
     [AutomaticRetry(Attempts = 0)]
     public sealed class CleanFileDownloadDataTask : BaseJob
     {
