@@ -170,8 +170,12 @@
             message.data?.notification?.type?.id === notificationType.Task ||
               onNotificationClick(message)
           ">
-          <div class="p-toast-summary ng-tns-c191-5">{{ message.summary }}</div>
-          <div class="p-toast-detail ng-tns-c191-5">{{ message.detail }}</div>
+          <div class="p-toast-summary ng-tns-c191-5">
+            {{ message.summary | translate }}
+          </div>
+          <div class="p-toast-detail ng-tns-c191-5">
+            {{ message.detail | translate }}
+          </div>
         </div>
       </div>
       @if (message.data?.notification?.type?.id === notificationType.Task) {

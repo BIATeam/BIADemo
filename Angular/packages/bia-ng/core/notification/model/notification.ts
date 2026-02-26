@@ -12,6 +12,7 @@ export interface Notification {
   createdBy: OptionDto | null;
   notifiedUsers: OptionDto[];
   notifiedTeams: NotificationTeam[];
+  notificationTranslations: NotificationTranslation[];
   jData: string;
   data?: NotificationData;
 }
@@ -35,4 +36,10 @@ export interface NotificationData {
   route: string[] | null;
   display: string;
   teams: NotificationTeam[] | null;
+}
+
+export interface NotificationTranslation {
+  languageId: number;
+  title: string;
+  description: string;
 }
