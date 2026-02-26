@@ -54,7 +54,8 @@ namespace BIA.Net.Core.Application.Services
         /// Delete the file from the storage and remove the file download data from the database.
         /// </summary>
         /// <param name="fileDownloadData">Information about the expired file download.</param>
+        /// <param name="deleteAssociatedNotification">Indicates whether to delete the associated notification.</param>
         /// <returns>A task representing the asynchronous operation.</returns>
-        Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData);
+        Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData, bool deleteAssociatedNotification = false);
     }
 }

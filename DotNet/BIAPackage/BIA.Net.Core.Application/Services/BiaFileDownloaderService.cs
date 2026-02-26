@@ -174,18 +174,22 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData)
+        public async Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData, bool deleteAssociatedNotification = false)
         {
             try
             {
-                var notificationsToDelete = await this.notificationAppService.GetAsync(
-                    isReadOnlyMode: true,
-                    filter:
-                        n => n.TypeId == (int)BiaNotificationTypeId.DownloadReady
-                        && n.CreatedById == fileDownloadData.RequestByUser.Id
-                        && n.JData.Contains(fileDownloadData.Id.ToString()));
+                if (deleteAssociatedNotification)
+                {
+                    var notificationsToDelete = await this.notificationAppService.GetAsync(
+                        isReadOnlyMode: true,
+                        filter:
+                            n => n.TypeId == (int)BiaNotificationTypeId.DownloadReady
+                            && n.CreatedById == fileDownloadData.RequestByUser.Id
+                            && n.JData.Contains(fileDownloadData.Id.ToString()));
 
-                await this.notificationAppService.RemoveAsync(notificationsToDelete.Id);
+                    await this.notificationAppService.RemoveAsync(notificationsToDelete.Id);
+                }
+
                 await this.fileDownloadDataRepository.DeleteByIdsAsync([fileDownloadData.Id]);
 
                 if (File.Exists(fileDownloadData.FilePath))
