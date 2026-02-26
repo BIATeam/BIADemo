@@ -51,7 +51,6 @@ namespace BIA.Net.Core.Application.Services
         private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
-        private readonly UserContext userContext;
         private readonly BiaFileDownloaderOptions options;
 
         /// <summary>
@@ -63,7 +62,6 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="fileDownloadDataRepository">The file download data repository.</param>
         /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
         /// <param name="backgroundJobClient">Hangfire job client.</param>
-        /// <param name="userContext">The user context.</param>
         /// <param name="options">The file downloader options (language IDs, etc.).</param>
         public BiaFileDownloaderService(
             TINotificationAppService notificationAppService,
@@ -72,7 +70,6 @@ namespace BIA.Net.Core.Application.Services
             ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
             IFileDownloadTokenRepository fileDownloadTokenRepository,
             IBackgroundJobClient backgroundJobClient,
-            UserContext userContext,
             IOptions<BiaFileDownloaderOptions> options)
         {
             this.notificationAppService = notificationAppService;
@@ -81,7 +78,6 @@ namespace BIA.Net.Core.Application.Services
             this.fileDownloadDataRepository = fileDownloadDataRepository;
             this.fileDownloadTokenRepository = fileDownloadTokenRepository;
             this.backgroundJobClient = backgroundJobClient;
-            this.userContext = userContext;
             this.options = options.Value;
         }
 
@@ -135,7 +131,7 @@ namespace BIA.Net.Core.Application.Services
                 await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
 
                 fileDownloadDataDto.Id = fileDownloadData.Id;
-                var notification = CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
+                var notification = this.CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
                 await this.notificationAppService.AddAsync(notification);
             }
             catch (Exception ex)
@@ -245,9 +241,9 @@ namespace BIA.Net.Core.Application.Services
                 Title = notificationTranslationEnglish.Title,
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
-                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "Download", DownloadFileGuid = fileDownloadDataDto.Id }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
+                JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "bia.download", DownloadFileGuid = fileDownloadDataDto.Id }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
                 NotifiedUsers = [new() { Id = requestedByUserId }],
-                NotificationTranslations = notificationTranslations,
+                NotificationTranslations = [.. notificationTranslations.Except([notificationTranslationEnglish])],
                 NotifiedTeams = [],
             };
         }
