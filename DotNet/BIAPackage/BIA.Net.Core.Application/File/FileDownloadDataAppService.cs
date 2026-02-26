@@ -15,7 +15,7 @@ namespace BIA.Net.Core.Application.File
     /// <summary>
     /// Service for FileDownloadData.
     /// </summary>
-    public class FileDownloadDataAppService : CrudAppServiceBase<FileDownloadDataDto, FileDownloadData, Guid, PagingFilterFormatDto, FileDownloadDataMapper>
+    public class FileDownloadDataAppService : CrudAppServiceBase<FileDownloadDataDto, FileDownloadData, Guid, PagingFilterFormatDto, FileDownloadDataMapper>, IFileDownloadDataAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FileDownloadDataAppService"/> class.
