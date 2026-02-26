@@ -141,12 +141,10 @@ namespace BIA.Net.Core.Application.Services
         {
             try
             {
-                var fileDownloadData = await this.fileDownloadDataAppService.GetAsync(fileGuid, isReadOnlyMode: true)
-                    ?? throw new ElementNotFoundException("Unable to retrieve file download data");
-
+                var fileDownloadData = await this.fileDownloadDataAppService.GetAsync(fileGuid, isReadOnlyMode: true);
                 if (fileDownloadData.RequestByUser.Id != requestedByUserId)
                 {
-                    throw new UnauthorizedAccessException("User is not authorized to download this file");
+                    throw FrontUserException.Create(BiaErrorId.UnauthorizeFileToDownload);
                 }
 
                 await this.EnsureDownloadAvailability(fileDownloadData);
@@ -154,6 +152,10 @@ namespace BIA.Net.Core.Application.Services
                 var token = Convert.ToHexString(Encoding.UTF8.GetBytes($"{fileDownloadData.FileName}:{requestedByUserId}:{DateTime.UtcNow.Ticks}"));
                 await this.fileDownloadTokenRepository.AddAsync(new() { FileGuid = fileGuid, Token = token, CreatedAt = DateTime.UtcNow });
                 return token;
+            }
+            catch (ElementNotFoundException)
+            {
+                throw FrontUserException.Create(BiaErrorId.FileToDownloadNotFound);
             }
             catch (Exception ex)
             {

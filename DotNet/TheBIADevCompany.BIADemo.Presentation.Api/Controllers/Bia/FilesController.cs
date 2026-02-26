@@ -49,10 +49,6 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
                 var fileContent = await System.IO.File.ReadAllBytesAsync(fileDownloadData.FilePath);
                 return this.File(fileContent, fileDownloadData.FileContentType, fileDownloadData.FileName);
             }
-            catch (UnauthorizedAccessException)
-            {
-                return this.Unauthorized();
-            }
             catch (ElementNotFoundException)
             {
                 return this.NotFound();
@@ -70,19 +66,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDownloadToken([FromRoute] string guid)
         {
-            try
-            {
-                var token = await this.biaFileDownloaderService.GenerateDownloadToken(Guid.Parse(guid), this.biaClaimsPrincipal.GetUserId());
-                return this.Ok(token);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return this.Unauthorized();
-            }
-            catch (ElementNotFoundException)
-            {
-                return this.NotFound();
-            }
+            var token = await this.biaFileDownloaderService.GenerateDownloadToken(Guid.Parse(guid), this.biaClaimsPrincipal.GetUserId());
+            return this.Ok(token);
         }
     }
 }
