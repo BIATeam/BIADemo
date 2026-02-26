@@ -2,6 +2,7 @@
 import { Store } from '@ngrx/store';
 import { TargetedFeature, Team } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
+import { BiaTranslationService } from '../../public-api';
 import { AuthService } from '../../services/auth.service';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { BiaSignalRService } from '../../services/bia-signalr.service';
@@ -19,6 +20,7 @@ import { CoreNotificationsActions } from '../store/notifications-actions';
 export class NotificationSignalRService {
   protected targetedFeature: TargetedFeature;
   protected myTeams: Team[];
+  private currentLanguageId: number | null;
 
   /**
    * Constructor.
@@ -29,7 +31,8 @@ export class NotificationSignalRService {
     protected store: Store<BiaAppState>,
     protected signalRService: BiaSignalRService,
     protected authService: AuthService,
-    protected messageService: BiaMessageService
+    protected messageService: BiaMessageService,
+    protected translationService: BiaTranslationService
   ) {}
 
   /**
@@ -41,12 +44,28 @@ export class NotificationSignalRService {
       this.myTeams = teams;
     });
 
+    this.translationService.languageId$.subscribe(
+      languageId => (this.currentLanguageId = languageId)
+    );
+
     this.signalRService.addMethod('notification-addUnread', args => {
       const notification: Notification = JSON.parse(args);
       notification.data = notification.jData
         ? JSON.parse(notification.jData)
         : { route: null, display: '', teams: null };
+
       if (this.isInMyDisplay(notification)) {
+        if (this.currentLanguageId) {
+          const notificationTranslation =
+            notification.notificationTranslations.find(
+              t => t.languageId === this.currentLanguageId
+            );
+          if (notificationTranslation) {
+            notification.title = notificationTranslation.title;
+            notification.description = notificationTranslation.description;
+          }
+        }
+
         this.messageService.showNotification(notification);
         this.store.dispatch(
           CoreNotificationsActions.addUnreadNotification({

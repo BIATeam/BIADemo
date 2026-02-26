@@ -37,5 +37,29 @@ namespace BIA.Net.Core.Domain.Dto.File
         /// Gets or sets the user that requested the download.
         /// </summary>
         public OptionDto RequestByUser { get; set; }
+
+        /// <summary>
+        /// Gets or sets the duration for which the file will be available for download..
+        /// </summary>
+        public TimeSpan? AvailabilityDuration { get; set; }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="FileDownloadDataDto"/> class with the specified file information and optional availability duration.
+        /// </summary>
+        /// <param name="fileName">File name.</param>
+        /// <param name="fileContentType">File content type.</param>
+        /// <param name="filePath">File path.</param>
+        /// <param name="availabilityDuration">Availability duration.</param>
+        /// <returns>A new instance of the <see cref="FileDownloadDataDto"/> class.</returns>
+        public static FileDownloadDataDto Create(string fileName, string fileContentType, string filePath, TimeSpan? availabilityDuration = null)
+        {
+            return new FileDownloadDataDto
+            {
+                FileName = fileName,
+                FileContentType = fileContentType,
+                FilePath = filePath,
+                AvailabilityDuration = availabilityDuration,
+            };
+        }
     }
 }

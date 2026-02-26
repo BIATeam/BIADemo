@@ -53,6 +53,7 @@ namespace BIA.Net.Core.Application.Job
         {
             try
             {
+                this.Logger.LogInformation("Starting PrepareDownloadTask for user {UserId}, service: {ServiceType}, method: {MethodName}", requestedByUserId, serviceTypeName, methodName);
                 var serviceType = Type.GetType(serviceTypeName) ?? throw new InvalidOperationException($"Could not resolve type '{serviceTypeName}'");
 
                 var argTypes = JsonConvert.DeserializeObject<string[]>(serializedArgTypes)
@@ -65,9 +66,14 @@ namespace BIA.Net.Core.Application.Job
                 var typedArgs = rawArgs.Zip(argTypes, (arg, argType) => arg == null ? null : JsonConvert.DeserializeObject(JsonConvert.SerializeObject(arg), argType)).ToArray();
 
                 var service = this.serviceProvider.GetRequiredService(serviceType);
+
+                this.Logger.LogInformation("Invoking method {MethodName} on service {ServiceType} for user {UserId}", methodName, serviceType.Name, requestedByUserId);
                 var fileDownloadDataDto = await (Task<FileDownloadDataDto>)method.Invoke(service, typedArgs);
 
+                this.Logger.LogInformation("Method {MethodName} completed for user {UserId}. Notifying that download is ready.", methodName, requestedByUserId);
                 await this.fileDownloaderService.NotifyDownloadReadyAsync(fileDownloadDataDto, requestedByUserId);
+
+                this.Logger.LogInformation("PrepareDownloadTask completed successfully for user {UserId}", requestedByUserId);
             }
             catch (Exception ex)
             {

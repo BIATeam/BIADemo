@@ -5,8 +5,10 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
@@ -36,11 +38,21 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// <returns>The file content result.</returns>
         [HttpGet("{guid}/[action]")]
         [AllowAnonymous]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Download([FromRoute] string guid, [FromQuery] string token)
         {
-            var fileDownloadData = await this.biaFileDownloaderService.GetFileDownloadData(Guid.Parse(guid), token);
-            var fileContent = await System.IO.File.ReadAllBytesAsync(fileDownloadData.FilePath);
-            return this.File(fileContent, fileDownloadData.FileContentType, fileDownloadData.FileName);
+            try
+            {
+                var fileDownloadData = await this.biaFileDownloaderService.GetFileDownloadData(Guid.Parse(guid), token);
+                var fileContent = await System.IO.File.ReadAllBytesAsync(fileDownloadData.FilePath);
+                return this.File(fileContent, fileDownloadData.FileContentType, fileDownloadData.FileName);
+            }
+            catch (ElementNotFoundException)
+            {
+                return this.NotFound();
+            }
         }
 
         /// <summary>
@@ -49,6 +61,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// <param name="guid">The file GUID to download and generate the token for.</param>
         /// <returns>The generated token.</returns>
         [HttpGet("{guid}/[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetDownloadToken([FromRoute] string guid)
         {
             var token = await this.biaFileDownloaderService.GenerateDownloadToken(Guid.Parse(guid), this.biaClaimsPrincipal.GetUserId());
