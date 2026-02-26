@@ -2,10 +2,10 @@
 import { Store } from '@ngrx/store';
 import { TargetedFeature, Team } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
-import { BiaTranslationService } from '../../public-api';
 import { AuthService } from '../../services/auth.service';
 import { BiaMessageService } from '../../services/bia-message.service';
 import { BiaSignalRService } from '../../services/bia-signalr.service';
+import { BiaTranslationService } from '../../services/bia-translation.service';
 import { CoreTeamsStore } from '../../team/store/team.state';
 import { Notification } from '../model/notification';
 import { CoreNotificationsActions } from '../store/notifications-actions';
