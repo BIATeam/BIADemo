@@ -15,12 +15,15 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Infrastructure.Data;
+    using BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories;
     using Hangfire;
     using Hangfire.PostgreSql;
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Options;
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
@@ -58,6 +61,11 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 {
                     IConfiguration configuration = hostingContext.Configuration;
 
+                    services.Configure<BiaHistoryRepositoryOptions>(options =>
+                    {
+                        options.AppVersion = Constants.Application.BackEndVersion;
+                    });
+
                     string connectionString = configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey);
 
                     if (!string.IsNullOrWhiteSpace(connectionString))
@@ -69,6 +77,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                             services.AddDbContext<IDbContextDatabase, DataContextPostGreSql>(options =>
                             {
                                 options.UseNpgsql(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             });
                         }
                         else
@@ -76,6 +85,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                             services.AddDbContext<IDbContextDatabase, DataContext>(options =>
                             {
                                 options.UseSqlServer(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             });
                         }
 
@@ -84,10 +94,12 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                             if (dbEngine == DbProvider.PostGreSql)
                             {
                                 options.UseNpgsql(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                             }
                             else
                             {
                                 options.UseSqlServer(connectionString);
+                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                             }
                         });
 
