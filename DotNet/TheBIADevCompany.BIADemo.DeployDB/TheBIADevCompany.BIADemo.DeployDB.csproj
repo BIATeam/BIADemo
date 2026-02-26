@@ -13,10 +13,9 @@
     <PackageReference Include="NLog.Extensions.Logging" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Application\TheBIADevCompany.BIADemo.Application.csproj" />
+    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.csproj" />
     <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.csproj" />
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>

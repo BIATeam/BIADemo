@@ -64,6 +64,122 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     public static partial class IocContainer
     {
         /// <summary>
+        /// The method used to register all instance for infrastructure data container, which is related to database.
+        /// </summary>
+        /// <param name="collection">The service collection.</param>
+        /// <param name="configuration">The application configuration.</param>
+        /// <param name="isUnitTest">Indicates if the configuration is for unit tests.</param>
+        /// <param name="dbKey">The database key.</param>
+        /// <param name="enableRetryOnFailure">Enable retry on failure.</param>
+        /// <param name="commandTimeout">The command timeout.</param>
+        /// <param name="fromDeployDB">Indicates if the configuration is from the deployment database.</param>
+        public static void BiaConfigureInfrastructureDataContainerDbContext(
+            IServiceCollection collection,
+            IConfiguration configuration,
+            bool isUnitTest,
+            string dbKey = BiaConstants.DatabaseConfiguration.DefaultKey,
+            bool enableRetryOnFailure = true,
+            int commandTimeout = default,
+            bool fromDeployDB = false)
+        {
+            string connectionString = configuration.GetDatabaseConnectionString(dbKey);
+            if (isUnitTest || string.IsNullOrWhiteSpace(connectionString))
+            {
+                return;
+            }
+
+            DbProvider dbEngine = configuration.GetProvider(dbKey);
+            collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
+            {
+                ConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
+                if (!fromDeployDB)
+                {
+                    options.AddInterceptors(new AuditSaveChangesInterceptor());
+                }
+            });
+
+            if (!fromDeployDB)
+            {
+                collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
+                    options =>
+                    {
+                        ConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
+                    },
+                    contextLifetime: ServiceLifetime.Transient);
+                return;
+            }
+
+            ConfigureDbContextForDeployDB(collection, connectionString, dbEngine);
+        }
+
+        private static void ConfigureDbContextOptions(bool enableRetryOnFailure, int commandTimeout, DbContextOptionsBuilder options, string connectionString, DbProvider dbEngine)
+        {
+            if (dbEngine == DbProvider.PostGreSql)
+            {
+                options.UseNpgsql(connectionString, npgsqlOptions =>
+                {
+                    if (enableRetryOnFailure)
+                    {
+                        npgsqlOptions.EnableRetryOnFailure();
+                    }
+
+                    if (commandTimeout > 0)
+                    {
+                        npgsqlOptions.CommandTimeout(commandTimeout);
+                    }
+                });
+            }
+            else
+            {
+                options.UseSqlServer(connectionString, sqlServerOptions =>
+                {
+                    if (enableRetryOnFailure)
+                    {
+                        sqlServerOptions.EnableRetryOnFailure();
+                    }
+
+                    if (commandTimeout > 0)
+                    {
+                        sqlServerOptions.CommandTimeout(commandTimeout);
+                    }
+                });
+            }
+
+            options.EnableSensitiveDataLogging();
+        }
+
+        private static void ConfigureDbContextForDeployDB(IServiceCollection collection, string connectionString, DbProvider dbEngine)
+        {
+            collection.Configure<BiaHistoryRepositoryOptions>(options =>
+            {
+                options.AppVersion = Constants.Application.BackEndVersion;
+            });
+
+            if (dbEngine == DbProvider.PostGreSql)
+            {
+                collection.AddDbContext<IDbContextDatabase, DataContextPostGreSql>(options =>
+                {
+                    options.UseNpgsql(connectionString, optionsBuilder =>
+                    {
+                        optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
+                    });
+                    options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
+                });
+            }
+            else
+            {
+                collection.AddDbContext<IDbContextDatabase, DataContext>(options =>
+                {
+                    options.UseSqlServer(connectionString, optionsBuilder =>
+                    {
+                        optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
+                    });
+                    options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
+                });
+            }
+        }
+
+        /// <summary>
         /// The method used to register all instance.
         /// </summary>
         /// <param name="collection">The collection of service.</param>
@@ -192,11 +308,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             if (!isUnitTest)
             {
-                collection.Configure<BiaHistoryRepositoryOptions>(options =>
-                {
-                    options.AppVersion = Constants.Application.BackEndVersion;
-                });
-
                 collection.AddScoped<DataContextFactory>();
                 collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
             }
@@ -223,106 +334,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 serviceLifetime: serviceLifetime,
                 excludedServiceNames: excludedServiceNames,
                 includedServiceNames: includedServiceNames);
-        }
-
-        private static void BiaConfigureInfrastructureDataContainerDbContext(
-            IServiceCollection collection,
-            IConfiguration configuration,
-            bool isUnitTest,
-            string dbKey = BiaConstants.DatabaseConfiguration.DefaultKey,
-            bool enableRetryOnFailure = true,
-            int commandTimeout = default)
-        {
-            if (!isUnitTest)
-            {
-                string connectionString = configuration.GetDatabaseConnectionString(dbKey);
-
-                if (!string.IsNullOrWhiteSpace(connectionString))
-                {
-                    DbProvider dbEngine = configuration.GetProvider(dbKey);
-
-                    // Infrastructure Data Layer
-                    collection.AddDbContext<IQueryableUnitOfWork, DataContext>(
-                        options =>
-                        {
-                            if (dbEngine == DbProvider.PostGreSql)
-                            {
-                                options.UseNpgsql(connectionString, npgsqlOptions =>
-                                {
-                                    if (enableRetryOnFailure)
-                                    {
-                                        npgsqlOptions.EnableRetryOnFailure();
-                                    }
-
-                                    if (commandTimeout > 0)
-                                    {
-                                        npgsqlOptions.CommandTimeout(commandTimeout);
-                                    }
-                                });
-                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
-                            }
-                            else
-                            {
-                                options.UseSqlServer(connectionString, sqlServerOptions =>
-                                {
-                                    if (enableRetryOnFailure)
-                                    {
-                                        sqlServerOptions.EnableRetryOnFailure();
-                                    }
-
-                                    if (commandTimeout > 0)
-                                    {
-                                        sqlServerOptions.CommandTimeout(commandTimeout);
-                                    }
-                                });
-                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
-                            }
-
-                            options.EnableSensitiveDataLogging();
-                            options.AddInterceptors(new AuditSaveChangesInterceptor());
-                        });
-
-                    collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
-                        options =>
-                        {
-                            if (dbEngine == DbProvider.PostGreSql)
-                            {
-                                options.UseNpgsql(connectionString, npgsqlOptions =>
-                                {
-                                    if (enableRetryOnFailure)
-                                    {
-                                        npgsqlOptions.EnableRetryOnFailure();
-                                    }
-
-                                    if (commandTimeout > 0)
-                                    {
-                                        npgsqlOptions.CommandTimeout(commandTimeout);
-                                    }
-                                });
-                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
-                            }
-                            else
-                            {
-                                options.UseSqlServer(connectionString, sqlServerOptions =>
-                                {
-                                    if (enableRetryOnFailure)
-                                    {
-                                        sqlServerOptions.EnableRetryOnFailure();
-                                    }
-
-                                    if (commandTimeout > 0)
-                                    {
-                                        sqlServerOptions.CommandTimeout(commandTimeout);
-                                    }
-                                });
-                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
-                            }
-
-                            options.EnableSensitiveDataLogging();
-                        },
-                        contextLifetime: ServiceLifetime.Transient);
-                }
-            }
         }
 
         private static void BiaConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)

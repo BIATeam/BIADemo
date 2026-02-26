@@ -14,10 +14,8 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Infrastructure.Data;
     using Hangfire;
     using Hangfire.PostgreSql;
-    using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
@@ -28,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using TheBIADevCompany.BIADemo.Application.Job;
 #endif
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data;
+    using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
 
     /// <summary>
     /// The base program class.
@@ -57,52 +55,18 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 .ConfigureServices((hostingContext, services) =>
                 {
                     IConfiguration configuration = hostingContext.Configuration;
-
                     string connectionString = configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey);
+
+                    IocContainer.BiaConfigureInfrastructureDataContainerDbContext(
+                        services,
+                        configuration,
+                        false,
+                        dbKey: BiaConstants.DatabaseConfiguration.DefaultKey,
+                        fromDeployDB: true);
 
                     if (!string.IsNullOrWhiteSpace(connectionString))
                     {
                         DbProvider dbEngine = configuration.GetProvider(BiaConstants.DatabaseConfiguration.DefaultKey);
-
-                        if (dbEngine == DbProvider.PostGreSql)
-                        {
-                            services.AddDbContext<IDbContextDatabase, DataContextPostGreSql>(options =>
-                            {
-                                options.UseNpgsql(connectionString, optionsBuilder =>
-                                {
-                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
-                                });
-                            });
-                        }
-                        else
-                        {
-                            services.AddDbContext<IDbContextDatabase, DataContext>(options =>
-                            {
-                                options.UseSqlServer(connectionString, optionsBuilder =>
-                                {
-                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
-                                });
-                            });
-                        }
-
-                        services.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
-                        {
-                            if (dbEngine == DbProvider.PostGreSql)
-                            {
-                                options.UseNpgsql(connectionString, optionsBuilder =>
-                                {
-                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
-                                });
-                            }
-                            else
-                            {
-                                options.UseSqlServer(connectionString, optionsBuilder =>
-                                {
-                                    optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
-                                });
-                            }
-                        });
-
                         services.AddHostedService<DeployDBService>();
 
                         // Comment those lines if you do not use hangfire
