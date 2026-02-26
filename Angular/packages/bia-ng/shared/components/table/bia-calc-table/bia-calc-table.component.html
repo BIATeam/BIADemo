@@ -244,7 +244,8 @@
                 [editingRowId]="editingRowId"
                 [editFooterSignal]="editFooterSignal"
                 [onChange]="onChange.bind(this)"
-                [onComplexInput]="onComplexInput.bind(this)">
+                [onComplexInput]="onComplexInput.bind(this)"
+                [onPanelHide]="onPanelHide.bind(this)">
                 <ng-template pTemplate="specificOutput">
                   <ng-container
                     *ngTemplateOutlet="

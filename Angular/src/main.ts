@@ -33,6 +33,7 @@ import { HomeModule } from './app/features/home/home.module';
 import { appConfig } from './app/shared/theme';
 import { ROOT_REDUCERS, metaReducers } from './app/store/state';
 import { environment } from './environments/environment';
+import { verifyPrimeNgLicense } from './primeng-license';
 
 export function createTranslateLoader(http: HttpClient) {
   return new BiaTranslateHttpLoader(http, './assets/i18n/app/');
@@ -43,7 +44,7 @@ if (environment.production) {
 }
 
 async function bootstrap() {
-  //await verifyPrimeNgLicense();
+  await verifyPrimeNgLicense();
   const keycloakConfig = await loadKeycloakConfig();
 
   try {
@@ -100,29 +101,6 @@ async function bootstrap() {
     console.error('Failed to bootstrap application:', error);
   }
 }
-
-// async function verifyPrimeNgLicense() {
-//   try {
-//     const response = await fetch(
-//       'assets/bia/primeng/license/primeng-license.json'
-//     );
-//     if (!response.ok) {
-//       console.warn('PrimeNG license file not found.');
-//       return;
-//     }
-
-//     const licensePayload: { licenseKey?: string; passKey?: string } =
-//       await response.json();
-//     if (!licensePayload.licenseKey || !licensePayload.passKey) {
-//       console.warn('PrimeNG license file is missing required fields.');
-//       return;
-//     }
-
-//     LicenseManager.verify(licensePayload.licenseKey, licensePayload.passKey);
-//   } catch (error) {
-//     console.error('Failed to verify PrimeNG license.', error);
-//   }
-// }
 
 // Start the bootstrap process
 bootstrap();
