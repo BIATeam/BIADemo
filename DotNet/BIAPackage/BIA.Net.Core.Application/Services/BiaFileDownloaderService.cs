@@ -12,6 +12,7 @@ namespace BIA.Net.Core.Application.Services
     using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Common.Enum;
@@ -47,8 +48,7 @@ namespace BIA.Net.Core.Application.Services
     {
         private readonly TINotificationAppService notificationAppService;
         private readonly ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
-        private readonly FileDownloadDataMapper fileDownloadDataMapper;
-        private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
+        private readonly IFileDownloadDataAppService fileDownloadDataAppService;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
         private readonly BiaFileDownloaderOptions options;
@@ -58,24 +58,21 @@ namespace BIA.Net.Core.Application.Services
         /// </summary>
         /// <param name="notificationAppService">The notification application service.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="fileDownloadDataMapper">The file download data mapper.</param>
-        /// <param name="fileDownloadDataRepository">The file download data repository.</param>
+        /// <param name="fileDownloadDataAppService">The file download data application service.</param>
         /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
         /// <param name="backgroundJobClient">Hangfire job client.</param>
         /// <param name="options">The file downloader options (language IDs, etc.).</param>
         public BiaFileDownloaderService(
             TINotificationAppService notificationAppService,
             ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
-            FileDownloadDataMapper fileDownloadDataMapper,
-            ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository,
+            IFileDownloadDataAppService fileDownloadDataAppService,
             IFileDownloadTokenRepository fileDownloadTokenRepository,
             IBackgroundJobClient backgroundJobClient,
             IOptions<BiaFileDownloaderOptions> options)
         {
             this.notificationAppService = notificationAppService;
             this.logger = logger;
-            this.fileDownloadDataMapper = fileDownloadDataMapper;
-            this.fileDownloadDataRepository = fileDownloadDataRepository;
+            this.fileDownloadDataAppService = fileDownloadDataAppService;
             this.fileDownloadTokenRepository = fileDownloadTokenRepository;
             this.backgroundJobClient = backgroundJobClient;
             this.options = options.Value;
@@ -125,12 +122,8 @@ namespace BIA.Net.Core.Application.Services
                 fileDownloadDataDto.RequestByUser = new OptionDto { Id = requestedByUserId };
                 fileDownloadDataDto.RequestDateTime = DateTime.UtcNow;
 
-                FileDownloadData fileDownloadData = null;
-                this.fileDownloadDataMapper.DtoToEntity(fileDownloadDataDto, ref fileDownloadData);
-                this.fileDownloadDataRepository.Add(fileDownloadData);
-                await this.fileDownloadDataRepository.UnitOfWork.CommitAsync();
+                await this.fileDownloadDataAppService.AddAsync(fileDownloadDataDto);
 
-                fileDownloadDataDto.Id = fileDownloadData.Id;
                 var notification = this.CreateDownloadReadyNotification(fileDownloadDataDto, requestedByUserId);
                 await this.notificationAppService.AddAsync(notification);
             }
@@ -148,7 +141,7 @@ namespace BIA.Net.Core.Application.Services
         {
             try
             {
-                var fileDownloadData = await this.fileDownloadDataRepository.GetResultAsync(this.fileDownloadDataMapper.EntityToDto(), fileGuid, isReadOnlyMode: true)
+                var fileDownloadData = await this.fileDownloadDataAppService.GetAsync(fileGuid, isReadOnlyMode: true)
                     ?? throw new ElementNotFoundException("Unable to retrieve file download data");
 
                 if (fileDownloadData.RequestByUser.Id != requestedByUserId)
@@ -190,7 +183,7 @@ namespace BIA.Net.Core.Application.Services
                     await this.notificationAppService.RemoveAsync(notificationsToDelete.Id);
                 }
 
-                await this.fileDownloadDataRepository.DeleteByIdsAsync([fileDownloadData.Id]);
+                await this.fileDownloadDataAppService.RemoveAsync(fileDownloadData.Id);
 
                 if (File.Exists(fileDownloadData.FilePath))
                 {
@@ -216,7 +209,7 @@ namespace BIA.Net.Core.Application.Services
                 var fileDownloadToken = await this.fileDownloadTokenRepository.GetAsync(fileGuid, token) ?? throw new ElementNotFoundException("Unable to retrieve file download token");
                 await this.fileDownloadTokenRepository.RemoveAsync(fileDownloadToken);
 
-                var fileDownloadDataDto = this.fileDownloadDataMapper.EntityToDto().Compile().Invoke(fileDownloadToken.FileDownloadData);
+                var fileDownloadDataDto = await this.fileDownloadDataAppService.GetAsync(fileDownloadToken.FileDownloadData.Id, isReadOnlyMode: true);
                 await this.EnsureDownloadAvailability(fileDownloadDataDto);
 
                 return fileDownloadDataDto;
