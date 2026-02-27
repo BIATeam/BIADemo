@@ -241,7 +241,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 options.SpanishLanguageId = LanguageId.Spanish;
             });
 
-            param.Collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
+            param.Collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<BiaFileDownloaderOptions, INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 
         private static void BiaConfigureApplicationContainerAutoRegister(ParamAutoRegister param)

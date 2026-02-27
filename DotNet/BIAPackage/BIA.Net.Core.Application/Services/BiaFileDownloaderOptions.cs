@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Application.Services
     /// <summary>
     /// Options for the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/>.
     /// </summary>
-    public sealed class BiaFileDownloaderOptions
+    public class BiaFileDownloaderOptions
     {
         /// <summary>
         /// Gets or sets the ID of the French language.

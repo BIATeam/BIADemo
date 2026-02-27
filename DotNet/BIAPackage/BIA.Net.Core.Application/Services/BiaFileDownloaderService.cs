@@ -36,25 +36,27 @@ namespace BIA.Net.Core.Application.Services
     /// <summary>
     /// File downloader service that prepares file download and notifies the user when the file is ready to be downloaded.
     /// </summary>
+    /// <typeparam name="TFileDownloaderOptions">Type of the file downloader options.</typeparam>
     /// <typeparam name="TINotificationAppService">Interface for the notification application service.</typeparam>
     /// <typeparam name="TNotification">Type of the notification.</typeparam>
     /// <typeparam name="TNotificationDto">Type of the notification DTO.</typeparam>
     /// <typeparam name="TNotificationListItemDto">Type of the notification list item DTO.</typeparam>
-    public sealed class BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
+    public class BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
+        where TFileDownloaderOptions : BiaFileDownloaderOptions, new()
         where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification>
         where TNotification : BaseNotification, new()
         where TNotificationDto : BaseNotificationDto, new()
         where TNotificationListItemDto : BaseNotificationListItemDto, new()
     {
         private readonly TINotificationAppService notificationAppService;
-        private readonly ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
+        private readonly ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
         private readonly IFileDownloadDataAppService fileDownloadDataAppService;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
-        private readonly BiaFileDownloaderOptions options;
+        private readonly TFileDownloaderOptions options;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
+        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
         /// </summary>
         /// <param name="notificationAppService">The notification application service.</param>
         /// <param name="logger">The logger.</param>
@@ -64,11 +66,11 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="options">The file downloader options (language IDs, etc.).</param>
         public BiaFileDownloaderService(
             TINotificationAppService notificationAppService,
-            ILogger<BiaFileDownloaderService<TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
+            ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
             IFileDownloadDataAppService fileDownloadDataAppService,
             IFileDownloadTokenRepository fileDownloadTokenRepository,
             IBackgroundJobClient backgroundJobClient,
-            IOptions<BiaFileDownloaderOptions> options)
+            IOptions<TFileDownloaderOptions> options)
         {
             this.notificationAppService = notificationAppService;
             this.logger = logger;
@@ -79,7 +81,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public void PrepareBackgroundDownload<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
+        public virtual void PrepareBackgroundDownload<TService>(int requestedByUserId, Expression<Func<TService, Task<FileDownloadDataDto>>> generateFileExpression)
             where TService : class
         {
             if (generateFileExpression.Body is not MethodCallExpression methodCall)
@@ -100,7 +102,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
+        public virtual async Task NotifyDownloadReadyAsync(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
         {
             try
             {
@@ -137,7 +139,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task<string> GenerateDownloadToken(Guid fileGuid, int requestedByUserId)
+        public virtual async Task<string> GenerateDownloadToken(Guid fileGuid, int requestedByUserId)
         {
             try
             {
@@ -169,7 +171,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData, bool deleteAssociatedNotification = false)
+        public virtual async Task RemoveFileToDownload(FileDownloadDataDto fileDownloadData, bool deleteAssociatedNotification = false)
         {
             try
             {
@@ -204,7 +206,7 @@ namespace BIA.Net.Core.Application.Services
         }
 
         /// <inheritdoc/>
-        public async Task<FileDownloadDataDto> GetFileDownloadData(Guid fileGuid, string token)
+        public virtual async Task<FileDownloadDataDto> GetFileDownloadData(Guid fileGuid, string token)
         {
             try
             {
@@ -227,7 +229,13 @@ namespace BIA.Net.Core.Application.Services
             }
         }
 
-        private TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
+        /// <summary>
+        /// Creates a notification DTO indicating that a file download is ready for the specified user.
+        /// </summary>
+        /// <param name="fileDownloadDataDto">The file download data used to generate the notification.</param>
+        /// <param name="requestedByUserId">The ID of the user who requested the file download.</param>
+        /// <returns>A notification DTO populated with download-ready information.</returns>
+        protected virtual TNotificationDto CreateDownloadReadyNotification(FileDownloadDataDto fileDownloadDataDto, int requestedByUserId)
         {
             var notificationTranslations = this.GetNotificationTranslations(fileDownloadDataDto.FileName);
             var notificationTranslationEnglish = notificationTranslations.First(nt => nt.LanguageId == this.options.EnglishLanguageId);
@@ -247,7 +255,12 @@ namespace BIA.Net.Core.Application.Services
             };
         }
 
-        private List<NotificationTranslationDto> GetNotificationTranslations(string fileName)
+        /// <summary>
+        /// Gets the list of notification translations for the download ready notification. By default, it creates translations in English, French and Spanish using the file name in the description. This method can be overridden to provide custom translations or support additional languages.
+        /// </summary>
+        /// <param name="fileName">The name of the file being downloaded.</param>
+        /// <returns>A list of notification translations for the download ready notification.</returns>
+        protected virtual List<NotificationTranslationDto> GetNotificationTranslations(string fileName)
         {
             return
             [
@@ -275,7 +288,12 @@ namespace BIA.Net.Core.Application.Services
             ];
         }
 
-        private async Task EnsureDownloadAvailability(FileDownloadDataDto fileDownloadData)
+        /// <summary>
+        /// Ensures that the file to download is still available based on the request date and the availability duration. If the file is no longer available, it removes the file to download and throws a FrontUserException indicating that the file has expired.
+        /// </summary>
+        /// <param name="fileDownloadData">The file download data to check for availability.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        protected virtual async Task EnsureDownloadAvailability(FileDownloadDataDto fileDownloadData)
         {
             if (fileDownloadData.AvailabilityDuration.HasValue && fileDownloadData.RequestDateTime.Add(fileDownloadData.AvailabilityDuration.Value) < DateTime.UtcNow)
             {
