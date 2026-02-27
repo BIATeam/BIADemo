@@ -98,6 +98,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<TeamType>().HasKey(t => t.Id);
             modelBuilder.Entity<TeamType>().Property(r => r.Name).IsRequired().HasMaxLength(32);
+        }
+
+        /// <summary>
+        /// Creates the team type model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateTeamTypeModelData(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)BiaTeamTypeId.Root, Name = "Root" });
         }
 
@@ -113,11 +121,41 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the role model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateRoleModelData(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Role>().HasData(
+                new Role { Id = (int)BiaRoleId.Admin, Code = "Admin", Label = "Administrator" },
+                new Role { Id = (int)BiaRoleId.BackAdmin, Code = "Back_Admin", Label = "Background task administrator" },
+                new Role { Id = (int)BiaRoleId.BackReadOnly, Code = "Back_Read_Only", Label = "Visualization of background tasks" });
+        }
+
+        /// <summary>
         /// Create the model for member roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
         {
+        }
+
+        /// <summary>
+        /// Creates the team type role model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateTeamTypeRoleModelData(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Role>()
+                .HasMany(p => p.TeamTypes)
+                .WithMany(r => r.Roles)
+                .UsingEntity(rt =>
+                {
+                    rt.ToTable("RoleTeamTypes");
+                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)BiaRoleId.Admin });
+                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)BiaRoleId.BackAdmin });
+                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)BiaRoleId.BackReadOnly });
+                });
         }
 
         /// <summary>
