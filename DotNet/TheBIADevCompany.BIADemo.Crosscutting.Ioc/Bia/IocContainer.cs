@@ -57,6 +57,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
+    using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
     /// The IoC Container.
@@ -237,6 +238,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+
+            collection.Configure<BiaFileDownloaderOptions>(options =>
+            {
+                options.FrenchLanguageId = LanguageId.French;
+                options.EnglishLanguageId = LanguageId.English;
+                options.SpanishLanguageId = LanguageId.Spanish;
+            });
             collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 
