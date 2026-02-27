@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Options;
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;

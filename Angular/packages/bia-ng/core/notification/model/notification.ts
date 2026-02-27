@@ -45,3 +45,9 @@ export interface NotificationTranslation {
   title: string;
   description: string;
 }
+
+export interface NotificationTranslation {
+  languageId: number;
+  title: string;
+  description: string;
+}
