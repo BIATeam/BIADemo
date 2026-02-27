@@ -24,17 +24,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     public class HangfiresController : BiaControllerBase
     {
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
-        private readonly IBiaFileDownloaderService fileDownloaderService;
+        private readonly IBiaDemoTestHangfireService biaDemoTestHangfireService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        /// <param name="fileDownloaderService">The file downloader service.</param>
-        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService, IBiaFileDownloaderService fileDownloaderService)
+        /// <param name="biaDemoTestHangfireService">The BIA demo test hangfire service.</param>
+        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService, IBiaDemoTestHangfireService biaDemoTestHangfireService)
         {
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
-            this.fileDownloaderService = fileDownloaderService;
+            this.biaDemoTestHangfireService = biaDemoTestHangfireService;
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult PrepareBackgroundDownloadFileExample()
         {
-            this.fileDownloaderService.PrepareBackgroundDownload<IBiaDemoTestHangfireService>(this.biaClaimsPrincipalService.GetUserId(), x => x.GenerateExampleFileAsync("GeneratedFileExample.txt"));
+            this.biaDemoTestHangfireService.PrepareBackgroundDownloadFileExample(this.biaClaimsPrincipalService.GetUserId());
             return this.NoContent();
         }
     }

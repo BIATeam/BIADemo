@@ -31,6 +31,12 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         Task RandomReviewPlane(int teamId, CurrentTeamDto currentSite, int createdById, PerformContext context);
 
         /// <summary>
+        /// Prepare a file through Hangfire job and then sends a notification to audience to say that the file is ready to be downloaded.
+        /// </summary>
+        /// <param name="requestedByUserId">The user id who requested the file.</param>
+        void PrepareBackgroundDownloadFileExample(int requestedByUserId);
+
+        /// <summary>
         /// Generate an example file and return the file information to download it.
         /// </summary>
         /// <param name="fileName">The name of the file to generate.</param>
