@@ -54,7 +54,9 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Ioc.Param;
     using TheBIADevCompany.BIADemo.Application.Notification;
+    using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
@@ -65,32 +67,33 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     public static partial class IocContainer
     {
         /// <summary>
-        /// The method used to register all instance for infrastructure data container, which is related to database.
+        /// Configure infrastructure data container database context.
         /// </summary>
-        /// <param name="collection">The service collection.</param>
-        /// <param name="configuration">The application configuration.</param>
-        /// <param name="isUnitTest">Indicates if the configuration is for unit tests.</param>
+        /// <param name="param">The parameter.</param>
         /// <param name="dbKey">The database key.</param>
-        /// <param name="enableRetryOnFailure">Enable retry on failure.</param>
+        /// <param name="enableRetryOnFailure">if set to <c>true</c> [enable retry on failure].</param>
         /// <param name="commandTimeout">The command timeout.</param>
-        /// <param name="fromDeployDB">Indicates if the configuration is from the deployment database.</param>
+        /// <param name="fromDeployDB">if set to <c>true</c> [from deploy database].</param>
         public static void BiaConfigureInfrastructureDataContainerDbContext(
-            IServiceCollection collection,
-            IConfiguration configuration,
-            bool isUnitTest,
+            ParamIocContainer param,
             string dbKey = BiaConstants.DatabaseConfiguration.DefaultKey,
             bool enableRetryOnFailure = true,
             int commandTimeout = default,
             bool fromDeployDB = false)
         {
-            string connectionString = configuration.GetDatabaseConnectionString(dbKey);
-            if (isUnitTest || string.IsNullOrWhiteSpace(connectionString))
+            if (param.IsUnitTest)
             {
                 return;
             }
 
-            DbProvider dbEngine = configuration.GetProvider(dbKey);
-            collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
+            string connectionString = param.Configuration.GetDatabaseConnectionString(dbKey);
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                return;
+            }
+
+            DbProvider dbEngine = param.Configuration.GetProvider(dbKey);
+            param.Collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
             {
                 ConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
                 if (!fromDeployDB)
@@ -101,7 +104,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             if (!fromDeployDB)
             {
-                collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
+                param.Collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
                     options =>
                     {
                         ConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
@@ -110,7 +113,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 return;
             }
 
-            ConfigureDbContextForDeployDB(collection, connectionString, dbEngine);
+            ConfigureDbContextForDeployDB(param.Collection, connectionString, dbEngine);
         }
 
         private static void ConfigureDbContextOptions(bool enableRetryOnFailure, int commandTimeout, DbContextOptionsBuilder options, string connectionString, DbProvider dbEngine)
@@ -180,39 +183,31 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
         }
 
-        /// <summary>
-        /// The method used to register all instance.
-        /// </summary>
-        /// <param name="collection">The collection of service.</param>
-        /// <param name="configuration">The application configuration.</param>
-        /// <param name="isApi">true if it's an API, false if it's a Worker.</param>
-        /// <param name="isUnitTest">Are we configuring IoC for unit tests? If so, some IoC shall not be performed here but replaced by
-        /// specific ones in IocContainerTest.</param>
-        private static void BiaConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isApi, bool isUnitTest = false)
+        private static void BiaConfigureContainer(ParamIocContainer param)
         {
-            if (configuration == null && !isUnitTest)
+            if (param.Configuration == null && !param.IsUnitTest)
             {
-                throw new ArgumentNullException(nameof(configuration));
+                return;
             }
 
-            BiaNetSection biaNetSection = new BiaNetSection();
-            configuration?.GetSection("BiaNet").Bind(biaNetSection);
+            param.BiaNetSection = new BiaNetSection();
+            param.Configuration?.GetSection("BiaNet").Bind(param.BiaNetSection);
 
-            ConfigureInfrastructureServiceContainer(collection, biaNetSection, isUnitTest);
-            ConfigureDomainContainer(collection);
-            ConfigureApplicationContainer(collection, isApi);
+            ConfigureInfrastructureServiceContainer(param);
+            ConfigureDomainContainer(param);
+            ConfigureApplicationContainer(param);
 
-            BiaIocContainer.ConfigureContainer(collection, configuration, isUnitTest);
+            BiaIocContainer.ConfigureContainer(param);
 
 #if BIA_USE_DATABASE
-            ConfigureInfrastructureDataContainer(collection, configuration, isUnitTest);
+            ConfigureInfrastructureDataContainer(param);
 #endif
-            if (!isUnitTest)
+            if (!param.IsUnitTest)
             {
-                ConfigureCommonContainer(collection, configuration);
-                collection.Configure<CommonFeatures>(configuration.GetSection("BiaNet:CommonFeatures"));
-                collection.Configure<WorkerFeatures>(configuration.GetSection("BiaNet:WorkerFeatures"));
-                collection.Configure<ApiFeatures>(configuration.GetSection("BiaNet:ApiFeatures"));
+                ConfigureCommonContainer(param);
+                param.Collection.Configure<CommonFeatures>(param.Configuration.GetSection("BiaNet:CommonFeatures"));
+                param.Collection.Configure<WorkerFeatures>(param.Configuration.GetSection("BiaNet:WorkerFeatures"));
+                param.Collection.Configure<ApiFeatures>(param.Configuration.GetSection("BiaNet:ApiFeatures"));
             }
 #if BIA_FRONT_FEATURE
 
@@ -220,62 +215,59 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #endif
         }
 
-        private static void BiaConfigureApplicationContainer(IServiceCollection collection, bool isApi)
+        private static void BiaConfigureApplicationContainer(ParamIocContainer param)
         {
             // Permissions
-            collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
-            collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
-            collection.AddSingleton<IPermissionService, PermissionService>();
+            param.Collection.AddSingleton<IPermissionProvider, PermissionProvider<BiaPermissionId>>();
+            param.Collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
+            param.Collection.AddSingleton<IPermissionService, PermissionService>();
 #if BIA_FRONT_FEATURE
-            collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
-            collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
-            collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
+            param.Collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
+            param.Collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
+            param.Collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
 #endif
 
-            if (isApi)
+            if (param.IsApi)
             {
-                collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService));
+                param.Collection.AddTransient(typeof(IAuthAppService), typeof(AuthAppService));
             }
 
-            collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
+            param.Collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
 
-            collection.Configure<BiaFileDownloaderOptions>(options =>
+            param.Collection.Configure<BiaFileDownloaderOptions>(options =>
             {
                 options.FrenchLanguageId = LanguageId.French;
                 options.EnglishLanguageId = LanguageId.English;
                 options.SpanishLanguageId = LanguageId.Spanish;
             });
-            collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
+
+            param.Collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 
-        private static void BiaConfigureApplicationContainerAutoRegister(
-            IServiceCollection collection,
-            ServiceLifetime serviceLifetime = ServiceLifetime.Transient,
-            IEnumerable<string> excludedServiceNames = null,
-            IEnumerable<string> includedServiceNames = null)
+        private static void BiaConfigureApplicationContainerAutoRegister(ParamAutoRegister param)
         {
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
             BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
+                collection: param.Collection,
                 assemblyName: "BIA.Net.Core.Application",
                 serviceLifetime: ServiceLifetime.Transient,
                 excludedServiceNames: [nameof(IBiaFileDownloaderService)]);
 #endif
 
-            List<string> excludedServiceNameList = excludedServiceNames?.ToList() ?? new List<string>();
+            List<string> excludedServiceNameList = param.ExcludedServiceNames?.ToList() ?? new List<string>();
             excludedServiceNameList.Add(nameof(AuthAppService));
             BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
+                collection: param.Collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Application",
-                serviceLifetime: serviceLifetime,
-                includedServiceNames: includedServiceNames,
+                serviceLifetime: param.ServiceLifetime,
+                includedServiceNames: param.IncludedServiceNames,
                 excludedServiceNames: excludedServiceNameList);
         }
 
-        private static void BiaConfigureDomainContainer(IServiceCollection collection)
+        private static void BiaConfigureDomainContainer(ParamIocContainer param)
         {
 #if BIA_FRONT_FEATURE
-            collection.AddTransient(typeof(IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>), typeof(UserFromDirectoryMapper));
+            param.Collection.AddTransient(typeof(IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>), typeof(UserFromDirectoryMapper));
 #endif
 
             Type templateType = typeof(BiaBaseMapper<,,>);
@@ -283,84 +275,75 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
             foreach (var type in derivedTypes)
             {
-                collection.AddScoped(type);
+                param.Collection.AddScoped(type);
             }
 #if BIA_FRONT_FEATURE || BIA_USE_DATABASE
 
-            collection.AddSingleton<IAuditMapper, AnnouncementAuditMapper>();
+            param.Collection.AddSingleton<IAuditMapper, AnnouncementAuditMapper>();
 
             Type auditMapperType = typeof(IAuditMapper);
             List<Type> auditMapperDerivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, auditMapperType);
             foreach (var auditMapperDerivedType in auditMapperDerivedTypes)
             {
-                collection.AddSingleton(auditMapperType, auditMapperDerivedType);
+                param.Collection.AddSingleton(auditMapperType, auditMapperDerivedType);
             }
 #endif
         }
 
-        private static void BiaConfigureDomainContainerAutoRegister(
-            IServiceCollection collection,
-            ServiceLifetime serviceLifetime = ServiceLifetime.Transient,
-            IEnumerable<string> excludedServiceNames = null,
-            IEnumerable<string> includedServiceNames = null)
+        private static void BiaConfigureDomainContainerAutoRegister(ParamAutoRegister param)
         {
             BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
+                collection: param.Collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Domain",
-                serviceLifetime: serviceLifetime,
-                excludedServiceNames: excludedServiceNames,
-                includedServiceNames: includedServiceNames);
+                serviceLifetime: param.ServiceLifetime,
+                excludedServiceNames: param.ExcludedServiceNames,
+                includedServiceNames: param.IncludedServiceNames);
         }
 
-        private static void BiaConfigureInfrastructureDataContainer(IServiceCollection collection, bool isUnitTest)
+        private static void BiaConfigureInfrastructureDataContainer(ParamIocContainer param)
         {
-            if (!isUnitTest)
+            if (!param.IsUnitTest)
             {
-                collection.AddScoped<DataContextFactory>();
-                collection.AddSingleton<BIA.Net.Core.Application.Services.IAuditFeatureService, BIA.Net.Core.Application.Services.AuditFeatureService>();
+                param.Collection.AddScoped<DataContextFactory>();
+                param.Collection.AddSingleton<IAuditFeatureService, AuditFeatureService>();
             }
 
-            collection.AddSingleton<IAuditFeature, AuditFeature>();
-            collection.AddScoped<IBiaHybridCache, BiaHybridCache>();
+            param.Collection.AddSingleton<IAuditFeature, AuditFeature>();
+            param.Collection.AddScoped<IBiaHybridCache, BiaHybridCache>();
 
 #if BIA_FRONT_FEATURE
             // Must specify the User type explicitly
-            collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
+            param.Collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
 #endif
         }
 
-        private static void BiaConfigureInfrastructureDataContainerAutoRegister(
-            IServiceCollection collection,
-            ServiceLifetime serviceLifetime = ServiceLifetime.Transient,
-            IEnumerable<string> excludedServiceNames = null,
-            IEnumerable<string> includedServiceNames = null)
+        private static void BiaConfigureInfrastructureDataContainerAutoRegister(ParamAutoRegister param)
         {
             BiaIocContainer.RegisterServicesFromAssembly(
-                collection: collection,
+                collection: param.Collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
                 interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
-                serviceLifetime: serviceLifetime,
-                excludedServiceNames: excludedServiceNames,
-                includedServiceNames: includedServiceNames);
+                serviceLifetime: param.ServiceLifetime,
+                excludedServiceNames: param.ExcludedServiceNames,
+                includedServiceNames: param.IncludedServiceNames);
         }
 
-        private static void BiaConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
+        private static void BiaConfigureInfrastructureServiceContainer(ParamIocContainer param)
         {
-            collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
-            collection.AddSingleton<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
-            collection.AddTransient<IMailRepository, MailRepository>();
+            param.Collection.AddSingleton<IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory>, LdapRepository>();
+            param.Collection.AddSingleton<IUserIdentityKeyDomainService, UserIdentityKeyDomainService>();
 #if BIA_FRONT_FEATURE
-            collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false));
+            param.Collection.AddHttpClient<IIdentityProviderRepository<UserFromDirectory>, IdentityProviderRepository>().ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection, false));
 
-            if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
+            if (param.BiaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {
-                if (isUnitTest || !string.IsNullOrEmpty(biaNetSection.CommonFeatures?.ClientForHub.SignalRUrl))
+                if (param.IsUnitTest || !string.IsNullOrEmpty(param.BiaNetSection.CommonFeatures?.ClientForHub.SignalRUrl))
                 {
-                    collection.AddTransient<IClientForHubRepository, ExternalClientForSignalRRepository>();
+                    param.Collection.AddTransient<IClientForHubRepository, ExternalClientForSignalRRepository>();
                 }
                 else
                 {
-                    collection.AddTransient<IClientForHubRepository, InternalClientForSignalRRepository<HubForClients>>();
+                    param.Collection.AddTransient<IClientForHubRepository, InternalClientForSignalRRepository<HubForClients>>();
                 }
             }
 #endif

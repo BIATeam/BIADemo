@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using BIA.Net.Core.Ioc.Param;
     using BIA.Net.Core.Test.Data;
     using BIA.Net.Core.Test.IoC;
     using Microsoft.Extensions.Configuration;
@@ -36,7 +37,16 @@ namespace TheBIADevCompany.BIADemo.Test.IoC
         {
             IConfiguration configuration = BuildConfiguration();
             services.AddSingleton(configuration);
-            IocContainer.ConfigureContainer(services, null, true, true);
+
+            ParamIocContainer param = new ParamIocContainer()
+            {
+                Collection = services,
+                Configuration = null,
+                IsApi = true,
+                IsUnitTest = true,
+            };
+
+            IocContainer.ConfigureContainer(param);
 #if BIA_USE_DATABASE
             BIAIocContainerTest.ConfigureContainerTest<DataContext, DataContextNoTracking>(services);
             services.AddTransient<IMockEntityFramework<DataContext, DataContextNoTracking>, MockEntityFrameworkInMemory>();

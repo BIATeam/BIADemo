@@ -14,12 +14,12 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
+    using BIA.Net.Core.Ioc.Param;
     using Hangfire;
     using Hangfire.PostgreSql;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Options;
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
@@ -58,10 +58,16 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                     IConfiguration configuration = hostingContext.Configuration;
                     string connectionString = configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey);
 
+                    ParamIocContainer param = new ParamIocContainer()
+                    {
+                        Collection = services,
+                        Configuration = configuration,
+                        IsApi = false,
+                        IsUnitTest = false,
+                    };
+
                     IocContainer.BiaConfigureInfrastructureDataContainerDbContext(
-                        services,
-                        configuration,
-                        false,
+                        param,
                         dbKey: BiaConstants.DatabaseConfiguration.DefaultKey,
                         fromDeployDB: true);
 

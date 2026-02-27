@@ -4,14 +4,13 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
-    using BIA.Net.Core.Common.Configuration;
-
     // Begin BIADemo
     using BIA.Net.Core.Ioc;
 
     // End BIADemo
-    using Microsoft.Extensions.Configuration;
+    using BIA.Net.Core.Ioc.Param;
     using Microsoft.Extensions.DependencyInjection;
+    using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
@@ -26,58 +25,64 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     public static partial class IocContainer
     {
         /// <summary>
-        /// The method used to register all instance.
+        /// Configures the container.
         /// </summary>
-        /// <param name="collection">The collection of service.</param>
-        /// <param name="configuration">The application configuration.</param>
-        /// <param name="isApi">true if it's an API, false if it's a Worker.</param>
-        /// <param name="isUnitTest">Are we configuring IoC for unit tests? If so, some IoC shall not be performed here but replaced by
-        /// specific ones in IocContainerTest.</param>
-        public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isApi, bool isUnitTest = false)
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureContainer(ParamIocContainer param)
         {
-            BiaConfigureContainer(collection, configuration, isApi, isUnitTest);
+            BiaConfigureContainer(param);
         }
 
-        private static void ConfigureApplicationContainer(IServiceCollection collection, bool isApi)
+        private static ParamAutoRegister GetGlobalParamAutoRegister(ParamIocContainer param)
         {
-            BiaConfigureApplicationContainer(collection, isApi);
-            BiaConfigureApplicationContainerAutoRegister(collection);
+            return new ParamAutoRegister()
+            {
+                Collection = param.Collection,
+                ExcludedServiceNames = null,
+                IncludedServiceNames = null,
+            };
         }
 
-        private static void ConfigureDomainContainer(IServiceCollection collection)
+        private static void ConfigureApplicationContainer(ParamIocContainer param)
         {
-            BiaConfigureDomainContainer(collection);
-            BiaConfigureDomainContainerAutoRegister(collection);
+            BiaConfigureApplicationContainer(param);
+            BiaConfigureApplicationContainerAutoRegister(GetGlobalParamAutoRegister(param));
         }
 
-        private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
+        private static void ConfigureDomainContainer(ParamIocContainer param)
+        {
+            BiaConfigureDomainContainer(param);
+            BiaConfigureDomainContainerAutoRegister(GetGlobalParamAutoRegister(param));
+        }
+
+        private static void ConfigureCommonContainer(ParamIocContainer param)
         {
             // Common Layer
         }
 
 #if BIA_USE_DATABASE
-        private static void ConfigureInfrastructureDataContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest)
+        private static void ConfigureInfrastructureDataContainer(ParamIocContainer param)
         {
-            BiaConfigureInfrastructureDataContainer(collection, isUnitTest);
-            BiaConfigureInfrastructureDataContainerAutoRegister(collection);
-            BiaConfigureInfrastructureDataContainerDbContext(collection, configuration, isUnitTest);
+            BiaConfigureInfrastructureDataContainer(param);
+            BiaConfigureInfrastructureDataContainerAutoRegister(GetGlobalParamAutoRegister(param));
+            BiaConfigureInfrastructureDataContainerDbContext(param);
         }
 #endif
 
-        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, BiaNetSection biaNetSection, bool isUnitTest = false)
+        private static void ConfigureInfrastructureServiceContainer(ParamIocContainer param)
         {
-            BiaConfigureInfrastructureServiceContainer(collection, biaNetSection, isUnitTest);
+            BiaConfigureInfrastructureServiceContainer(param);
 
             // Begin BIADemo
-            collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
-            collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
+            param.Collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
+            param.Collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
 
-            collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>()
-                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection)).AddStandardResilienceHandler();
-            collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>()
-                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection, false)).AddStandardResilienceHandler();
-            collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>()
-                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(biaNetSection));
+            param.Collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection)).AddStandardResilienceHandler();
+            param.Collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection, false)).AddStandardResilienceHandler();
+            param.Collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>()
+                .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection));
 
             // End BIADemo
         }
