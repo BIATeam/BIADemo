@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { PrimeNG } from 'primeng/config';
 import { DatePicker } from 'primeng/datepicker';
-import { BehaviorSubject, Observable, combineLatest, forkJoin, of } from 'rxjs';
-import { distinctUntilChanged, map, skip, tap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
+import { distinctUntilChanged, map, tap } from 'rxjs/operators';
 import { getAppSettings } from '../app-settings/store/app-settings.state';
 import { AuthService } from './auth.service';
 import { BiaAppConstantsService } from './bia-app-constants.service';
@@ -111,8 +111,7 @@ export class BiaTranslationService {
           this.getLanguageId(currentCulture, appSettings)
         )
       )
-      .pipe(distinctUntilChanged())
-      .pipe(skip(1));
+      .pipe(distinctUntilChanged());
     // force language initialization to avoid double authentication.
     this.loadAndChangeLanguage(getCurrentCulture(), false);
     this.currentCultureDateFormat$.subscribe(dateFormat => {
