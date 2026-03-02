@@ -249,7 +249,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection: param.Collection,
                 assemblyName: "BIA.Net.Core.Application",
                 serviceLifetime: ServiceLifetime.Transient,
-                excludedServiceNames: [nameof(IFileDownloaderService)]);
+                excludedServiceNames: []);
 #endif
 
             List<string> excludedServiceNameList = param.ExcludedServiceNames?.ToList() ?? new List<string>();
