@@ -181,6 +181,9 @@ npm install
 Write-Host "npm run clean"
 npm run clean
 
+#Remove package-lock
+Remove-Item -Path "package-lock.json" -Force
+
 Set-Location -Path $scriptPath
 
 
