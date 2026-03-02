@@ -2,7 +2,7 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Application.Services
+namespace BIA.Net.Core.Application.File
 {
     /// <summary>
     /// Options for the <see cref="BiaFileDownloaderService{TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/>.

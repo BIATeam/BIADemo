@@ -9,8 +9,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.Base;
@@ -43,7 +43,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
         private readonly ITGenericRepository<BaseEntityTeam, int> teamRepository;
 
         private readonly IPlaneAppService planeAppService;
-        private readonly IBiaFileDownloaderService fileDownloaderService;
+        private readonly IFileDownloaderService fileDownloaderService;
         private readonly string fileServerMainFolderPath;
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
             INotificationAppService notificationAppService,
             ITGenericRepository<BaseEntityTeam, int> teamRepository,
             IPlaneAppService planeAppService,
-            IBiaFileDownloaderService fileDownloaderService)
+            IFileDownloaderService fileDownloaderService)
             : base(configuration, logger)
         {
             this.notificationAppService = notificationAppService;

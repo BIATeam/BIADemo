@@ -2,17 +2,15 @@
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Application.Services
+namespace BIA.Net.Core.Application.File
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
-    using System.Security.Principal;
     using System.Text;
     using System.Threading.Tasks;
-    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Common.Enum;
@@ -21,13 +19,10 @@ namespace BIA.Net.Core.Application.Services
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
-    using BIA.Net.Core.Domain.Entity.Interface;
-    using BIA.Net.Core.Domain.File.Entities;
-    using BIA.Net.Core.Domain.File.Mappers;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.Service;
     using Hangfire;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
@@ -35,13 +30,14 @@ namespace BIA.Net.Core.Application.Services
 
     /// <summary>
     /// File downloader service that prepares file download and notifies the user when the file is ready to be downloaded.
+    /// Must be inherited and registered in the DI container to be used.
     /// </summary>
     /// <typeparam name="TFileDownloaderOptions">Type of the file downloader options.</typeparam>
     /// <typeparam name="TINotificationAppService">Interface for the notification application service.</typeparam>
     /// <typeparam name="TNotification">Type of the notification.</typeparam>
     /// <typeparam name="TNotificationDto">Type of the notification DTO.</typeparam>
     /// <typeparam name="TNotificationListItemDto">Type of the notification list item DTO.</typeparam>
-    public class BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IBiaFileDownloaderService
+    public abstract class BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IFileDownloaderService
         where TFileDownloaderOptions : BiaFileDownloaderOptions, new()
         where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification>
         where TNotification : BaseNotification, new()
@@ -58,26 +54,18 @@ namespace BIA.Net.Core.Application.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
         /// </summary>
-        /// <param name="notificationAppService">The notification application service.</param>
+        /// <param name="serviceProvider">The service provider.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="fileDownloadDataAppService">The file download data application service.</param>
-        /// <param name="fileDownloadTokenRepository">The file download token repository.</param>
-        /// <param name="backgroundJobClient">Hangfire job client.</param>
-        /// <param name="options">The file downloader options (language IDs, etc.).</param>
-        public BiaFileDownloaderService(
-            TINotificationAppService notificationAppService,
-            ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger,
-            IFileDownloadDataAppService fileDownloadDataAppService,
-            IFileDownloadTokenRepository fileDownloadTokenRepository,
-            IBackgroundJobClient backgroundJobClient,
-            IOptions<TFileDownloaderOptions> options)
+        protected BiaFileDownloaderService(
+            IServiceProvider serviceProvider,
+            ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger)
         {
-            this.notificationAppService = notificationAppService;
             this.logger = logger;
-            this.fileDownloadDataAppService = fileDownloadDataAppService;
-            this.fileDownloadTokenRepository = fileDownloadTokenRepository;
-            this.backgroundJobClient = backgroundJobClient;
-            this.options = options.Value;
+            this.notificationAppService = serviceProvider.GetRequiredService<TINotificationAppService>();
+            this.fileDownloadDataAppService = serviceProvider.GetRequiredService<IFileDownloadDataAppService>();
+            this.fileDownloadTokenRepository = serviceProvider.GetRequiredService<IFileDownloadTokenRepository>();
+            this.backgroundJobClient = serviceProvider.GetRequiredService<IBackgroundJobClient>();
+            this.options = serviceProvider.GetRequiredService<IOptions<TFileDownloaderOptions>>()?.Value;
         }
 
         /// <inheritdoc/>

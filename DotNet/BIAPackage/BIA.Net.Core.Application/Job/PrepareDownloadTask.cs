@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Application.Job
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.File;
     using Hangfire;
@@ -22,7 +23,7 @@ namespace BIA.Net.Core.Application.Job
     internal class PrepareDownloadTask : BaseJob
     {
         private readonly IServiceProvider serviceProvider;
-        private readonly IBiaFileDownloaderService fileDownloaderService;
+        private readonly IFileDownloaderService fileDownloaderService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PrepareDownloadTask"/> class.
@@ -31,7 +32,7 @@ namespace BIA.Net.Core.Application.Job
         /// <param name="logger">The logger.</param>
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="fileDownloaderService">The file downloader service.</param>
-        public PrepareDownloadTask(IConfiguration configuration, ILogger<PrepareDownloadTask> logger, IServiceProvider serviceProvider, IBiaFileDownloaderService fileDownloaderService)
+        public PrepareDownloadTask(IConfiguration configuration, ILogger<PrepareDownloadTask> logger, IServiceProvider serviceProvider, IFileDownloaderService fileDownloaderService)
             : base(configuration, logger)
         {
             this.serviceProvider = serviceProvider;

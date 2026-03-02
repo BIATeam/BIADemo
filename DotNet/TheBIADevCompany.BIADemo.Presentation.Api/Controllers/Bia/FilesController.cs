@@ -4,6 +4,7 @@
 
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
 {
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Presentation.Api.Controller.Base;
@@ -16,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
     /// </summary>
     public class FilesController : BiaControllerBase
     {
-        private readonly IBiaFileDownloaderService biaFileDownloaderService;
+        private readonly IFileDownloaderService biaFileDownloaderService;
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipal;
 
         /// <summary>
@@ -24,7 +25,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Bia
         /// </summary>
         /// <param name="biaFileDownloaderService">The file downloader service.</param>
         /// <param name="biaClaimsPrincipal">The principal claims.</param>
-        public FilesController(IBiaFileDownloaderService biaFileDownloaderService, IBiaClaimsPrincipalService biaClaimsPrincipal)
+        public FilesController(IFileDownloaderService biaFileDownloaderService, IBiaClaimsPrincipalService biaClaimsPrincipal)
         {
             this.biaFileDownloaderService = biaFileDownloaderService;
             this.biaClaimsPrincipal = biaClaimsPrincipal;

@@ -1,21 +1,18 @@
-﻿// <copyright file="IBiaFileDownloaderService.cs" company="PlaceholderCompany">
+﻿// <copyright file="IFileDownloaderService.cs" company="PlaceholderCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
-namespace BIA.Net.Core.Application.Services
+namespace BIA.Net.Core.Application.File
 {
     using System;
     using System.Linq.Expressions;
     using System.Threading.Tasks;
     using BIA.Net.Core.Domain.Dto.File;
-    using BIA.Net.Core.Domain.Dto.User;
-    using BIA.Net.Core.Domain.File.Entities;
-    using BIA.Net.Core.Domain.User.Entities;
 
     /// <summary>
     /// Interface for the file downloader service that prepares file download and notifies the user when the file is ready to be downloaded.
     /// </summary>
-    public interface IBiaFileDownloaderService
+    public interface IFileDownloaderService
     {
         /// <summary>
         /// Prepares a background file download by calling a method on an already-registered DI service.

@@ -53,12 +53,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Ioc.Param;
-    using TheBIADevCompany.BIADemo.Application.Notification;
+    using TheBIADevCompany.BIADemo.Application.File;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
-    using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
-    using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
@@ -225,6 +224,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             param.Collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
             param.Collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
             param.Collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
+
+            param.Collection.Configure<FileDownloaderOptions>(options =>
+            {
+                options.FrenchLanguageId = LanguageId.French;
+                options.EnglishLanguageId = LanguageId.English;
+                options.SpanishLanguageId = LanguageId.Spanish;
+            });
+            param.Collection.AddTransient<IFileDownloaderService, FileDownloaderService>();
 #endif
 
             if (param.IsApi)
@@ -233,15 +240,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             param.Collection.AddTransient<IBackgroundJobClient, BackgroundJobClient>();
-
-            param.Collection.Configure<BiaFileDownloaderOptions>(options =>
-            {
-                options.FrenchLanguageId = LanguageId.French;
-                options.EnglishLanguageId = LanguageId.English;
-                options.SpanishLanguageId = LanguageId.Spanish;
-            });
-
-            param.Collection.AddScoped<IBiaFileDownloaderService, BiaFileDownloaderService<BiaFileDownloaderOptions, INotificationAppService, Notification, NotificationDto, NotificationListItemDto>>();
         }
 
         private static void BiaConfigureApplicationContainerAutoRegister(ParamAutoRegister param)
@@ -251,7 +249,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 collection: param.Collection,
                 assemblyName: "BIA.Net.Core.Application",
                 serviceLifetime: ServiceLifetime.Transient,
-                excludedServiceNames: [nameof(IBiaFileDownloaderService)]);
+                excludedServiceNames: [nameof(IFileDownloaderService)]);
 #endif
 
             List<string> excludedServiceNameList = param.ExcludedServiceNames?.ToList() ?? new List<string>();

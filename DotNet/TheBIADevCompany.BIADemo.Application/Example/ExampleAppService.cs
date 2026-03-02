@@ -5,7 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Application.Example
 {
     using System.IO;
-    using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Domain.Dto.File;
     using Microsoft.Extensions.Configuration;
 
@@ -14,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.Example
     /// </summary>
     public class ExampleAppService : IExampleAppService
     {
-        private readonly IBiaFileDownloaderService fileDownloaderService;
+        private readonly IFileDownloaderService fileDownloaderService;
         private readonly string fileServerMainFolderPath;
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace TheBIADevCompany.BIADemo.Application.Example
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="fileDownloaderService">The file downloader service.</param>
-        public ExampleAppService(IConfiguration configuration, IBiaFileDownloaderService fileDownloaderService)
+        public ExampleAppService(IConfiguration configuration, IFileDownloaderService fileDownloaderService)
         {
             this.fileDownloaderService = fileDownloaderService;
             this.fileServerMainFolderPath = configuration.GetSection("FileServer").GetValue<string>("MainFolder") ?? Path.GetTempPath();

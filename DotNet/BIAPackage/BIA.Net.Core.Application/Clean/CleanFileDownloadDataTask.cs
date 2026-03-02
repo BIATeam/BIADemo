@@ -6,11 +6,8 @@ namespace BIA.Net.Core.Application.Clean
 {
     using System;
     using System.Threading.Tasks;
+    using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Job;
-    using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Domain.File.Entities;
-    using BIA.Net.Core.Domain.File.Mappers;
-    using BIA.Net.Core.Domain.RepoContract;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -21,30 +18,26 @@ namespace BIA.Net.Core.Application.Clean
     [AutomaticRetry(Attempts = 0)]
     public sealed class CleanFileDownloadDataTask : BaseJob
     {
-        private readonly ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository;
-        private readonly IBiaFileDownloaderService fileDownloaderService;
-        private readonly FileDownloadDataMapper fileDownloadDataMapper;
+        private readonly IFileDownloaderService fileDownloaderService;
+        private readonly IFileDownloadDataAppService fileDownloadDataAppService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CleanFileDownloadDataTask"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
-        /// <param name="fileDownloadDataRepository">The file download data repository.</param>
         /// <param name="fileDownloaderService">The file downloader service.</param>
-        public CleanFileDownloadDataTask(IConfiguration configuration, ILogger<CleanFileDownloadDataTask> logger, ITGenericRepository<FileDownloadData, Guid> fileDownloadDataRepository, IBiaFileDownloaderService fileDownloaderService, FileDownloadDataMapper fileDownloadDataMapper)
+        public CleanFileDownloadDataTask(IConfiguration configuration, ILogger<CleanFileDownloadDataTask> logger, IFileDownloaderService fileDownloaderService, IFileDownloadDataAppService fileDownloadDataAppService)
             : base(configuration, logger)
         {
-            this.fileDownloadDataRepository = fileDownloadDataRepository;
             this.fileDownloaderService = fileDownloaderService;
-            this.fileDownloadDataMapper = fileDownloadDataMapper;
+            this.fileDownloadDataAppService = fileDownloadDataAppService;
         }
 
         /// <inheritdoc/>
         protected override async Task RunMonitoredTask()
         {
-            var fileDownloadDataToDelete = await this.fileDownloadDataRepository.GetAllResultAsync(
-                this.fileDownloadDataMapper.EntityToDto(),
+            var fileDownloadDataToDelete = await this.fileDownloadDataAppService.GetAllAsync(
                 filter: fd => fd.ExpiredAtDateTime.HasValue && fd.ExpiredAtDateTime.Value < DateTime.UtcNow,
                 isReadOnlyMode: true);
 
