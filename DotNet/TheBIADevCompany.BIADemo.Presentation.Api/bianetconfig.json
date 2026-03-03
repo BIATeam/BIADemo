@@ -147,6 +147,7 @@
           "Plane_Save"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -157,6 +158,7 @@
           "Plane_Delete"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -179,6 +181,7 @@
           "Engine_Save"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -189,6 +192,7 @@
           "Engine_Delete"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -409,6 +413,7 @@
           "Pilot_Save"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -419,6 +424,7 @@
           "Pilot_Delete"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -441,6 +447,7 @@
           "Flight_Save"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -451,6 +458,7 @@
           "Flight_Delete"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -499,6 +507,7 @@
           "MaintenanceContract_Save"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
@@ -508,6 +517,7 @@
           "MaintenanceContract_Delete"
         ],
         "Roles": [
+          "Admin",
           "Site_Admin"
         ]
       },
