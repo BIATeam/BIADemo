@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using System.Security.Principal;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Domain.User.Services;
@@ -20,7 +21,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
     /// <summary>
     /// The application service used for user.
     /// </summary>
-    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper, UserFromDirectoryDto, UserFromDirectory>, IUserAppService
+    public class UserAppService : BaseUserAppService<UserDto, User, UserMapper, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto>, IUserAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UserAppService"/> class.

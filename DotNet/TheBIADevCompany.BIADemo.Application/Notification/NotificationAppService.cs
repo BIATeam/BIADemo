@@ -7,6 +7,7 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
     using System.Security.Principal;
     using BIA.Net.Core.Application.Notification;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
@@ -21,7 +22,8 @@ namespace TheBIADevCompany.BIADemo.Application.Notification
         NotificationListItemDto,
         Notification,
         NotificationMapper,
-        NotificationListItemMapper>, INotificationAppService
+        NotificationListItemMapper,
+        PagingFilterFormatDto>, INotificationAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationAppService"/> class.

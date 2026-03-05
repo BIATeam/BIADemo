@@ -59,6 +59,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Application.File;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
+    using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
     /// The IoC Container.
@@ -222,7 +223,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             param.Collection.AddSingleton<IPermissionService, PermissionService>();
 #if BIA_FRONT_FEATURE
             param.Collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
-            param.Collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory>), typeof(UserAppService));
+            param.Collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto>), typeof(UserAppService));
             param.Collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
 
             param.Collection.Configure<FileDownloaderOptions>(options =>

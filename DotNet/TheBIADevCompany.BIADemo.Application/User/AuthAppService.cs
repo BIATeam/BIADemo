@@ -44,7 +44,7 @@ namespace TheBIADevCompany.BIADemo.Application.User
 #pragma warning disable SA1611 // Element parameters should be documented
     public class AuthAppService(
 #if BIA_FRONT_FEATURE
-        IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory> userAppService,
+        IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto> userAppService,
         IBaseTeamAppService<TeamTypeId> teamAppService,
         IRoleAppService roleAppService,
         IIdentityProviderRepository<UserFromDirectory> identityProviderRepository,

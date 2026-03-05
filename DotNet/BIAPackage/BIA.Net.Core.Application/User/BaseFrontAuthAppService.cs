@@ -25,7 +25,6 @@ namespace BIA.Net.Core.Application.User
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using static BIA.Net.Core.Common.BiaPermissionSuffixes;
 
     /// <summary>
     /// Auth App Service.
@@ -65,7 +64,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="ldapRepositoryHelper">The LDAP repository helper.</param>
         /// <param name="permissionService">The permission service.</param>
         protected BaseFrontAuthAppService(
-            IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userAppService,
+            IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, PagingFilterFormatDto> userAppService,
             IBaseTeamAppService<TEnumTeamTypeId> teamAppService,
             IRoleAppService roleAppService,
             IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository,
@@ -100,7 +99,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The user application service.
         /// </summary>
-        protected IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> UserAppService { get; }
+        protected IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, PagingFilterFormatDto> UserAppService { get; }
 
         /// <summary>
         /// The team application service.

@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Application.File
 {
     using BIA.Net.Core.Application.File;
+    using BIA.Net.Core.Domain.Dto.Base;
     using Microsoft.Extensions.Logging;
     using TheBIADevCompany.BIADemo.Application.Notification;
     using TheBIADevCompany.BIADemo.Domain.Dto.Notification;
@@ -13,7 +14,7 @@ namespace TheBIADevCompany.BIADemo.Application.File
     /// <summary>
     /// Project-specific implementation of the file downloader service.
     /// </summary>
-    public class FileDownloaderService : BiaFileDownloaderService<FileDownloaderOptions, INotificationAppService, Notification, NotificationDto, NotificationListItemDto>
+    public class FileDownloaderService : BiaFileDownloaderService<FileDownloaderOptions, INotificationAppService, Notification, NotificationDto, NotificationListItemDto, PagingFilterFormatDto>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FileDownloaderService"/> class.

@@ -16,6 +16,7 @@ namespace BIA.Net.Core.Application.User
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -31,7 +32,6 @@ namespace BIA.Net.Core.Application.User
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
-    using static BIA.Net.Core.Common.BiaPermissionSuffixes;
 
     /// <summary>
     /// The application service used for user.
@@ -41,12 +41,14 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUserMapper">The type of user mapper.</typeparam>
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public abstract class BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory> : CrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto, TUserMapper>, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory>
+    /// <typeparam name="TPagingFilterFormatDto">The type of filter.</typeparam>
+    public abstract class BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> : CrudAppServiceBase<TUserDto, TUser, int, TPagingFilterFormatDto, TUserMapper>, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserMapper : BaseUserMapper<TUserDto, TUser>
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : class, IUserFromDirectory, new()
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// The user synchronize domain service.
@@ -71,7 +73,7 @@ namespace BIA.Net.Core.Application.User
         /// <summary>
         /// The logger.
         /// </summary>
-        private readonly ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory>> logger;
+        private readonly ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto>> logger;
 
         private readonly IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository;
 
@@ -83,7 +85,7 @@ namespace BIA.Net.Core.Application.User
         private readonly BiaClaimsPrincipal principal;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseUserAppService{TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory}"/> class.
+        /// Initializes a new instance of the <see cref="BaseUserAppService{TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="userSynchronizeDomainService">The user synchronize domain service.</param>
@@ -100,7 +102,7 @@ namespace BIA.Net.Core.Application.User
             IOptions<BiaNetSection> configuration,
             IUserDirectoryRepository<TUserFromDirectoryDto, TUserFromDirectory> userDirectoryHelper,
             ITGenericRepository<UserDefaultTeam, int> userDefaultTeamRepository,
-            ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory>> logger,
+            ILogger<BaseUserAppService<TUserDto, TUser, TUserMapper, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto>> logger,
             IIdentityProviderRepository<TUserFromDirectory> identityProviderRepository,
             IUserIdentityKeyDomainService userIdentityKeyDomainService,
             IPrincipal principal)
