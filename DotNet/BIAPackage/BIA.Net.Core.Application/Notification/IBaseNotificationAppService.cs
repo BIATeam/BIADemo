@@ -7,7 +7,7 @@ namespace BIA.Net.Core.Application.Notification
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Notification.Entities;
 
@@ -17,10 +17,12 @@ namespace BIA.Net.Core.Application.Notification
     /// <typeparam name="TBaseNotificationDto">The type of the notification DTO.</typeparam>
     /// <typeparam name="TBaseNotificationListItemDto">The type of the notification list item DTO.</typeparam>
     /// <typeparam name="TBaseNotification">The type of the notification entity.</typeparam>
-    public interface IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> : ICrudAppServiceListAndItemBase<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, int, PagingFilterFormatDto>
+    /// <typeparam name="TPagingFilterFormatDto">The type of filter.</typeparam>
+    public interface IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TPagingFilterFormatDto> : ICrudAppServiceListAndItemBase<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, int, TPagingFilterFormatDto>
         where TBaseNotificationDto : BaseNotificationDto, new()
         where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
         where TBaseNotification : BaseNotification, new()
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// Set the notification as read.
@@ -48,6 +50,6 @@ namespace BIA.Net.Core.Application.Notification
         /// </summary>
         /// <param name="pagingFilterFormatDto">The paging filter.</param>
         /// <returns><see cref="IEnumerable{NotificationListItemDto}"/> results and total as int.</returns>
-        Task<(IEnumerable<TBaseNotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto);
+        Task<(IEnumerable<TBaseNotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(TPagingFilterFormatDto pagingFilterFormatDto);
     }
 }

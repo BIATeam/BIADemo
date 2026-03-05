@@ -16,6 +16,7 @@ namespace BIA.Net.Core.Application.File
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Error;
     using BIA.Net.Core.Common.Exceptions;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.File;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -37,28 +38,30 @@ namespace BIA.Net.Core.Application.File
     /// <typeparam name="TNotification">Type of the notification.</typeparam>
     /// <typeparam name="TNotificationDto">Type of the notification DTO.</typeparam>
     /// <typeparam name="TNotificationListItemDto">Type of the notification list item DTO.</typeparam>
-    public abstract class BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto> : IFileDownloaderService
+    /// <typeparam name="TPagingFilterFormatDto">Type of the notification filter.</typeparam>
+    public abstract class BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto, TPagingFilterFormatDto> : IFileDownloaderService
         where TFileDownloaderOptions : BiaFileDownloaderOptions, new()
-        where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification>
+        where TINotificationAppService : IBaseNotificationAppService<TNotificationDto, TNotificationListItemDto, TNotification, TPagingFilterFormatDto>
         where TNotification : BaseNotification, new()
         where TNotificationDto : BaseNotificationDto, new()
         where TNotificationListItemDto : BaseNotificationListItemDto, new()
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         private readonly TINotificationAppService notificationAppService;
-        private readonly ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger;
+        private readonly ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto, TPagingFilterFormatDto>> logger;
         private readonly IFileDownloadDataAppService fileDownloadDataAppService;
         private readonly IFileDownloadTokenRepository fileDownloadTokenRepository;
         private readonly IBackgroundJobClient backgroundJobClient;
         private readonly TFileDownloaderOptions options;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto}"/> class.
+        /// Initializes a new instance of the <see cref="BiaFileDownloaderService{TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto, TPagingFilterFormatDto}"/> class.
         /// </summary>
         /// <param name="serviceProvider">The service provider.</param>
         /// <param name="logger">The logger.</param>
         protected BiaFileDownloaderService(
             IServiceProvider serviceProvider,
-            ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto>> logger)
+            ILogger<BiaFileDownloaderService<TFileDownloaderOptions, TINotificationAppService, TNotification, TNotificationDto, TNotificationListItemDto, TPagingFilterFormatDto>> logger)
         {
             this.logger = logger;
             this.notificationAppService = serviceProvider.GetRequiredService<TINotificationAppService>();

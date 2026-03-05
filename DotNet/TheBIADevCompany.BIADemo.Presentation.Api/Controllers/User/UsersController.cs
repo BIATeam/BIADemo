@@ -5,6 +5,7 @@
 namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 {
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Presentation.Api.Controller.User;
     using Microsoft.Extensions.Options;
     using TheBIADevCompany.BIADemo.Application.User;
@@ -15,7 +16,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.User
 #pragma warning restore BIA001 // Forbidden reference to Domain layer in Presentation layer
 
     /// <inheritdoc />
-    public class UsersController : BaseUsersController<UserDto, User, UserFromDirectoryDto, UserFromDirectory>
+    public class UsersController : BaseUsersController<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UsersController"/> class.
