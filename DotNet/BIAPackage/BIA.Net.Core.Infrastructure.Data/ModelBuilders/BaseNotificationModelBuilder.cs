@@ -20,11 +20,15 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         public virtual void CreateModel(ModelBuilder modelBuilder)
         {
             this.CreateNotificationModel(modelBuilder);
+            this.CreateNotificationModelData(modelBuilder);
             this.CreateNotificationTypeModel(modelBuilder);
             this.CreateNotificationTypeModelData(modelBuilder);
             this.CreateNotificationUserModel(modelBuilder);
+            this.CreateNotificationUserModelData(modelBuilder);
             this.CreateNotificationTeamModel(modelBuilder);
+            this.CreateNotificationTeamModelData(modelBuilder);
             this.CreateNotificationTeamRoleModel(modelBuilder);
+            this.CreateNotificationTeamRoleModelData(modelBuilder);
         }
 
         /// <summary>
@@ -39,6 +43,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<BaseNotification>().Property(m => m.Description).IsRequired().HasMaxLength(256);
             modelBuilder.Entity<BaseNotification>().Property(m => m.TypeId).IsRequired();
             modelBuilder.Entity<BaseNotification>().Property(m => m.CreatedDate).IsRequired();
+        }
+
+        /// <summary>
+        /// Creates the notification model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationModelData(ModelBuilder modelBuilder)
+        {
         }
 
         /// <summary>
@@ -79,6 +91,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the notification users model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationUserModelData(ModelBuilder modelBuilder)
+        {
+        }
+
+        /// <summary>
         /// Create the model for notification teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -91,12 +111,28 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the notification teams model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTeamModelData(ModelBuilder modelBuilder)
+        {
+        }
+
+        /// <summary>
         /// Create the model for notification team roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateNotificationTeamRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<NotificationTeamRole>().HasKey(ntr => new { ntr.NotificationTeamId, ntr.RoleId });
+        }
+
+        /// <summary>
+        /// Creates the notification team roles model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTeamRoleModelData(ModelBuilder modelBuilder)
+        {
         }
     }
 }

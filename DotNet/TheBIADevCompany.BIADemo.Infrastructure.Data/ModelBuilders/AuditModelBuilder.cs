@@ -37,6 +37,18 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             // End BIADemo
         }
 
+        /// <inheritdoc/>
+        protected override void CreateAuditLogModel(ModelBuilder modelBuilder)
+        {
+            base.CreateAuditLogModel(modelBuilder);
+        }
+
+        /// <inheritdoc/>
+        protected override void CreateUserAuditModel<TAuditUser, TUser>(ModelBuilder modelBuilder)
+        {
+            base.CreateUserAuditModel<TAuditUser, TUser>(modelBuilder);
+        }
+
         // Begin BIADemo
 
         /// <summary>

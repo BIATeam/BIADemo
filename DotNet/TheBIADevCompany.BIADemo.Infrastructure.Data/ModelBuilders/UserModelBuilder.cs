@@ -25,27 +25,21 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
-        /// Create the model for teams.
+        /// Create the model data for users.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateTeamTypeModelData(ModelBuilder modelBuilder)
+        protected override void CreateUserModelData(ModelBuilder modelBuilder)
         {
-            base.CreateTeamTypeModelData(modelBuilder);
-            BiaCreateTeamTypeModelData(modelBuilder);
+            base.CreateUserModelData(modelBuilder);
+        }
 
-            // Begin BIAToolKit Generation Ignore
-            // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
-
-            // BIAToolKit - End Partial TeamTypeModelBuilder AircraftMaintenanceCompany
-            // BIAToolKit - Begin Partial TeamTypeModelBuilder MaintenanceTeam
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
-
-            // BIAToolKit - End Partial TeamTypeModelBuilder MaintenanceTeam
-            // End BIAToolKit Generation Ignore
-
-            // BIAToolKit - Begin TeamTypeModelBuilder
-            // BIAToolKit - End TeamTypeModelBuilder
+        /// <summary>
+        /// Create the model for roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateRoleModel(ModelBuilder modelBuilder)
+        {
+            base.CreateRoleModel(modelBuilder);
         }
 
         /// <summary>
@@ -92,6 +86,66 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Create the model for user role.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateUserRoleModel(ModelBuilder modelBuilder)
+        {
+            base.CreateUserRoleModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model data for user role.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateUserRoleModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateUserRoleModelData(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for teams.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateTeamTypeModel(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamTypeModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for teams.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateTeamTypeModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamTypeModelData(modelBuilder);
+            BiaCreateTeamTypeModelData(modelBuilder);
+
+            // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
+
+            // BIAToolKit - End Partial TeamTypeModelBuilder AircraftMaintenanceCompany
+            // BIAToolKit - Begin Partial TeamTypeModelBuilder MaintenanceTeam
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
+
+            // BIAToolKit - End Partial TeamTypeModelBuilder MaintenanceTeam
+            // End BIAToolKit Generation Ignore
+
+            // BIAToolKit - Begin TeamTypeModelBuilder
+            // BIAToolKit - End TeamTypeModelBuilder
+        }
+
+        /// <summary>
+        /// Create the model for member roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamTypeRoleModel(modelBuilder);
+        }
+
+        /// <summary>
         /// Create the model for member roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -128,6 +182,78 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                     // BIAToolKit - Begin TeamTypeRoleModelBuilder
                     // BIAToolKit - End TeamTypeRoleModelBuilder
                 });
+        }
+
+        /// <summary>
+        /// Create the model for member roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateMemberRoleModel(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberRoleModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model data for member roles.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateMemberRoleModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberRoleModelData(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for teams.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateTeamModel(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model data for teams.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateTeamModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamModelData(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for user default teams.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
+        {
+            base.CreateUserDefaultTeamModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model data for user default teams.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateUserDefaultTeamModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateUserDefaultTeamModelData(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for members.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateMemberModel(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model data for members.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateMemberModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberModelData(modelBuilder);
         }
     }
 }

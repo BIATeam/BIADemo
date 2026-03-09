@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using System.Diagnostics;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;

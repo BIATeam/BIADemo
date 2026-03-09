@@ -20,16 +20,23 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         public virtual void CreateModel(ModelBuilder modelBuilder)
         {
             this.CreateMemberModel(modelBuilder);
+            this.CreateMemberModelData(modelBuilder);
             this.CreateUserModel(modelBuilder);
+            this.CreateUserModelData(modelBuilder);
             this.CreateRoleModel(modelBuilder);
             this.CreateRoleModelData(modelBuilder);
             this.CreateUserRoleModel(modelBuilder);
+            this.CreateUserRoleModelData(modelBuilder);
             this.CreateMemberRoleModel(modelBuilder);
+            this.CreateMemberRoleModelData(modelBuilder);
             this.CreateTeamTypeModel(modelBuilder);
             this.CreateTeamTypeModelData(modelBuilder);
             this.CreateTeamTypeRoleModel(modelBuilder);
+            this.CreateTeamTypeRoleModelData(modelBuilder);
             this.CreateTeamModel(modelBuilder);
+            this.CreateTeamModelData(modelBuilder);
             this.CreateUserDefaultTeamModel(modelBuilder);
+            this.CreateUserDefaultTeamModelData(modelBuilder);
         }
 
         // *** MEMBER ***
@@ -48,6 +55,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Member>().HasOne(m => m.User).WithMany(u => u.Members).HasForeignKey(m => m.UserId);
 
             modelBuilder.Entity<Member>().HasIndex(u => new { u.TeamId, u.UserId }).IsUnique();
+        }
+
+        /// <summary>
+        /// Creates the member model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateMemberModelData(ModelBuilder modelBuilder)
+        {
         }
 
         // *** USER ***
@@ -70,6 +85,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the user model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateUserModelData(ModelBuilder modelBuilder)
+        {
+        }
+
+        /// <summary>
         ///  Create the model for user role.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -84,6 +107,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
                     });
         }
 
+        /// <summary>
+        /// Creates the user role model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateUserRoleModelData(ModelBuilder modelBuilder)
+        {
+        }
+
         // *** TEAM ***
 
         /// <summary>
@@ -96,6 +127,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<BaseEntityTeam>().HasKey(t => t.Id);
             modelBuilder.Entity<BaseEntityTeam>().Property(t => t.Title).IsRequired().HasMaxLength(256);
             modelBuilder.Entity<BaseEntityTeam>().Property(u => u.TeamTypeId).IsRequired();
+        }
+
+        /// <summary>
+        /// Creates the team model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateTeamModelData(ModelBuilder modelBuilder)
+        {
         }
 
         // *** TEAM TYPE ***
@@ -191,6 +230,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<MemberRole>().HasOne(mr => mr.Role).WithMany(m => m.MemberRoles).HasForeignKey(mr => mr.RoleId);
         }
 
+        /// <summary>
+        /// Creates the member role model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateMemberRoleModelData(ModelBuilder modelBuilder)
+        {
+        }
+
         // *** USER DEFAULT TEAM ***
 
         /// <summary>
@@ -200,6 +247,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         protected virtual void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserDefaultTeam>().HasIndex(udt => new { udt.UserId, udt.TeamId }).IsUnique();
+        }
+
+        /// <summary>
+        /// Creates the user default team model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateUserDefaultTeamModelData(ModelBuilder modelBuilder)
+        {
         }
     }
 }
