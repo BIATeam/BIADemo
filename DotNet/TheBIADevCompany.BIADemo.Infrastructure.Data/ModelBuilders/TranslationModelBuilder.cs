@@ -20,6 +20,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for notification.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateLanguageModel(ModelBuilder modelBuilder)
+        {
+            base.CreateLanguageModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for notification.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
         protected override void CreateLanguageModelData(ModelBuilder modelBuilder)
         {
             base.CreateLanguageModelData(modelBuilder);
@@ -29,6 +38,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<Language>().HasData(new Language { Id = LanguageId.German, Code = "DE", Name = "Deutsch" });
 
             // End BIADemo
+        }
+
+        /// <summary>
+        /// Create the model for notification.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateRoleTranslationModel(ModelBuilder modelBuilder)
+        {
+            base.CreateRoleTranslationModel(modelBuilder);
         }
 
         /// <summary>
@@ -87,6 +105,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for notification.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateNotificationTypeTranslationModel(ModelBuilder modelBuilder)
+        {
+            base.CreateNotificationTypeTranslationModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for notification.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
         protected override void CreateNotificationTypeTranslationModelData(ModelBuilder modelBuilder)
         {
             base.CreateNotificationTypeTranslationModelData(modelBuilder);
@@ -102,6 +129,33 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 new NotificationTypeTranslation { NotificationTypeId = (int)BiaNotificationTypeId.DownloadReady, LanguageId = LanguageId.German, Id = 603, Label = "Download bereit" });
 
             // End BIADemo
+        }
+
+        /// <summary>
+        /// Create the model for notification.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateNotificationTranslationModel(ModelBuilder modelBuilder)
+        {
+            base.CreateNotificationTranslationModel(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model data for notification translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateNotificationTranslationModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateNotificationTranslationModelData(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the model for announcement type translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected override void CreateAnnouncementTypeTranslationModel(ModelBuilder modelBuilder)
+        {
+            base.CreateAnnouncementTypeTranslationModel(modelBuilder);
         }
 
         /// <summary>

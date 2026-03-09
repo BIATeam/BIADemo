@@ -25,6 +25,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             this.CreateNotificationTypeTranslationModel(modelBuilder);
             this.CreateNotificationTypeTranslationModelData(modelBuilder);
             this.CreateNotificationTranslationModel(modelBuilder);
+            this.CreateNotificationTranslationModelData(modelBuilder);
             this.CreateAnnouncementTypeTranslationModel(modelBuilder);
             this.CreateAnnouncementTypeTranslationModelData(modelBuilder);
         }
@@ -106,6 +107,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
 
             modelBuilder.Entity<NotificationTranslation>().Property(m => m.Title).IsRequired().HasMaxLength(100);
             modelBuilder.Entity<NotificationTranslation>().Property(m => m.Description).IsRequired().HasMaxLength(256);
+        }
+
+        /// <summary>
+        /// Creates the notification translation model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTranslationModelData(ModelBuilder modelBuilder)
+        {
         }
 
         /// <summary>

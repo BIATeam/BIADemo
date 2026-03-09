@@ -18,6 +18,16 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         /// <param name="modelBuilder">The model builder.</param>
         public static void CreateModel(ModelBuilder modelBuilder)
         {
+            CreateAnnouncementModel(modelBuilder);
+            CreateAnnouncementTypeModelData(modelBuilder);
+        }
+
+        /// <summary>
+        /// Create the announcements models.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        public static void CreateAnnouncementModel(ModelBuilder modelBuilder)
+        {
             modelBuilder.Entity<Announcement>().Property(x => x.Start).IsRequired();
             modelBuilder.Entity<Announcement>().Property(x => x.End).IsRequired();
             modelBuilder.Entity<Announcement>().Property(x => x.RawContent).IsRequired();
@@ -27,9 +37,17 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
                 .HasForeignKey(x => x.TypeId)
                 .OnDelete(DeleteBehavior.ClientCascade)
                 .IsRequired();
+        }
 
-            modelBuilder.Entity<AnnouncementType>().HasData(new AnnouncementType { Id = Common.Enum.BiaAnnouncementType.Information });
-            modelBuilder.Entity<AnnouncementType>().HasData(new AnnouncementType { Id = Common.Enum.BiaAnnouncementType.Warning });
+        /// <summary>
+        /// Creates the announcement type model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        public static void CreateAnnouncementTypeModelData(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<AnnouncementType>().HasData(
+                new AnnouncementType { Id = Common.Enum.BiaAnnouncementType.Information },
+                new AnnouncementType { Id = Common.Enum.BiaAnnouncementType.Warning });
         }
     }
 }
