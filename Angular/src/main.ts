@@ -50,7 +50,10 @@ async function bootstrap() {
   try {
     await bootstrapApplication(AppComponent, {
       providers: [
-        provideZoneChangeDetection(),
+        provideZoneChangeDetection({
+          eventCoalescing: true,
+          runCoalescing: true,
+        }),
         importProvidersFrom(
           LoggerModule.forRoot(BiaEnvironmentService.getLoggingConf(), {
             serverProvider: {
