@@ -77,8 +77,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   public hasChanged = false;
   protected currentRow: HTMLTableRowElement;
   protected sub = new Subscription();
-  protected complexInputState: 'idle' | 'opening' | 'active' | 'closing' =
-    'idle';
+  protected nbOpenedComplexInput: number = 0;
   protected isFocusingOut = false;
   public footerRowData: any;
   public editFooter = false;
@@ -224,7 +223,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
 
   public initRowEdit(rowData: any) {
     if (rowData) {
-      this.complexInputState = 'idle';
+      this.nbOpenedComplexInput = 0;
       this.element = rowData;
       if (rowData.id === 0 || rowData.id === '') {
         if (this.canAdd === true) {
@@ -294,8 +293,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
 
         if (
           // If the complex input is active, don't close the edit mode because the user is probably trying to click on an option in the overlay
-          this.complexInputState !== 'active' &&
-          this.complexInputState !== 'opening' &&
+          this.nbOpenedComplexInput <= 0 &&
           // Checking if the clicked element is outside of the current edited row (in case of click on an element of the current edited row, we don't want to close the edit mode)
           clickedRowOfActiveElement !== tr &&
           // If the filter is active in the p-select overlay, the focus switch and stays on the p-select-filter but the overlay is not a children of the row
@@ -315,31 +313,15 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   public onComplexInput(isIn: boolean) {
     // If entering a complex input overlay
     if (isIn) {
-      // Saving the row and input and setting the complexInputState as active
-      this.complexInputState = 'opening';
+      this.nbOpenedComplexInput++;
       this.currentRow = this.getParentComponent(
         document.activeElement,
         'bia-selectable-row'
       ) as HTMLTableRowElement;
-      setTimeout(() => {
-        if (this.complexInputState === 'opening') {
-          this.complexInputState = 'active';
-        }
-      }, 200);
     } else {
-      // Closing the complexInputState
-      if (this.complexInputState === 'active') {
-        this.complexInputState = 'closing';
-      }
+      this.nbOpenedComplexInput--;
       // Trigger onFocusOut when complexinput is closed because is in overlay and not on tr so onFocusOut is never triggered
       this.onFocusout(this.currentRow);
-      setTimeout(() => {
-        // Setting complexInputState to idle only if still closing.
-        // Reason: If another complex input has been opened when leaving the previous, state will be active and input won't change to idle
-        if (this.complexInputState === 'closing') {
-          this.complexInputState = 'idle';
-        }
-      }, 300);
     }
   }
 

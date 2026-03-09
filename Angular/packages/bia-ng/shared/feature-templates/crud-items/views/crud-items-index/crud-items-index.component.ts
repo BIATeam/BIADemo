@@ -12,6 +12,7 @@ import { ActivatedRoute, Router, Routes } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MotionOptions } from '@primeuix/motion';
 import { saveAs } from 'file-saver';
 import {
   AuthService,
@@ -134,6 +135,9 @@ export class CrudItemsIndexComponent<
   defaultViewPref: BiaTableState;
   hasColumnFilter = false;
   isParentFixed = false;
+  complexInputMotionOptions: MotionOptions = {
+    onBeforeLeave: () => this.onComplexInput(false),
+  };
 
   protected store: Store<BiaAppState>;
   protected router: Router;

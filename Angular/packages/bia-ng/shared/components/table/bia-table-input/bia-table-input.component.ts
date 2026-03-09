@@ -17,6 +17,7 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
+import { MotionOptions } from '@primeuix/motion';
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
@@ -67,6 +68,10 @@ export class BiaTableInputComponent<CrudItem>
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
 
+  complexInputMotionOptions: MotionOptions = {
+    onBeforeLeave: () => this.onComplexInput(false),
+  };
+
   getDisplayDateFormat(
     displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
   ): BiaFieldDateFormat | null {
@@ -107,8 +112,6 @@ export class BiaTableInputComponent<CrudItem>
 
   onPanelHide(multiselect: MultiSelect) {
     this.panelHide.emit(multiselect);
-    multiselect.el.nativeElement.querySelector('input')?.focus();
-    this.onComplexInput(false);
   }
 
   onMouseDown(element: any, event: MouseEvent) {
