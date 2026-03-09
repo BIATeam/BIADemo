@@ -4,7 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using System.Diagnostics;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
@@ -18,24 +17,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     public partial class TranslationModelBuilder : BaseTranslationModelBuilder
     {
         /// <summary>
-        /// Create the user model.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        public override void CreateModel(ModelBuilder modelBuilder)
-        {
-            Debug.Assert(modelBuilder != null, "Line to avoid warning empty method");
-            base.CreateModel(modelBuilder);
-
-            // Add here the project specific translation model creation.
-        }
-
-        /// <summary>
         /// Create the model for notification.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateLanguageModel(ModelBuilder modelBuilder)
+        protected override void CreateLanguageModelData(ModelBuilder modelBuilder)
         {
-            base.CreateLanguageModel(modelBuilder);
+            base.CreateLanguageModelData(modelBuilder);
             BiaCreateLanguageModelData(modelBuilder);
 
             // Begin BIADemo
@@ -48,9 +35,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for notification.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateRoleTranslationModel(ModelBuilder modelBuilder)
+        protected override void CreateRoleTranslationModelData(ModelBuilder modelBuilder)
         {
-            base.CreateRoleTranslationModel(modelBuilder);
+            base.CreateRoleTranslationModelData(modelBuilder);
             BiaCreateRoleTranslationModelData(modelBuilder);
 
             // Begin BIADemo
@@ -100,9 +87,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for notification.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateNotificationTypeTranslationModel(ModelBuilder modelBuilder)
+        protected override void CreateNotificationTypeTranslationModelData(ModelBuilder modelBuilder)
         {
-            base.CreateNotificationTypeTranslationModel(modelBuilder);
+            base.CreateNotificationTypeTranslationModelData(modelBuilder);
             BiaCreateNotificationTypeTranslationModelData(modelBuilder);
 
             // Begin BIADemo
@@ -121,9 +108,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for announcement type translation.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateAnnouncementTypeTranslationModel(ModelBuilder modelBuilder)
+        protected override void CreateAnnouncementTypeTranslationModelData(ModelBuilder modelBuilder)
         {
-            base.CreateAnnouncementTypeTranslationModel(modelBuilder);
+            base.CreateAnnouncementTypeTranslationModelData(modelBuilder);
             BiaCreateAnnouncementTypeTranslationModelData(modelBuilder);
         }
     }
