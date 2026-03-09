@@ -4,8 +4,6 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using System.Reflection.Emit;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
@@ -43,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
         }
 
-        private static void BiaCreateTeamTypeRoleModel(ModelBuilder modelBuilder)
+        private static void BiaCreateTeamTypeRoleModelData(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Role>()
                 .HasMany(p => p.TeamTypes)
@@ -52,6 +50,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 {
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
                 });
+        }
+
+        private static void BiaCreateRoleModelData(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
         }
     }
 }

@@ -4,12 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Class used to update the model builder for user domain.
@@ -30,10 +28,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for teams.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateTeamTypeModel(ModelBuilder modelBuilder)
+        protected override void CreateTeamTypeModelData(ModelBuilder modelBuilder)
         {
-            base.CreateTeamTypeModel(modelBuilder);
-            this.CreateTeamTypeModelData(modelBuilder);
+            base.CreateTeamTypeModelData(modelBuilder);
             BiaCreateTeamTypeModelData(modelBuilder);
 
             // Begin BIAToolKit Generation Ignore
@@ -55,10 +52,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateRoleModel(ModelBuilder modelBuilder)
+        protected override void CreateRoleModelData(ModelBuilder modelBuilder)
         {
-            base.CreateRoleModel(modelBuilder);
-            this.CreateRoleModelData(modelBuilder);
+            base.CreateRoleModelData(modelBuilder);
 
             // Begin BIADemo
             if (false)
@@ -66,7 +62,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 #pragma warning disable CS0162 // Unreachable code detected
                 // DO NOT CHANGE INDENTATION (For BIATemplate)
                 // End BIADemo
-                modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
+                BiaCreateRoleModelData(modelBuilder);
 
                 // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
@@ -99,11 +95,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         /// Create the model for member roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
+        protected override void CreateTeamTypeRoleModelData(ModelBuilder modelBuilder)
         {
-            base.CreateTeamTypeRoleModel(modelBuilder);
-            this.CreateTeamTypeRoleModelData(modelBuilder);
-            BiaCreateTeamTypeRoleModel(modelBuilder);
+            base.CreateTeamTypeRoleModelData(modelBuilder);
+            BiaCreateTeamTypeRoleModelData(modelBuilder);
 
             modelBuilder.Entity<Role>()
                 .HasMany(p => p.TeamTypes)

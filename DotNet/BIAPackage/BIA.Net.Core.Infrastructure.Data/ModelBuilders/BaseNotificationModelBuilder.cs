@@ -21,6 +21,7 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         {
             this.CreateNotificationModel(modelBuilder);
             this.CreateNotificationTypeModel(modelBuilder);
+            this.CreateNotificationTypeModelData(modelBuilder);
             this.CreateNotificationUserModel(modelBuilder);
             this.CreateNotificationTeamModel(modelBuilder);
             this.CreateNotificationTeamRoleModel(modelBuilder);
@@ -49,12 +50,21 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationType>().HasKey(nt => nt.Id);
             modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(10);
             modelBuilder.Entity<NotificationType>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Task, Code = "task", Label = "Task" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Info, Code = "info", Label = "Info" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Success, Code = "success", Label = "Success" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Warning, Code = "warn", Label = "Warn" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Error, Code = "error", Label = "Error" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.DownloadReady, Code = "downloadr", Label = "Download Ready" });
+        }
+
+        /// <summary>
+        /// Creates the notification type model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTypeModelData(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NotificationType>().HasData(
+                new NotificationType { Id = (int)BiaNotificationTypeId.Task, Code = "task", Label = "Task" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Info, Code = "info", Label = "Info" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Success, Code = "success", Label = "Success" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Warning, Code = "warn", Label = "Warn" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Error, Code = "error", Label = "Error" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.DownloadReady, Code = "downloadr", Label = "Download Ready" });
         }
 
         /// <summary>
