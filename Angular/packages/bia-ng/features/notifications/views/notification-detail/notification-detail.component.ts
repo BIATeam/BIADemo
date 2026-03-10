@@ -7,15 +7,15 @@ import {
   Output,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService, BiaPermission } from '@bia-team/bia-ng/core';
-import { AuthInfo } from '@bia-team/bia-ng/models';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
+import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
+import { AuthInfo } from 'packages/bia-ng/models/public-api';
 import {
   NotificationTeamWarningComponent,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/shared/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Observable, Subscription } from 'rxjs';
 import { Notification, NotificationData } from '../../model/notification';

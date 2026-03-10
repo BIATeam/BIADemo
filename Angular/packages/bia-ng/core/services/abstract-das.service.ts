@@ -12,7 +12,7 @@ import {
   PutParam,
   SaveParam,
   UpdateFixedStatusParam,
-} from '@bia-team/bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { GenericDas } from './generic-das.service';

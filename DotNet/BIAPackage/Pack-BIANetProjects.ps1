@@ -10,7 +10,7 @@ if (-not $packageFullPath) {
 $packageFullPath = $packageFullPath.Path
 
 Write-Host "Searching for BIA.Net projects in '$packageFullPath'..."
-$projects = Get-ChildItem -Path $packageFullPath -Recurse -Filter "BIA.Net.*.csproj" -File -ErrorAction SilentlyContinue
+$projects = Get-ChildItem -Path $packageFullPath -Recurse -Filter "BIA.Net.Core.Application*.csproj" -File -ErrorAction SilentlyContinue
 
 if (-not $projects -or $projects.Count -eq 0) {
     Write-Warning "No 'BIA.Net.*' projects found in $packageFullPath"

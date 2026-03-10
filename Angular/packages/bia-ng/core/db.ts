@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpRequestItem } from '@bia-team/bia-ng/models';
 import Dexie, { Table } from 'dexie';
+import { HttpRequestItem } from 'packages/bia-ng/models/public-api';
 
 export interface DataItem {
   url: string;
