@@ -16,19 +16,19 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     /// </summary>
     public partial class TranslationModelBuilder : BaseTranslationModelBuilder
     {
-        /// <summary>
-        /// Create the model for notification.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc />
+        public override void CreateModel(ModelBuilder modelBuilder)
+        {
+            base.CreateModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
         protected override void CreateLanguageModel(ModelBuilder modelBuilder)
         {
             base.CreateLanguageModel(modelBuilder);
         }
 
-        /// <summary>
-        /// Create the model for notification.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc />
         protected override void CreateLanguageModelData(ModelBuilder modelBuilder)
         {
             base.CreateLanguageModelData(modelBuilder);
@@ -40,19 +40,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             // End BIADemo
         }
 
-        /// <summary>
-        /// Create the model for notification.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc />
         protected override void CreateRoleTranslationModel(ModelBuilder modelBuilder)
         {
             base.CreateRoleTranslationModel(modelBuilder);
         }
 
-        /// <summary>
-        /// Create the model for notification.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc />
         protected override void CreateRoleTranslationModelData(ModelBuilder modelBuilder)
         {
             base.CreateRoleTranslationModelData(modelBuilder);

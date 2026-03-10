@@ -12,6 +12,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
     /// </summary>
     public class NotificationModelBuilder : BaseNotificationModelBuilder
     {
+        /// <inheritdoc />
+        public override void CreateModel(ModelBuilder modelBuilder)
+        {
+            base.CreateModel(modelBuilder);
+        }
+
         /// <inheritdoc/>
         protected override void CreateNotificationModel(ModelBuilder modelBuilder)
         {
