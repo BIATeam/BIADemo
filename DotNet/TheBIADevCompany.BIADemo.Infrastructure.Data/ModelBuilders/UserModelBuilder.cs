@@ -4,80 +4,45 @@
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.User.Entities;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
 
     /// <summary>
     /// Class used to update the model builder for user domain.
     /// </summary>
-    public class UserModelBuilder : BaseUserModelBuilder
+    public partial class UserModelBuilder : BaseUserModelBuilder
     {
-        /// <summary>
-        /// Create the model for users.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc />
+        public override void CreateModel(ModelBuilder modelBuilder)
+        {
+            base.CreateModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
         protected override void CreateUserModel(ModelBuilder modelBuilder)
         {
             base.CreateUserModel(modelBuilder);
-            modelBuilder.Entity<User>(entity =>
-            {
-                entity.Property(u => u.Email).HasMaxLength(256);
-#if BIA_USER_CUSTOM_FIELDS_BACK
-                entity.Property(u => u.DistinguishedName).IsRequired().HasMaxLength(250);
-                entity.Property(u => u.IsEmployee);
-                entity.Property(u => u.IsExternal);
-                entity.Property(u => u.ExternalCompany).HasMaxLength(50);
-                entity.Property(u => u.Company).HasMaxLength(50);
-                entity.Property(u => u.Site).HasMaxLength(50);
-                entity.Property(u => u.Manager).HasMaxLength(250);
-                entity.Property(u => u.Department).HasMaxLength(50);
-                entity.Property(u => u.SubDepartment).HasMaxLength(50);
-                entity.Property(u => u.Office).HasMaxLength(20);
-                entity.Property(u => u.Country).HasMaxLength(10);
-#endif
-            });
+            BiaCreateUserModel(modelBuilder);
         }
 
-        /// <summary>
-        /// Create the model for teams.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
-        protected override void CreateTeamTypeModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void CreateUserModelData(ModelBuilder modelBuilder)
         {
-            base.CreateTeamTypeModel(modelBuilder);
-
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
-
-            // Begin BIAToolKit Generation Ignore
-            // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
-
-            // BIAToolKit - End Partial TeamTypeModelBuilder AircraftMaintenanceCompany
-            // BIAToolKit - Begin Partial TeamTypeModelBuilder MaintenanceTeam
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
-
-            // BIAToolKit - End Partial TeamTypeModelBuilder MaintenanceTeam
-            // End BIAToolKit Generation Ignore
-
-            // BIAToolKit - Begin TeamTypeModelBuilder
-            // BIAToolKit - End TeamTypeModelBuilder
+            base.CreateUserModelData(modelBuilder);
         }
 
-        /// <summary>
-        /// Create the model for roles.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc />
         protected override void CreateRoleModel(ModelBuilder modelBuilder)
         {
             base.CreateRoleModel(modelBuilder);
+        }
 
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)BiaRoleId.Admin, Code = "Admin", Label = "Administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)BiaRoleId.BackAdmin, Code = "Back_Admin", Label = "Background task administrator" });
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)BiaRoleId.BackReadOnly, Code = "Back_Read_Only", Label = "Visualization of background tasks" });
+        /// <inheritdoc />
+        protected override void CreateRoleModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateRoleModelData(modelBuilder);
 
             // Begin BIADemo
             if (false)
@@ -85,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 #pragma warning disable CS0162 // Unreachable code detected
                 // DO NOT CHANGE INDENTATION (For BIATemplate)
                 // End BIADemo
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
+                BiaCreateRoleModelData(modelBuilder);
 
                 // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
@@ -114,25 +79,62 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             // BIAToolKit - End RoleModelBuilder
         }
 
-        /// <summary>
-        /// Create the model for member roles.
-        /// </summary>
-        /// <param name="modelBuilder">The model builder.</param>
+        /// <inheritdoc />
+        protected override void CreateUserRoleModel(ModelBuilder modelBuilder)
+        {
+            base.CreateUserRoleModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateUserRoleModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateUserRoleModelData(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateTeamTypeModel(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamTypeModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateTeamTypeModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamTypeModelData(modelBuilder);
+            BiaCreateTeamTypeModelData(modelBuilder);
+
+            // Begin BIAToolKit Generation Ignore
+            // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
+
+            // BIAToolKit - End Partial TeamTypeModelBuilder AircraftMaintenanceCompany
+            // BIAToolKit - Begin Partial TeamTypeModelBuilder MaintenanceTeam
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.MaintenanceTeam, Name = "MaintenanceTeam" });
+
+            // BIAToolKit - End Partial TeamTypeModelBuilder MaintenanceTeam
+            // End BIAToolKit Generation Ignore
+
+            // BIAToolKit - Begin TeamTypeModelBuilder
+            // BIAToolKit - End TeamTypeModelBuilder
+        }
+
+        /// <inheritdoc />
         protected override void CreateTeamTypeRoleModel(ModelBuilder modelBuilder)
         {
             base.CreateTeamTypeRoleModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateTeamTypeRoleModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamTypeRoleModelData(modelBuilder);
+            BiaCreateTeamTypeRoleModelData(modelBuilder);
 
             modelBuilder.Entity<Role>()
                 .HasMany(p => p.TeamTypes)
                 .WithMany(r => r.Roles)
                 .UsingEntity(rt =>
                 {
-                    rt.ToTable("RoleTeamTypes");
-                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)BiaRoleId.Admin });
-                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)BiaRoleId.BackAdmin });
-                    rt.HasData(new { TeamTypesId = (int)BiaTeamTypeId.Root, RolesId = (int)BiaRoleId.BackReadOnly });
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
-
                     // Begin BIADemo
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.Pilot });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Supervisor });
@@ -156,6 +158,54 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                     // BIAToolKit - Begin TeamTypeRoleModelBuilder
                     // BIAToolKit - End TeamTypeRoleModelBuilder
                 });
+        }
+
+        /// <inheritdoc />
+        protected override void CreateMemberRoleModel(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberRoleModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateMemberRoleModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberRoleModelData(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateTeamModel(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateTeamModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateTeamModelData(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateUserDefaultTeamModel(ModelBuilder modelBuilder)
+        {
+            base.CreateUserDefaultTeamModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateUserDefaultTeamModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateUserDefaultTeamModelData(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateMemberModel(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberModel(modelBuilder);
+        }
+
+        /// <inheritdoc />
+        protected override void CreateMemberModelData(ModelBuilder modelBuilder)
+        {
+            base.CreateMemberModelData(modelBuilder);
         }
     }
 }

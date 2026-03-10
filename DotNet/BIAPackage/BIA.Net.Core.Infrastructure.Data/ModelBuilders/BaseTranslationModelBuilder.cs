@@ -19,10 +19,15 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         public virtual void CreateModel(ModelBuilder modelBuilder)
         {
             this.CreateLanguageModel(modelBuilder);
+            this.CreateLanguageModelData(modelBuilder);
             this.CreateRoleTranslationModel(modelBuilder);
+            this.CreateRoleTranslationModelData(modelBuilder);
             this.CreateNotificationTypeTranslationModel(modelBuilder);
+            this.CreateNotificationTypeTranslationModelData(modelBuilder);
             this.CreateNotificationTranslationModel(modelBuilder);
+            this.CreateNotificationTranslationModelData(modelBuilder);
             this.CreateAnnouncementTypeTranslationModel(modelBuilder);
+            this.CreateAnnouncementTypeTranslationModelData(modelBuilder);
         }
 
         /// <summary>
@@ -39,6 +44,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the language model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateLanguageModelData(ModelBuilder modelBuilder)
+        {
+        }
+
+        /// <summary>
         /// Create the model for notification.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -49,6 +62,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<RoleTranslation>().Property(r => r.LanguageId).IsRequired();
             modelBuilder.Entity<RoleTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
             modelBuilder.Entity<RoleTranslation>().HasIndex(u => new { u.RoleId, u.LanguageId }).IsUnique();
+        }
+
+        /// <summary>
+        /// Create model data for role translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateRoleTranslationModelData(ModelBuilder modelBuilder)
+        {
         }
 
         /// <summary>
@@ -63,6 +84,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationTypeTranslation>().HasIndex(u => new { u.NotificationTypeId, u.LanguageId }).IsUnique();
 
             modelBuilder.Entity<NotificationTypeTranslation>().Property(r => r.Label).IsRequired().HasMaxLength(50);
+        }
+
+        /// <summary>
+        /// Create model data for notification type translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTypeTranslationModelData(ModelBuilder modelBuilder)
+        {
         }
 
         /// <summary>
@@ -81,6 +110,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the notification translation model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTranslationModelData(ModelBuilder modelBuilder)
+        {
+        }
+
+        /// <summary>
         /// Create the model for announcement type translation.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -92,6 +129,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<AnnouncementTypeTranslation>().HasIndex(u => new { u.AnnouncementTypeId, u.LanguageId }).IsUnique();
 
             modelBuilder.Entity<AnnouncementTypeTranslation>().Property(m => m.Label).IsRequired().HasMaxLength(150);
+        }
+
+        /// <summary>
+        /// Create model data for announcement type translation.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateAnnouncementTypeTranslationModelData(ModelBuilder modelBuilder)
+        {
         }
     }
 }
