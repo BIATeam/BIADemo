@@ -55,11 +55,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #endif
     using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Services;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Ioc.Param;
     using TheBIADevCompany.BIADemo.Application.File;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
-    using BIA.Net.Core.Domain.Dto.Base;
 
     /// <summary>
     /// The IoC Container.
@@ -95,7 +95,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             DbProvider dbEngine = param.Configuration.GetProvider(dbKey);
             param.Collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
             {
-                ConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
+                BiaConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
                 if (!fromDeployDB)
                 {
                     options.AddInterceptors(new AuditSaveChangesInterceptor());
@@ -107,16 +107,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 param.Collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
                     options =>
                     {
-                        ConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
+                        BiaConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
                     },
                     contextLifetime: ServiceLifetime.Transient);
                 return;
             }
 
-            ConfigureDbContextForDeployDB(param.Collection, connectionString, dbEngine);
+            BiaConfigureDbContextForDeployDB(param.Collection, connectionString, dbEngine);
         }
 
-        private static void ConfigureDbContextOptions(bool enableRetryOnFailure, int commandTimeout, DbContextOptionsBuilder options, string connectionString, DbProvider dbEngine)
+        private static void BiaConfigureDbContextOptions(bool enableRetryOnFailure, int commandTimeout, DbContextOptionsBuilder options, string connectionString, DbProvider dbEngine)
         {
             if (dbEngine == DbProvider.PostGreSql)
             {
@@ -152,7 +152,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             options.EnableSensitiveDataLogging();
         }
 
-        private static void ConfigureDbContextForDeployDB(IServiceCollection collection, string connectionString, DbProvider dbEngine)
+        private static void BiaConfigureDbContextForDeployDB(IServiceCollection collection, string connectionString, DbProvider dbEngine)
         {
             collection.Configure<BiaHistoryRepositoryOptions>(options =>
             {
