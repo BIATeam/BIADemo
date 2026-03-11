@@ -33,19 +33,19 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             // End BIADemo
         }
 
+        // Begin BIADemo
+
         /// <summary>
         /// Language Id.
         /// </summary>
         public static partial class LanguageId
         {
-            // Begin BIADemo
-
             /// <summary>
             /// The german language Id.
             /// </summary>
             public const int German = 4;
-
-            // End BIADemo
         }
+
+        // End BIADemo
     }
 }

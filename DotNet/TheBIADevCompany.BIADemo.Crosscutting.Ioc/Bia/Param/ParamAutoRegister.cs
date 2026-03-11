@@ -10,7 +10,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param
     /// <summary>
     /// Param Auto Register.
     /// </summary>
-    internal class ParamAutoRegister
+    internal partial class ParamAutoRegister
     {
         /// <summary>
         /// Gets the collection.
