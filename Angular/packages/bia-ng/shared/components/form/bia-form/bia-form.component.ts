@@ -27,7 +27,6 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaFieldConfig,
   BiaFormLayoutConfig,
@@ -37,7 +36,8 @@ import {
   BiaFormLayoutConfigRow,
   BiaFormLayoutConfigTabGroup,
   HistoricalEntryDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { TranslateModule } from '@ngx-translate/core';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { TabsModule } from 'primeng/tabs';

@@ -1,5 +1,5 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from 'packages/bia-ng/core/public-api';
+import { AbstractDas } from '@bia-team/bia-ng/core';
 import { Plane } from '../model/plane';
 import { PlaneSpecific } from '../model/plane-specific';
 

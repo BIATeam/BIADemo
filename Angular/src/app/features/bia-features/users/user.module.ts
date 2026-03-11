@@ -1,5 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
-import { BiaUserModule } from 'packages/bia-ng/features/public-api';
+import { BiaUserModule } from '@bia-team/bia-ng/features';
 
 @NgModule({
   imports: [BiaUserModule],

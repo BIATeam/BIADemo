@@ -1,18 +1,18 @@
 ﻿import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { parse } from 'date-fns';
 import {
   BiaTranslationService,
   clone,
   DateHelperService,
   isEmpty,
-} from 'packages/bia-ng/core/public-api';
-import { DtoState, PropType } from 'packages/bia-ng/models/enum/public-api';
+} from '@bia-team/bia-ng/core';
 import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldDateFormat,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { DtoState, PropType } from '@bia-team/bia-ng/models/enum';
+import { TranslateService } from '@ngx-translate/core';
+import { parse } from 'date-fns';
 import * as Papa from 'papaparse';
 import { combineLatest, from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
