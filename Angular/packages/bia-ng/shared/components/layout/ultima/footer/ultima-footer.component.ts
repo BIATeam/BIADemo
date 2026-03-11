@@ -13,7 +13,7 @@ import { BiaLayoutService } from '../../services/layout.service';
   selector: 'bia-ultima-footer',
   templateUrl: './ultima-footer.component.html',
   styleUrls: ['./ultima-footer.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, Ripple, AsyncPipe],
 })
 export class BiaUltimaFooterComponent {

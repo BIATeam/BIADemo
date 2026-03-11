@@ -39,7 +39,7 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
   selector: 'bia-table-input',
   templateUrl: './bia-table-input.component.html',
   styleUrls: ['./bia-table-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

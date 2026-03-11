@@ -44,7 +44,7 @@ import { BiaFilterMatchMode } from './bia-filter-match-mode';
   selector: 'bia-table-filter',
   templateUrl: './bia-table-filter.component.html',
   styleUrls: ['./bia-table-filter.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None,
   imports: [
     TableModule,

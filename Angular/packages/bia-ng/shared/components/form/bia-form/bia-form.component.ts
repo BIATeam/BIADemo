@@ -55,7 +55,7 @@ import { BiaFormLayoutComponent } from '../bia-form-layout/bia-form-layout.compo
   selector: 'bia-form',
   templateUrl: './bia-form.component.html',
   styleUrls: ['./bia-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

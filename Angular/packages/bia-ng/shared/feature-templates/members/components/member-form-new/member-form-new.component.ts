@@ -27,7 +27,7 @@ import { Members } from '../../model/member';
   selector: 'bia-member-form-new',
   templateUrl: './member-form-new.component.html',
   styleUrls: ['./member-form-new.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

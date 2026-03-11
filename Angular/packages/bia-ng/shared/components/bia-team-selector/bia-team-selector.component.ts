@@ -35,7 +35,7 @@ import { BiaLayoutService } from '../layout/services/layout.service';
   selector: 'bia-team-selector',
   templateUrl: './bia-team-selector.component.html',
   styleUrls: ['./bia-team-selector.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [Select, FormsModule, Tooltip, MultiSelect, TranslateModule],
 })
 export class BiaTeamSelectorComponent implements OnInit, OnDestroy {

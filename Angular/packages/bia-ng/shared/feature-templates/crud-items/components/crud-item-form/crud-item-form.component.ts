@@ -22,7 +22,7 @@ import { FormReadOnlyMode } from '../../model/crud-config';
   selector: 'bia-crud-item-form',
   templateUrl: './crud-item-form.component.html',
   styleUrls: ['./crud-item-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BiaFormComponent],
 })
 export class CrudItemFormComponent<CrudItem extends BaseDto<string | number>> {

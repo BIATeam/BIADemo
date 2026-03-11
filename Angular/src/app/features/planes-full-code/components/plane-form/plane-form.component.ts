@@ -30,7 +30,7 @@ import { Plane } from '../../model/plane';
   selector: 'app-plane-form',
   templateUrl: './plane-form.component.html',
   styleUrls: ['./plane-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

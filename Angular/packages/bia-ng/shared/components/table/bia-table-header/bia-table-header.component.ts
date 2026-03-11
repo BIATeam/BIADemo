@@ -34,7 +34,7 @@ import { BiaButtonsComponent } from '../../bia-buttons/bia-buttons.component';
   templateUrl: './bia-table-header.component.html',
   styleUrls: ['./bia-table-header.component.scss'],
   providers: [ConfirmationService],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     Button,
     Tooltip,
