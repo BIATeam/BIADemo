@@ -1,0 +1,703 @@
+{
+  "BiaNet": {
+    // if BIA_FRONT_FEATURE
+    "Permissions": [
+      // BIAToolKit - Begin Config
+      // BIAToolKit - End Config
+      // BIAToolKit - Begin ConfigForOption
+      // BIAToolKit - End ConfigForOption
+
+      // Begin BIAToolKit Generation Ignore
+      // BIAToolKit - Begin Partial Config Plane
+      // Plane
+      {
+        "Names": [
+          "Plane_List_Access",
+          "Plane_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Names": [
+          "Plane_Update",
+          "Plane_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Plane_Create",
+          "Plane_Fix",
+          "Plane_Delete"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      // BIAToolKit - End Partial Config Plane
+      // BIAToolKit - Begin Partial Config Engine
+      // Engine
+      {
+        "Names": [
+          "Engine_List_Access",
+          "Engine_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Names": [
+          "Engine_Update",
+          "Engine_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Engine_Create",
+          "Engine_Fix",
+          "Engine_Delete"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      // BIAToolKit - End Partial Config Engine
+      // BIAToolKit - Begin Partial ConfigForOption Country
+      // Country
+      {
+        "Name": "Country_Options",
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      // BIAToolKit - End Partial ConfigForOption Country
+      // Airport
+      {
+        "Name": "Airport_Options",
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      {
+        "Names": [
+          "Airport_List_Access",
+          "Airport_Create",
+          "Airport_Read",
+          "Airport_Update",
+          "Airport_Delete",
+          "Airport_Save"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      // BIAToolKit - Begin Partial Config AircraftMaintenanceCompany
+      // AircraftMaintenanceCompany
+      {
+        "Names": [
+          "AircraftMaintenanceCompany_Create",
+          "AircraftMaintenanceCompany_Delete"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      {
+        "Names": [
+          "AircraftMaintenanceCompany_Update",
+          "AircraftMaintenanceCompany_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "AircraftMaintenanceCompany_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_MemberOfOne"
+        ]
+      },
+      {
+        "Names": [
+          "AircraftMaintenanceCompany_Read",
+          "AircraftMaintenanceCompany_Member_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Member"
+        ]
+      },
+      {
+        "Names": [
+          "AircraftMaintenanceCompany_Member_Create",
+          "AircraftMaintenanceCompany_Member_Read",
+          "AircraftMaintenanceCompany_Member_Update",
+          "AircraftMaintenanceCompany_Member_Delete",
+          "AircraftMaintenanceCompany_Member_Save"
+        ],
+        "Roles": [
+          "Admin",
+          // Begin BIADemo
+          "Supervisor",
+          // End BIADemo
+          "AircraftMaintenanceCompany_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "AircraftMaintenanceCompany_View_Add_TeamView",
+          "AircraftMaintenanceCompany_View_Update_TeamView",
+          "AircraftMaintenanceCompany_View_Set_Default_TeamView",
+          "AircraftMaintenanceCompany_View_Assign_To_Team"
+        ],
+        "Roles": [
+          "Admin",
+          // Begin BIADemo
+          "Supervisor",
+          // End BIADemo
+          "AircraftMaintenanceCompany_Admin"
+        ]
+      },
+      // BIAToolKit - End Partial Config AircraftMaintenanceCompany
+      // BIAToolKit - Begin Partial ConfigForOption PlaneType
+      // PlaneType
+      {
+        "Name": "PlaneType_Options",
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      // BIAToolKit - End Partial ConfigForOption PlaneType
+      // BIAToolKit - Begin Partial Config MaintenanceTeam
+      // MaintenanceTeam
+      {
+        "Names": [
+          "MaintenanceTeam_Create",
+          "MaintenanceTeam_Fix",
+          "MaintenanceTeam_Delete"
+        ],
+        "Roles": [
+          "Admin",
+          // Begin BIADemo
+          "Supervisor",
+          // End BIADemo
+          "AircraftMaintenanceCompany_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "MaintenanceTeam_Update",
+          "MaintenanceTeam_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Admin",
+          // Begin BIADemo
+          "Supervisor",
+          // End BIADemo
+          "MaintenanceTeam_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "MaintenanceTeam_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Member",
+          "MaintenanceTeam_MemberOfOne"
+        ]
+      },
+      {
+        "Names": [
+          "MaintenanceTeam_Read",
+          "MaintenanceTeam_Member_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Member",
+          "MaintenanceTeam_Member"
+        ]
+      },
+      {
+        "Names": [
+          "MaintenanceTeam_Member_Create",
+          "MaintenanceTeam_Member_Read",
+          "MaintenanceTeam_Member_Update",
+          "MaintenanceTeam_Member_Delete",
+          "MaintenanceTeam_Member_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Admin",
+          // Begin BIADemo
+          "Team_Leader",
+          // End BIADemo
+          "MaintenanceTeam_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "MaintenanceTeam_View_Add_TeamView",
+          "MaintenanceTeam_View_Update_TeamView",
+          "MaintenanceTeam_View_Set_Default_TeamView",
+          "MaintenanceTeam_View_Assign_To_Team"
+        ],
+        "Roles": [
+          "Admin",
+          "AircraftMaintenanceCompany_Admin",
+          // Begin BIADemo
+          "Team_Leader",
+          // End BIADemo
+          "MaintenanceTeam_Admin"
+        ]
+      },
+      // BIAToolKit - End Partial Config MaintenanceTeam
+      // BIAToolKit - Begin Partial Config Pilot
+      // Pilot
+      {
+        "Names": [
+          "Pilot_List_Access",
+          "Pilot_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Names": [
+          "Pilot_Update",
+          "Pilot_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Pilot_Create",
+          "Pilot_Fix",
+          "Pilot_Delete"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      // BIAToolKit - End Partial Config Pilot
+      // BIAToolKit - Begin Partial Config Flight
+      // Flight
+      {
+        "Names": [
+          "Flight_List_Access",
+          "Flight_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Names": [
+          "Flight_Update",
+          "Flight_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Flight_Create",
+          "Flight_Fix",
+          "Flight_Delete"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      // BIAToolKit - End Partial Config Flight
+      // End BIAToolKit Generation Ignore
+
+      // Begin BIADemo
+      // Site
+      {
+        "Name": "Site_Options",
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      // AircraftMaintenanceCompany
+      {
+        "Name": "AircraftMaintenanceCompany_Options",
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      // Plane
+      {
+        "Name": "Plane_Options",
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      // MaintenanceContract
+      {
+        "Names": [
+          "MaintenanceContract_List_Access",
+          "MaintenanceContract_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Names": [
+          "MaintenanceContract_Update",
+          "MaintenanceContract_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "MaintenanceContract_Create",
+          "MaintenanceContract_Delete"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      // Hangfire
+      {
+        "Names": [
+          "Hangfire_Run_Worker",
+          "Hangfire_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
+      },
+      // Part
+      {
+        "Name": "Part_Options",
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      // PlaneType
+      {
+        "Names": [
+          "PlaneType_List_Access",
+          "PlaneType_Create",
+          "PlaneType_Read",
+          "PlaneType_Update",
+          "PlaneType_Delete",
+          "PlaneType_Save"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      // End BIADemo
+      // Home
+      {
+        "Name": "Home_Access",
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member",
+          "User"
+        ]
+      },
+      // Log
+      {
+        "Name": "Logs_Create",
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
+      },
+      // Role
+      {
+        "Names": [
+          "Roles_Options"
+        ],
+        "Roles": [
+          "Admin",
+          "UserManager",
+          "User"
+        ]
+      },
+      {
+        "Names": [
+          "Roles_List"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Name": "Roles_List_For_Current_User",
+        "Roles": [
+          "User",
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      // Language
+      {
+        "Name": "Languages_Options",
+        "Roles": [
+          "User",
+          "Admin"
+        ]
+      },
+      // Ldap Domain
+      {
+        "Name": "LdapDomains_List",
+        "Roles": [
+          "Admin",
+          "UserManager",
+          "Site_Admin"
+        ]
+      },
+      // ProfileImage
+      {
+        "Name": "ProfileImage_Get",
+        "Roles": [
+          "User"
+        ]
+      },
+      // Site
+      {
+        "Names": [
+          "Site_Access_All",
+          "Site_Create",
+          "Site_Update",
+          "Site_Delete",
+          "Site_Save"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Site_List_Access",
+          "Site_Read",
+          "Site_Member_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Names": [
+          "Site_Member_Create",
+          "Site_Member_Read",
+          "Site_Member_Update",
+          "Site_Member_Delete",
+          "Site_Member_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Site_View_Add_TeamView",
+          "Site_View_Update_TeamView",
+          "Site_View_Set_Default_TeamView"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Site_View_Assign_To_Team"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ],
+        "IsTransversal": true
+      },
+      // Team
+      {
+        "Names": [
+          "Team_Access_All"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Team_List_Access",
+          "Team_Options"
+        ],
+        "Roles": [
+          "User"
+        ]
+      },
+      {
+        "Name": "Team_Set_Default_Team",
+        "Roles": [
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Name": "Team_Set_Default_Roles",
+        "Roles": [
+          "User",
+          "Admin",
+          "Site_Admin",
+          "Site_Member"
+        ]
+      },
+      // User
+      {
+        "Names": [
+          "User_Options"
+        ],
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      // View
+      {
+        "Names": [
+          "View_List",
+          "View_Read"
+        ],
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      {
+        "Names": [
+          "View_Add_UserView",
+          "View_Update_UserView",
+          "View_Delete_UserView",
+          "View_Set_Default_UserView"
+        ],
+        "Roles": [
+          "User"
+        ]
+      },
+      // Notifications
+      {
+        "Names": [
+          "Notification_List_Access",
+          "Notification_Delete",
+          "Notification_Read",
+          "NotificationType_Options"
+        ],
+        "Roles": [
+          "Admin",
+          "User"
+        ]
+      },
+      {
+        "Names": [
+          "Notification_Update",
+          "Notification_Create"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      // SupportAdmin
+      {
+        "Names": [
+          "Impersonation_Connection_Rights"
+        ],
+        "Roles": [
+          "SupportAdmin"
+        ]
+      },
+      {
+        "Name": "Background_Task_Admin",
+        "LightToken": true,
+        "Roles": [
+          "Admin",
+          "Back_Admin"
+        ]
+      },
+      {
+        "Name": "Background_Task_Read_Only",
+        "LightToken": true,
+        "Roles": [
+          "Back_Read_Only"
+        ]
+      },
+      // Announcement
+      {
+        "Names": [
+          "Announcement_List_Access",
+          "Announcement_Read",
+          "Announcement_Update",
+          "Announcement_Create",
+          "Announcement_Delete"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      // AnnouncementType
+      {
+        "Name": "AnnouncementType_Options",
+        "Roles": [
+          "Admin"
+        ]
+      }
+    ]
+    // endif
+  }
+}
