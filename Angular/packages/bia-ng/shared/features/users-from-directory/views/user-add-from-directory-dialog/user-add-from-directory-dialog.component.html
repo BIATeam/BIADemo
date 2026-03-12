@@ -7,7 +7,8 @@
   [maximizable]="true"
   [draggable]="false"
   [style]="{ minWidth: '50vw' }"
-  [contentStyle]="{ overflow: 'auto' }">
+  [contentStyle]="{ overflow: 'auto' }"
+  [appendTo]="appendTo">
   <bia-user-from-directory-form
     [users]="(usersFromDirectory$ | async) ?? []"
     [domains]="(ldapDomains$ | async) ?? []"

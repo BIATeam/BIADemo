@@ -7,7 +7,8 @@
   [closable]="true"
   [maximizable]="true"
   [contentStyle]="{ overflow: 'auto' }"
-  (onHide)="onClose()">
+  (onHide)="onClose()"
+  [appendTo]="appendTo">
   @let teams = teams$ | async;
 
   <p-accordion [value]="['0', '1']" [multiple]="true">

@@ -54,7 +54,8 @@
           [closable]="true"
           [maximizable]="false"
           [closeOnEscape]="true"
-          [contentStyle]="{ overflow: 'auto' }">
+          [contentStyle]="{ overflow: 'auto' }"
+          appendTo="body">
           <ng-container *ngTemplateOutlet="ultimaConfig"></ng-container>
         </p-dialog>
       } @else {
