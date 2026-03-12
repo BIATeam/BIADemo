@@ -30,12 +30,22 @@ namespace BIA.Net.Core.Application.Permission
         /// <inheritdoc/>
         public IEnumerable<int> ConvertToIds(IEnumerable<string> permissionNames)
         {
+            if (permissionNames is null)
+            {
+                return [];
+            }
+
             return this.Permissions.Where(p => permissionNames.Contains(p.Name)).Select(p => p.PermissionId);
         }
 
         /// <inheritdoc/>
         public IEnumerable<string> ConvertToNames(IEnumerable<int> permissionIds)
         {
+            if (permissionIds is null)
+            {
+                return [];
+            }
+
             return this.Permissions.Where(p => permissionIds.Contains(p.PermissionId)).Select(p => p.Name);
         }
 
