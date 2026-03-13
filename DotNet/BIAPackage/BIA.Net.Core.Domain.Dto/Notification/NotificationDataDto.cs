@@ -33,6 +33,6 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the unique identifier for the downloadable file.
         /// </summary>
-        public Guid DownloadFileGuid { get; set; }
+        public Guid? DownloadFileGuid { get; set; }
     }
 }

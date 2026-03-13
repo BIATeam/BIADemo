@@ -240,7 +240,7 @@ namespace BIA.Net.Core.Application.File
                 Type = new OptionDto { Id = (int)BiaNotificationTypeId.DownloadReady },
                 Read = false,
                 JData = JsonConvert.SerializeObject(new NotificationDataDto { Display = "bia.download", DownloadFileGuid = fileDownloadDataDto.Id }, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }),
-                NotifiedUsers = [new() { Id = requestedByUserId }],
+                NotifiedUsers = [new() { Id = requestedByUserId, DtoState = Domain.Dto.Base.DtoState.Added }],
                 NotificationTranslations = [.. notificationTranslations.Except([notificationTranslationEnglish])],
                 NotifiedTeams = [],
             };

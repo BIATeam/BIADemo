@@ -43,7 +43,7 @@ namespace BIA.Net.Core.Domain.Notification.Entities
         /// <summary>
         /// Gets or sets the date the notification was created.
         /// </summary>
-        public DateTime CreatedDate { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the user who triggered the notification.

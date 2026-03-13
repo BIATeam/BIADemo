@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Domain.Dto.Notification
     using System;
     using System.Collections.Generic;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.CustomAttribute;
     using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
@@ -47,7 +48,8 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// <summary>
         /// Gets or sets the date the notification was created.
         /// </summary>
-        public DateTime CreatedDate { get; set; }
+        [BiaDtoField(AsLocalDateTime = true)]
+        public DateTimeOffset CreatedDate { get; set; }
 
         /// <summary>
         /// Gets or sets the user who triggered the notification.

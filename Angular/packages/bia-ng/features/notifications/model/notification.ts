@@ -8,7 +8,7 @@ export interface Notification extends BaseDto {
   descriptionTranslated: string;
   type: OptionDto;
   read: boolean;
-  createdDate: string;
+  createdDate: Date;
   createdBy: OptionDto | null;
   siteId: number;
   notifiedUsers: OptionDto[];

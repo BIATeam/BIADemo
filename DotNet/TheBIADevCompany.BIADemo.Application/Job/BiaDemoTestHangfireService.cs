@@ -151,7 +151,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 var notification = new NotificationDto
                 {
                     CreatedBy = new OptionDto { Id = createdById },
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     Description = "Review the plane with id " + targetPlaneId + ".",
                     Title = "Review plane",
                     Type = new OptionDto { Id = (int)BiaNotificationTypeId.Task },
@@ -188,7 +188,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
                 var notification = new NotificationDto
                 {
                     CreatedBy = new OptionDto { Id = createdById },
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = DateTime.UtcNow,
                     Description = "There is no plane to review on site '" + selectPlaneOnSiteTitle + "'.",
                     Title = "No plane to review",
                     Type = new OptionDto { Id = (int)BiaNotificationTypeId.Info },

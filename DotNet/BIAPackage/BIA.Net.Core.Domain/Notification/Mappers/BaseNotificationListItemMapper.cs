@@ -118,7 +118,7 @@ namespace BIA.Net.Core.Domain.Notification.Mappers
                 { HeaderName.DescriptionTranslated, () => CSVString(dto.DescriptionTranslated) },
                 { HeaderName.Type, () => CSVString(dto.Type?.Display) },
                 { HeaderName.Read, () => CSVBool(dto.Read) },
-                { HeaderName.CreatedDate, () => CSVDate(dto.CreatedDate) },
+                { HeaderName.CreatedDate, () => CSVDate(dto.CreatedDate.UtcDateTime) },
                 { HeaderName.CreatedBy, () => CSVString(dto.CreatedBy?.Display) },
                 { HeaderName.NotifiedUsers, () => CSVList(dto.NotifiedUsers) },
                 { HeaderName.NotifiedTeams, () => CSVList(dto.NotifiedTeams) },

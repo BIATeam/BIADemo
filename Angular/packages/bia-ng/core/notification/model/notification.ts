@@ -8,7 +8,7 @@ export interface Notification {
   description: string;
   type: OptionDto;
   read: boolean;
-  createdDate: string;
+  createdDate: Date;
   createdBy: OptionDto | null;
   notifiedUsers: OptionDto[];
   notifiedTeams: NotificationTeam[];

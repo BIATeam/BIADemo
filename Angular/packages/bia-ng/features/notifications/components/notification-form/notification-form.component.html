@@ -208,8 +208,12 @@
               placeholder="&nbsp;"
               [showButtonBar]="true"
               dateFormat="yy-mm-dd"
+              hourFormat="24"
+              [showTime]="true"
+              [showSeconds]="true"
               [style]="{ width: '100%' }"
-              [inputStyle]="{ width: '100%' }"></p-date-picker>
+              [inputStyle]="{ width: '100%' }"
+              [hideOnDateTimeSelect]="false"></p-date-picker>
             <label
               ><span class="bia-star-mandatory">*</span
               >{{ 'notification.createdDate' | translate }}</label
