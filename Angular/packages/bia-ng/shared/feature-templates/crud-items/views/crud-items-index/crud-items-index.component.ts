@@ -645,13 +645,13 @@ export class CrudItemsIndexComponent<
       columnList = [
         ...config.fieldsConfig.columns.filter(col => col.isVisibleInTable),
       ];
+
+      const columnIdExists = columnList.some(column => column.field === 'id');
+      if (!columnIdExists) {
+        columnList.unshift(new BiaFieldConfig<any>('id', 'bia.id'));
+      }
     } else if (tableColumns) {
       columnList = [...tableColumns];
-    }
-
-    const columnIdExists = columnList.some(column => column.field === 'id');
-    if (!columnIdExists) {
-      columnList.unshift(new BiaFieldConfig<any>('id', 'bia.id'));
     }
 
     columnList.forEach(x => {
