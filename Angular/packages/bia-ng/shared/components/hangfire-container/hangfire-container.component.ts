@@ -35,7 +35,9 @@ export class HangfireContainerComponent implements OnInit, OnDestroy {
     this.sub.add(
       this.authService.getLightToken().subscribe(authinfo => {
         this.token = authinfo.token;
-        setTimeout(() => this.hangfireForm.nativeElement.submit());
+        setTimeout(() => {
+          this.hangfireForm.nativeElement.submit();
+        }, 500);
       })
     );
   }
