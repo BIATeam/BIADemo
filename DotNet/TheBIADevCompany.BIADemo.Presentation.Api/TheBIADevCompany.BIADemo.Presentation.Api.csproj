@@ -62,6 +62,8 @@
 		<Compile Remove="**\*Part*.cs" />
 		<Compile Remove="**\*Country*.cs" />
 		<Compile Remove="**\*Analysis*.cs" />
+		<Compile Remove="**\*Flight*.cs" />
+		<Compile Remove="**\*Pilot*.cs" />
 		<!--BIATEMPLATE-->
 		<Compile Remove="**\*LogsController*.cs" />
 		<Compile Remove="**\*Member*.cs" />

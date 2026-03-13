@@ -24,6 +24,8 @@
     <Compile Remove="**\*MaintenanceContract*.cs" />
     <Compile Remove="**\*Part*.cs" />
     <Compile Remove="**\*Country*.cs" />
+    <Compile Remove="**\*Flight*.cs" />
+		<Compile Remove="**\*Pilot*.cs" />
     <!--BIATEMPLATE-->
     <Compile Remove="**\*Notification*.cs" />
     <Compile Remove="**\*Site*.cs" />
