@@ -46,7 +46,8 @@
     [closable]="true"
     [maximizable]="maximizable"
     [style]="style"
-    (onHide)="onPopupHide()">
+    (onHide)="onPopupHide()"
+    appendTo="body">
     <router-outlet #outlet="outlet"></router-outlet>
   </p-dialog>
 } @else {
