@@ -7,8 +7,7 @@
   [maximizable]="this.maximizable"
   [style]="this.style"
   [contentStyle]="{ overflow: 'auto' }"
-  (onHide)="onPopupHide()"
-  appendTo="body">
+  (onHide)="onPopupHide()">
   <ng-template #dynamic></ng-template>
 </p-dialog>
 <router-outlet></router-outlet>
