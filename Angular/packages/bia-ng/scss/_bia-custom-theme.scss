@@ -595,3 +595,11 @@ bia-form-layout .p-tabs .p-tabpanel > .bia-form-row {
   background-color: var(--p-button-primary-background);
   color: var(--p-button-primary-color);
 }
+
+.p-accordionpanel .p-accordioncontent {
+  display: block;
+
+  .p-motion {
+    display: block;
+  }
+}

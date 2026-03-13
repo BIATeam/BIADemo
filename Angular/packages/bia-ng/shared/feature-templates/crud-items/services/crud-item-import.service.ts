@@ -125,7 +125,6 @@ export class CrudItemImportService<
       csv,
       Object.keys(columnMapping)
     ).replace(/\r\n/g, '\n');
-    console.log('cleanedCSVData', cleanedCSVData);
 
     const result = Papa.parse<TFormCrudItem>(cleanedCSVData, {
       skipEmptyLines: 'greedy',
@@ -141,8 +140,6 @@ export class CrudItemImportService<
         }
       },
     });
-
-    console.log('result', result);
 
     const resultData$ = this.parseCSVBia(result.data);
 
