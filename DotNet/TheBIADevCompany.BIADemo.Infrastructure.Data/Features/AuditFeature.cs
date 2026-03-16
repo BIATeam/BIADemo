@@ -46,6 +46,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 #if BIA_FRONT_FEATURE
                 nameof(Plane) => typeof(PlaneAudit),
 #endif
+
                 // BIAToolKit - End Partial AuditTypeMapper Plane
                 // End BIAToolKit Generation Ignore
                 // BIAToolKit - End AuditTypeMapper
@@ -56,7 +57,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 nameof(PlanePlaneType) => typeof(PlanePlaneTypeAudit),
 
                 // End BIADemo
-
                 nameof(User) => typeof(UserAudit),
 #endif
                 _ => base.AuditTypeMapper(type),
