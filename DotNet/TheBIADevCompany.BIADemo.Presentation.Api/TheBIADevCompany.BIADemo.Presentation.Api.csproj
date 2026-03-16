@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>net10.0</TargetFramework>
 		<!-- Warning: Setting the following switch is *NOT* recommended in web apps. -->
@@ -77,5 +77,6 @@
 		<Compile Remove="**\LdapDomainsController.cs" />
 		<Compile Remove="**\*ProfileImageController*.cs" />
 		<Compile Remove="**\*Announcement*.cs" />
+		<Compile Remove="**\FilesController.cs" />
 	</ItemGroup>
 </Project>
