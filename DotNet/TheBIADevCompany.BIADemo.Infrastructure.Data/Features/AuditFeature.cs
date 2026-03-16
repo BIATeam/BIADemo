@@ -11,10 +11,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
 
     // BIAToolKit - Begin AuditTypeMapperUsing
     // Begin BIAToolKit Generation Ignore
+#if BIA_FRONT_FEATURE
     // BIAToolKit - Begin Partial AuditTypeMapperUsing Fleet
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // BIAToolKit - End Partial AuditTypeMapperUsing Fleet
+#endif
+
     // End BIAToolKit Generation Ignore
     // BIAToolKit - End AuditTypeMapperUsing
 #if BIA_FRONT_FEATURE
@@ -40,19 +43,20 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
                 // BIAToolKit - Begin AuditTypeMapper
                 // Begin BIAToolKit Generation Ignore
                 // BIAToolKit - Begin Partial AuditTypeMapper Plane
+#if BIA_FRONT_FEATURE
                 nameof(Plane) => typeof(PlaneAudit),
-
+#endif
                 // BIAToolKit - End Partial AuditTypeMapper Plane
                 // End BIAToolKit Generation Ignore
                 // BIAToolKit - End AuditTypeMapper
-
+#if BIA_FRONT_FEATURE
                 // Begin BIADemo
                 nameof(Engine) => typeof(EngineAudit),
                 nameof(PlaneAirport) => typeof(PlaneAirportAudit),
                 nameof(PlanePlaneType) => typeof(PlanePlaneTypeAudit),
 
                 // End BIADemo
-#if BIA_FRONT_FEATURE
+
                 nameof(User) => typeof(UserAudit),
 #endif
                 _ => base.AuditTypeMapper(type),
