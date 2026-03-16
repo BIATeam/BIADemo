@@ -41,6 +41,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         /// <returns>Task.</returns>
         public static async Task Main(string[] args)
         {
+#if BIA_USE_DATABASE
             AppContext.SetSwitch(BiaConstants.AppContextSwitch.Npgsql.EnableLegacyTimestampBehavior, true);
 
             var env = Environment.GetEnvironmentVariable(Constants.Application.Environment);
@@ -125,6 +126,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 .RunConsoleAsync();
 
             LogManager.GetLogger(typeof(Program).ToString()).Info("End of DeployDB");
+#endif
         }
     }
 }
