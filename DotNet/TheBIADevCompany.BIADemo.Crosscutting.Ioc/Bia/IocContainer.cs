@@ -230,8 +230,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             ConfigureDomainContainer(param);
             ConfigureApplicationContainer(param);
 
-            BiaIocContainer.ConfigureContainer(param);
-
 #if BIA_USE_DATABASE
             ConfigureInfrastructureDataContainer(param);
 #endif
