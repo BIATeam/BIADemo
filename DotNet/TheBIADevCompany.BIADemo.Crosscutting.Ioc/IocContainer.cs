@@ -13,8 +13,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
 
     // Begin BIADemo
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
     using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
+#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
 
     // End BIADemo
@@ -73,6 +75,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             BiaConfigureInfrastructureServiceContainer(param);
 
+#if BIA_FRONT_FEATURE
             // Begin BIADemo
             param.Collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
             param.Collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
@@ -85,6 +88,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection));
 
             // End BIADemo
+#endif
         }
     }
 }

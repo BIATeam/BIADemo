@@ -34,6 +34,8 @@
 	  <Compile Remove="**\*Analysis*.cs" />
     <Compile Remove="**\*Flight*.cs" />
 		<Compile Remove="**\*Pilot*.cs" />
+    <Compile Remove="**\ApiRolesForApp.cs" />
+    <Compile Remove="**\ApiProgram.cs" />
 	  <!--BIATEMPLATE-->
 	  <Compile Remove="**\*Mapper*.cs" />
 	  <Compile Remove="**\*Notification*.cs" />

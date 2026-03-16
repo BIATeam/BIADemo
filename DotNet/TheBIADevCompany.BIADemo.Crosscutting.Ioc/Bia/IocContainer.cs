@@ -51,13 +51,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_USE_DATABASE
     using BIA.Net.Core.Infrastructure.Data.Helpers;
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
+#endif
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
 #endif
     using BIA.Net.Core.Application.File;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Ioc.Param;
+#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Application.File;
+#endif
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
@@ -307,10 +311,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 param.Collection.AddSingleton<IAuditFeatureService, AuditFeatureService>();
             }
 
-            param.Collection.AddSingleton<IAuditFeature, AuditFeature>();
             param.Collection.AddScoped<IBiaHybridCache, BiaHybridCache>();
 
 #if BIA_FRONT_FEATURE
+            param.Collection.AddSingleton<IAuditFeature, AuditFeature>();
+
             // Must specify the User type explicitly
             param.Collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
 #endif
