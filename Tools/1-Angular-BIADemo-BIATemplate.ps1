@@ -113,6 +113,8 @@ Write-Host "RemoveFolder src\app\features\pilots"
 RemoveFolder -path 'src\app\features\pilots'
 Write-Host "RemoveFolder src\app\features\flights"
 RemoveFolder -path 'src\app\features\flights'
+Write-Host "RemoveFolder src\app\features\examples"
+RemoveFolder -path 'src\app\features\examples'
 
 Write-Host "RemoveFolder src\app\domains\airport-option"
 RemoveFolder -path 'src\app\domains\airport-option'
