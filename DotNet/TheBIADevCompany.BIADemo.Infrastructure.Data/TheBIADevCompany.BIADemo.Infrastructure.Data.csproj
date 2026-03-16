@@ -29,6 +29,11 @@
   <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
 	  <!--BIADEMO-->
 	  <Compile Remove="**\*BiaDemo*.cs" />
+    <Compile Remove="**\*Aircraft*.cs" />
+    <Compile Remove="**\*Plane*.cs" />
+    <Compile Remove="**\*Engine*.cs" />
+    <Compile Remove="**\*Flight*.cs" />
+    <Compile Remove="**\*Pilot*.cs" />
 	  <!--BIATEMPLATE-->
 	  <Compile Remove="**\*Notification*.cs" />
 	  <Compile Remove="**\*Query*.cs" />
@@ -36,5 +41,6 @@
 	  <Compile Remove="**\*Translation*.cs" />
 	  <Compile Remove="**\UserModelBuilder.cs" />
 	  <Compile Remove="**\*Site*.cs" />
+    <Compile Remove="**\*Audit*.cs" />
   </ItemGroup>
 </Project>

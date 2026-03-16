@@ -25,6 +25,8 @@ foreach ($file in $csprojFiles) {
 <Compile Remove="**\*Country*.cs" />
 <Compile Remove="**\*Document*.cs" />
 <Compile Remove="**\*Analysis*.cs" />
+<Compile Remove="**\*Flight*.cs" />
+<Compile Remove="**\*Pilot*.cs" />
 <!--BIATEMPLATE-->
 <Compile Remove="**\*Error*.cs" />
 <Compile Remove="**\*IdentityProvider*.cs" />

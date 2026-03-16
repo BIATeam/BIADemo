@@ -34,8 +34,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
 #if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.Notification.Entities;
-#endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders;
+#endif
 
     /// <summary>
     /// The database context.
@@ -227,6 +227,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             new UserModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             new NotificationModelBuilder().CreateModel(modelBuilder);
+            new AuditModelBuilder().CreateModel(modelBuilder);
 
             // Begin BIADemo
             PlaneModelBuilder.CreateModel(modelBuilder);
@@ -236,7 +237,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
             // End BIADemo
 #endif
-            new AuditModelBuilder().CreateModel(modelBuilder);
             this.OnEndModelCreating(modelBuilder);
         }
     }

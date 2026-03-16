@@ -22,6 +22,8 @@
 	  <!--BIADEMO-->
 	  <Compile Remove="**\*RemoteBiaApi*.cs" />
 	  <Compile Remove="**\*Analysis*.cs" />
+    <Compile Remove="**\*BiaDemo*.cs" />
+    <Compile Remove="**\*Plane*.cs" />
 	  <!--BIATEMPLATE-->
 	  <Compile Remove="**\*IdentityProvider*.cs" />
   </ItemGroup>
