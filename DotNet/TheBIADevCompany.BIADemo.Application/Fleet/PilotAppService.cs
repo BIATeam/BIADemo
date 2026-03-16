@@ -5,15 +5,12 @@
 
 namespace TheBIADevCompany.BIADemo.Application.Fleet
 {
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
     using System.Security.Principal;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Domain.QueryOrder;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
     using BIA.Net.Core.Domain.Specification;
@@ -22,7 +19,6 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Mappers;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     /// <summary>
     /// The application service used for pilot.

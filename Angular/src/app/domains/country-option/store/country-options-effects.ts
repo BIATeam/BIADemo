@@ -1,11 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  BiaDataChangeService,
   BiaMessageService,
   BiaOnlineOfflineService,
 } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { enableSignalrRefresh, storeKey } from '../country-option.constants';
 import { CountryOptionDas } from '../services/country-option-das.service';
 import { DomainCountryOptionsActions } from './country-options-actions';
 /**
@@ -24,6 +26,11 @@ export class CountryOptionsEffects {
       /* Hit the Countries Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Countries Reducers' will take care of the rest */
+      filter(
+        () =>
+          enableSignalrRefresh !== true ||
+          this.dataChangeService.needsReload(storeKey) === true
+      ),
       switchMap(() =>
         this.countryOptionDas
           .getList({
@@ -31,13 +38,14 @@ export class CountryOptionsEffects {
             offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
           .pipe(
-            map(countries =>
-              DomainCountryOptionsActions.loadAllSuccess({
+            map(countries => {
+              this.dataChangeService.markReloaded(storeKey);
+              return DomainCountryOptionsActions.loadAllSuccess({
                 countries: countries?.sort((a, b) =>
                   a.display.localeCompare(b.display)
                 ),
-              })
-            ),
+              });
+            }),
             catchError(err => {
               if (
                 BiaOnlineOfflineService.isModeEnabled !== true ||
@@ -55,6 +63,7 @@ export class CountryOptionsEffects {
   constructor(
     private actions$: Actions,
     private countryOptionDas: CountryOptionDas,
-    private biaMessageService: BiaMessageService
+    private biaMessageService: BiaMessageService,
+    private dataChangeService: BiaDataChangeService
   ) {}
 }

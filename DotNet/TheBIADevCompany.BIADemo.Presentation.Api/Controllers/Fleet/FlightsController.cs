@@ -60,6 +60,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         {
 #if UseHubForClientInFlight
             this.clientForHubService = clientForHubService;
+            this.EntityName = "flight";
+            this.EntityNamePlural = "flights";
 #endif
             this.flightService = flightService;
         }
@@ -127,7 +129,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var createdDto = await this.flightService.AddAsync(dto);
 #if UseHubForClientInFlight
-                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "flights", "refresh-flights");
+                await this.SendEntityChangedAsync(createdDto.SiteId.ToString());
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -166,7 +168,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var updatedDto = await this.flightService.UpdateAsync(dto);
 #if UseHubForClientInFlight
-                await this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "flights", "refresh-flights");
+                await this.SendEntityChangedAsync(updatedDto.SiteId.ToString());
 #endif
                 return this.Ok(updatedDto);
             }
@@ -210,7 +212,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDto = await this.flightService.RemoveAsync(id);
 #if UseHubForClientInFlight
-                await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "flights", "refresh-flights");
+                await this.SendEntityChangedAsync(deletedDto.SiteId.ToString());
 #endif
                 return this.Ok();
             }
@@ -242,10 +244,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDtos = await this.flightService.RemoveAsync(ids);
 #if UseHubForClientInFlight
-                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "flights", "refresh-flights");
-                });
+                await this.SendEntityChangedAsync(parentKeys: deletedDtos.Select(m => m.SiteId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -280,10 +279,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var savedDtos = await this.flightService.SaveAsync(dtoList);
 #if UseHubForClientInFlight
-                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "flights", "refresh-flights");
-                });
+                await this.SendEntityChangedAsync(parentKeys: savedDtos.Select(m => m.SiteId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -337,5 +333,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 return this.NotFound();
             }
         }
+
+#if UseHubForClientInFlight
+        /// <summary>
+        /// Notifies clients that entity have changed.
+        /// </summary>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="parentKeys">The parent keys.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        private async Task SendEntityChangedAsync(string parentKey = null, List<string> parentKeys = null)
+        {
+            await this.SendEntityChangedAsync(
+                clientForHubService: this.clientForHubService,
+                parentKey: parentKey,
+                parentKeys: parentKeys);
+        }
+#endif
     }
 }

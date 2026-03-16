@@ -4,7 +4,7 @@ import {
   createFeatureSelector,
   createSelector,
 } from '@ngrx/store';
-import { storeKey } from '../airport-option.contants';
+import { storeKey } from '../airport-option.constants';
 import * as fromAirportOptions from './airport-options-reducer';
 
 export interface AirportOptionsState {

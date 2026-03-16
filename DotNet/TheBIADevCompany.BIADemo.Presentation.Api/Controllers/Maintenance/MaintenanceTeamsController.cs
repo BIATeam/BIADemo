@@ -61,6 +61,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
         {
 #if UseHubForClientInMaintenanceTeam
             this.clientForHubService = clientForHubService;
+            this.EntityName = "maintenance-team";
+            this.EntityNamePlural = "maintenance-teams";
 #endif
             this.maintenanceTeamService = maintenanceTeamService;
         }
@@ -128,7 +130,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 var createdDto = await this.maintenanceTeamService.AddAsync(dto);
 #if UseHubForClientInMaintenanceTeam
-                await this.clientForHubService.SendTargetedMessage(createdDto.AircraftMaintenanceCompanyId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
+                await this.SendEntityChangedAsync(createdDto.AircraftMaintenanceCompanyId.ToString());
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -167,7 +169,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 var updatedDto = await this.maintenanceTeamService.UpdateAsync(dto);
 #if UseHubForClientInMaintenanceTeam
-                await this.clientForHubService.SendTargetedMessage(updatedDto.AircraftMaintenanceCompanyId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
+                await this.SendEntityChangedAsync(updatedDto.AircraftMaintenanceCompanyId.ToString());
 #endif
                 return this.Ok(updatedDto);
             }
@@ -211,7 +213,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 var deletedDto = await this.maintenanceTeamService.RemoveAsync(id);
 #if UseHubForClientInMaintenanceTeam
-                await this.clientForHubService.SendTargetedMessage(deletedDto.AircraftMaintenanceCompanyId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
+                await this.SendEntityChangedAsync(deletedDto.AircraftMaintenanceCompanyId.ToString());
 #endif
                 return this.Ok();
             }
@@ -243,10 +245,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 var deletedDtos = await this.maintenanceTeamService.RemoveAsync(ids);
 #if UseHubForClientInMaintenanceTeam
-                deletedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
-                });
+                await this.SendEntityChangedAsync(parentKeys: deletedDtos.Select(m => m.AircraftMaintenanceCompanyId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -281,10 +280,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
             {
                 var savedDtos = await this.maintenanceTeamService.SaveAsync(dtoList);
 #if UseHubForClientInMaintenanceTeam
-                savedDtos.Select(m => m.AircraftMaintenanceCompanyId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "maintenanceTeams", "refresh-maintenanceTeams");
-                });
+                await this.SendEntityChangedAsync(parentKeys: savedDtos.Select(m => m.AircraftMaintenanceCompanyId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -338,5 +334,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Maintenance
                 return this.NotFound();
             }
         }
+
+#if UseHubForClientInMaintenanceTeam
+        /// <summary>
+        /// Notifies clients that entity have changed.
+        /// </summary>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="parentKeys">The parent keys.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        private async Task SendEntityChangedAsync(string parentKey = null, List<string> parentKeys = null)
+        {
+            await this.SendEntityChangedAsync(
+                clientForHubService: this.clientForHubService,
+                parentKey: parentKey,
+                parentKeys: parentKeys);
+        }
+#endif
     }
 }

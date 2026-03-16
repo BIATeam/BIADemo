@@ -9,7 +9,7 @@ if(!(Test-Path $biaToolKitProjectPath)) {
 }
 
 function Get-BiaDemoVersion() {
-  $constantFilePath = "$biaDemoProjectPath\DotNet\TheBIADevCompany.BIADemo.Crosscutting.Common\Constants.cs"
+  $constantFilePath = "$biaDemoProjectPath\DotNet\TheBIADevCompany.BIADemo.Crosscutting.Common\Bia\Constants.cs"
   $content = Get-Content $constantFilePath
   $line = $content | Where-Object { $_ -match 'public const string FrameworkVersion =' }
   if ($line -match '"([^"]+)"') {

@@ -7,7 +7,7 @@ import {
 } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
-import { enableSignalrRefresh, storeKey } from '../airport-option.contants';
+import { enableSignalrRefresh, storeKey } from '../airport-option.constants';
 import { AirportOptionDas } from '../services/airport-option-das.service';
 import { DomainAirportOptionsActions } from './airport-options-actions';
 /**
