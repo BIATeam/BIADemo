@@ -5,7 +5,7 @@ import {
   CrudItemOptionsService,
   DictOptionDto,
 } from 'packages/bia-ng/shared/public-api';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { getAllAirportOptions } from 'src/app/domains/airport-option/store/airport-option.state';
 import { DomainAirportOptionsActions } from 'src/app/domains/airport-option/store/airport-options-actions';

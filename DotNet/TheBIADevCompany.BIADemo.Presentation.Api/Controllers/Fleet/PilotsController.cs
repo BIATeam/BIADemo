@@ -59,7 +59,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
 #endif
         {
 #if UseHubForClientInPilot
-            this.clientForHubService = clientForHubService; 
+            this.clientForHubService = clientForHubService;
             this.EntityName = "pilot";
             this.EntityNamePlural = "pilots";
 #endif

@@ -27,6 +27,7 @@ namespace BIA.Net.Core.Application.Clean
         /// <param name="configuration">The configuration.</param>
         /// <param name="logger">The logger.</param>
         /// <param name="fileDownloaderService">The file downloader service.</param>
+        /// <param name="fileDownloadDataAppService">The file download data app service.</param>
         public CleanFileDownloadDataTask(IConfiguration configuration, ILogger<CleanFileDownloadDataTask> logger, IFileDownloaderService fileDownloaderService, IFileDownloadDataAppService fileDownloadDataAppService)
             : base(configuration, logger)
         {
