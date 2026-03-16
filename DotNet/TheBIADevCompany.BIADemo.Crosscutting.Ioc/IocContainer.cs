@@ -53,18 +53,20 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureDomainContainer(ParamIocContainer param)
         {
+            BiaIocContainer.ConfigureDomainContainer(param);
             BiaConfigureDomainContainer(param);
             BiaConfigureDomainContainerAutoRegister(GetGlobalParamAutoRegister(param));
         }
 
         private static void ConfigureCommonContainer(ParamIocContainer param)
         {
-            // Common Layer
+            BiaIocContainer.ConfigureCommonContainer(param);
         }
 
 #if BIA_USE_DATABASE
         private static void ConfigureInfrastructureDataContainer(ParamIocContainer param)
         {
+            BiaIocContainer.ConfigureInfrastructureDataContainer(param);
             BiaConfigureInfrastructureDataContainer(param);
             BiaConfigureInfrastructureDataContainerAutoRegister(GetGlobalParamAutoRegister(param));
             BiaConfigureInfrastructureDataContainerDbContext(param);
@@ -73,6 +75,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureInfrastructureServiceContainer(ParamIocContainer param)
         {
+            BiaIocContainer.ConfigureInfrastructureServiceContainer(param);
             BiaConfigureInfrastructureServiceContainer(param);
 
 #if BIA_FRONT_FEATURE
