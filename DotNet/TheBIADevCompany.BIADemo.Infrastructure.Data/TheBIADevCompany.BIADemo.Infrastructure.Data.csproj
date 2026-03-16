@@ -41,7 +41,6 @@
 		<Compile Remove="**\*Translation*.cs" />
 		<Compile Remove="**\UserModelBuilder.cs" />
 		<Compile Remove="**\*Site*.cs" />
-		<Compile Remove="**\*Audit*.cs" />
 	</ItemGroup>
 	<ItemGroup Label="Bia_ItemGroup_BIA_USE_DATABASE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_USE_DATABASE\b'))">
 		<Compile Remove="**\*.cs" />

@@ -41,7 +41,6 @@
 		<None Update="usr\local\share\ca-certificates\front.prd.dc1.cloud.TheBIADevCompany.crt">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
-		<!--BIADEMO-->
 	</ItemGroup>
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE;BIA_USE_DATABASE</DefineConstants>
