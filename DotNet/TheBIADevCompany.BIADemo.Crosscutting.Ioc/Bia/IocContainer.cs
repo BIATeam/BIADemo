@@ -70,6 +70,35 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     /// </summary>
     public static partial class IocContainer
     {
+#if BIA_USE_DATABASE
+        private static void BiaConfigureInfrastructureDataContainer(ParamIocContainer param)
+        {
+            if (!param.IsUnitTest)
+            {
+                param.Collection.AddScoped<DataContextFactory>();
+                param.Collection.AddSingleton<IAuditFeatureService, AuditFeatureService>();
+            }
+
+            param.Collection.AddScoped<IBiaHybridCache, BiaHybridCache>();
+
+            param.Collection.AddSingleton<IAuditFeature, AuditFeature>();
+
+            // Must specify the User type explicitly
+            param.Collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
+        }
+
+
+        private static void BiaConfigureInfrastructureDataContainerAutoRegister(ParamAutoRegister param)
+        {
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: param.Collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
+                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
+                serviceLifetime: param.ServiceLifetime,
+                excludedServiceNames: param.ExcludedServiceNames,
+                includedServiceNames: param.IncludedServiceNames);
+        }
+
         /// <summary>
         /// Configure infrastructure data container database context.
         /// </summary>
@@ -186,6 +215,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 });
             }
         }
+#endif
 
         private static void BiaConfigureContainer(ParamIocContainer param)
         {
@@ -298,35 +328,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: param.Collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Domain",
-                serviceLifetime: param.ServiceLifetime,
-                excludedServiceNames: param.ExcludedServiceNames,
-                includedServiceNames: param.IncludedServiceNames);
-        }
-
-        private static void BiaConfigureInfrastructureDataContainer(ParamIocContainer param)
-        {
-            if (!param.IsUnitTest)
-            {
-                param.Collection.AddScoped<DataContextFactory>();
-                param.Collection.AddSingleton<IAuditFeatureService, AuditFeatureService>();
-            }
-
-            param.Collection.AddScoped<IBiaHybridCache, BiaHybridCache>();
-
-#if BIA_FRONT_FEATURE
-            param.Collection.AddSingleton<IAuditFeature, AuditFeature>();
-
-            // Must specify the User type explicitly
-            param.Collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
-#endif
-        }
-
-        private static void BiaConfigureInfrastructureDataContainerAutoRegister(ParamAutoRegister param)
-        {
-            BiaIocContainer.RegisterServicesFromAssembly(
-                collection: param.Collection,
-                assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
-                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: param.ServiceLifetime,
                 excludedServiceNames: param.ExcludedServiceNames,
                 includedServiceNames: param.IncludedServiceNames);
