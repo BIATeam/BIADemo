@@ -10,6 +10,7 @@ import { Permission } from 'src/app/shared/permission';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { Plane } from '../../model/plane';
 import { planeCRUDConfiguration } from '../../plane.constants';
+import { PlaneOptionsService } from '../../services/plane-options.service';
 import { PlaneService } from '../../services/plane.service';
 
 @Component({
@@ -23,6 +24,7 @@ export class PlaneEditComponent
 {
   constructor(
     protected injector: Injector,
+    protected planeOptionsService: PlaneOptionsService,
     public planeService: PlaneService
   ) {
     super(injector, planeService);
