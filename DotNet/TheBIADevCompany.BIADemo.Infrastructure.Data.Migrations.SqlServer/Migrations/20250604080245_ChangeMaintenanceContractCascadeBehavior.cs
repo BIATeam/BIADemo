@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
 
 #nullable disable
 
