@@ -471,7 +471,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <returns>The resolved expiration.</returns>
         protected static TimeSpan ResolveExpiration(BiaNetSection biaNetSection)
         {
-            int? expirationSeconds = biaNetSection?.CommonFeatures?.HybridCache.ExpirationSeconds;
+            int? expirationSeconds = biaNetSection?.CommonFeatures?.HybridCache?.ExpirationSeconds;
 
             if (!expirationSeconds.HasValue)
             {
@@ -488,7 +488,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// <returns>The resolved local cache expiration.</returns>
         protected static TimeSpan ResolveLocalCacheExpiration(BiaNetSection biaNetSection)
         {
-            int? expirationSeconds = biaNetSection?.CommonFeatures?.HybridCache.LocalCacheExpirationSeconds;
+            int? expirationSeconds = biaNetSection?.CommonFeatures?.HybridCache?.LocalCacheExpirationSeconds;
 
             if (!expirationSeconds.HasValue)
             {
