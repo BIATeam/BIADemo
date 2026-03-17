@@ -24,7 +24,10 @@
     "Description": "Add Infrastructure.Data layer and usage of services with repositories to access database",
     "IsSelected": true,
     "Tags": ["BIA_USE_DATABASE"],
-    "FoldersToExcludes": [".*Infrastructure.Data$"],
+    "FoldersToExcludes": [
+      ".*Infrastructure.Data$",
+      ".*Infrastructure.Data.Migrations.*$"
+    ],
     "DisabledFeatures": [1, 3, 0]
   },
   {
