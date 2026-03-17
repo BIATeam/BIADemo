@@ -17,6 +17,7 @@ import { Pilot } from '../../model/pilot';
 import { PilotList } from '../../model/pilot-list';
 import { pilotListCRUDConfiguration } from '../../pilot-list.constants';
 import { pilotCRUDConfiguration } from '../../pilot.constants';
+import { PilotOptionsService } from '../../services/pilot-options.service';
 import { PilotService } from '../../services/pilot.service';
 
 @Component({
@@ -49,6 +50,7 @@ export class PilotsIndexComponent
   constructor(
     protected injector: Injector,
     public pilotService: PilotService,
+    protected pilotOptionsService: PilotOptionsService,
     protected authService: AuthService
   ) {
     super(injector, pilotService);

@@ -346,8 +346,9 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             this.engineService.LaunchJobManuallyExample();
             return this.Ok();
         }
-
+#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
         // End BIADemo
+
 #if UseHubForClientInEngine
         /// <summary>
         /// Notifies clients that entity have changed.
