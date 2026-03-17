@@ -4,20 +4,10 @@
 
 namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 {
-    // Begin BIADemo
     using BIA.Net.Core.Ioc;
-
-    // End BIADemo
     using BIA.Net.Core.Ioc.Param;
     using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
-
-    // Begin BIADemo
-    using TheBIADevCompany.BIADemo.Domain.RepoContract;
-    using TheBIADevCompany.BIADemo.Domain.RepoContract.DocumentAnalysis;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
-
-    // End BIADemo
 
     /// <summary>
     /// The IoC Container.
@@ -51,18 +41,20 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureDomainContainer(ParamIocContainer param)
         {
+            BiaIocContainer.ConfigureDomainContainer(param);
             BiaConfigureDomainContainer(param);
             BiaConfigureDomainContainerAutoRegister(GetGlobalParamAutoRegister(param));
         }
 
         private static void ConfigureCommonContainer(ParamIocContainer param)
         {
-            // Common Layer
+            BiaIocContainer.ConfigureCommonContainer(param);
         }
 
 #if BIA_USE_DATABASE
         private static void ConfigureInfrastructureDataContainer(ParamIocContainer param)
         {
+            BiaIocContainer.ConfigureInfrastructureDataContainer(param);
             BiaConfigureInfrastructureDataContainer(param);
             BiaConfigureInfrastructureDataContainerAutoRegister(GetGlobalParamAutoRegister(param));
             BiaConfigureInfrastructureDataContainerDbContext(param);
@@ -71,20 +63,23 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
         private static void ConfigureInfrastructureServiceContainer(ParamIocContainer param)
         {
+            BiaIocContainer.ConfigureInfrastructureServiceContainer(param);
             BiaConfigureInfrastructureServiceContainer(param);
 
+#if BIA_FRONT_FEATURE
             // Begin BIADemo
             param.Collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();
-            param.Collection.AddSingleton<IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
+            param.Collection.AddSingleton<Domain.RepoContract.DocumentAnalysis.IDocumentAnalysisRepositoryFactory, Infrastructure.Service.Repositories.DocumentAnalysis.DocumentAnalysisRepositoryFactory>();
 
-            param.Collection.AddHttpClient<IRemoteBiaApiRwRepository, RemoteBiaApiRwRepository>()
+            param.Collection.AddHttpClient<Domain.RepoContract.IRemoteBiaApiRwRepository, Infrastructure.Service.Repositories.RemoteBiaApiRwRepository>()
                 .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection)).AddStandardResilienceHandler();
-            param.Collection.AddHttpClient<IRemotePlaneRepository, RemotePlaneRepository>()
+            param.Collection.AddHttpClient<Domain.RepoContract.IRemotePlaneRepository, Infrastructure.Service.Repositories.RemotePlaneRepository>()
                 .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection, false)).AddStandardResilienceHandler();
-            param.Collection.AddHttpClient<IBiaDemoRoleApiRepository, BiaDemoRoleApiRepository>()
+            param.Collection.AddHttpClient<Domain.RepoContract.IBiaDemoRoleApiRepository, Infrastructure.Service.Repositories.BiaDemoRoleApiRepository>()
                 .ConfigurePrimaryHttpMessageHandler(() => BiaIocContainer.CreateHttpClientHandler(param.BiaNetSection));
 
             // End BIADemo
+#endif
         }
     }
 }

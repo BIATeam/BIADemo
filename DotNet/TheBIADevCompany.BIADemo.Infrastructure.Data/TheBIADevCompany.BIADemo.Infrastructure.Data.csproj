@@ -1,40 +1,48 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <Company>TheBIADevCompany</Company>
-    <Copyright>Copyright © TheBIADevCompany 2026</Copyright>
-    <Configurations>Debug;Release</Configurations>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
-  </ItemGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
-	  <!--BIADEMO-->
-	  <Compile Remove="**\*BiaDemo*.cs" />
-	  <!--BIATEMPLATE-->
-	  <Compile Remove="**\*Notification*.cs" />
-	  <Compile Remove="**\*Query*.cs" />
-	  <Compile Remove="**\*Team*.cs" />
-	  <Compile Remove="**\*Translation*.cs" />
-	  <Compile Remove="**\UserModelBuilder.cs" />
-	  <Compile Remove="**\*Site*.cs" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Company>TheBIADevCompany</Company>
+		<Copyright>Copyright © TheBIADevCompany 2026</Copyright>
+		<Configurations>Debug;Release</Configurations>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Relational" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Domain\TheBIADevCompany.BIADemo.Domain.csproj" />
+		<ProjectReference Include="..\BIAPackage\BIA.Net.Core.Infrastructure.Data\BIA.Net.Core.Infrastructure.Data.csproj" />
+	</ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE;BIA_USE_DATABASE</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<DefineConstants>$(DefineConstants);BIA_BACK_TO_BACK_AUTH;BIA_FRONT_FEATURE;BIA_USE_DATABASE</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup Label="Bia_ItemGroup_BIA_FRONT_FEATURE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_FRONT_FEATURE\b'))">
+		<!--BIADEMO-->
+		<Compile Remove="**\*BiaDemo*.cs" />
+		<Compile Remove="**\*Aircraft*.cs" />
+		<Compile Remove="**\*Plane*.cs" />
+		<Compile Remove="**\*Engine*.cs" />
+		<Compile Remove="**\*Flight*.cs" />
+		<Compile Remove="**\*Pilot*.cs" />
+		<!--BIATEMPLATE-->
+		<Compile Remove="**\*Notification*.cs" />
+		<Compile Remove="**\*Query*.cs" />
+		<Compile Remove="**\*Team*.cs" />
+		<Compile Remove="**\*Translation*.cs" />
+		<Compile Remove="**\UserModelBuilder.cs" />
+		<Compile Remove="**\*Site*.cs" />
+	</ItemGroup>
+	<ItemGroup Label="Bia_ItemGroup_BIA_USE_DATABASE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_USE_DATABASE\b'))">
+		<Compile Remove="**\*.cs" />
+	</ItemGroup>
 </Project>

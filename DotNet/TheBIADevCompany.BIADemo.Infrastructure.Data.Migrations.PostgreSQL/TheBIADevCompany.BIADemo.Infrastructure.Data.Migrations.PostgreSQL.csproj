@@ -10,7 +10,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
+		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Infrastructure.Data\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj" />
 	</ItemGroup>
 
+	<ItemGroup Label="Bia_ItemGroup_BIA_USE_DATABASE" Condition="!$([System.Text.RegularExpressions.Regex]::IsMatch('$(DefineConstants)', '\bBIA_USE_DATABASE\b'))">
+		<Compile Remove="**\*.cs" />
+	</ItemGroup>
 </Project>

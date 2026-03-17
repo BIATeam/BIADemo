@@ -9,10 +9,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using System.Reflection;
     using Audit.Core;
     using Audit.EntityFramework;
-#if BIA_FRONT_FEATURE
-    using BIA.Net.Core.Application.User;
-#endif
     using BIA.Net.Core.Application.Permission;
+    using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.ApiFeature;
@@ -20,6 +18,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Common.Configuration.WorkerFeature;
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Announcement.Mappers;
+    using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Mappers;
@@ -29,6 +28,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories;
     using BIA.Net.Core.Infrastructure.Service.Repositories;
     using BIA.Net.Core.Ioc;
+    using BIA.Net.Core.Ioc.Param;
     using BIA.Net.Core.Presentation.Common.Features.HubForClients;
     using Hangfire;
     using Microsoft.EntityFrameworkCore;
@@ -36,29 +36,11 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using TheBIADevCompany.BIADemo.Application.User;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
-#if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
-#endif
-    using TheBIADevCompany.BIADemo.Domain.Dto.User;
-#if BIA_FRONT_FEATURE
-    using TheBIADevCompany.BIADemo.Domain.User.Entities;
-    using TheBIADevCompany.BIADemo.Domain.User.Mappers;
-#endif
-    using TheBIADevCompany.BIADemo.Domain.User.Models;
-#if BIA_USE_DATABASE
-    using BIA.Net.Core.Infrastructure.Data.Helpers;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data.Features;
-#endif
-    using BIA.Net.Core.Application.File;
-    using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Domain.Dto.Base;
-    using BIA.Net.Core.Ioc.Param;
-    using TheBIADevCompany.BIADemo.Application.File;
     using TheBIADevCompany.BIADemo.Crosscutting.Ioc.Bia.Param;
+    using TheBIADevCompany.BIADemo.Domain.Dto.User;
+    using TheBIADevCompany.BIADemo.Domain.User.Models;
+    using TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories;
     using static TheBIADevCompany.BIADemo.Crosscutting.Common.Constants;
 
     /// <summary>
@@ -66,6 +48,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
     /// </summary>
     public static partial class IocContainer
     {
+#if BIA_USE_DATABASE
         /// <summary>
         /// Configure infrastructure data container database context.
         /// </summary>
@@ -93,7 +76,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             DbProvider dbEngine = param.Configuration.GetProvider(dbKey);
-            param.Collection.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
+            param.Collection.AddDbContext<IQueryableUnitOfWork, Infrastructure.Data.DataContext>(options =>
             {
                 BiaConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
                 if (!fromDeployDB)
@@ -104,7 +87,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 
             if (!fromDeployDB)
             {
-                param.Collection.AddDbContext<IQueryableUnitOfWorkNoTracking, DataContextNoTracking>(
+                param.Collection.AddDbContext<IQueryableUnitOfWorkNoTracking, Infrastructure.Data.DataContextNoTracking>(
                     options =>
                     {
                         BiaConfigureDbContextOptions(enableRetryOnFailure, commandTimeout, options, connectionString, dbEngine);
@@ -114,6 +97,35 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 
             BiaConfigureDbContextForDeployDB(param.Collection, connectionString, dbEngine);
+        }
+
+        private static void BiaConfigureInfrastructureDataContainer(ParamIocContainer param)
+        {
+            if (!param.IsUnitTest)
+            {
+                param.Collection.AddScoped<Infrastructure.Data.DataContextFactory>();
+                param.Collection.AddSingleton<IAuditFeatureService, AuditFeatureService>();
+            }
+
+            param.Collection.AddScoped<IBiaHybridCache, BIA.Net.Core.Infrastructure.Data.Helpers.BiaHybridCache>();
+
+            param.Collection.AddSingleton<IAuditFeature, Infrastructure.Data.Features.AuditFeature>();
+
+#if BIA_FRONT_FEATURE
+            // Must specify the User type explicitly
+            param.Collection.AddScoped<ICoreUserRepository, CoreUserRepository<Domain.User.Entities.User>>();
+#endif
+        }
+
+        private static void BiaConfigureInfrastructureDataContainerAutoRegister(ParamAutoRegister param)
+        {
+            BiaIocContainer.RegisterServicesFromAssembly(
+                collection: param.Collection,
+                assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
+                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
+                serviceLifetime: param.ServiceLifetime,
+                excludedServiceNames: param.ExcludedServiceNames,
+                includedServiceNames: param.IncludedServiceNames);
         }
 
         private static void BiaConfigureDbContextOptions(bool enableRetryOnFailure, int commandTimeout, DbContextOptionsBuilder options, string connectionString, DbProvider dbEngine)
@@ -156,32 +168,33 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         {
             collection.Configure<BiaHistoryRepositoryOptions>(options =>
             {
-                options.AppVersion = Constants.Application.BackEndVersion;
+                options.AppVersion = Application.BackEndVersion;
             });
 
             if (dbEngine == DbProvider.PostGreSql)
             {
-                collection.AddDbContext<IDbContextDatabase, DataContextPostGreSql>(options =>
+                collection.AddDbContext<IDbContextDatabase, Infrastructure.Data.DataContextPostGreSql>(options =>
                 {
                     options.UseNpgsql(connectionString, optionsBuilder =>
                     {
-                        optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNamePostgreSQL);
+                        optionsBuilder.MigrationsAssembly(DatabaseMigrations.AssemblyNamePostgreSQL);
                     });
                     options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
                 });
             }
             else
             {
-                collection.AddDbContext<IDbContextDatabase, DataContext>(options =>
+                collection.AddDbContext<IDbContextDatabase, Infrastructure.Data.DataContext>(options =>
                 {
                     options.UseSqlServer(connectionString, optionsBuilder =>
                     {
-                        optionsBuilder.MigrationsAssembly(Constants.DatabaseMigrations.AssemblyNameSqlServer);
+                        optionsBuilder.MigrationsAssembly(DatabaseMigrations.AssemblyNameSqlServer);
                     });
                     options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
                 });
             }
         }
+#endif
 
         private static void BiaConfigureContainer(ParamIocContainer param)
         {
@@ -197,8 +210,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             ConfigureDomainContainer(param);
             ConfigureApplicationContainer(param);
 
-            BiaIocContainer.ConfigureContainer(param);
-
 #if BIA_USE_DATABASE
             ConfigureInfrastructureDataContainer(param);
 #endif
@@ -211,7 +222,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             }
 #if BIA_FRONT_FEATURE
 
-            ErrorMessage.FillErrorTranslations();
+            Common.Error.ErrorMessage.FillErrorTranslations();
 #endif
         }
 
@@ -222,17 +233,17 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             param.Collection.AddSingleton<IPermissionProvider, PermissionProvider<PermissionId>>();
             param.Collection.AddSingleton<IPermissionService, PermissionService>();
 #if BIA_FRONT_FEATURE
-            param.Collection.AddTransient(typeof(IBaseUserSynchronizeDomainService<User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
-            param.Collection.AddTransient(typeof(IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto>), typeof(UserAppService));
-            param.Collection.AddTransient(typeof(IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
+            param.Collection.AddTransient(typeof(BIA.Net.Core.Application.User.IBaseUserSynchronizeDomainService<Domain.User.Entities.User, UserFromDirectory>), typeof(UserSynchronizeDomainService));
+            param.Collection.AddTransient(typeof(BIA.Net.Core.Application.User.IBaseUserAppService<UserDto, Domain.User.Entities.User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto>), typeof(UserAppService));
+            param.Collection.AddTransient(typeof(BIA.Net.Core.Application.User.IBaseTeamAppService<TeamTypeId>), typeof(TeamAppService));
 
-            param.Collection.Configure<FileDownloaderOptions>(options =>
+            param.Collection.Configure<BIADemo.Application.File.FileDownloaderOptions>(options =>
             {
                 options.FrenchLanguageId = LanguageId.French;
                 options.EnglishLanguageId = LanguageId.English;
                 options.SpanishLanguageId = LanguageId.Spanish;
             });
-            param.Collection.AddTransient<IFileDownloaderService, FileDownloaderService>();
+            param.Collection.AddTransient<BIA.Net.Core.Application.File.IFileDownloaderService, BIADemo.Application.File.FileDownloaderService>();
 #endif
 
             if (param.IsApi)
@@ -266,7 +277,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
         private static void BiaConfigureDomainContainer(ParamIocContainer param)
         {
 #if BIA_FRONT_FEATURE
-            param.Collection.AddTransient(typeof(IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>), typeof(UserFromDirectoryMapper));
+            param.Collection.AddTransient(typeof(IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>), typeof(Domain.User.Mappers.UserFromDirectoryMapper));
 #endif
 
             Type templateType = typeof(BiaBaseMapper<,,>);
@@ -294,34 +305,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaIocContainer.RegisterServicesFromAssembly(
                 collection: param.Collection,
                 assemblyName: "TheBIADevCompany.BIADemo.Domain",
-                serviceLifetime: param.ServiceLifetime,
-                excludedServiceNames: param.ExcludedServiceNames,
-                includedServiceNames: param.IncludedServiceNames);
-        }
-
-        private static void BiaConfigureInfrastructureDataContainer(ParamIocContainer param)
-        {
-            if (!param.IsUnitTest)
-            {
-                param.Collection.AddScoped<DataContextFactory>();
-                param.Collection.AddSingleton<IAuditFeatureService, AuditFeatureService>();
-            }
-
-            param.Collection.AddSingleton<IAuditFeature, AuditFeature>();
-            param.Collection.AddScoped<IBiaHybridCache, BiaHybridCache>();
-
-#if BIA_FRONT_FEATURE
-            // Must specify the User type explicitly
-            param.Collection.AddScoped<ICoreUserRepository, CoreUserRepository<User>>();
-#endif
-        }
-
-        private static void BiaConfigureInfrastructureDataContainerAutoRegister(ParamAutoRegister param)
-        {
-            BiaIocContainer.RegisterServicesFromAssembly(
-                collection: param.Collection,
-                assemblyName: "TheBIADevCompany.BIADemo.Infrastructure.Data",
-                interfaceAssemblyName: "TheBIADevCompany.BIADemo.Domain",
                 serviceLifetime: param.ServiceLifetime,
                 excludedServiceNames: param.ExcludedServiceNames,
                 includedServiceNames: param.IncludedServiceNames);

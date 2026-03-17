@@ -30,22 +30,6 @@ namespace BIA.Net.Core.Ioc
     public static class BiaIocContainer
     {
         /// <summary>
-        /// Configures the container.
-        /// </summary>
-        /// <param name="param">The parameter.</param>
-        public static void ConfigureContainer(ParamIocContainer param)
-        {
-            ConfigureInfrastructureServiceContainer(param);
-            ConfigureDomainContainer(param);
-
-            if (!param.IsUnitTest)
-            {
-                ConfigureInfrastructureDataContainer(param);
-                ConfigureCommonContainer(param);
-            }
-        }
-
-        /// <summary>
         /// Creates the HTTP client handler.
         /// </summary>
         /// <param name="biaNetSection">The bia net section.</param>
@@ -159,7 +143,11 @@ namespace BIA.Net.Core.Ioc
             }
         }
 
-        private static void ConfigureDomainContainer(ParamIocContainer param)
+        /// <summary>
+        /// Configures the domain container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureDomainContainer(ParamIocContainer param)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             RegisterServicesFromAssembly(
@@ -185,24 +173,44 @@ namespace BIA.Net.Core.Ioc
             }
         }
 
-        private static void ConfigureCommonContainer(ParamIocContainer param)
+        /// <summary>
+        /// Configures the common container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureCommonContainer(ParamIocContainer param)
         {
+            if (param.IsUnitTest)
+            {
+                return;
+            }
+
             // Configuration
             param.Collection.Configure<BiaNetSection>(options => param.Configuration.GetSection("BiaNet").Bind(options));
         }
 
-        private static void ConfigureInfrastructureDataContainer(ParamIocContainer param)
+        /// <summary>
+        /// Configures the infrastructure data container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureInfrastructureDataContainer(ParamIocContainer param)
         {
+            if (param.IsUnitTest)
+            {
+                return;
+            }
+
             param.Collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
             param.Collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
             param.Collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
             param.Collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
             param.Collection.AddScoped<IFileDownloadTokenRepository, FileDownloadTokenRepository>();
-
-            // Infrastructure Data
         }
 
-        private static void ConfigureInfrastructureServiceContainer(ParamIocContainer param)
+        /// <summary>
+        /// Configures the infrastructure service container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureInfrastructureServiceContainer(ParamIocContainer param)
         {
             BiaNetSection biaNetSection = null;
 
