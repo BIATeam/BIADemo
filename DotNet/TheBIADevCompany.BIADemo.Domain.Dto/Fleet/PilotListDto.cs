@@ -5,6 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
 {
+    using System;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
 
@@ -21,21 +22,21 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         public int SiteId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Identification Number.
+        /// Gets or sets the identification number.
         /// </summary>
         [BiaDtoField(Required = true)]
         public string IdentificationNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the Name.
+        /// Gets or sets the name.
         /// </summary>
-        [BiaDtoField(Required = false)]
+        [BiaDtoField(Required = true)]
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the Flight hours.
+        /// Gets or sets the flight hours.
         /// </summary>
-        [BiaDtoField(Required = false)]
+        [BiaDtoField(Required = true)]
         public int FlightHours { get; set; }
 
         /// <summary>

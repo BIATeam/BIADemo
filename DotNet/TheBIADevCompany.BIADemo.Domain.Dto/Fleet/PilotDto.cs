@@ -5,6 +5,7 @@
 
 namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
 {
+    using System;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
     using BIA.Net.Core.Domain.Dto.Option;
@@ -22,45 +23,45 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
         public int SiteId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Identification Number.
+        /// Gets or sets the identification number.
         /// </summary>
         [BiaDtoField(Required = true)]
         public string IdentificationNumber { get; set; }
 
         /// <summary>
-        /// Gets or sets the First Name.
+        /// Gets or sets the first name.
         /// </summary>
         [BiaDtoField(Required = true)]
         public string FirstName { get; set; }
 
         /// <summary>
-        /// Gets or sets the Last Name.
+        /// Gets or sets the last name.
         /// </summary>
         [BiaDtoField(Required = true)]
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or sets the Last Name.
+        /// Gets or sets the birthdate.
         /// </summary>
-        [BiaDtoField(Required = false)]
+        [BiaDtoField(Required = false, Type = "date")]
         public DateTime? Birthdate { get; set; }
 
         /// <summary>
-        /// Gets or sets the Commercial Pilot License obtention date.
+        /// Gets or sets the CPL date.
         /// </summary>
-        [BiaDtoField(Required = true)]
+        [BiaDtoField(Required = true, Type = "date")]
         public DateTime CPLDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the Base Airport.
+        /// Gets or sets the base airport.
         /// </summary>
-        [BiaDtoField(Required = false)]
+        [BiaDtoField(Required = false, ItemType = "Airport")]
         public OptionDto BaseAirport { get; set; }
 
         /// <summary>
         /// Gets or sets the flight hours.
         /// </summary>
-        [BiaDtoField(Required = false)]
+        [BiaDtoField(Required = true)]
         public int FlightHours { get; set; }
 
         /// <summary>
