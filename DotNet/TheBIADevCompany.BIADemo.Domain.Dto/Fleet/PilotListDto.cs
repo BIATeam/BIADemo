@@ -8,6 +8,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Dto.Fleet
     using System;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.CustomAttribute;
+    using BIA.Net.Core.Domain.Dto.Option;
 
     /// <summary>
     /// The DTO used to represent a pilot.

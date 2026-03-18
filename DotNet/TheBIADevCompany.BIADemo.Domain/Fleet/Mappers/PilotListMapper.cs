@@ -6,11 +6,11 @@
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
@@ -68,6 +68,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             return base.EntityToDto().CombineMapping(entity => new PilotListDto
             {
+                SiteId = entity.SiteId,
                 IdentificationNumber = entity.IdentificationNumber,
                 Name = entity.FirstName + " " + entity.LastName,
                 FlightHours = entity.FlightHours,
@@ -96,19 +97,18 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             dto.SiteId = entity.SiteId;
         }
 
-        /// <inheritdoc />
-        public override Expression<Func<Pilot, object>>[] IncludesForUpdate()
-        {
-            return [];
-        }
-
         /// <summary>
         /// Header names.
         /// </summary>
         public struct HeaderName
         {
             /// <summary>
-            /// Header name for identificationNumber.
+            /// Header name for site id.
+            /// </summary>
+            public const string SiteId = "siteId";
+
+            /// <summary>
+            /// Header name for identification number.
             /// </summary>
             public const string IdentificationNumber = "identificationNumber";
 
@@ -118,7 +118,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             public const string Name = "name";
 
             /// <summary>
-            /// Header name for flightHours.
+            /// Header name for flight hours.
             /// </summary>
             public const string FlightHours = "flightHours";
 

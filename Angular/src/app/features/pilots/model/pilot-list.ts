@@ -10,8 +10,8 @@ import {
 // TODO after creation of CRUD Pilot : adapt the model
 export interface PilotList extends BaseDto<string>, VersionedDto, FixableDto {
   siteId: number;
-  name: string;
   identificationNumber: string;
+  name: string;
   flightHours: number;
   firstFlightDate: Date;
   lastFlightDate: Date | null;
