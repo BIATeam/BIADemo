@@ -50,7 +50,7 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
                             var errorMessage = frontUserEx.ErrorId == (int)BiaErrorId.Unknown ? frontUserEx.Message : BiaErrorMessage.GetMessage(frontUserEx.ErrorId, userContext.LanguageId);
                             if (string.IsNullOrEmpty(errorMessage))
                             {
-                                errorMessage = isDevelopment ? exception.GetBaseException().Message : internalServerErrorMessage;
+                                errorMessage = isDevelopment ? exception.GetBaseException().ToString() : internalServerErrorMessage;
                             }
 
                             var formattedErrorMessage = frontUserEx.ErrorMessageParameters.Length > 0 ? string.Format(errorMessage, frontUserEx.ErrorMessageParameters) : errorMessage;
