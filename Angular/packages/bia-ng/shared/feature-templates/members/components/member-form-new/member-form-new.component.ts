@@ -13,9 +13,9 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { BiaOptionService } from '@bia-team/bia-ng/core';
-import { OptionDto } from '@bia-team/bia-ng/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BiaOptionService } from 'packages/bia-ng/core/public-api';
+import { OptionDto } from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Listbox } from 'primeng/listbox';

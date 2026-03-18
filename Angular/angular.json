@@ -35,10 +35,7 @@
           "builder": "@angular/build:application",
           "options": {
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "src/styles",
-                "node_modules/@bia-team/bia-ng/styles"
-              ]
+              "includePaths": ["src/styles", "packages/bia-ng/scss"]
             },
             "outputPath": {
               "base": "dist/BIADemo",

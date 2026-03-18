@@ -7,12 +7,12 @@ import {
   ViewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 import {
   BiaAppConstantsService,
   BiaTranslationService,
-} from '@bia-team/bia-ng/core';
-import { BiaNavigation } from '@bia-team/bia-ng/models';
-import { TranslateService } from '@ngx-translate/core';
+} from 'packages/bia-ng/core/public-api';
+import { BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { MenuItem } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { BiaLayoutService } from '../../services/layout.service';

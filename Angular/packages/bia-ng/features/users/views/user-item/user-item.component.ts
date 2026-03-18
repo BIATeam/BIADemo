@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import {
   CrudItemItemComponent,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { User } from '../../model/user';
 import { UserService } from '../../services/user.service';
 

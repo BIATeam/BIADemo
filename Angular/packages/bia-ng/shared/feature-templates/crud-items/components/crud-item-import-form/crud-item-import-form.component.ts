@@ -13,15 +13,15 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { clone } from '@bia-team/bia-ng/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { clone } from 'packages/bia-ng/core/public-api';
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   AppSettings,
   BiaFieldConfig,
   BiaFieldsConfig,
   KeyValuePair,
-} from '@bia-team/bia-ng/models';
-import { PropType } from '@bia-team/bia-ng/models/enum';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/models/public-api';
 import {
   Accordion,
   AccordionContent,

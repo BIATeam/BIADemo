@@ -27,7 +27,7 @@ import {
   AllEnvironments,
   AppEnvironment,
   BiaNavigation,
-} from '@bia-team/bia-ng/models';
+} from 'packages/bia-ng/models/public-api';
 import { AppSettingsModule } from './app-settings/app-settings.module';
 import { NotificationSignalRService } from './notification/services/notification-signalr.service';
 import { AuthService } from './services/auth.service';

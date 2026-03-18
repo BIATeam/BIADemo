@@ -1,6 +1,7 @@
 ﻿import { APP_BASE_HREF } from '@angular/common';
 import { Component, DestroyRef, Inject, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
 import {
   AuthService,
   BiaAppConstantsService,
@@ -8,10 +9,9 @@ import {
   BiaTranslationService,
   getCurrentCulture,
   NavigationService,
-} from '@bia-team/bia-ng/core';
-import { AuthInfo, BiaNavigation } from '@bia-team/bia-ng/models';
-import { EnvironmentType } from '@bia-team/bia-ng/models/enum';
-import { Store } from '@ngrx/store';
+} from 'packages/bia-ng/core/public-api';
+import { EnvironmentType } from 'packages/bia-ng/models/enum/public-api';
+import { AuthInfo, BiaNavigation } from 'packages/bia-ng/models/public-api';
 import { SpinnerComponent } from '../spinner/spinner.component';
 import { BiaLayoutService } from './services/layout.service';
 import { BiaUltimaLayoutComponent } from './ultima/layout/ultima-layout.component';

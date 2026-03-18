@@ -6,8 +6,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BiaFieldConfig, OptionDto } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';
+import { BiaFieldConfig, OptionDto } from 'packages/bia-ng/models/public-api';
 import { FilterMetadata } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
