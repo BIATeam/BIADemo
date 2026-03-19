@@ -5,11 +5,11 @@
   isDevMode,
   OnDestroy,
 } from '@angular/core';
+import { AppSettings, AuthInfo } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Store } from '@ngrx/store';
 import { KEYCLOAK_EVENT_SIGNAL, KeycloakEventType } from 'keycloak-angular';
 import Keycloak from 'keycloak-js';
-import { AppSettings, AuthInfo } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError, filter, first, switchMap } from 'rxjs/operators';
 import { AppSettingsDas } from '../app-settings/services/app-settings-das.service';

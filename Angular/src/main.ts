@@ -9,10 +9,6 @@ import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import {
   BiaEnvironmentService,
   BiaErrorHandler,
@@ -22,8 +18,12 @@ import {
   getCurrentCulture,
   loadKeycloakConfig,
   provideKeycloakAngular,
-} from 'packages/bia-ng/core/public-api';
-import { ViewsEffects, ViewsStore } from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/core';
+import { ViewsEffects, ViewsStore } from '@bia-team/bia-ng/shared';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { LoggerModule, TOKEN_LOGGER_SERVER_SERVICE } from 'ngx-logger';
 import { LicenseManager } from 'primeng/api';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';

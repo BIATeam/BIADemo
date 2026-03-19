@@ -9,10 +9,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
-import { Actions } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { saveAs } from 'file-saver';
 import {
   AuthService,
   BiaAppConstantsService,
@@ -20,8 +16,7 @@ import {
   BiaOnlineOfflineService,
   BiaTranslationService,
   clone,
-} from 'packages/bia-ng/core/public-api';
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
+} from '@bia-team/bia-ng/core';
 import {
   AuthInfo,
   BaseDto,
@@ -31,8 +26,13 @@ import {
   FixableDto,
   KeyValuePair,
   PagingFilterFormatDto,
-} from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
+} from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Actions } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { saveAs } from 'file-saver';
 import { MenuItem, PrimeTemplate, SortMeta } from 'primeng/api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { combineLatest, Observable, Subscription } from 'rxjs';

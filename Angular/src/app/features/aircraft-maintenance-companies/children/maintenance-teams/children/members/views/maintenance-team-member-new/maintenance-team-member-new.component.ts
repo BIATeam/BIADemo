@@ -4,14 +4,14 @@ import {
   MemberFormNewComponent,
   MemberModule,
   MemberNewComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-team-member-new',
   templateUrl:
-    '../../../../../../../../../../packages/bia-ng/shared/feature-templates/members/views/member-new/member-new.component.html',
+    '../../../../../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/members/views/member-new/member-new.component.html',
   imports: [MemberModule, AsyncPipe, MemberFormNewComponent],
 })
 export class MaintenanceTeamMemberNewComponent

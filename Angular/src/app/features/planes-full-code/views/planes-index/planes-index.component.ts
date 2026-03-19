@@ -7,23 +7,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { saveAs } from 'file-saver';
-import {
-  AuthService,
-  BiaTranslationService,
-} from 'packages/bia-ng/core/public-api';
-import {
-  PrimeNGFiltering,
-  PropType,
-} from 'packages/bia-ng/models/enum/public-api';
+import { AuthService, BiaTranslationService } from '@bia-team/bia-ng/core';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   KeyValuePair,
   PagingFilterFormatDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PrimeNGFiltering, PropType } from '@bia-team/bia-ng/models/enum';
 import {
   BiaTableComponent,
   BiaTableControllerComponent,
@@ -31,7 +22,10 @@ import {
   TableHelperService,
   View,
   ViewsActions,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { saveAs } from 'file-saver';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';

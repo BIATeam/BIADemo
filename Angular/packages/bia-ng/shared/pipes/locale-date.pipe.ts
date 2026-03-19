@@ -1,10 +1,7 @@
 ﻿import { DatePipe } from '@angular/common';
 import { DestroyRef, Pipe, PipeTransform, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  BiaTranslationService,
-  DateFormat,
-} from 'packages/bia-ng/core/public-api';
+import { BiaTranslationService, DateFormat } from '@bia-team/bia-ng/core';
 
 @Pipe({
   name: 'localeDate',
