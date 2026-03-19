@@ -23,7 +23,4 @@
 	  <Compile Remove="**\*Notification*.cs" />
 	  <Compile Remove="**\*Team*.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BIAPackage\BIA.Net.Core.Common\BIA.Net.Core.Common.csproj" />
-  </ItemGroup>
 </Project>
