@@ -41,8 +41,28 @@ namespace BIA.Net.Core.WorkerService.Features
             var biaNetSection = new BiaNetSection();
             configuration.GetSection("BiaNet").Bind(biaNetSection);
 
-            // Hub For Clients
-            if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
+            if (biaNetSection.CommonFeatures?.ClientForHub?.UseValkey == true)
+            {
+                // Hub For Clients
+                if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
+                {
+                    if (!string.IsNullOrWhiteSpace(biaNetSection.CommonFeatures.ClientForHub.RedisHost))
+                    {
+                        services.AddSignalR().AddStackExchangeRedis(redisOptions =>
+                        {
+                            redisOptions.Configuration = CreateValkeyConfiguration(
+                                biaNetSection.CommonFeatures.ClientForHub.RedisHost,
+                                biaNetSection.CommonFeatures.ClientForHub.RedisPort,
+                                biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix);
+                        });
+                    }
+                    else
+                    {
+                        services.AddSignalR();
+                    }
+                }
+            }
+            else
             {
                 if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
                 {
@@ -130,6 +150,25 @@ namespace BIA.Net.Core.WorkerService.Features
             }
 
             return services;
+        }
+
+        private static ConfigurationOptions CreateValkeyConfiguration(string redisHost, int redisPort, string redisChannelPrefix)
+        {
+            var redisConfiguration = new ConfigurationOptions
+            {
+                Ssl = true,
+                SslHost = redisHost,
+                AbortOnConnectFail = false,
+            };
+
+            redisConfiguration.EndPoints.Add(redisHost, redisPort);
+
+            if (!string.IsNullOrWhiteSpace(redisChannelPrefix))
+            {
+                redisConfiguration.ChannelPrefix = RedisChannel.Literal(redisChannelPrefix);
+            }
+
+            return redisConfiguration;
         }
     }
 }

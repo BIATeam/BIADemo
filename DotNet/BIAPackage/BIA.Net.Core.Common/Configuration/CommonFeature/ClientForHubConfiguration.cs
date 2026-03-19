@@ -14,6 +14,11 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [use valkey].
+        /// </summary>
+        public bool UseValkey { get; set; }
+
+        /// <summary>
         /// Url to join the SignalR Hub.
         /// </summary>
         public string SignalRUrl { get; set; }
@@ -22,6 +27,16 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         /// Connection string for redis server.
         /// </summary>
         public string RedisConnectionString { get; set; }
+
+        /// <summary>
+        /// Host for redis server.
+        /// </summary>
+        public string RedisHost { get; set; }
+
+        /// <summary>
+        /// Port for redis server.
+        /// </summary>
+        public int RedisPort { get; set; } = 6379;
 
         /// <summary>
         /// Channel prefix of redis messages.

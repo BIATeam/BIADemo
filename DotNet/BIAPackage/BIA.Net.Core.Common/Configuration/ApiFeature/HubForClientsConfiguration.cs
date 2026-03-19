@@ -19,9 +19,24 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         public bool IsActive { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [use valkey].
+        /// </summary>
+        public bool UseValkey { get; set; }
+
+        /// <summary>
         /// Connexion string to join the redis server.
         /// </summary>
         public string RedisConnectionString { get; set; }
+
+        /// <summary>
+        /// Host to join the redis server.
+        /// </summary>
+        public string RedisHost { get; set; }
+
+        /// <summary>
+        /// Port to join the redis server.
+        /// </summary>
+        public int RedisPort { get; set; } = 6379;
 
         /// <summary>
         /// Filter redis Chanel.

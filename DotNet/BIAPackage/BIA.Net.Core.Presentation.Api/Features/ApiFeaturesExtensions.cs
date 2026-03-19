@@ -78,24 +78,44 @@ namespace BIA.Net.Core.Presentation.Api.Features
             // Hub For Clients
             if (apiFeatures.HubForClients?.IsActive == true)
             {
-                if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisConnectionString))
+                if (apiFeatures.HubForClients?.UseValkey == true)
                 {
-                    services.AddSignalR();
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
+                    if (string.IsNullOrWhiteSpace(apiFeatures.HubForClients.RedisHost))
                     {
-                        services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
+                        services.AddSignalR();
                     }
                     else
                     {
-                        services.AddSignalR().AddStackExchangeRedis(
-                            apiFeatures.HubForClients.RedisConnectionString,
-                            redisOptions =>
-                            {
-                                redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
-                            });
+                        services.AddSignalR().AddStackExchangeRedis(redisOptions =>
+                        {
+                            redisOptions.Configuration = CreateValkeyConfiguration(
+                                apiFeatures.HubForClients.RedisHost,
+                                apiFeatures.HubForClients.RedisPort,
+                                apiFeatures.HubForClients.RedisChannelPrefix);
+                        });
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisConnectionString))
+                    {
+                        services.AddSignalR();
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
+                        {
+                            services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
+                        }
+                        else
+                        {
+                            services.AddSignalR().AddStackExchangeRedis(
+                                apiFeatures.HubForClients.RedisConnectionString,
+                                redisOptions =>
+                                {
+                                    redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
+                                });
+                        }
                     }
                 }
             }
@@ -209,6 +229,25 @@ namespace BIA.Net.Core.Presentation.Api.Features
             }
 
             return app;
+        }
+
+        private static ConfigurationOptions CreateValkeyConfiguration(string redisHost, int redisPort, string redisChannelPrefix)
+        {
+            var redisConfiguration = new ConfigurationOptions
+            {
+                Ssl = true,
+                SslHost = redisHost,
+                AbortOnConnectFail = false,
+            };
+
+            redisConfiguration.EndPoints.Add(redisHost, redisPort);
+
+            if (!string.IsNullOrWhiteSpace(redisChannelPrefix))
+            {
+                redisConfiguration.ChannelPrefix = RedisChannel.Literal(redisChannelPrefix);
+            }
+
+            return redisConfiguration;
         }
 
         /// <summary>
