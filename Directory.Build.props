@@ -1,0 +1,31 @@
+<Project>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup Label="AnalyzersNugets">
+    <PackageReference Include="SonarAnalyzer.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="NewStyleCop.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="BIA.Net.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <IsBiaPackageProject Condition="'$(MSBuildProjectName)' != '' and $(MSBuildProjectName.StartsWith('BIA.Net'))">true</IsBiaPackageProject>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(IsBiaPackageProject)' != 'true'">
+    <Using Include="System" />
+    <Using Include="System.Collections.Generic" />
+    <Using Include="System.Threading.Tasks" />
+    <Using Include="System.Linq" />
+  </ItemGroup>
+</Project>

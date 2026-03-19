@@ -1,6 +1,4 @@
-@if (
-  editingRowId() === rowData.id || (editFooterSignal() && isFooter(rowData))
-) {
+@if (editingRowId() === rowData.id) {
   @if (canDisplayEditInput(col)) {
     <!-- INPUT MODE -->
     <bia-table-input
@@ -18,7 +16,7 @@
           "></ng-container>
       </ng-template>
     </bia-table-input>
-  } @else if (!isFooter(rowData)) {
+  } @else if (col.isVisible) {
     <!-- OUTPUT MODE (Non-editable field) -->
     <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
       <ng-template pTemplate="specificOutput">
@@ -34,7 +32,7 @@
       </ng-template>
     </bia-table-output>
   }
-} @else if (!isFooter(rowData)) {
+} @else {
   <!-- OUTPUT MODE -->
   <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
     <ng-template pTemplate="specificOutput">

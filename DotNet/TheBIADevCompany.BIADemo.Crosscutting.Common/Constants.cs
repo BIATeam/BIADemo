@@ -31,6 +31,16 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             public const string FrontEndVersion = "7.0.0";
 
             // End BIADemo
+
+            /// <summary>
+            /// The framework version.
+            /// </summary>
+            public const string FrameworkVersion = "7.0.0";
+
+            /// <summary>
+            /// The environment.
+            /// </summary>
+            public const string Environment = "ASPNETCORE_ENVIRONMENT";
         }
 
         // Begin BIADemo

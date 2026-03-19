@@ -1,4 +1,4 @@
-﻿// <copyright file="BiaHybridCache.cs" company="BIA">
+// <copyright file="BiaHybridCache.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 

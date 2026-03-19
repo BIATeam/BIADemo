@@ -34,7 +34,7 @@ namespace BIA.Net.Core.Common.Exceptions
         /// </summary>
         /// <param name="innerException">The inner exception if exists.</param>
         public FrontUserException(Exception innerException)
-            : this(null, innerException)
+            : this(string.Empty, innerException)
         {
         }
 
@@ -44,7 +44,7 @@ namespace BIA.Net.Core.Common.Exceptions
         /// <param name="errorId">The error id.</param>
         /// <param name="innerException">The inner exception if exists.</param>
         public FrontUserException(int errorId, Exception innerException = null)
-            : this(null, innerException)
+            : this(string.Empty, innerException)
         {
             this.ErrorId = errorId;
         }
