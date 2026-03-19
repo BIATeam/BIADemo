@@ -95,6 +95,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
   @Output() readOnlyChanged = new EventEmitter<boolean>();
   @Output() fixableStateChanged = new EventEmitter<boolean>();
   @Output() layoutChanged = new EventEmitter<LayoutMode>();
+  @Output() formInitialized = new EventEmitter<void>();
   @Input() displayHistorical?: boolean;
   @Input() historicalEntries: HistoricalEntryDto[] = [];
 
@@ -133,6 +134,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
     this.applyFormReadOnlyMode();
     this.applyFixedState();
     this.applyFormDisabledFields();
+    this.formInitialized.emit();
   }
 
   ngOnDestroy() {
@@ -181,6 +183,7 @@ export class BiaFormComponent<TDto extends { id: number | string }>
       this.applyFormReadOnlyMode();
       this.applyFixedState();
       this.applyFormDisabledFields();
+      this.formInitialized.emit();
     }
   }
 
