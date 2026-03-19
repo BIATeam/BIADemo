@@ -95,6 +95,19 @@ function CopyBiaFolder {
   }
 }
 
+function RemoveDirectoryPackagesBiaFromSln {
+  Get-ChildItem -File -Recurse -include *.sln | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+    $file = $_.FullName
+    $content = Get-Content $file
+    $newContent = $content | Where-Object { $_ -notmatch "Directory\.Packages\.Bia\.props = Directory\.Packages\.Bia\.props" }
+    if ($content -ne $newContent) {
+      $fileRel = Resolve-Path -Path "$file" -Relative
+      Write-Verbose "Remove line in $fileRel" -Verbose
+      $newContent | Set-Content $file
+    }
+  }
+}
+
 ###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
 
@@ -131,6 +144,9 @@ RemoveEmptyFolder "."
 
 Write-Host "Remove code example partial files"
 RemoveCodeExample
+
+Write-Host "Remove Directory.Packages.Bia.props from sln"
+RemoveDirectoryPackagesBiaFromSln
 
 Write-Host "Remove comment except BIADemo"
 RemoveCommentExceptBIADemo
