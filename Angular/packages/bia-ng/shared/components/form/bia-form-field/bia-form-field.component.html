@@ -1,8 +1,4 @@
-@if (
-  form &&
-  field.isVisible &&
-  (!isAdd || (field.isEditable && !field.isOnlyUpdatable))
-) {
+@if (form && field.isVisible && (!isAdd || !field.isOnlyUpdatable)) {
   <div class="flex flex-row align-items-center">
     <div class="app-field-container">
       <div [formGroup]="form">
