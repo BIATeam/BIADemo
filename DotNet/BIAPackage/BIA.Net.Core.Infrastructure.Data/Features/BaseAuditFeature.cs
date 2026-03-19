@@ -246,6 +246,17 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 var linkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditPropertyMapper.LinkedEntityType)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditPropertyMapper.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 
+                if (linkedEntityPropertyReference.TargetEntry is null)
+                {
+                    auditChanges.Add(new AuditChange(
+                        auditedEntityProperty.Name,
+                        isInsertAudit ? null : auditedEntityPropertyValue,
+                        null,
+                        isInsertAudit ? auditedEntityPropertyValue : null,
+                        null));
+                    continue;
+                }
+
                 if (!linkedEntityPropertyReference.IsLoaded)
                 {
                     await linkedEntityPropertyReference.LoadAsync();
@@ -298,6 +309,20 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 var linkedEntityPropertyReference = entityEntry.References.FirstOrDefault(x => x.Metadata.ClrType == auditPropertyMapper.LinkedEntityType)
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditPropertyMapper.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 
+                var originalDisplay = await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
+                    ?? await this.GetEntityDisplayValue(auditPropertyMapper.LinkedEntityType, change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName);
+
+                if (linkedEntityPropertyReference.TargetEntry is null)
+                {
+                    auditChanges.Add(new AuditChange(
+                        change.ColumnName,
+                        change.OriginalValue,
+                        originalDisplay,
+                        change.NewValue,
+                        null));
+                    continue;
+                }
+
                 if (!linkedEntityPropertyReference.IsLoaded)
                 {
                     await linkedEntityPropertyReference.LoadAsync();
@@ -308,9 +333,6 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
 
                 var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null)?.ToString();
-                var originalDisplay = await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
-                    ?? await this.GetEntityDisplayValue(linkedEntity.GetType(), change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName);
-
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
                     change.OriginalValue,
