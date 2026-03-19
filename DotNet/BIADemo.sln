@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdditionalFiles", "Addition
 		.gitignore = .gitignore
 		BIA.ruleset = BIA.ruleset
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.Bia.props = Directory.Packages.Bia.props
 		Directory.Packages.Project.props = Directory.Packages.Project.props
 		..\README.md = ..\README.md
 		Switch-To-Nuget.ps1 = Switch-To-Nuget.ps1
