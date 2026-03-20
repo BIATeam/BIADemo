@@ -6,6 +6,7 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using System;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
+    using System.Security.Authentication;
     using System.Security.Principal;
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
@@ -30,6 +31,8 @@ namespace BIA.Net.Core.Presentation.Api.Features
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Diagnostics.HealthChecks;
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
     using Microsoft.Extensions.Options;
     using StackExchange.Redis;
 
@@ -75,50 +78,10 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 });
             }
 
-            // Hub For Clients
-            if (apiFeatures.HubForClients?.IsActive == true)
+            services.AddSignalR().AddStackExchangeRedis(redisOptions =>
             {
-                if (apiFeatures.HubForClients?.UseValkey == true)
-                {
-                    if (string.IsNullOrWhiteSpace(apiFeatures.HubForClients.RedisHost))
-                    {
-                        services.AddSignalR();
-                    }
-                    else
-                    {
-                        services.AddSignalR().AddStackExchangeRedis(redisOptions =>
-                        {
-                            redisOptions.Configuration = CreateValkeyConfiguration(
-                                apiFeatures.HubForClients.RedisHost,
-                                apiFeatures.HubForClients.RedisPort,
-                                apiFeatures.HubForClients.RedisChannelPrefix);
-                        });
-                    }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisConnectionString))
-                    {
-                        services.AddSignalR();
-                    }
-                    else
-                    {
-                        if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
-                        {
-                            services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
-                        }
-                        else
-                        {
-                            services.AddSignalR().AddStackExchangeRedis(
-                                apiFeatures.HubForClients.RedisConnectionString,
-                                redisOptions =>
-                                {
-                                    redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
-                                });
-                        }
-                    }
-                }
-            }
+                redisOptions.Configuration = CreateValkeyConfiguration();
+            });
 
             // Delegate Job Worker
             if (apiFeatures.DelegateJobToWorker?.IsActive == true)
@@ -231,23 +194,30 @@ namespace BIA.Net.Core.Presentation.Api.Features
             return app;
         }
 
-        private static ConfigurationOptions CreateValkeyConfiguration(string redisHost, int redisPort, string redisChannelPrefix)
+        private static ConfigurationOptions CreateValkeyConfiguration()
         {
-            var redisConfiguration = new ConfigurationOptions
+            var endpoint = "dev-valkey-cache-pct4zh.serverless.euw3.cache.amazonaws.com:6379";
+
+            var config = new ConfigurationOptions
             {
+                EndPoints = { endpoint },
                 Ssl = true,
-                SslHost = redisHost,
-                AbortOnConnectFail = false,
+                SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13,
+                AbortOnConnectFail = false, // continue à réessayer au lieu d'échouer immédiatement
+                ConnectRetry = 2,
+                ConnectTimeout = 30000,
+                SyncTimeout = 15000,
+                AsyncTimeout = 15000,
+                CheckCertificateRevocation = false,
+                IncludeDetailInExceptions = true,
             };
 
-            redisConfiguration.EndPoints.Add(redisHost, redisPort);
+            //config.CertificateValidation += (sender, cert, chain, errors) =>
+            //{
+            //    return true; // force l'acceptation du certificat pour ce scénario de test
+            //};
 
-            if (!string.IsNullOrWhiteSpace(redisChannelPrefix))
-            {
-                redisConfiguration.ChannelPrefix = RedisChannel.Literal(redisChannelPrefix);
-            }
-
-            return redisConfiguration;
+            return config;
         }
 
         /// <summary>
