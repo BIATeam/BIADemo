@@ -40,17 +40,15 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Features
         {
             return type.Name switch
             {
+#if BIA_FRONT_FEATURE
                 // BIAToolKit - Begin AuditTypeMapper
                 // Begin BIAToolKit Generation Ignore
                 // BIAToolKit - Begin Partial AuditTypeMapper Plane
-#if BIA_FRONT_FEATURE
                 nameof(Plane) => typeof(PlaneAudit),
-#endif
 
                 // BIAToolKit - End Partial AuditTypeMapper Plane
                 // End BIAToolKit Generation Ignore
                 // BIAToolKit - End AuditTypeMapper
-#if BIA_FRONT_FEATURE
                 // Begin BIADemo
                 nameof(Engine) => typeof(EngineAudit),
                 nameof(PlaneAirport) => typeof(PlaneAirportAudit),
