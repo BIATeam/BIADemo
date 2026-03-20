@@ -121,7 +121,7 @@ export class BiaButtonGroupItem implements MenuItem {
   tooltip?: string | undefined;
   visible?: boolean | undefined;
   disabled?: boolean | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   command(event: MenuItemCommandEvent): void {}
 
   constructor(

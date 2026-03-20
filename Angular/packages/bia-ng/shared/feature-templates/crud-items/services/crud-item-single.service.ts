@@ -116,7 +116,7 @@ export abstract class CrudItemSingleService<
   abstract multiRemove(ids: any[]): void;
   abstract clearAll(): void;
   abstract clearCurrent(): void;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   updateFixedStatus(id: any, isFixed: boolean): void {}
 
   protected resetNewItemsIds(

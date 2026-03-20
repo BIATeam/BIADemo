@@ -51,6 +51,7 @@ module.exports = defineConfig([
       ],
       "eqeqeq": ["error", "always", { null: "ignore" }],
       "@angular-eslint/prefer-inject": "off",
+      "no-useless-assignment": "off",
     },
   },
 

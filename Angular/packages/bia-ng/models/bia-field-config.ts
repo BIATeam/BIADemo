@@ -1,5 +1,4 @@
-﻿/* eslint-disable @typescript-eslint/naming-convention */
-import { ValidatorFn } from '@angular/forms';
+﻿import { ValidatorFn } from '@angular/forms';
 import {
   NumberMode,
   PrimeNGFiltering,
