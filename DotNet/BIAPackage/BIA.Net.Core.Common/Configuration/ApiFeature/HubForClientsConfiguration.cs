@@ -4,9 +4,7 @@
 
 namespace BIA.Net.Core.Common.Configuration.ApiFeature
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using BIA.Net.Core.Common.Configuration.CommonFeature;
 
     /// <summary>
     /// Api Feature Hub for Client Coniguration.
@@ -27,5 +25,10 @@ namespace BIA.Net.Core.Common.Configuration.ApiFeature
         /// Filter redis Chanel.
         /// </summary>
         public string RedisChannelPrefix { get; set; }
+
+        /// <summary>
+        /// The options relevant to a set of redis connections.
+        /// </summary>
+        public RedisConfigurationOption ConfigurationOption { get; set; }
     }
 }

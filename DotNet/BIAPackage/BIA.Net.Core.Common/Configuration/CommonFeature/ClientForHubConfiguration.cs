@@ -27,5 +27,10 @@ namespace BIA.Net.Core.Common.Configuration.CommonFeature
         /// Channel prefix of redis messages.
         /// </summary>
         public string RedisChannelPrefix { get; set; }
+
+        /// <summary>
+        /// The options relevant to a set of redis connections.
+        /// </summary>
+        public RedisConfigurationOption ConfigurationOption { get; set; }
     }
 }

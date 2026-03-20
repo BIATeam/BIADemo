@@ -78,13 +78,26 @@ namespace BIA.Net.Core.Presentation.Api.Features
             // Hub For Clients
             if (apiFeatures.HubForClients?.IsActive == true)
             {
-                if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisConnectionString))
+                if (!string.IsNullOrWhiteSpace(apiFeatures.HubForClients.ConfigurationOption?.EndPoint))
                 {
-                    services.AddSignalR();
+                    string channelPrefix = apiFeatures.HubForClients.ConfigurationOption.ChannelPrefix;
+
+                    services.AddSignalR().AddStackExchangeRedis(redisOptions =>
+                    {
+                        redisOptions.Configuration = new ConfigurationOptions
+                        {
+                            EndPoints = { apiFeatures.HubForClients.ConfigurationOption.EndPoint },
+                            Ssl = apiFeatures.HubForClients.ConfigurationOption.UseSsl,
+                            AbortOnConnectFail = apiFeatures.HubForClients.ConfigurationOption.AbortOnConnectFail,
+                            CheckCertificateRevocation = apiFeatures.HubForClients.ConfigurationOption.CheckCertificateRevocation,
+                            IncludeDetailInExceptions = apiFeatures.HubForClients.ConfigurationOption.IncludeDetailInExceptions,
+                            ChannelPrefix = string.IsNullOrWhiteSpace(channelPrefix) ? default : RedisChannel.Literal(channelPrefix),
+                        };
+                    });
                 }
-                else
+                else if (!string.IsNullOrWhiteSpace(apiFeatures.HubForClients.RedisConnectionString))
                 {
-                    if (string.IsNullOrEmpty(apiFeatures.HubForClients.RedisChannelPrefix))
+                    if (string.IsNullOrWhiteSpace(apiFeatures.HubForClients.RedisChannelPrefix))
                     {
                         services.AddSignalR().AddStackExchangeRedis(apiFeatures.HubForClients.RedisConnectionString);
                     }
@@ -97,6 +110,10 @@ namespace BIA.Net.Core.Presentation.Api.Features
                                 redisOptions.Configuration.ChannelPrefix = RedisChannel.Literal(apiFeatures.HubForClients.RedisChannelPrefix);
                             });
                     }
+                }
+                else
+                {
+                    services.AddSignalR();
                 }
             }
 

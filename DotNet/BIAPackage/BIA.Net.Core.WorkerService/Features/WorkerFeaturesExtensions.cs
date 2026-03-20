@@ -44,9 +44,26 @@ namespace BIA.Net.Core.WorkerService.Features
             // Hub For Clients
             if (biaNetSection.CommonFeatures?.ClientForHub?.IsActive == true)
             {
-                if (!string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
+                if (!string.IsNullOrWhiteSpace(biaNetSection.CommonFeatures.ClientForHub.ConfigurationOption?.EndPoint))
                 {
-                    if (string.IsNullOrEmpty(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix))
+                    string channelPrefix = biaNetSection.CommonFeatures.ClientForHub.ConfigurationOption.ChannelPrefix;
+
+                    services.AddSignalR().AddStackExchangeRedis(redisOptions =>
+                    {
+                        redisOptions.Configuration = new ConfigurationOptions
+                        {
+                            EndPoints = { biaNetSection.CommonFeatures.ClientForHub.ConfigurationOption.EndPoint },
+                            Ssl = biaNetSection.CommonFeatures.ClientForHub.ConfigurationOption.UseSsl,
+                            AbortOnConnectFail = biaNetSection.CommonFeatures.ClientForHub.ConfigurationOption.AbortOnConnectFail,
+                            CheckCertificateRevocation = biaNetSection.CommonFeatures.ClientForHub.ConfigurationOption.CheckCertificateRevocation,
+                            IncludeDetailInExceptions = biaNetSection.CommonFeatures.ClientForHub.ConfigurationOption.IncludeDetailInExceptions,
+                            ChannelPrefix = string.IsNullOrWhiteSpace(channelPrefix) ? default : RedisChannel.Literal(channelPrefix),
+                        };
+                    });
+                }
+                else if (!string.IsNullOrWhiteSpace(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString))
+                {
+                    if (string.IsNullOrWhiteSpace(biaNetSection.CommonFeatures.ClientForHub.RedisChannelPrefix))
                     {
                         services.AddSignalR().AddStackExchangeRedis(biaNetSection.CommonFeatures.ClientForHub.RedisConnectionString);
                     }
