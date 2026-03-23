@@ -1,4 +1,4 @@
-$RelativePathToBIAPackage = "..\..\BIADemo\DotNet\BIAPackage"
+$RelativePathToBIAPackage = "BIAPackage"
 $SolutionName = "BIADemo"
 $ProjectPrefix = "TheBIADevCompany." + $SolutionName
 
@@ -18,7 +18,8 @@ function AddProjectToSlnf {
         
         # Save with proper formatting
         $json = $slnfContent | ConvertTo-Json -Depth 10
-        [System.IO.File]::WriteAllText($slnfFile, $json, [System.Text.Encoding]::UTF8)
+        $absoluteSlnfPath = (Resolve-Path $slnfFile).Path
+        [System.IO.File]::WriteAllText($absoluteSlnfPath, $json, [System.Text.Encoding]::UTF8)
     }
 }
 
@@ -26,22 +27,26 @@ function AddBIAProjectToSolution {
     param([string]$layerProject, [string]$layerPackage)
 	
     $SlnFile = "$SolutionName.sln"
+    $SlnfFile = "${SolutionName}_WithoutDeployDB.slnf"
     $BIAProjectFile = "$RelativePathToBIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
-    $ProjectFile = ".\$ProjectPrefix.$layerProject\$ProjectPrefix.$layerProject.csproj"
+    $BIAPackageName = "BIA.Net.Core.$layerPackage"
+    $ProjectFile = "$ProjectPrefix.$layerProject\$ProjectPrefix.$layerProject.csproj"
 	
     # Add the library project to the solution
     dotnet sln $SlnFile add  -s "BIAPackage" $BIAProjectFile
+    # Add to .slnf file
+    AddProjectToSlnf $SlnfFile $BIAProjectFile
+
     if ($layerProject -ne "") {
         # Add the library reference to the executable project
         dotnet add $ProjectFile reference $BIAProjectFile
         # Remove the NuGet package reference
-        dotnet remove $ProjectFile package BIA.Net.Core.$layerPackage
+        dotnet package remove $BIAPackageName --project $ProjectFile
     }
-    
-    # Add to .slnf files
-    $slnfProjectPath = "BIAPackage\BIA.Net.Core.$layerPackage\BIA.Net.Core.$layerPackage.csproj"
-    AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
 }
+
+$scriptDirectory = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location $scriptDirectory
 
 AddBIAProjectToSolution "Crosscutting.Common" "Common"
 AddBIAProjectToSolution "Domain.Dto" "Domain.Dto"
@@ -59,10 +64,10 @@ AddBIAProjectToSolution "WorkerService" "WorkerService"
 dotnet sln "$SolutionName.sln" add -s "BIAPackage" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 # Add NuGetPackage to .slnf files
-AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" "BIAPackage\NuGetPackage\NuGetPackage.csproj"
+AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" "$RelativePathToBIAPackage\NuGetPackage\NuGetPackage.csproj"
 
 function UpdateDirectoryBuildPropsAnalyzersReferences {
-    $propsFilePath = "Directory.Build.props"
+    $propsFilePath = Join-Path (Get-Location) "Directory.Build.props"
 
     # Load the content of Directory.Build.props
     [xml]$xmlContent = Get-Content $propsFilePath
@@ -143,8 +148,7 @@ function AddAnalyzerProjectToSolution {
     dotnet sln $SlnFile add -s "BIAPackage\BIA.Net.Analyzers" $AnalyzerProjectFile
     
     # Add to .slnf files
-    $slnfProjectPath = "BIAPackage\BIA.Net.Analyzers\$analyzerProjectName\$analyzerProjectName.csproj"
-    AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $slnfProjectPath
+    AddProjectToSlnf "${SolutionName}_WithoutDeployDB.slnf" $AnalyzerProjectFile
 }
 
 # Add Analyzer projects to the solution
