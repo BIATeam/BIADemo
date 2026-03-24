@@ -194,8 +194,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 });
             }
         }
-#endif
 
+#endif
         private static void BiaConfigureContainer(ParamIocContainer param)
         {
             if (param.Configuration == null && !param.IsUnitTest)
@@ -263,7 +263,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 serviceLifetime: ServiceLifetime.Transient,
                 excludedServiceNames: []);
 #endif
-
             List<string> excludedServiceNameList = param.ExcludedServiceNames?.ToList() ?? new List<string>();
             excludedServiceNameList.Add(nameof(AuthAppService));
             BiaIocContainer.RegisterServicesFromAssembly(
@@ -279,7 +278,6 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
 #if BIA_FRONT_FEATURE
             param.Collection.AddTransient(typeof(IUserFromDirectoryMapper<UserFromDirectoryDto, UserFromDirectory>), typeof(Domain.User.Mappers.UserFromDirectoryMapper));
 #endif
-
             Type templateType = typeof(BiaBaseMapper<,,>);
             Assembly assembly = Assembly.Load("TheBIADevCompany.BIADemo.Domain");
             List<Type> derivedTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, templateType);
