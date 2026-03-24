@@ -1,0 +1,11 @@
+---
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/Angular"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: NuGet
+    directory: "/DotNet"
+    schedule:
+      interval: "weekly"
