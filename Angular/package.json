@@ -9,6 +9,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "lint:fix": "ng lint --fix",
+    "format:check": "npx prettier --check . --plugin=prettier-plugin-organize-imports",
     "e2e": "ng e2e",
     "clean": "npx prettier --write . --plugin=prettier-plugin-organize-imports && ng lint --fix",
     "build:iis": "ng build --configuration iis",
