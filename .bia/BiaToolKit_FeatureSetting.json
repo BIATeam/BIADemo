@@ -33,7 +33,8 @@
     "DisplayName": "Deploy Database",
     "Description": "Add the project allowing the deployment of the database",
     "IsSelected": true,
-    "FoldersToExcludes": [".*DeployDB$", ".*Infrastructure.Data.Migrations.*$"]
+    "FoldersToExcludes": [".*DeployDB$", ".*Infrastructure.Data.Migrations.*$"],
+    "FilesToExcludes": [".*\\.slnf$"]
   },
   {
     "Id": 4,

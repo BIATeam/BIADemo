@@ -21,7 +21,7 @@ function ReplaceProjectName {
     [string]$oldName,
     [string]$newName
   )
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config, *.sql | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config, *.sql, *.slnf | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
     $file = $_.FullName
     $oldContent = [System.IO.File]::ReadAllText($file);
     $newContent = $oldContent.Replace($oldName, $newName);
