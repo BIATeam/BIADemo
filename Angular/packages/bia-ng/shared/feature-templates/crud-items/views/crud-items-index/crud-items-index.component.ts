@@ -426,7 +426,9 @@ export class CrudItemsIndexComponent<
             : '',
         dtoState: DtoState.Added,
       });
-      this.crudItemTableComponent.hasChanged = true;
+      setTimeout(() => {
+        this.crudItemTableComponent.hasChanged = true;
+      }, 500);
     }
   }
 
