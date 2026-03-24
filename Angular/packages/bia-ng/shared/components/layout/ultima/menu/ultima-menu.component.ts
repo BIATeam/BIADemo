@@ -7,7 +7,9 @@ import {
   ElementRef,
   HostBinding,
   Input,
+  OnChanges,
   OnDestroy,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
@@ -45,7 +47,9 @@ import { BiaUltimaMenuItemComponent } from '../menu-item/ultima-menu-item.compon
   ],
   imports: [BiaUltimaMenuItemComponent, ButtonModule],
 })
-export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
+export class BiaUltimaMenuComponent
+  implements AfterViewInit, OnDestroy, OnChanges
+{
   @HostBinding('class') classes = 'bia-ultima-menu';
 
   @Input() menuItems: MenuItem[] = [];
@@ -56,6 +60,7 @@ export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
   isScrollable = false;
   isAtStart = false;
   isAtEnd = false;
+  scrollContentResizeObserver: ResizeObserver | null = null;
 
   constructor(private readonly layoutService: BiaLayoutService) {
     effect(() => {
@@ -67,10 +72,15 @@ export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.checkScrollable();
     this.updateButtonState();
-    window.addEventListener('resize', () => {
+
+    this.setUpScrollContentResizeObserver();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.menuItems) {
       this.checkScrollable();
       this.updateButtonState();
-    });
+    }
   }
 
   checkScrollable() {
@@ -121,9 +131,20 @@ export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopScrolling();
-    window.removeEventListener('resize', () => {
-      this.checkScrollable();
-      this.updateButtonState();
-    });
+    if (this.scrollContentResizeObserver) {
+      this.scrollContentResizeObserver.disconnect();
+    }
+  }
+
+  setUpScrollContentResizeObserver() {
+    if (this.scrollContent) {
+      this.scrollContentResizeObserver = new ResizeObserver(() => {
+        this.checkScrollable();
+        this.updateButtonState();
+      });
+      this.scrollContentResizeObserver.observe(
+        this.scrollContent.nativeElement
+      );
+    }
   }
 }
