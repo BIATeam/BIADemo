@@ -35,7 +35,7 @@ export class AirportSignalRService {
 
   registerUpdate(callback: (args: any) => void) {
     console.log(
-      '%c [Planes] Register SignalR : update-airport',
+      '%c [Airports] Register SignalR : update-airport',
       'color: purple; font-weight: bold'
     );
     this.signalRService.addMethod('update-airport', args => {
@@ -50,7 +50,7 @@ export class AirportSignalRService {
 
   private unregisterUpdate() {
     console.log(
-      '%c [Planes] Unregister SignalR : update-airport',
+      '%c [Airports] Unregister SignalR : update-airport',
       'color: purple; font-weight: bold'
     );
     this.signalRService.removeMethod('update-airport');

@@ -113,6 +113,10 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Base
                     await clientForHubService.SendTargetedMessage(key, this.EntityNamePlural, actionRefresh);
                 }
             }
+            else
+            {
+                await clientForHubService.SendTargetedMessage(string.Empty, this.EntityNamePlural, actionRefresh);
+            }
 
             if (this.HasAssociatedOptionController())
             {
