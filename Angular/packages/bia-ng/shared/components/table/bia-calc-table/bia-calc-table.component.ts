@@ -79,6 +79,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   protected sub = new Subscription();
   protected nbOpenedComplexInput: number = 0;
   protected isFocusingOut = false;
+  public skipNextFocusOut = false;
   public footerRowData: any;
   public editFooter = false;
 
@@ -283,6 +284,11 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
 
       // SetTimout is necessary because selecting an option in p-select is not immediately setting back focus to the p-select and document.activeElement isn't updated fast enough
       setTimeout(() => {
+        if (this.skipNextFocusOut) {
+          this.skipNextFocusOut = false;
+          this.isFocusingOut = false;
+          return;
+        }
         const clickedRowOfActiveElement = this.getParentComponent(
           document.activeElement as Element,
           'bia-selectable-row'

@@ -418,6 +418,7 @@ export class CrudItemsIndexComponent<
         state: { itemTemplateId: this.selectedCrudItems[0].id },
       });
     } else {
+      this.crudItemTableComponent.skipNextFocusOut = true;
       this.crudItemTableComponent.initEditableRow({
         ...clone(this.selectedCrudItems[0]),
         id:
@@ -426,9 +427,7 @@ export class CrudItemsIndexComponent<
             : '',
         dtoState: DtoState.Added,
       });
-      setTimeout(() => {
-        this.crudItemTableComponent.hasChanged = true;
-      }, 500);
+      this.crudItemTableComponent.hasChanged = true;
     }
   }
 
