@@ -7,9 +7,7 @@ import {
   ElementRef,
   HostBinding,
   Input,
-  OnChanges,
   OnDestroy,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
@@ -47,9 +45,7 @@ import { BiaUltimaMenuItemComponent } from '../menu-item/ultima-menu-item.compon
   ],
   imports: [BiaUltimaMenuItemComponent, ButtonModule],
 })
-export class BiaUltimaMenuComponent
-  implements AfterViewInit, OnDestroy, OnChanges
-{
+export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
   @HostBinding('class') classes = 'bia-ultima-menu';
 
   @Input() menuItems: MenuItem[] = [];
@@ -74,13 +70,6 @@ export class BiaUltimaMenuComponent
     this.updateButtonState();
 
     this.setUpScrollContentResizeObserver();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.menuItems) {
-      this.checkScrollable();
-      this.updateButtonState();
-    }
   }
 
   checkScrollable() {
