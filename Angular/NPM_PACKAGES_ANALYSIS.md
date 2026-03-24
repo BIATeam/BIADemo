@@ -15,41 +15,41 @@
 
 ## 1. Avertissements d'installation (`npm install`)
 
-L'exécution de `npm install` (ou `npm ci`) produit les avertissements suivants. **Aucun d'entre eux ne provient d'une dépendance directe** du projet : tous sont des dépendances transitives. Le tableau ci-dessous indique, pour chaque paquet déprécié, sa chaîne d'origine.
+> **État après migration** : suite à la suppression de `prettier-eslint` et `eslint-plugin-prettier`, les 6 premiers avertissements ci-dessous ont été résolus. Seul `lodash.isequal` (via `quill`) demeure, en attente d'une version corrective de Quill.
 
-### 1.1 Tableau des avertissements
+### 1.1 Tableau des avertissements (état initial → état actuel)
 
-| Paquet déprécié | Version installée | Motif | Chaîne de dépendance (depuis `package.json`) |
-|---|---|---|---|
-| `eslint` | 8.57.1 | Version dépréciée/non supportée | `prettier-eslint@~16.4.2` → `eslint@8.57.1` |
-| `@humanwhocodes/config-array` | 0.13.0 | Remplacé par `@eslint/config-array` | `prettier-eslint` → `eslint@8.57.1` → `@humanwhocodes/config-array` |
-| `@humanwhocodes/object-schema` | 2.0.3 | Remplacé par `@eslint/object-schema` | `prettier-eslint` → `eslint@8.57.1` → `@humanwhocodes/config-array` → `@humanwhocodes/object-schema` |
-| `rimraf` | 3.0.2 | Versions < 4 non supportées | `prettier-eslint` → `eslint@8.57.1` → `flat-cache` → `rimraf@3.0.2` |
-| `glob` | 7.2.3 | Vulnérabilités de sécurité connues | `prettier-eslint` → `eslint@8.57.1` → `rimraf@3.0.2` → `glob@7.2.3` |
-| `inflight` | 1.0.6 | Fuite mémoire, non maintenu | `prettier-eslint` → `eslint@8.57.1` → `glob@7.2.3` → `inflight@1.0.6` |
-| `lodash.isequal` | 4.5.0 | Déprécié, remplacer par `node:util` | `quill@~2.0.3` → `quill-delta@5.1.0` → `lodash.isequal@4.5.0` |
+| Paquet déprécié | Version installée | Motif | Chaîne de dépendance (depuis `package.json`) | Statut |
+|---|---|---|---|---|
+| `eslint` | 8.57.1 | Version dépréciée/non supportée | `prettier-eslint@~16.4.2` → `eslint@8.57.1` | ✅ Résolu |
+| `@humanwhocodes/config-array` | 0.13.0 | Remplacé par `@eslint/config-array` | `prettier-eslint` → `eslint@8.57.1` → `@humanwhocodes/config-array` | ✅ Résolu |
+| `@humanwhocodes/object-schema` | 2.0.3 | Remplacé par `@eslint/object-schema` | `prettier-eslint` → `eslint@8.57.1` → `@humanwhocodes/config-array` → `@humanwhocodes/object-schema` | ✅ Résolu |
+| `rimraf` | 3.0.2 | Versions < 4 non supportées | `prettier-eslint` → `eslint@8.57.1` → `flat-cache` → `rimraf@3.0.2` | ✅ Résolu |
+| `glob` | 7.2.3 | Vulnérabilités de sécurité connues | `prettier-eslint` → `eslint@8.57.1` → `rimraf@3.0.2` → `glob@7.2.3` | ✅ Résolu |
+| `inflight` | 1.0.6 | Fuite mémoire, non maintenu | `prettier-eslint` → `eslint@8.57.1` → `glob@7.2.3` → `inflight@1.0.6` | ✅ Résolu |
+| `lodash.isequal` | 4.5.0 | Déprécié, remplacer par `node:util` | `quill@~2.0.3` → `quill-delta@5.1.0` → `lodash.isequal@4.5.0` | ⏳ En attente de Quill |
 
 ### 1.2 Détail des chaînes de dépendances
 
-#### `prettier-eslint@~16.4.2` (devDependency directe)
+#### ~~`prettier-eslint@~16.4.2`~~ (supprimé — migration effectuée)
 
-C'est **la principale source des avertissements**. Cette dépendance directe embarque une version obsolète d'ESLint (v8) en interne, qui elle-même entraîne toute une chaîne de paquets dépréciés :
+Cette dépendance était **la principale source des avertissements**. Elle embarquait une version obsolète d'ESLint (v8) en interne, qui entraînait toute une chaîne de paquets dépréciés :
 
 ```
-prettier-eslint@16.4.2
-  ├── eslint@8.57.1           ⚠️ version dépréciée
-  │   ├── @humanwhocodes/config-array@0.13.0   ⚠️ déprécié
-  │   │   └── @humanwhocodes/object-schema@2.0.3  ⚠️ déprécié
+prettier-eslint@16.4.2  [SUPPRIMÉ]
+  ├── eslint@8.57.1           ✅ résolu
+  │   ├── @humanwhocodes/config-array@0.13.0   ✅ résolu
+  │   │   └── @humanwhocodes/object-schema@2.0.3  ✅ résolu
   │   ├── file-entry-cache@6.0.1
   │   │   └── flat-cache@3.2.0
-  │   │       └── rimraf@3.0.2               ⚠️ déprécié
-  │   │           └── glob@7.2.3             ⚠️ déprécié (vulnérabilités)
-  │   │               └── inflight@1.0.6     ⚠️ fuite mémoire
+  │   │       └── rimraf@3.0.2               ✅ résolu
+  │   │           └── glob@7.2.3             ✅ résolu
+  │   │               └── inflight@1.0.6     ✅ résolu
   │   └── @eslint/eslintrc@2.1.4
   │       └── minimatch@3.1.5
   └── @typescript-eslint/parser@6.21.0
       └── @typescript-eslint/typescript-estree@6.21.0
-          └── minimatch@9.0.3               ⚠️ vulnérabilité ReDoS
+          └── minimatch@9.0.3               ✅ résolu (ReDoS)
 ```
 
 #### `quill@~2.0.3` (dependency directe)
@@ -57,36 +57,28 @@ prettier-eslint@16.4.2
 ```
 quill@2.0.3
   └── quill-delta@5.1.0
-      └── lodash.isequal@4.5.0             ⚠️ déprécié
+      └── lodash.isequal@4.5.0             ⏳ déprécié — en attente Quill
 ```
 
 ---
 
 ## 2. Vulnérabilités de sécurité (`npm audit`)
 
-`npm audit` identifie **8 vulnérabilités** (1 faible, 7 élevées).
+Avant migration, `npm audit` identifiait **8 vulnérabilités** (1 faible, 7 élevées). Après suppression de `prettier-eslint`, le total est ramené à **4 vulnérabilités** (1 faible, 3 élevées).
 
 ### 2.1 Résumé
 
-| Paquet vulnérable | Versions concernées | Sévérité | Type | CVE/Advisory | Origine dans `package.json` |
-|---|---|---|---|---|---|
-| `minimatch` | 9.0.0 – 9.0.6 | **Haute** | ReDoS (3 vecteurs) | [GHSA-3ppc-4f35-3m26](https://github.com/advisories/GHSA-3ppc-4f35-3m26), [GHSA-7r86-cg39-jmmj](https://github.com/advisories/GHSA-7r86-cg39-jmmj), [GHSA-23c5-xmqv-rm74](https://github.com/advisories/GHSA-23c5-xmqv-rm74) | `prettier-eslint@~16.4.2` |
-| `quill` | 2.0.3 | **Faible** | XSS via export HTML | [GHSA-v3m3-f69x-jf25](https://github.com/advisories/GHSA-v3m3-f69x-jf25) | `quill@~2.0.3` (direct) |
-| `undici` | 7.0.0 – 7.23.0 | **Haute** | Plusieurs vecteurs (WebSocket, HTTP smuggling, DoS) | [GHSA-f269-vfmq-vjvj](https://github.com/advisories/GHSA-f269-vfmq-vjvj), [GHSA-2mjp-6q6p-2qxm](https://github.com/advisories/GHSA-2mjp-6q6p-2qxm), [GHSA-vrm6-8vpv-qv8q](https://github.com/advisories/GHSA-vrm6-8vpv-qv8q), [GHSA-v9p9-hfj2-hcw8](https://github.com/advisories/GHSA-v9p9-hfj2-hcw8), [GHSA-4992-7rv2-5pvq](https://github.com/advisories/GHSA-4992-7rv2-5pvq), [GHSA-phc3-fgpg-7m6h](https://github.com/advisories/GHSA-phc3-fgpg-7m6h) | `@angular/build@~21.2.3` / `@angular-devkit/build-angular@~21.2.3` (dev) |
+| Paquet vulnérable | Versions concernées | Sévérité | Type | CVE/Advisory | Origine dans `package.json` | Statut |
+|---|---|---|---|---|---|---|
+| `minimatch` | 9.0.0 – 9.0.6 | **Haute** | ReDoS (3 vecteurs) | [GHSA-3ppc-4f35-3m26](https://github.com/advisories/GHSA-3ppc-4f35-3m26), [GHSA-7r86-cg39-jmmj](https://github.com/advisories/GHSA-7r86-cg39-jmmj), [GHSA-23c5-xmqv-rm74](https://github.com/advisories/GHSA-23c5-xmqv-rm74) | `prettier-eslint@~16.4.2` | ✅ Résolu |
+| `quill` | 2.0.3 | **Faible** | XSS via export HTML | [GHSA-v3m3-f69x-jf25](https://github.com/advisories/GHSA-v3m3-f69x-jf25) | `quill@~2.0.3` (direct) | ⏳ En attente de release |
+| `undici` | 7.0.0 – 7.23.0 | **Haute** | Plusieurs vecteurs (WebSocket, HTTP smuggling, DoS) | [GHSA-f269-vfmq-vjvj](https://github.com/advisories/GHSA-f269-vfmq-vjvj), [GHSA-2mjp-6q6p-2qxm](https://github.com/advisories/GHSA-2mjp-6q6p-2qxm), [GHSA-vrm6-8vpv-qv8q](https://github.com/advisories/GHSA-vrm6-8vpv-qv8q), [GHSA-v9p9-hfj2-hcw8](https://github.com/advisories/GHSA-v9p9-hfj2-hcw8), [GHSA-4992-7rv2-5pvq](https://github.com/advisories/GHSA-4992-7rv2-5pvq), [GHSA-phc3-fgpg-7m6h](https://github.com/advisories/GHSA-phc3-fgpg-7m6h) | `@angular/build@~21.2.3` / `@angular-devkit/build-angular@~21.2.3` (dev) | ⏳ En attente de patch Angular |
 
 ### 2.2 Détail des vulnérabilités
 
-#### `minimatch` — ReDoS (Haute)
+#### ~~`minimatch` — ReDoS~~ (Haute) — ✅ Résolu
 
-Chaîne de dépendance :
-```
-prettier-eslint@16.4.2
-  └── @typescript-eslint/parser@6.21.0
-      └── @typescript-eslint/typescript-estree@6.21.0
-          └── minimatch@9.0.3   ← versions 9.0.0–9.0.6 vulnérables
-```
-
-Trois vulnérabilités ReDoS (expressions régulières catastrophiques) permettent à un attaquant de provoquer un déni de service en passant des patterns spécialement conçus. Ces vulnérabilités sont présentes **uniquement en contexte de build/développement** (devDependency).
+Cette vulnérabilité provenait de `prettier-eslint` qui a été supprimé. Elle n'est plus présente après la migration.
 
 #### `quill@2.0.3` — XSS (Faible)
 
@@ -169,9 +161,9 @@ Pour la migration :
 
 | Priorité | Paquet direct | Action recommandée | Statut |
 |---|---|---|---|
-| 🔴 Haute | `prettier-eslint@~16.4.2` | Supprimer et migrer vers Prettier + ESLint séparés | À faire |
-| 🔴 Haute | `quill@~2.0.3` | Mettre à jour vers `quill@2.0.4+` dès disponibilité | En attente de release |
-| 🟡 Moyenne | `@angular/build@~21.2.3` | Mettre à jour dès publication d'un patch Angular 21.2.x | En attente de release |
+| 🔴 Haute | `prettier-eslint@~16.4.2` + `eslint-plugin-prettier@~5.5.5` | Supprimés — migration vers Prettier + ESLint séparés effectuée | ✅ Résolu |
+| 🔴 Haute | `quill@~2.0.3` | Mettre à jour vers `quill@2.0.4+` dès disponibilité | ⏳ En attente de release |
+| 🟡 Moyenne | `@angular/build@~21.2.3` | Mettre à jour dès publication d'un patch Angular 21.2.x | ⏳ En attente de release |
 
 ---
 
@@ -307,9 +299,7 @@ Suite de composants UI et de styles.
 | Paquet | Type | Rôle |
 |---|---|---|
 | `prettier` | dev | Formateur de code automatique (TypeScript, HTML, CSS, JSON…) |
-| `prettier-eslint` | dev | ⚠️ Exécute Prettier puis ESLint sur le même fichier — **source principale des avertissements npm** |
-| `eslint-config-prettier` | dev | Configuration ESLint désactivant les règles conflictuelles avec Prettier |
-| `eslint-plugin-prettier` | dev | Exécute Prettier comme règle ESLint (signale les différences de formatage) |
+| `eslint-config-prettier` | dev | Configuration ESLint désactivant les règles conflictuelles avec Prettier (ESLint et Prettier fonctionnent désormais indépendamment) |
 | `prettier-plugin-organize-imports` | dev | Plugin Prettier pour trier/organiser automatiquement les imports TypeScript |
 
 ### 4.14 Résumé visuel
