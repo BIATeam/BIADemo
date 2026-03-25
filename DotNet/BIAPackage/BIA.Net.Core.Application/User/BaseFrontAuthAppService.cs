@@ -378,7 +378,7 @@ namespace BIA.Net.Core.Application.User
         /// <param name="loginParam">The login parameter.</param>
         /// <param name="userData">The user data.</param>
         /// <param name="userInfoId">The id of the user.</param>
-        /// <param name="allTeams">All teams.</param>
+        /// <param name="allTeams">All teams from DB of current user.</param>
         /// <param name="teamsConfig">The teams config.</param>
         /// <typeparam name="TUserDataDto">The type of UserDataDto.</typeparam>
         /// <returns>List of role.</returns>
@@ -386,6 +386,12 @@ namespace BIA.Net.Core.Application.User
         {
             // the main roles
             var allRoles = new List<string>();
+
+            // Clean login param current teams if they are not mapped anymore to a top level parent.
+            foreach (var teamConfig in teamsConfig.Where(t => t.Parents is null || t.Parents.IsEmpty))
+            {
+                this.CleanChildTeamsFromLoginParam(loginParam, teamConfig.TeamTypeId, teamsConfig, allTeams);
+            }
 
             // get user rights
             foreach (var teamConfig in teamsConfig)
@@ -397,23 +403,34 @@ namespace BIA.Net.Core.Application.User
                     TeamSelectionMode.First => correspondingTeams.FirstOrDefault(),
                     _ => throw new NotImplementedException(),
                 };
-                var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;
 
-                CurrentTeamDto teamLogin = null;
-                if (loginParam.IsFirstLogin && defaultTeam != null)
+                var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;
+                var teamLogin = Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId);
+
+                if (teamLogin is null && defaultTeam is not null)
                 {
-                    teamLogin = new CurrentTeamDto
+                    var useDefaultTeam = defaultTeam.ParentTeamId == 0;
+
+                    if (loginParam.IsFirstLogin)
                     {
-                        TeamTypeId = defaultTeam.TeamTypeId,
-                        TeamId = defaultTeam.Id,
-                        TeamTitle = defaultTeam.Title,
-                        UseDefaultRoles = true,
-                        CurrentRoleIds = { },
-                    };
-                }
-                else if (!loginParam.IsFirstLogin)
-                {
-                    teamLogin = Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId);
+                        useDefaultTeam = useDefaultTeam || userData.CurrentTeams.Any(t => t.TeamId == defaultTeam.ParentTeamId);
+                    }
+                    else
+                    {
+                        useDefaultTeam = useDefaultTeam || loginParam.CurrentTeamLogins.Any(t => t.TeamId == defaultTeam.ParentTeamId);
+                    }
+
+                    if (useDefaultTeam)
+                    {
+                        teamLogin = new CurrentTeamDto
+                        {
+                            TeamTypeId = defaultTeam.TeamTypeId,
+                            TeamId = defaultTeam.Id,
+                            TeamTitle = defaultTeam.Title,
+                            UseDefaultRoles = true,
+                            CurrentRoleIds = [],
+                        };
+                    }
                 }
 
                 if (teamLogin is null)
@@ -426,6 +443,8 @@ namespace BIA.Net.Core.Application.User
                     TeamTypeId = teamLogin.TeamTypeId,
                     TeamId = teamLogin.TeamId,
                     TeamTitle = correspondingTeams.FirstOrDefault(s => s.Id == teamLogin.TeamId)?.Title,
+                    UseDefaultRoles = teamLogin.UseDefaultRoles,
+                    CurrentRoleIds = [],
                 };
 
                 if (currentTeam.TeamId <= 0)
@@ -438,25 +457,21 @@ namespace BIA.Net.Core.Application.User
 
                 if (roleMode == RoleMode.AllRoles)
                 {
-                    currentTeam.CurrentRoleIds = roles.Select(r => r.Id).ToList();
+                    currentTeam.CurrentRoleIds = [.. roles.Select(r => r.Id)];
                 }
                 else if (roleMode == RoleMode.SingleRole)
                 {
-                    RoleDto role = roles?.OrderByDescending(x => x.IsDefault).FirstOrDefault();
+                    RoleDto role = roles.OrderByDescending(x => x.IsDefault).FirstOrDefault();
                     if (role != null)
                     {
                         if (teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Count == 1 && roles.Any(s => s.Id == teamLogin.CurrentRoleIds[0]))
                         {
-                            currentTeam.CurrentRoleIds = new List<int> { teamLogin.CurrentRoleIds[0] };
+                            currentTeam.CurrentRoleIds = [teamLogin.CurrentRoleIds[0]];
                         }
                         else
                         {
-                            currentTeam.CurrentRoleIds = new List<int> { role.Id };
+                            currentTeam.CurrentRoleIds = [role.Id];
                         }
-                    }
-                    else
-                    {
-                        currentTeam.CurrentRoleIds = new List<int>();
                     }
                 }
                 else
@@ -465,17 +480,12 @@ namespace BIA.Net.Core.Application.User
                     {
                         if (!teamLogin.UseDefaultRoles)
                         {
-                            List<int> roleIdsToSet = roles.Where(r => teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Exists(tr => tr == r.Id)).Select(r => r.Id).ToList();
-                            currentTeam.CurrentRoleIds = roleIdsToSet;
+                            currentTeam.CurrentRoleIds = [.. roles.Where(r => teamLogin.CurrentRoleIds != null && teamLogin.CurrentRoleIds.Exists(tr => tr == r.Id)).Select(r => r.Id)];
                         }
                         else
                         {
-                            currentTeam.CurrentRoleIds = roles.Where(x => x.IsDefault).Select(r => r.Id).ToList();
+                            currentTeam.CurrentRoleIds = [.. roles.Where(x => x.IsDefault).Select(r => r.Id)];
                         }
-                    }
-                    else
-                    {
-                        currentTeam.CurrentRoleIds = new List<int>();
                     }
                 }
 
@@ -485,7 +495,7 @@ namespace BIA.Net.Core.Application.User
                 }
 
                 // add the sites roles (filter if singleRole mode is used)
-                allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code).ToList());
+                allRoles.AddRange(roles.Where(r => currentTeam.CurrentRoleIds.Exists(id => id == r.Id)).Select(r => r.Code));
                 allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberSuffix);
                 allRoles.Add(teamConfig.RightPrefix + BiaConstants.Role.TeamMemberOfOneSuffix);
 
@@ -592,6 +602,52 @@ namespace BIA.Net.Core.Application.User
             }
 
             return this.UserPermissionDomainService.TranslateRolesInPermissions(allRoles, transversal: true);
+        }
+
+        /// <summary>
+        /// Recursively validates and removes child teams from the login parameters.
+        /// </summary>
+        /// <param name="loginParam">The login parameters to clean.</param>
+        /// <param name="parentTeamTypeId">The team type id of the parent whose children should be checked.</param>
+        /// <param name="teamsConfig">The teams configuration.</param>
+        /// <param name="allTeams">All teams from the database for the current user.</param>
+        /// <param name="forceRemove">When <c>true</c>, removes all children unconditionally regardless of validity.</param>
+        protected virtual void CleanChildTeamsFromLoginParam(LoginParamDto loginParam, int parentTeamTypeId, ImmutableList<BiaTeamConfig<BaseEntityTeam>> teamsConfig, IEnumerable<BaseDtoVersionedTeam> allTeams, bool forceRemove = false)
+        {
+            var parentTeamConfig = teamsConfig.Find(tc => tc.TeamTypeId == parentTeamTypeId);
+            if (parentTeamConfig?.Children is null || parentTeamConfig.Children.IsEmpty)
+            {
+                return;
+            }
+
+            IEnumerable<int> validChildrenTeamIds;
+            if (forceRemove)
+            {
+                validChildrenTeamIds = [];
+            }
+            else
+            {
+                var loginParamParentTeam = loginParam.CurrentTeamLogins.FirstOrDefault(ct => ct.TeamTypeId == parentTeamTypeId);
+                if (loginParamParentTeam is null)
+                {
+                    return;
+                }
+
+                validChildrenTeamIds = allTeams.Where(t => t.ParentTeamId == loginParamParentTeam.TeamId).Select(t => t.Id);
+            }
+
+            foreach (var childTeamTypeId in parentTeamConfig.Children.Select(c => c.TeamTypeId))
+            {
+                var loginParamChildTeam = loginParam.CurrentTeamLogins.FirstOrDefault(ct => ct.TeamTypeId == childTeamTypeId);
+                bool childIsInvalid = loginParamChildTeam is not null && (forceRemove || !validChildrenTeamIds.Contains(loginParamChildTeam.TeamId));
+
+                if (childIsInvalid)
+                {
+                    loginParam.CurrentTeamLogins = [.. loginParam.CurrentTeamLogins.Except([loginParamChildTeam])];
+                }
+
+                this.CleanChildTeamsFromLoginParam(loginParam, childTeamTypeId, teamsConfig, allTeams, forceRemove || childIsInvalid);
+            }
         }
     }
 }

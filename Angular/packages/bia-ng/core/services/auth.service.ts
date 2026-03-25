@@ -385,6 +385,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         if (authInfo) {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
 
+          const loginParam = this.getLoginParameters();
+          loginParam.currentTeamLogins =
+            authInfo.decryptedToken.userData.currentTeams;
+          this.setLoginParameters(loginParam);
+
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
             authInfo.decryptedToken.permissions =
               authInfo.decryptedToken.permissions.filter(
