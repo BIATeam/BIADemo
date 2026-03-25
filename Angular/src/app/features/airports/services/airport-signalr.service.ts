@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
-import { BiaSignalRService } from 'packages/bia-ng/core/public-api';
-import { TargetedFeature } from 'packages/bia-ng/models/public-api';
+import { BiaSignalRService } from '@bia-team/bia-ng/core';
+import { TargetedFeature } from '@bia-team/bia-ng/models';
 
 /**
  * Service managing SignalR events for hangfire jobs.
@@ -35,7 +35,7 @@ export class AirportSignalRService {
 
   registerUpdate(callback: (args: any) => void) {
     console.log(
-      '%c [Planes] Register SignalR : update-airport',
+      '%c [Airports] Register SignalR : update-airport',
       'color: purple; font-weight: bold'
     );
     this.signalRService.addMethod('update-airport', args => {
@@ -50,7 +50,7 @@ export class AirportSignalRService {
 
   private unregisterUpdate() {
     console.log(
-      '%c [Planes] Unregister SignalR : update-airport',
+      '%c [Airports] Unregister SignalR : update-airport',
       'color: purple; font-weight: bold'
     );
     this.signalRService.removeMethod('update-airport');

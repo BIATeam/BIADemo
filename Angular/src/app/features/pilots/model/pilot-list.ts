@@ -1,11 +1,11 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
-import {
+﻿import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   FixableDto,
   VersionedDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 
 // TODO after creation of CRUD Pilot : adapt the model
 export interface PilotList extends BaseDto<string>, VersionedDto, FixableDto {

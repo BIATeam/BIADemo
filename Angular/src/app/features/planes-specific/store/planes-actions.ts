@@ -1,5 +1,5 @@
-﻿import { createAction, props } from '@ngrx/store';
-import { DataResult } from 'packages/bia-ng/models/public-api';
+﻿import { DataResult } from '@bia-team/bia-ng/models';
+import { createAction, props } from '@ngrx/store';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Plane } from '../model/plane';
 import { PlaneSpecific } from '../model/plane-specific';

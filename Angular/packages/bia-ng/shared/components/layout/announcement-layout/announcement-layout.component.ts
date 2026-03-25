@@ -6,10 +6,10 @@ import {
   OnDestroy,
   SimpleChanges,
 } from '@angular/core';
+import { BiaAppConstantsService } from '@bia-team/bia-ng/core';
+import { Announcement } from '@bia-team/bia-ng/models';
+import { BiaAnnouncementType } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule } from '@ngx-translate/core';
-import { BiaAppConstantsService } from 'packages/bia-ng/core/public-api';
-import { BiaAnnouncementType } from 'packages/bia-ng/models/enum/public-api';
-import { Announcement } from 'packages/bia-ng/models/public-api';
 import { SafeHtmlPipe } from '../../../pipes/safe-html.pipe';
 
 interface FormattedAnnouncement {
@@ -117,10 +117,6 @@ export class AnnouncementLayoutComponent implements OnChanges, OnDestroy {
     if (this.formattedAnnouncements.length === 1) {
       this.currentPhase = 'stay';
       this.clearTimeout();
-      return;
-    }
-
-    if (this.animationTimeoutId !== null) {
       return;
     }
 

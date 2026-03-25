@@ -17,13 +17,10 @@ import {
   UntypedFormBuilder,
   UntypedFormGroup,
 } from '@angular/forms';
+import { AuthService, BiaMessageService } from '@bia-team/bia-ng/core';
+import { BiaFieldConfig } from '@bia-team/bia-ng/models';
+import { DtoState } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  AuthService,
-  BiaMessageService,
-} from 'packages/bia-ng/core/public-api';
-import { DtoState } from 'packages/bia-ng/models/enum/public-api';
-import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { Skeleton } from 'primeng/skeleton';
@@ -79,6 +76,7 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
   protected sub = new Subscription();
   protected nbOpenedComplexInput: number = 0;
   protected isFocusingOut = false;
+  public skipNextFocusOut = false;
   public footerRowData: any;
   public editFooter = false;
 
@@ -283,6 +281,11 @@ export class BiaCalcTableComponent<TDto extends { id: number | string }>
 
       // SetTimout is necessary because selecting an option in p-select is not immediately setting back focus to the p-select and document.activeElement isn't updated fast enough
       setTimeout(() => {
+        if (this.skipNextFocusOut) {
+          this.skipNextFocusOut = false;
+          this.isFocusingOut = false;
+          return;
+        }
         const clickedRowOfActiveElement = this.getParentComponent(
           document.activeElement as Element,
           'bia-selectable-row'

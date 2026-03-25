@@ -170,7 +170,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             /// <summary>
             /// Header name for CPL date.
             /// </summary>
-            public const string CPLDate = "cPLDate";
+            public const string CPLDate = "cplDate";
 
             /// <summary>
             /// Header name for base airport.

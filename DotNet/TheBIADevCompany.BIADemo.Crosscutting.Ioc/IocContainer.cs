@@ -59,13 +59,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
             BiaConfigureInfrastructureDataContainerAutoRegister(GetGlobalParamAutoRegister(param));
             BiaConfigureInfrastructureDataContainerDbContext(param);
         }
+
 #endif
 
         private static void ConfigureInfrastructureServiceContainer(ParamIocContainer param)
         {
             BiaIocContainer.ConfigureInfrastructureServiceContainer(param);
             BiaConfigureInfrastructureServiceContainer(param);
-
 #if BIA_FRONT_FEATURE
             // Begin BIADemo
             param.Collection.AddSingleton<Infrastructure.Service.Repositories.DocumentAnalysis.PdfAnalysisRepository>();

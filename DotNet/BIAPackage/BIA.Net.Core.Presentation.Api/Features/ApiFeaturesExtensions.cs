@@ -200,11 +200,13 @@ namespace BIA.Net.Core.Presentation.Api.Features
                 app.UseHangfireDashboard("/hangfireAdmin", new DashboardOptions
                 {
                     Authorization = hangfireServerAuthorizations.Authorization,
+                    AppPath = null,
                 });
                 app.UseHangfireDashboard("/hangfire", new DashboardOptions
                 {
                     IsReadOnlyFunc = (DashboardContext context) => true,
                     Authorization = hangfireServerAuthorizations.AuthorizationReadOnly,
+                    AppPath = null,
                 });
             }
 

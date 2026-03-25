@@ -1,7 +1,4 @@
-﻿import {
-  CrudConfig,
-  FormReadOnlyMode,
-} from 'packages/bia-ng/shared/public-api';
+﻿import { CrudConfig, FormReadOnlyMode } from '@bia-team/bia-ng/shared';
 import { TeamTypeId } from 'src/app/shared/constants';
 import {
   Flight,
@@ -32,9 +29,9 @@ export const flightCRUDConfiguration: CrudConfig<Flight> = new CrudConfig({
   useVirtualScroll: false,
   // Begin BIAToolKit Generation Ignore
   importMode: {
-    useInsert: true,
-    useUpdate: true,
-    useDelete: true,
+    useInsert: false,
+    useUpdate: false,
+    useDelete: false,
   },
   showIcons: {
     showCalcMode: true,

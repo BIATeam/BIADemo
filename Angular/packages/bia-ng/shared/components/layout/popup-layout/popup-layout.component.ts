@@ -10,11 +10,11 @@
   ViewContainerRef,
 } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   BiaAppConstantsService,
   BiaInjectorService,
-} from 'packages/bia-ng/core/public-api';
+} from '@bia-team/bia-ng/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 
