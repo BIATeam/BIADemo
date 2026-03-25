@@ -27,7 +27,6 @@ import { BiaFieldBaseComponent } from '../bia-field-base/bia-field-base.componen
     NgTemplateOutlet,
     FormsModule,
     ReactiveFormsModule,
-    NgTemplateOutlet,
     Select,
     MultiSelect,
     Checkbox,

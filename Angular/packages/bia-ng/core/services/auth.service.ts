@@ -385,6 +385,11 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         if (authInfo) {
           authInfo.decryptedToken = this.decodeToken(authInfo.token);
 
+          const loginParam = this.getLoginParameters();
+          loginParam.currentTeamLogins =
+            authInfo.decryptedToken.userData.currentTeams;
+          this.setLoginParameters(loginParam);
+
           if (!BiaAppConstantsService.allEnvironments.enableAnnouncements) {
             authInfo.decryptedToken.permissions =
               authInfo.decryptedToken.permissions.filter(
@@ -453,35 +458,30 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected async getLatestVersion() {
-    await this.biaSwUpdateService.checkForUpdate();
+    const updateAvailable = await this.biaSwUpdateService.checkForUpdate();
 
-    setTimeout(async () => {
-      const isReloaded = sessionStorage.getItem(STORAGE_RELOADED_KEY);
-      // if a refresh has already been done,
-      if (
-        isReloaded === String(true) &&
-        this.biaSwUpdateService.newVersionAvailable !== true
-      ) {
-        sessionStorage.removeItem(STORAGE_RELOADED_KEY);
-        const httpCodeUpgradeRequired = 426;
-        window.location.href =
-          BiaAppConstantsService.allEnvironments.urlErrorPage +
-          '?num=' +
-          httpCodeUpgradeRequired;
-      } else {
-        if (this.biaSwUpdateService.newVersionAvailable === true) {
-          await this.biaSwUpdateService.activateUpdate();
-        }
-        const timer = 5000;
-        this.biaMessageService.showInfo(
-          this.translateService.instant('biaMsg.infoBeforeGetLatestVersion'),
-          timer
-        );
-        setInterval(() => {
-          this.refresh();
-        }, timer);
+    const isReloaded = sessionStorage.getItem(STORAGE_RELOADED_KEY);
+    // if a refresh has already been done and no update was found, the SW can't resolve the version mismatch
+    if (isReloaded === String(true) && !updateAvailable) {
+      sessionStorage.removeItem(STORAGE_RELOADED_KEY);
+      const httpCodeUpgradeRequired = 426;
+      window.location.href =
+        BiaAppConstantsService.allEnvironments.urlErrorPage +
+        '?num=' +
+        httpCodeUpgradeRequired;
+    } else {
+      if (updateAvailable) {
+        await this.biaSwUpdateService.activateUpdate();
       }
-    }, 1000);
+      const timer = 5000;
+      this.biaMessageService.showInfo(
+        this.translateService.instant('biaMsg.infoBeforeGetLatestVersion'),
+        timer
+      );
+      setInterval(() => {
+        this.refresh();
+      }, timer);
+    }
   }
 
   protected refresh() {

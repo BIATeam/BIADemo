@@ -43,5 +43,11 @@ namespace BIA.Net.Core.Application.Services
         {
             await Task.WhenAll(this.clientForHubRepositories.Select(x => x.SendTargetedMessage(parentKey, featureName, action, objectToSerialize)));
         }
+
+        /// <inheritdoc/>
+        public virtual async Task SendEntityChangedAsync(string storeKey)
+        {
+            await this.SendTargetedMessage(string.Empty, "change-entity", "refresh-entity", storeKey);
+        }
     }
 }

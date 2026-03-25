@@ -1,11 +1,10 @@
 {
   "app": {
-    "members": "Members",
-    "sites": "Sites",
     "Begin BIADemo": "To remove in project from here",
     "aircraftMaintenanceCompanies": "Aircraft maintenance companies",
     "airports": "Airports",
     "engines": "Engines",
+    "examples": "Examples",
     "fleet": "Fleet",
     "flights": "Flights",
     "hangfire": "Hangfire",
@@ -22,9 +21,7 @@
     "maintenanceTeams": "Maintenance Teams",
     "maintenanceContracts": "Maintenance contracts",
     "End BIADemo": "To remove in project up to here",
-    "teams": "Teams",
-    "users": "Users",
-    "notifications": "Notifications"
+    "sites": "Sites"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -121,12 +118,20 @@
   },
   "pilot": {
     "add": "Add pilot",
+    "baseAirport": "Base airport",
+    "birthdate": "Birthdate",
+    "cplDate": "Commercial pilot license date",
     "edit": "Edit pilot",
+    "firstFlightDate": "First flight date",
+    "firstName": "First name",
     "flightHours": "Flight hours",
     "identificationNumber": "Identification number",
     "import": "Import pilots",
     "information": "Information",
+    "lastFlightDate": "Last flight date",
+    "lastName": "Last name",
     "listOf": "List of pilots",
+    "name": "Full name",
     "read": "Pilot details",
     "site": "Airline company"
   },
@@ -180,21 +185,6 @@
     "title": "Title"
   },
   "End BIADemo": "To remove in project up to here",
-  "member": {
-    "add": "Add member",
-    "import": "Import members",
-    "isActive": "Active",
-    "listOf": "List of members",
-    "manage": "Manage member",
-    "roles": "Roles",
-    "user": "User",
-    "teams": "Teams"
-  },
-  "msg": {
-    "hideFilters": "Hide filters",
-    "showFilters": "Show filters",
-    "welcome": "BIA is a component library, built with the Angular framework"
-  },
   "site": {
     "add": "Add site",
     "admins": "Administrators",
@@ -205,48 +195,5 @@
     "title": "Title",
     "headerLabel": "Site",
     "uniqueIdentifier": "Unique identifier"
-  },
-  "translation": {
-    "defaultLanguage": "Default (English)"
-  },
-  "user": {
-    "add": "Add user",
-    "edit": "Edit user",
-    "firstName": "First Name",
-    "import": "Import users",
-    "lastName": "Last Name",
-    "listOf": "List of users",
-    "login": "Login",
-    "cannotAddMember": "Cannot add member ${login} on ldap repository."
-  },
-  "notification": {
-    "action": "Action",
-    "add": "Add notification",
-    "listOf": "Notifications",
-    "title": "Title",
-    "detail": "Notification detail",
-    "description": "Description",
-    "createdDate": "Date",
-    "type": {
-      "title": "Type",
-      "task": "Task",
-      "info": "Information",
-      "success": "Success",
-      "warn": "Warning",
-      "error": "Error"
-    },
-    "read": "Read",
-    "createdBy": "Created by",
-    "notifiedPermissions": "Notified permissions",
-    "notifiedTeams": "Notified teams",
-    "notifiedUsers": "Notified users",
-    "jData": "Data in JSON",
-    "setUnread": "Mark as unread",
-    "success": {
-      "deprecated:": "transaltion will be done in database in next version",
-      "title": "Notification sent successfully",
-      "description": "Description to be customised in i18n traductions for each feature"
-    },
-    "edit": "Edit notification"
   }
 }

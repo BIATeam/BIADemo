@@ -18,7 +18,7 @@ namespace BIA.Net.Core.Domain.Dto.Announcement
         /// <summary>
         /// Gets or sets the end.
         /// </summary>
-        [BiaDtoField(Required = true, Type = "datetime")]
+        [BiaDtoField(Required = true, Type = "datetime", AsLocalDateTime = true)]
         public DateTimeOffset End { get; set; }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace BIA.Net.Core.Domain.Dto.Announcement
         /// <summary>
         /// Gets or sets the start.
         /// </summary>
-        [BiaDtoField(Required = true, Type = "datetime")]
+        [BiaDtoField(Required = true, Type = "datetime", AsLocalDateTime = true)]
         public DateTimeOffset Start { get; set; }
 
         /// <summary>

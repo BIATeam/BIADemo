@@ -13,6 +13,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Ioc.HealthChecks;
+    using BIA.Net.Core.Ioc.Param;
     using BIA.Net.Core.Presentation.Api.Features;
     using BIA.Net.Core.Presentation.Api.Features.HangfireDashboard;
     using BIA.Net.Core.Presentation.Api.StartupConfiguration;
@@ -86,9 +87,16 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api
             services.AddBiaApiFeatures(this.biaNetSection.ApiFeatures, this.configuration);
 
             // End BIA Standard service
+            ParamIocContainer param = new ParamIocContainer()
+            {
+                Collection = services,
+                Configuration = this.configuration,
+                IsApi = true,
+                IsUnitTest = false,
+            };
 
             // Configure IoC for classes not in the API project.
-            IocContainer.ConfigureContainer(services, this.configuration, true);
+            IocContainer.ConfigureContainer(param);
 
             // Configure health checks: liveness
             services.AddBiaHealthChecksLiveness();

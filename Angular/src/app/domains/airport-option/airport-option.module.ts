@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { storeKey } from './airport-option.contants';
+import { storeKey } from './airport-option.constants';
 import { reducers } from './store/airport-option.state';
 import { AirportOptionsEffects } from './store/airport-options-effects';
 

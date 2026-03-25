@@ -13,11 +13,10 @@ export class HangfireDas extends GenericDas {
     return this.http.put(this.route + 'randomReviewPlane/' + teamId, null);
   }
 
-  generateUnhandledError() {
-    return this.http.get(this.route + 'GenerateUnhandledError');
-  }
-
-  generateHandledError() {
-    return this.http.get(this.route + 'GenerateHandledError');
+  prepareBackgroundDownloadFileExample() {
+    return this.http.post(
+      this.route + 'PrepareBackgroundDownloadFileExample',
+      null
+    );
   }
 }

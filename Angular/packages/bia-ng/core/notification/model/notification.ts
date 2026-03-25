@@ -8,7 +8,7 @@ export interface Notification {
   description: string;
   type: OptionDto;
   read: boolean;
-  createdDate: string;
+  createdDate: Date;
   createdBy: OptionDto | null;
   notifiedUsers: OptionDto[];
   notifiedTeams: NotificationTeam[];
@@ -30,12 +30,20 @@ export enum NotificationType {
   Success = 3,
   Warning = 4,
   Error = 5,
+  DownloadReady = 6,
 }
 
 export interface NotificationData {
   route: string[] | null;
   display: string;
   teams: NotificationTeam[] | null;
+  downloadFileGuid: string | null;
+}
+
+export interface NotificationTranslation {
+  languageId: number;
+  title: string;
+  description: string;
 }
 
 export interface NotificationTranslation {

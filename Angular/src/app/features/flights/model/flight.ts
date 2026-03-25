@@ -22,7 +22,6 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
     Object.assign(new BiaFieldConfig('id', 'flight.id'), {
       type: PropType.String,
       isRequired: true,
-      isEditable: false,
       isOnlyInitializable: true,
     }),
     Object.assign(

@@ -1,14 +1,14 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { AbstractDas } from '@bia-team/bia-ng/core';
 import { TeamDefaultView } from '../model/team-default-view';
-import { View } from '../model/view';
+import { View, viewFieldsConfiguration } from '../model/view';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeamViewDas extends AbstractDas<View> {
   constructor(injector: Injector) {
-    super(injector, 'Views/TeamViews');
+    super(injector, 'Views/TeamViews', viewFieldsConfiguration);
   }
 
   public setDefaultView(defaultView: TeamDefaultView) {

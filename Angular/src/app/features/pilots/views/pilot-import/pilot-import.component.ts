@@ -4,9 +4,12 @@ import {
   BiaFormComponent,
   CrudItemImportComponent,
   CrudItemImportFormComponent,
+  CrudItemImportService,
+  SAME_LIST_FORM_MODELS,
 } from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 import { Pilot } from '../../model/pilot';
+import { PilotList } from '../../model/pilot-list';
 import { pilotCRUDConfiguration } from '../../pilot.constants';
 import { PilotService } from '../../services/pilot.service';
 
@@ -15,8 +18,15 @@ import { PilotService } from '../../services/pilot.service';
   templateUrl:
     '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
+  providers: [
+    CrudItemImportService,
+    { provide: SAME_LIST_FORM_MODELS, useValue: false },
+  ],
 })
-export class PilotImportComponent extends CrudItemImportComponent<Pilot> {
+export class PilotImportComponent extends CrudItemImportComponent<
+  PilotList,
+  Pilot
+> {
   constructor(
     protected injector: Injector,
     private pilotService: PilotService

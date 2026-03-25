@@ -1,11 +1,13 @@
 ﻿import { Injectable } from '@angular/core';
 import {
+  BiaDataChangeService,
   BiaMessageService,
   BiaOnlineOfflineService,
 } from '@bia-team/bia-ng/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { enableSignalrRefresh, storeKey } from '../airport-option.constants';
 import { AirportOptionDas } from '../services/airport-option-das.service';
 import { DomainAirportOptionsActions } from './airport-options-actions';
 /**
@@ -24,20 +26,26 @@ export class AirportOptionsEffects {
       /* Hit the Airports Index endpoint of our REST API */
       /* Dispatch LoadAllSuccess action to the central store with id list returned by the backend as id*/
       /* 'Airports Reducers' will take care of the rest */
+      filter(
+        () =>
+          enableSignalrRefresh !== true ||
+          this.dataChangeService.needsReload(storeKey) === true
+      ),
       switchMap(() =>
-        this.airportDas
+        this.airportOptionDas
           .getList({
             endpoint: 'allOptions',
             offlineMode: BiaOnlineOfflineService.isModeEnabled,
           })
           .pipe(
-            map(airports =>
-              DomainAirportOptionsActions.loadAllSuccess({
+            map(airports => {
+              this.dataChangeService.markReloaded(storeKey);
+              return DomainAirportOptionsActions.loadAllSuccess({
                 airports: airports?.sort((a, b) =>
                   a.display.localeCompare(b.display)
                 ),
-              })
-            ),
+              });
+            }),
             catchError(err => {
               if (
                 BiaOnlineOfflineService.isModeEnabled !== true ||
@@ -54,7 +62,8 @@ export class AirportOptionsEffects {
 
   constructor(
     private actions$: Actions,
-    private airportDas: AirportOptionDas,
-    private biaMessageService: BiaMessageService
+    private airportOptionDas: AirportOptionDas,
+    private biaMessageService: BiaMessageService,
+    private dataChangeService: BiaDataChangeService
   ) {}
 }

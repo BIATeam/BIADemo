@@ -21,7 +21,6 @@ export const viewCRUDConfiguration: CrudConfig<View> = new CrudConfig({
   displayHistorical: false,
   // Begin BIAToolKit Generation Ignore
   isCloneable: true,
-  featureNameSingular: 'view',
   // End BIAToolKit Generation Ignore
   useCalcMode: false,
   useSignalR: false,

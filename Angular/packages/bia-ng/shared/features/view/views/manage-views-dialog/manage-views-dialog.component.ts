@@ -51,6 +51,7 @@ export class ManageViewsDialogComponent implements OnInit, OnDestroy {
   display = false;
   @Input() tableStateKey: string;
   @Input() useViewTeamWithTypeId: number | null;
+  @Input() appendTo: any = 'body';
   protected sub = new Subscription();
 
   teams$: Observable<Team[]>;

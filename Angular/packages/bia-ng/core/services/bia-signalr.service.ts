@@ -46,6 +46,10 @@ export class BiaSignalRService {
     this.targetedFeatures = [];
   }
 
+  public getHubConnection(): HubConnection {
+    return this.hubConnection;
+  }
+
   public addMethod(
     methodName: string,
     newMethod: (...args: any[]) => void

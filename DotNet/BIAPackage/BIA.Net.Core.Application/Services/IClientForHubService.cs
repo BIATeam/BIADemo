@@ -39,5 +39,12 @@ namespace BIA.Net.Core.Application.Services
         /// <param name="objectToSerialize">context at json format.</param>
         /// <returns>Send message on an action.</returns>
         Task SendTargetedMessage(string parentKey, string featureName, string action, object objectToSerialize = null);
+
+        /// <summary>
+        /// Sends Message entity changed.
+        /// </summary>
+        /// <param name="storeKey">The store key.</param>
+        /// <returns>Send message on an action.</returns>
+        Task SendEntityChangedAsync(string storeKey);
     }
 }

@@ -14,16 +14,12 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using BIA.Net.Core.Common;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Infrastructure.Data;
-    using BIA.Net.Core.Infrastructure.Data.Repositories.HistoryRepositories;
+    using BIA.Net.Core.Ioc.Param;
     using Hangfire;
     using Hangfire.PostgreSql;
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.EntityFrameworkCore.Migrations;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Options;
     using NLog;
     using NLog.Extensions.Hosting;
     using NLog.Extensions.Logging;
@@ -31,7 +27,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
     using TheBIADevCompany.BIADemo.Application.Job;
 #endif
     using TheBIADevCompany.BIADemo.Crosscutting.Common;
-    using TheBIADevCompany.BIADemo.Infrastructure.Data;
+    using TheBIADevCompany.BIADemo.Crosscutting.Ioc;
 
     /// <summary>
     /// The base program class.
@@ -45,6 +41,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
         /// <returns>Task.</returns>
         public static async Task Main(string[] args)
         {
+#if BIA_USE_DATABASE
             AppContext.SetSwitch(BiaConstants.AppContextSwitch.Npgsql.EnableLegacyTimestampBehavior, true);
 
             var env = Environment.GetEnvironmentVariable(Constants.Application.Environment);
@@ -60,49 +57,24 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 .ConfigureServices((hostingContext, services) =>
                 {
                     IConfiguration configuration = hostingContext.Configuration;
-
-                    services.Configure<BiaHistoryRepositoryOptions>(options =>
-                    {
-                        options.AppVersion = Constants.Application.BackEndVersion;
-                    });
-
                     string connectionString = configuration.GetDatabaseConnectionString(BiaConstants.DatabaseConfiguration.DefaultKey);
+
+                    ParamIocContainer param = new ParamIocContainer()
+                    {
+                        Collection = services,
+                        Configuration = configuration,
+                        IsApi = false,
+                        IsUnitTest = false,
+                    };
+
+                    IocContainer.BiaConfigureInfrastructureDataContainerDbContext(
+                        param,
+                        dbKey: BiaConstants.DatabaseConfiguration.DefaultKey,
+                        fromDeployDB: true);
 
                     if (!string.IsNullOrWhiteSpace(connectionString))
                     {
                         DbProvider dbEngine = configuration.GetProvider(BiaConstants.DatabaseConfiguration.DefaultKey);
-
-                        if (dbEngine == DbProvider.PostGreSql)
-                        {
-                            services.AddDbContext<IDbContextDatabase, DataContextPostGreSql>(options =>
-                            {
-                                options.UseNpgsql(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
-                            });
-                        }
-                        else
-                        {
-                            services.AddDbContext<IDbContextDatabase, DataContext>(options =>
-                            {
-                                options.UseSqlServer(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
-                            });
-                        }
-
-                        services.AddDbContext<IQueryableUnitOfWork, DataContext>(options =>
-                        {
-                            if (dbEngine == DbProvider.PostGreSql)
-                            {
-                                options.UseNpgsql(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
-                            }
-                            else
-                            {
-                                options.UseSqlServer(connectionString);
-                                options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
-                            }
-                        });
-
                         services.AddHostedService<DeployDBService>();
 
                         // Comment those lines if you do not use hangfire
@@ -130,6 +102,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                             string projectName = configuration["Project:Name"];
                             RecurringJob.AddOrUpdate<WakeUpTask>($"{projectName}.{typeof(WakeUpTask).Name}", t => t.Run(), configuration["Tasks:WakeUp:CRON"]);
                             RecurringJob.AddOrUpdate<SynchronizeUserTask>($"{projectName}.{typeof(SynchronizeUserTask).Name}", t => t.Run(), configuration["Tasks:SynchronizeUser:CRON"]);
+                            RecurringJob.AddOrUpdate<CleanFileDownloadDataTask>($"{projectName}.{typeof(CleanFileDownloadDataTask).Name}", t => t.Run(), configuration["Tasks:CleanFileDownloadData:CRON"]);
 
                             // Begin BIADemo
                             RecurringJob.AddOrUpdate<WithPermissionTask>($"{projectName}.{typeof(WithPermissionTask).Name}", t => t.Run(), Cron.Never);
@@ -153,6 +126,7 @@ namespace TheBIADevCompany.BIADemo.DeployDB
                 .RunConsoleAsync();
 
             LogManager.GetLogger(typeof(Program).ToString()).Info("End of DeployDB");
+#endif
         }
     }
 }

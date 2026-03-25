@@ -4,6 +4,7 @@
   BiaFieldsConfig,
   BiaFormLayoutConfig,
   FixableDto,
+  OptionDto,
   VersionedDto,
 } from '@bia-team/bia-ng/models';
 import { PropType } from '@bia-team/bia-ng/models/enum';
@@ -12,7 +13,14 @@ import { PropType } from '@bia-team/bia-ng/models/enum';
 export interface Pilot extends BaseDto<string>, VersionedDto, FixableDto {
   siteId: number;
   identificationNumber: string;
-  flightHours: number | null;
+  firstName: string;
+  lastName: string;
+  birthdate: Date | null;
+  cplDate: Date;
+  baseAirport: OptionDto | null;
+  flightHours: number;
+  firstFlightDate: Date;
+  lastFlightDate: Date | null;
 }
 
 // TODO after creation of CRUD Pilot : adapt the field configuration
@@ -25,9 +33,43 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
         isRequired: true,
       }
     ),
+    Object.assign(new BiaFieldConfig('firstName', 'pilot.firstName'), {
+      type: PropType.String,
+      isRequired: true,
+    }),
+    Object.assign(new BiaFieldConfig('lastName', 'pilot.lastName'), {
+      type: PropType.String,
+      isRequired: true,
+    }),
+    Object.assign(new BiaFieldConfig('birthdate', 'pilot.birthdate'), {
+      type: PropType.Date,
+    }),
+    Object.assign(new BiaFieldConfig('cplDate', 'pilot.cplDate'), {
+      type: PropType.Date,
+      isRequired: true,
+    }),
+    Object.assign(new BiaFieldConfig('baseAirport', 'pilot.baseAirport'), {
+      type: PropType.OneToMany,
+    }),
     Object.assign(new BiaFieldConfig('flightHours', 'pilot.flightHours'), {
       type: PropType.Number,
+      isRequired: true,
     }),
+    Object.assign(
+      new BiaFieldConfig('firstFlightDate', 'pilot.firstFlightDate'),
+      {
+        type: PropType.DateTime,
+        isRequired: true,
+        asLocalDateTime: true,
+      }
+    ),
+    Object.assign(
+      new BiaFieldConfig('lastFlightDate', 'pilot.lastFlightDate'),
+      {
+        type: PropType.DateTime,
+        asLocalDateTime: true,
+      }
+    ),
     Object.assign(new BiaFieldConfig('rowVersion', 'pilot.rowVersion'), {
       isVisible: false,
       isVisibleInTable: false,

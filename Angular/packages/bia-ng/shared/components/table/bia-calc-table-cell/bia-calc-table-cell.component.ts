@@ -11,6 +11,7 @@ import {
 import { UntypedFormGroup } from '@angular/forms';
 import { BiaFieldConfig } from '@bia-team/bia-ng/models';
 import { PrimeTemplate } from 'primeng/api';
+import { MultiSelect } from 'primeng/multiselect';
 import { BiaTableInputComponent } from '../bia-table-input/bia-table-input.component';
 import { BiaTableOutputComponent } from '../bia-table-output/bia-table-output.component';
 
@@ -36,6 +37,7 @@ export class BiaCalcTableCellComponent<
   @Input() editFooterSignal: WritableSignal<boolean>;
   @Input() onChange: () => void;
   @Input() onComplexInput: (event: boolean) => void;
+  @Input() onPanelHide: (event: MultiSelect) => void;
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;

@@ -8,6 +8,7 @@ namespace BIA.Net.Core.Domain.Mapper
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Linq.Expressions;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Option;
 

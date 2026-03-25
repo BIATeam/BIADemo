@@ -20,7 +20,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
-import { Pilot } from '../../model/pilot';
+import { PilotList } from '../../model/pilot-list';
 
 @Component({
   selector: 'app-pilot-table',
@@ -49,7 +49,7 @@ import { Pilot } from '../../model/pilot';
     BiaCalcTableCellComponent,
   ],
 })
-export class PilotTableComponent extends CrudItemTableComponent<Pilot> {
+export class PilotTableComponent extends CrudItemTableComponent<PilotList> {
   constructor(
     public formBuilder: UntypedFormBuilder,
     public authService: AuthService,

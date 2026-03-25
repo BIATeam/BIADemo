@@ -2,7 +2,7 @@
   <div class="result">
     <strong>{{
       length
-        | i18nPlural: resultMessageMapping : translateService.currentLang
+        | i18nPlural: resultMessageMapping : translateService.getCurrentLang()
         | translate: { length: length | number }
     }}</strong>
   </div>

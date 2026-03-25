@@ -120,10 +120,6 @@ export class AnnouncementLayoutComponent implements OnChanges, OnDestroy {
       return;
     }
 
-    if (this.animationTimeoutId !== null) {
-      return;
-    }
-
     if (this.currentPhase === 'stay') {
       this.scheduleNextPhase(this.displayDurationMs);
     } else {

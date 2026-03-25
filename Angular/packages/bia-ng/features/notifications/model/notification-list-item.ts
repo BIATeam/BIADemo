@@ -11,7 +11,7 @@ export interface NotificationListItem extends BaseDto {
   descriptionTranslated: string;
   type: OptionDto;
   read: boolean;
-  createdDate: string;
+  createdDate: Date;
   createdBy: OptionDto | null;
   siteId: number;
   notifiedUsers: OptionDto[];
@@ -34,6 +34,7 @@ export const notificationFieldsConfiguration: BiaFieldsConfig<NotificationListIt
         new BiaFieldConfig('createdDate', 'notification.createdDate'),
         {
           type: PropType.DateTime,
+          asLocalDateTime: true,
         }
       ),
       Object.assign(new BiaFieldConfig('createdBy', 'notification.createdBy'), {

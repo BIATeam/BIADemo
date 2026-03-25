@@ -1,12 +1,40 @@
-# $DEPLOYDB_answer = Read-Host "Do you want the feature DEPLOYDB ? (Y/N)"
-# $HANGFIRE_answer = Read-Host "Do you want the feature HANGFIRE ? (Y/N)"
-$SERVICE_API_answer = Read-Host "Do you want the feature BACK_TO_BACK_AUTH ? (Y/N)"
-$FRONT_FEATURE_answer = Read-Host "Do you want the feature FRONT_FEATURE ? (Y/N)"
-$USE_DATABASE_answer = Read-Host "Do you want the feature BIA_USE_DATABASE ? (Y/N)"
-$USER_CUSTOM_FIELDS_BACK_answer = Read-Host "Do you want the feature USER_CUSTOM_FIELDS_BACK ? (Y/N)"
-$USER_CUSTOM_FIELDS_FRONT_answer = Read-Host "Do you want the feature USER_CUSTOM_FIELDS_FRONT ? (Y/N)"
+$TestListNumber = Read-Host "Select the Test list number of the Bia Doc ? (5: Other))"
+
+$BIA_BACK_TO_BACK_AUTH_answer = "N"
+$FRONT_FEATURE_answer = "N"
+$USE_DATABASE_answer = "N"
+$USER_CUSTOM_FIELDS_BACK_answer = "N"
+$USER_CUSTOM_FIELDS_FRONT_answer = "N"
 
 $selected_features = @()
+
+if ($TestListNumber -eq 2) {
+    $BIA_BACK_TO_BACK_AUTH_answer = "Y"
+    $FRONT_FEATURE_answer = "Y"
+    $USE_DATABASE_answer = "Y"
+    $USER_CUSTOM_FIELDS_BACK_answer = "Y"
+    $USER_CUSTOM_FIELDS_FRONT_answer = "Y"
+}
+
+if ($TestListNumber -eq 3) {
+    $BIA_BACK_TO_BACK_AUTH_answer = "Y"
+    $USE_DATABASE_answer = "Y"
+}
+
+if ($TestListNumber -eq 4) {
+    $USE_DATABASE_answer = "Y"
+}
+
+if ($TestListNumber -gt 4) {
+    # $DEPLOYDB_answer = Read-Host "Do you want the feature DEPLOYDB ? (Y/N)"
+    # $HANGFIRE_answer = Read-Host "Do you want the feature HANGFIRE ? (Y/N)"
+    $BIA_BACK_TO_BACK_AUTH_answer = Read-Host "Do you want the feature BACK_TO_BACK_AUTH ? (Y/N)"
+    $FRONT_FEATURE_answer = Read-Host "Do you want the feature FRONT_FEATURE ? (Y/N)"
+    $USE_DATABASE_answer = Read-Host "Do you want the feature BIA_USE_DATABASE ? (Y/N)"
+    $USER_CUSTOM_FIELDS_BACK_answer = Read-Host "Do you want the feature USER_CUSTOM_FIELDS_BACK ? (Y/N)"
+    $USER_CUSTOM_FIELDS_FRONT_answer = Read-Host "Do you want the feature USER_CUSTOM_FIELDS_FRONT ? (Y/N)"
+}
+
 
 # if ($DEPLOYDB_answer -eq 'Y') {
 #     $selected_features += 'BIA_DEPLOYDB'
@@ -16,7 +44,7 @@ $selected_features = @()
 #     $selected_features += 'BIA_HANGFIRE'
 # }
 
-if ($SERVICE_API_answer -eq 'Y') {
+if ($BIA_BACK_TO_BACK_AUTH_answer -eq 'Y') {
     $selected_features += 'BIA_BACK_TO_BACK_AUTH'
 }
 

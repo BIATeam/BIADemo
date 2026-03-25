@@ -9,6 +9,7 @@ namespace TheBIADevCompany.BIADemo.WorkerService
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.Keycloak;
+    using BIA.Net.Core.Ioc.Param;
     using BIA.Net.Core.Presentation.Common.Features;
     using BIA.Net.Core.WorkerService.Features;
     using BIA.Net.Core.WorkerService.Features.DataBaseHandler;
@@ -91,8 +92,16 @@ namespace TheBIADevCompany.BIADemo.WorkerService
             // End BIADemo
 #endif
 
+            ParamIocContainer param = new ParamIocContainer()
+            {
+                Collection = services,
+                Configuration = this.configuration,
+                IsApi = false,
+                IsUnitTest = false,
+            };
+
             // Configure IoC for classes not in the API project.
-            IocContainer.ConfigureContainer(services, this.configuration, false);
+            IocContainer.ConfigureContainer(param);
         }
     }
 }

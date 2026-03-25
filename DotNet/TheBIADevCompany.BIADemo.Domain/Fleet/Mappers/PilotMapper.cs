@@ -6,11 +6,11 @@
 namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq.Expressions;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Common.Extensions;
     using BIA.Net.Core.Domain;
+    using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Mapper;
     using TheBIADevCompany.BIADemo.Domain.Dto.Fleet;
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
@@ -28,8 +28,29 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
                 return new ExpressionCollection<Pilot>(base.ExpressionCollection)
                 {
                     { HeaderName.IdentificationNumber, pilot => pilot.IdentificationNumber },
+                    { HeaderName.FirstName, pilot => pilot.FirstName },
+                    { HeaderName.LastName, pilot => pilot.LastName },
+                    { HeaderName.Birthdate, pilot => pilot.Birthdate },
+                    { HeaderName.CPLDate, pilot => pilot.CPLDate },
+                    { HeaderName.BaseAirport, pilot => pilot.BaseAirport != null ? pilot.BaseAirport.Name : null },
                     { HeaderName.FlightHours, pilot => pilot.FlightHours },
+                    { HeaderName.FirstFlightDate, pilot => pilot.FirstFlightDate },
+                    { HeaderName.LastFlightDate, pilot => pilot.LastFlightDate },
                 };
+            }
+        }
+
+        /// <inheritdoc />
+        public override ExpressionCollection<Pilot> ExpressionCollectionFilterIn
+        {
+            get
+            {
+                return new ExpressionCollection<Pilot>(
+                    base.ExpressionCollectionFilterIn,
+                    new ExpressionCollection<Pilot>()
+                    {
+                        { HeaderName.BaseAirport, pilot => pilot.BaseAirport.Id },
+                    });
             }
         }
 
@@ -55,7 +76,16 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             }
 
             entity.IdentificationNumber = dto.IdentificationNumber;
+            entity.FirstName = dto.FirstName;
+            entity.LastName = dto.LastName;
+            entity.Birthdate = dto.Birthdate;
+            entity.CPLDate = dto.CPLDate;
+
+            // Map relationship 0..1-* : BaseAirport
+            entity.BaseAirportId = dto.BaseAirport?.Id;
             entity.FlightHours = dto.FlightHours;
+            entity.FirstFlightDate = dto.FirstFlightDate;
+            entity.LastFlightDate = dto.LastFlightDate;
         }
 
         /// <inheritdoc />
@@ -63,8 +93,23 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
         {
             return base.EntityToDto().CombineMapping(entity => new PilotDto
             {
+                SiteId = entity.SiteId,
                 IdentificationNumber = entity.IdentificationNumber,
+                FirstName = entity.FirstName,
+                LastName = entity.LastName,
+                Birthdate = entity.Birthdate,
+                CPLDate = entity.CPLDate,
+
+                // Map relationship 0..1-* : BaseAirport
+                BaseAirport = entity.BaseAirport != null ? new OptionDto
+                {
+                    Id = entity.BaseAirport.Id,
+                    Display = entity.BaseAirport.Name,
+                }
+                : null,
                 FlightHours = entity.FlightHours,
+                FirstFlightDate = entity.FirstFlightDate,
+                LastFlightDate = entity.LastFlightDate,
             });
         }
 
@@ -74,7 +119,14 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
                 { HeaderName.IdentificationNumber, () => CSVString(dto.IdentificationNumber) },
+                { HeaderName.FirstName, () => CSVString(dto.FirstName) },
+                { HeaderName.LastName, () => CSVString(dto.LastName) },
+                { HeaderName.Birthdate, () => CSVDate(dto.Birthdate) },
+                { HeaderName.CPLDate, () => CSVDate(dto.CPLDate) },
+                { HeaderName.BaseAirport, () => CSVString(dto.BaseAirport?.Display) },
                 { HeaderName.FlightHours, () => CSVNumber(dto.FlightHours) },
+                { HeaderName.FirstFlightDate, () => CSVDateTime(dto.FirstFlightDate.UtcDateTime) },
+                { HeaderName.LastFlightDate, () => CSVDateTime(dto.LastFlightDate?.UtcDateTime) },
             };
         }
 
@@ -85,26 +137,60 @@ namespace TheBIADevCompany.BIADemo.Domain.Fleet.Mappers
             dto.SiteId = entity.SiteId;
         }
 
-        /// <inheritdoc />
-        public override Expression<Func<Pilot, object>>[] IncludesForUpdate()
-        {
-            return [];
-        }
-
         /// <summary>
         /// Header names.
         /// </summary>
         public struct HeaderName
         {
             /// <summary>
-            /// Header name for identificationNumber.
+            /// Header name for site id.
+            /// </summary>
+            public const string SiteId = "siteId";
+
+            /// <summary>
+            /// Header name for identification number.
             /// </summary>
             public const string IdentificationNumber = "identificationNumber";
 
             /// <summary>
-            /// Header name for flightHours.
+            /// Header name for first name.
+            /// </summary>
+            public const string FirstName = "firstName";
+
+            /// <summary>
+            /// Header name for last name.
+            /// </summary>
+            public const string LastName = "lastName";
+
+            /// <summary>
+            /// Header name for birthdate.
+            /// </summary>
+            public const string Birthdate = "birthdate";
+
+            /// <summary>
+            /// Header name for CPL date.
+            /// </summary>
+            public const string CPLDate = "cplDate";
+
+            /// <summary>
+            /// Header name for base airport.
+            /// </summary>
+            public const string BaseAirport = "baseAirport";
+
+            /// <summary>
+            /// Header name for flight hours.
             /// </summary>
             public const string FlightHours = "flightHours";
+
+            /// <summary>
+            /// Header name for first flight date.
+            /// </summary>
+            public const string FirstFlightDate = "firstFlightDate";
+
+            /// <summary>
+            /// Header name for last flight date.
+            /// </summary>
+            public const string LastFlightDate = "lastFlightDate";
         }
     }
 }

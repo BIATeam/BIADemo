@@ -4,6 +4,7 @@
 
 namespace BIA.Net.Core.Domain.Dto.Notification
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -28,5 +29,10 @@ namespace BIA.Net.Core.Domain.Dto.Notification
         /// Only level 1 teams of different types.
         /// </summary>
         public List<NotificationTeamDto> Teams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the unique identifier for the downloadable file.
+        /// </summary>
+        public Guid? DownloadFileGuid { get; set; }
     }
 }

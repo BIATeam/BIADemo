@@ -1,12 +1,13 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { AbstractDas } from '@bia-team/bia-ng/core';
-import { Pilot } from '../model/pilot';
+import { Pilot, pilotFieldsConfiguration } from '../model/pilot';
+import { PilotList } from '../model/pilot-list';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PilotDas extends AbstractDas<Pilot> {
+export class PilotDas extends AbstractDas<PilotList, Pilot> {
   constructor(injector: Injector) {
-    super(injector, 'Pilots');
+    super(injector, 'Pilots', pilotFieldsConfiguration);
   }
 }

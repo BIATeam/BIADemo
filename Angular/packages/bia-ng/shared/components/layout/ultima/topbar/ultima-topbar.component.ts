@@ -19,6 +19,7 @@ import {
   AppSettingsService,
   AuthService,
   BiaAppConstantsService,
+  BiaFileDownloaderService,
   BiaMessageService,
   BiaTranslationService,
   CoreNotificationsActions,
@@ -108,7 +109,8 @@ export class BiaUltimaTopbarComponent
     public el: ElementRef,
     protected readonly biaMessageService: BiaMessageService,
     protected renderer: Renderer2,
-    protected appSettingsService: AppSettingsService
+    protected appSettingsService: AppSettingsService,
+    protected fileDownloaderService: BiaFileDownloaderService
   ) {
     this.isIE = this.platform.TRIDENT;
   }
@@ -157,6 +159,8 @@ export class BiaUltimaTopbarComponent
           });
         }
         this.router.navigate(data.route);
+      } else if (data?.downloadFileGuid) {
+        this.fileDownloaderService.downloadFile(data.downloadFileGuid);
       } else if (notification.id) {
         this.router.navigate(['/notifications/', notification.id, 'detail']);
       } else {

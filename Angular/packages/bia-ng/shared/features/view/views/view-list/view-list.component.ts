@@ -1,5 +1,4 @@
-﻿import { CommonModule } from '@angular/common';
-import {
+﻿import {
   Component,
   EventEmitter,
   Input,
@@ -47,7 +46,6 @@ import { ManageViewsDialogComponent } from '../manage-views-dialog/manage-views-
     TranslateModule,
     FloatLabel,
     ButtonDirective,
-    CommonModule,
     Tooltip,
     ManageViewsDialogComponent,
   ],

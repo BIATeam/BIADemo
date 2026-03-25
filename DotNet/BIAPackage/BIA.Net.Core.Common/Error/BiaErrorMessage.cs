@@ -105,6 +105,21 @@ namespace BIA.Net.Core.Common.Error
             AddTranslation(languageEnglishId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "Can't add view for these teams.");
             AddTranslation(languageFrenchId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "Impossible d'ajouter une vue pour ces équipes.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "No se puede agregar vista para estos equipos.");
+
+            // File to download expired
+            AddTranslation(languageEnglishId, (int)BiaErrorId.FileToDownloadExpired, "The file you are trying to download has expired. Please regenerate the file and try again.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.FileToDownloadExpired, "Le fichier que vous essayez de télécharger a expiré. Veuillez régénérer le fichier et réessayer.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.FileToDownloadExpired, "El archivo que está intentando descargar ha expirado. Por favor regenere el archivo e inténtelo de nuevo.");
+
+            // File to download not found
+            AddTranslation(languageEnglishId, (int)BiaErrorId.FileToDownloadNotFound, "The file you are trying to download was not found.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.FileToDownloadNotFound, "Le fichier que vous essayez de télécharger est introuvable.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.FileToDownloadNotFound, "El archivo que está intentando descargar no fue encontrado.");
+
+            // Unauthorized file to download
+            AddTranslation(languageEnglishId, (int)BiaErrorId.UnauthorizeFileToDownload, "You are not authorized to download this file.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.UnauthorizeFileToDownload, "Vous n'êtes pas autorisé à télécharger ce fichier.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.UnauthorizeFileToDownload, "No está autorizado para descargar este archivo.");
         }
 
         /// <summary>

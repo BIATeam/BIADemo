@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Notification
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Notification;
 #pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Domain.Notification.Entities;
@@ -29,23 +30,25 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Notification
     /// <typeparam name="TBaseNotificationDto">The type of the notification DTO.</typeparam>
     /// <typeparam name="TBaseNotificationListItemDto">The type of the notification list item DTO.</typeparam>
     /// <typeparam name="TBaseNotification">The type of the notification entity.</typeparam>
-    public abstract class BaseNotificationsController<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> : BiaControllerBase
+    /// <typeparam name="TPagingFilterFormatDto">The type of filter.</typeparam>
+    public abstract class BaseNotificationsController<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TPagingFilterFormatDto> : BiaControllerBase
         where TBaseNotificationDto : BaseNotificationDto, new()
         where TBaseNotificationListItemDto : BaseNotificationListItemDto, new()
         where TBaseNotification : BaseNotification, new()
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// The notification application service.
         /// </summary>
-        private readonly IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> notificationService;
+        private readonly IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TPagingFilterFormatDto> notificationService;
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseNotificationsController{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification}"/> class.
+        /// Initializes a new instance of the <see cref="BaseNotificationsController{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TPagingFilterFormatDto}"/> class.
         /// </summary>
         /// <param name="notificationService">The notification service.</param>
         /// <param name="biaClaimsPrincipalService">The bia claims principal service.</param>
-        protected BaseNotificationsController(IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification> notificationService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
+        protected BaseNotificationsController(IBaseNotificationAppService<TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TPagingFilterFormatDto> notificationService, IBiaClaimsPrincipalService biaClaimsPrincipalService)
         {
             this.notificationService = notificationService;
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
@@ -61,7 +64,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(BiaPermissionId.Notification_List_Access))]
-        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
+        public async Task<IActionResult> GetAll([FromBody] TPagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
@@ -78,7 +81,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Notification
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(BiaPermissionId.Notification_List_Access))]
-        public async Task<IActionResult> GetAllCrossSite([FromBody] PagingFilterFormatDto filters)
+        public async Task<IActionResult> GetAllCrossSite([FromBody] TPagingFilterFormatDto filters)
         {
             var (results, total) = await this.notificationService.GetRangeWithAllAccessAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
@@ -344,7 +347,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.Notification
         /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
-        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] TPagingFilterFormatDto filters)
         {
             byte[] buffer = await this.notificationService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Notifications{BiaConstants.Csv.Extension}");

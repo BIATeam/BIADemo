@@ -1,5 +1,6 @@
 ﻿import { Injector } from '@angular/core';
 import {
+  BiaFieldsConfig,
   DataResult,
   DeleteParam,
   DeletesParam,
@@ -18,36 +19,56 @@ import { Observable } from 'rxjs';
 import { GenericDas } from './generic-das.service';
 
 export abstract class AbstractDas<
-  TOutList,
-  TOut = TOutList,
-  TIn = Pick<TOut, Exclude<keyof TOut, 'id'>>,
+  TOutListItem,
+  TOutSingleItem = TOutListItem,
+  TIn = Pick<TOutSingleItem, Exclude<keyof TOutSingleItem, 'id'>>,
 > extends GenericDas {
-  constructor(injector: Injector, endpoint: string) {
+  private localTimeFields: string[] | undefined;
+
+  constructor(
+    injector: Injector,
+    endpoint: string,
+    biaFieldsConfig?: BiaFieldsConfig<TOutSingleItem>
+  ) {
     super(injector, endpoint);
+    this.setLocalTimeFields(biaFieldsConfig);
   }
 
-  getList(param?: GetListParam): Observable<TOutList[]> {
-    return this.getListItems<TOutList>(param);
+  private setLocalTimeFields(
+    biaFieldsConfig?: BiaFieldsConfig<TOutSingleItem>
+  ) {
+    this.localTimeFields =
+      biaFieldsConfig?.columns
+        .filter(field => field.asLocalDateTime === true)
+        .map(field => field.field as string) ?? [];
   }
 
-  getListByPost(param: GetListByPostParam): Observable<DataResult<TOutList[]>> {
-    return this.getListItemsByPost<TOutList>(param);
+  getList(param?: GetListParam): Observable<TOutListItem[]> {
+    return this.getListItems<TOutListItem>(param);
   }
 
-  get(param?: GetParam): Observable<TOut> {
-    return this.getItem<TOut>(param);
+  getListByPost(
+    param: GetListByPostParam
+  ): Observable<DataResult<TOutListItem[]>> {
+    return this.getListItemsByPost<TOutListItem>(param);
+  }
+
+  get(param?: GetParam): Observable<TOutSingleItem> {
+    return this.getItem<TOutSingleItem>(param);
   }
 
   save(param: SaveParam<TIn>) {
-    return this.saveItem<TIn, TOut>(param);
+    return this.saveItem<TIn, TOutSingleItem>(param);
   }
 
   put(param: PutParam<TIn>) {
-    return this.putItem<TIn, TOut>(param);
+    param.localTimeFields = this.localTimeFields;
+    return this.putItem<TIn, TOutSingleItem>(param);
   }
 
   post(param: PostParam<TIn>) {
-    return this.postItem<TIn, TOut>(param);
+    param.localTimeFields = this.localTimeFields;
+    return this.postItem<TIn, TOutSingleItem>(param);
   }
 
   delete(param: DeleteParam) {
@@ -62,8 +83,8 @@ export abstract class AbstractDas<
     return this.getItemFile(event, endpoint);
   }
 
-  updateFixedStatus(param: UpdateFixedStatusParam): Observable<TOut> {
-    return this.updateFixedStatusItem<TOut>(param);
+  updateFixedStatus(param: UpdateFixedStatusParam): Observable<TOutSingleItem> {
+    return this.updateFixedStatusItem<TOutSingleItem>(param);
   }
 
   getHistorical(param: GetHistoricalParam): Observable<HistoricalEntryDto[]> {

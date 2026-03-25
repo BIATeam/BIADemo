@@ -21,6 +21,7 @@ import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
 } from '@bia-team/bia-ng/models';
+import { MotionOptions } from '@primeuix/motion';
 import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { BaseComponent } from 'primeng/basecomponent';
@@ -30,7 +31,6 @@ import { InputNumber } from 'primeng/inputnumber';
 import { InputText } from 'primeng/inputtext';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
-import { Subscription } from 'rxjs';
 import { CrudHelperService } from '../../../services/crud-helper.service';
 import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.component';
 import { DictOptionDto } from '../bia-table/dict-option-dto';
@@ -39,7 +39,7 @@ import { DictOptionDto } from '../bia-table/dict-option-dto';
   selector: 'bia-table-input',
   templateUrl: './bia-table-input.component.html',
   styleUrls: ['./bia-table-input.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -63,10 +63,14 @@ export class BiaTableInputComponent<CrudItem>
 
   @Output() valueChange = new EventEmitter<void>();
   @Output() complexInput = new EventEmitter<boolean>();
+  @Output() panelHide = new EventEmitter<MultiSelect>();
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificInputTemplate: TemplateRef<any>;
-  protected sub = new Subscription();
+
+  complexInputMotionOptions: MotionOptions = {
+    onBeforeLeave: () => this.onComplexInput(false),
+  };
 
   getDisplayDateFormat(
     displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null
@@ -107,8 +111,7 @@ export class BiaTableInputComponent<CrudItem>
   }
 
   onPanelHide(multiselect: MultiSelect) {
-    multiselect.el.nativeElement.querySelector('input')?.focus();
-    this.onComplexInput(false);
+    this.panelHide.emit(multiselect);
   }
 
   onMouseDown(element: any, event: MouseEvent) {

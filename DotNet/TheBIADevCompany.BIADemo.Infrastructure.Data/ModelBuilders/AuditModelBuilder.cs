@@ -6,12 +6,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 {
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
     using Microsoft.EntityFrameworkCore;
-
+#if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
 
     // End BIADemo
-#if BIA_FRONT_FEATURE
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
 
@@ -26,17 +25,29 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
             base.CreateModel(modelBuilder);
 #if BIA_FRONT_FEATURE
             this.CreateUserAuditModel<UserAudit, User>(modelBuilder);
-#endif
 
-            // Add here the project specific audit model creation.
             // Begin BIADemo
             CreateEngineAuditModel(modelBuilder);
             CreatePlaneAirportAuditModel(modelBuilder);
             CreatePlanePlaneTypeAuditModel(modelBuilder);
 
             // End BIADemo
+#endif
         }
 
+        /// <inheritdoc/>
+        protected override void CreateAuditLogModel(ModelBuilder modelBuilder)
+        {
+            base.CreateAuditLogModel(modelBuilder);
+        }
+
+        /// <inheritdoc/>
+        protected override void CreateUserAuditModel<TAuditUser, TUser>(ModelBuilder modelBuilder)
+        {
+            base.CreateUserAuditModel<TAuditUser, TUser>(modelBuilder);
+        }
+
+#if BIA_FRONT_FEATURE
         // Begin BIADemo
 
         /// <summary>
@@ -72,5 +83,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         }
 
         // End BIADemo
+#endif
     }
 }

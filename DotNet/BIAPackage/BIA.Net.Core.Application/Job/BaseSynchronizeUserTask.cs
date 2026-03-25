@@ -7,6 +7,7 @@ namespace BIA.Net.Core.Application.Job
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.User;
     using BIA.Net.Core.Common.Configuration;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
@@ -21,16 +22,18 @@ namespace BIA.Net.Core.Application.Job
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public abstract class BaseSynchronizeUserTask<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> : BaseJob
+    /// <typeparam name="TPagingFilterFormatDto">The type of filter.</typeparam>
+    public abstract class BaseSynchronizeUserTask<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> : BaseJob
         where TUserDto : BaseUserDto, new()
         where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// The user service.
         /// </summary>
-        private readonly IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService;
+        private readonly IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> userService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -38,12 +41,12 @@ namespace BIA.Net.Core.Application.Job
         private readonly BiaNetSection biaNetSection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseSynchronizeUserTask{TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory}"/> class.
+        /// Initializes a new instance of the <see cref="BaseSynchronizeUserTask{TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto}"/> class.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <param name="userService">The user app service.</param>
         /// <param name="logger">logger.</param>
-        protected BaseSynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService, ILogger<BaseSynchronizeUserTask<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory>> logger)
+        protected BaseSynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> userService, ILogger<BaseSynchronizeUserTask<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto>> logger)
             : base(configuration, logger)
         {
             this.userService = userService;

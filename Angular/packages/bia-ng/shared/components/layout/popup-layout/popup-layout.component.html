@@ -1,12 +1,13 @@
 <p-dialog
   header="{{ this.popupTitle | translate }}"
   [focusOnShow]="false"
-  [visible]="true"
+  [(visible)]="popupVisible"
   [modal]="true"
-  [closable]="false"
+  [closable]="popupClosable"
   [maximizable]="this.maximizable"
   [style]="this.style"
-  [contentStyle]="{ overflow: 'auto' }">
+  [contentStyle]="{ overflow: 'auto' }"
+  (onHide)="onPopupHide()">
   <ng-template #dynamic></ng-template>
 </p-dialog>
 <router-outlet></router-outlet>

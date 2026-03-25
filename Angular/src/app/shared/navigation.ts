@@ -163,6 +163,11 @@ export const NAVIGATION: BiaNavigation[] = [
     path: ['/hangfire'],
     icon: 'pi pi-send',
   },
+  {
+    labelKey: 'app.examples',
+    path: ['/examples'],
+    icon: 'pi pi-desktop',
+  },
   // End BIADemo
   {
     labelKey: 'bia.administration',

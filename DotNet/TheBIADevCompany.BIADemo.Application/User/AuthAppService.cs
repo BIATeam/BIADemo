@@ -30,13 +30,14 @@ namespace TheBIADevCompany.BIADemo.Application.User
     using TheBIADevCompany.BIADemo.Domain.User;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
-
+#if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Application.Site;
     using TheBIADevCompany.BIADemo.Domain.Api.RolesForApp;
     using TheBIADevCompany.BIADemo.Domain.RepoContract;
 
     // End BIADemo
+#endif
 
     /// <summary>
     /// Auth App Service.
@@ -44,10 +45,17 @@ namespace TheBIADevCompany.BIADemo.Application.User
 #pragma warning disable SA1611 // Element parameters should be documented
     public class AuthAppService(
 #if BIA_FRONT_FEATURE
-        IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory> userAppService,
+        IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto> userAppService,
         IBaseTeamAppService<TeamTypeId> teamAppService,
         IRoleAppService roleAppService,
         IIdentityProviderRepository<UserFromDirectory> identityProviderRepository,
+
+        // Begin BIADemo
+        IBiaDemoRoleApiRepository roleApiRepository,
+        ISiteAppService siteAppService,
+        IMemberAppService memberAppService,
+
+        // End BIADemo
 #endif
         IJwtFactory jwtFactory,
         IPrincipal principal,
@@ -56,13 +64,6 @@ namespace TheBIADevCompany.BIADemo.Application.User
         IConfiguration configuration,
         IOptions<BiaNetSection> biaNetconfiguration,
         IUserDirectoryRepository<UserFromDirectoryDto, UserFromDirectory> userDirectoryHelper,
-
-        // Begin BIADemo
-        IBiaDemoRoleApiRepository roleApiRepository,
-        ISiteAppService siteAppService,
-        IMemberAppService memberAppService,
-
-        // End BIADemo
         ILdapRepositoryHelper ldapRepositoryHelper,
         IPermissionService permissionService)
 #if BIA_FRONT_FEATURE

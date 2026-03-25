@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 18
-VisualStudioVersion = 18.0.11222.15
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36811.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 - Presentation", "01 - Presentation", "{CD137582-30F5-4875-8481-C9017FAC9AE3}"
 EndProject
@@ -36,6 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AdditionalFiles", "Addition
 		.gitignore = .gitignore
 		BIA.ruleset = BIA.ruleset
 		Directory.Build.props = Directory.Build.props
+		Directory.Packages.Bia.props = Directory.Packages.Bia.props
 		Directory.Packages.Project.props = Directory.Packages.Project.props
 		..\README.md = ..\README.md
 		Switch-To-Nuget.ps1 = Switch-To-Nuget.ps1
@@ -47,6 +48,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBIADevCompany.BIADemo.Test", "TheBIADevCompany.BIADemo.Test\TheBIADevCompany.BIADemo.Test.csproj", "{99D1E791-6C11-4512-9779-1540FCAAA18C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheBIADevCompany.BIADemo.DeployDB", "TheBIADevCompany.BIADemo.DeployDB\TheBIADevCompany.BIADemo.DeployDB.csproj", "{56D0D92E-471F-48F9-B0C1-A801BCE01F9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer", "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.csproj", "{56DF8673-2AA4-81E8-710C-673318CCE3ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL", "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL\TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.csproj", "{25329BFA-5C93-4DCE-B46A-6D00A31CD874}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -190,6 +195,30 @@ Global
 		{56D0D92E-471F-48F9-B0C1-A801BCE01F9B}.Release|x64.Build.0 = Release|Any CPU
 		{56D0D92E-471F-48F9-B0C1-A801BCE01F9B}.Release|x86.ActiveCfg = Release|Any CPU
 		{56D0D92E-471F-48F9-B0C1-A801BCE01F9B}.Release|x86.Build.0 = Release|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Debug|x64.Build.0 = Debug|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Debug|x86.Build.0 = Debug|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Release|x64.ActiveCfg = Release|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Release|x64.Build.0 = Release|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Release|x86.ActiveCfg = Release|Any CPU
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED}.Release|x86.Build.0 = Release|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Debug|x64.Build.0 = Debug|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Debug|x86.Build.0 = Debug|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Release|x64.ActiveCfg = Release|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Release|x64.Build.0 = Release|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Release|x86.ActiveCfg = Release|Any CPU
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +235,8 @@ Global
 		{6C976803-D3F2-44B0-B7F6-6B8AAD8DD333} = {CD137582-30F5-4875-8481-C9017FAC9AE3}
 		{99D1E791-6C11-4512-9779-1540FCAAA18C} = {416ECC3A-996F-4D16-BE5F-0774094FCA27}
 		{56D0D92E-471F-48F9-B0C1-A801BCE01F9B} = {CD137582-30F5-4875-8481-C9017FAC9AE3}
+		{56DF8673-2AA4-81E8-710C-673318CCE3ED} = {C9EE7482-A883-4D78-86C1-9575FDF7C1BE}
+		{25329BFA-5C93-4DCE-B46A-6D00A31CD874} = {C9EE7482-A883-4D78-86C1-9575FDF7C1BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6D07EDEA-2197-4E6C-8665-3D76E7D31E14}

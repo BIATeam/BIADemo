@@ -106,17 +106,17 @@ export class NotificationSignalRService {
   protected isInMyDisplay(notification: Notification) {
     const decryptedToken = this.authService.getDecryptedToken();
 
-    // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers
+    // OK if the current user is amongst the notifiedUsers
     const okUser: boolean =
       notification.notifiedUsers &&
-      notification.notifiedUsers.length >= 0 &&
+      notification.notifiedUsers.length > 0 &&
       notification.notifiedUsers.some(u => u.id === decryptedToken.id);
 
-    // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
+    // OK if the current user is part of one of the notifiedTeams.
     // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
     const okTeam: boolean =
-      !notification.notifiedTeams ||
-      notification.notifiedTeams.length === 0 ||
+      notification.notifiedTeams &&
+      notification.notifiedTeams.length > 0 &&
       notification.notifiedTeams.some(notifiedTeam =>
         this.myTeams.some(myTeam => {
           if (
@@ -135,7 +135,7 @@ export class NotificationSignalRService {
         })
       );
 
-    // V5: see nominative notification even if not in the team or role
+    // Ok if no team or role has been specified (means that the notification is for everyone)
     const noTeamAndNoUser: boolean =
       (!notification.notifiedUsers ||
         notification.notifiedUsers.length === 0) &&

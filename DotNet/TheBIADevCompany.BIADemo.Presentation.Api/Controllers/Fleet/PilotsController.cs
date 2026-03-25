@@ -60,6 +60,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         {
 #if UseHubForClientInPilot
             this.clientForHubService = clientForHubService;
+            this.EntityName = "pilot";
+            this.EntityNamePlural = "pilots";
 #endif
             this.pilotService = pilotService;
         }
@@ -77,6 +79,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
         {
             var (results, total) = await this.pilotService.GetRangeAsync(filters);
+            this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
+            return this.Ok(results);
+        }
+
+        /// <summary>
+        /// Get all pilots with filters.
+        /// </summary>
+        /// <param name="filters">The filters.</param>
+        /// <returns>The list of pilots.</returns>
+        [HttpPost("allItems")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = nameof(PermissionId.Pilot_List_Access))]
+        public async Task<IActionResult> GetAllItems([FromBody] PagingFilterFormatDto filters)
+        {
+            var (results, total) = await this.pilotService.GetRangeItemsAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
             return this.Ok(results);
         }
@@ -127,7 +146,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var createdDto = await this.pilotService.AddAsync(dto);
 #if UseHubForClientInPilot
-                await this.clientForHubService.SendTargetedMessage(createdDto.SiteId.ToString(), "pilots", "refresh-pilots");
+                await this.SendEntityChangedAsync(createdDto.SiteId.ToString());
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -166,7 +185,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var updatedDto = await this.pilotService.UpdateAsync(dto);
 #if UseHubForClientInPilot
-                await this.clientForHubService.SendTargetedMessage(updatedDto.SiteId.ToString(), "pilots", "refresh-pilots");
+                await this.SendEntityChangedAsync(updatedDto.SiteId.ToString());
 #endif
                 return this.Ok(updatedDto);
             }
@@ -210,7 +229,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDto = await this.pilotService.RemoveAsync(id);
 #if UseHubForClientInPilot
-                await this.clientForHubService.SendTargetedMessage(deletedDto.SiteId.ToString(), "pilots", "refresh-pilots");
+                await this.SendEntityChangedAsync(deletedDto.SiteId.ToString());
 #endif
                 return this.Ok();
             }
@@ -242,10 +261,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDtos = await this.pilotService.RemoveAsync(ids);
 #if UseHubForClientInPilot
-                deletedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "pilots", "refresh-pilots");
-                });
+                await this.SendEntityChangedAsync(parentKeys: deletedDtos.Select(m => m.SiteId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -280,10 +296,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var savedDtos = await this.pilotService.SaveAsync(dtoList);
 #if UseHubForClientInPilot
-                savedDtos.Select(m => m.SiteId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "pilots", "refresh-pilots");
-                });
+                await this.SendEntityChangedAsync(parentKeys: savedDtos.Select(m => m.SiteId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -315,6 +328,19 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         }
 
         /// <summary>
+        /// Generates a csv file for bulk import.
+        /// </summary>
+        /// <param name="filters">filters ( <see cref="PagingFilterFormatDto"/>).</param>
+        /// <returns>a csv file.</returns>
+        [HttpPost("csvForImport")]
+        [Authorize(Roles = nameof(PermissionId.Pilot_List_Access))]
+        public virtual async Task<IActionResult> GetFileForImport([FromBody] PagingFilterFormatDto filters)
+        {
+            byte[] buffer = await this.pilotService.GetCsvForImportAsync(filters);
+            return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Pilots{BiaConstants.Csv.Extension}");
+        }
+
+        /// <summary>
         /// Update the fixed status of an item by its id.
         /// </summary>
         /// <param name="id">ID of the item to update.</param>
@@ -337,5 +363,23 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
                 return this.NotFound();
             }
         }
+
+#if UseHubForClientInPilot
+        /// <summary>
+        /// Notifies clients that entity have changed.
+        /// </summary>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="parentKeys">The parent keys.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        private async Task SendEntityChangedAsync(string parentKey = null, List<string> parentKeys = null)
+        {
+            await this.SendEntityChangedAsync(
+                clientForHubService: this.clientForHubService,
+                parentKey: parentKey,
+                parentKeys: parentKeys);
+        }
+#endif
     }
 }

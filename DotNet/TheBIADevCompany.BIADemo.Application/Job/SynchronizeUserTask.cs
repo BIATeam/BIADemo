@@ -6,6 +6,7 @@ namespace TheBIADevCompany.BIADemo.Application.Job
 {
     using BIA.Net.Core.Application.Job;
     using BIA.Net.Core.Application.User;
+    using BIA.Net.Core.Domain.Dto.Base;
     using Hangfire;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.Logging;
@@ -23,8 +24,8 @@ namespace TheBIADevCompany.BIADemo.Application.Job
     /// <param name="userService">The user app service.</param>
     /// <param name="logger">logger.</param>
     [AutomaticRetry(Attempts = 2, LogEvents = true)]
-    public class SynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory> userService, ILogger<BaseSynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>> logger)
-        : BaseSynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory>(configuration, userService, logger)
+    public class SynchronizeUserTask(IConfiguration configuration, IBaseUserAppService<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto> userService, ILogger<BaseSynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto>> logger)
+        : BaseSynchronizeUserTask<UserDto, User, UserFromDirectoryDto, UserFromDirectory, PagingFilterFormatDto>(configuration, userService, logger)
     {
     }
 }

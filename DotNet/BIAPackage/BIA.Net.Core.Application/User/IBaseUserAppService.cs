@@ -7,13 +7,12 @@ namespace BIA.Net.Core.Application.User
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Option;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.User.Entities;
-    using BIA.Net.Core.Domain.User.Models;
 
     /// <summary>
     /// The interface defining the application service for user.
@@ -22,11 +21,13 @@ namespace BIA.Net.Core.Application.User
     /// <typeparam name="TUser">The type of user.</typeparam>
     /// <typeparam name="TUserFromDirectoryDto">The type of user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of user from directory.</typeparam>
-    public interface IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> : ICrudAppServiceBase<TUserDto, TUser, int, PagingFilterFormatDto>
+    /// <typeparam name="TPagingFilterFormatDto">The type of filter.</typeparam>
+    public interface IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> : ICrudAppServiceBase<TUserDto, TUser, int, TPagingFilterFormatDto>
         where TUserDto : BaseUserDto, new()
         where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// Gets all option that I can see.

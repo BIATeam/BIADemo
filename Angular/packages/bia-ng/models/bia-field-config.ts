@@ -1,5 +1,4 @@
-﻿/* eslint-disable @typescript-eslint/naming-convention */
-import { ValidatorFn } from '@angular/forms';
+﻿import { ValidatorFn } from '@angular/forms';
 import {
   NumberMode,
   PrimeNGFiltering,
@@ -89,6 +88,7 @@ export class BiaFieldConfig<TDto> {
   filterWithDisplay: boolean;
   customDisplayFormat: boolean = true;
   multiline?: BiaFieldMultilineString;
+  asLocalDateTime: boolean = false;
   allowSelectFilter: boolean;
 
   get isDate() {
@@ -135,6 +135,7 @@ export class BiaFieldConfig<TDto> {
     this.isVisibleInTable = true;
     this.filterWithDisplay = false;
     this.multiline = undefined;
+    this.asLocalDateTime = false;
     this.allowSelectFilter = false;
   }
 
@@ -168,6 +169,7 @@ export class BiaFieldConfig<TDto> {
         filterWithDisplay: this.filterWithDisplay,
         customDisplayFormat: this.customDisplayFormat,
         multiline: this.multiline,
+        asLocalDateTime: this.asLocalDateTime,
         allowSelectFilter: this.allowSelectFilter,
       }
     );

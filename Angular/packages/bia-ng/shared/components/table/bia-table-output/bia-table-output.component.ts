@@ -21,7 +21,7 @@ import { BiaFieldBaseComponent } from '../../form/bia-field-base/bia-field-base.
   selector: 'bia-table-output',
   templateUrl: './bia-table-output.component.html',
   styleUrls: ['./bia-table-output.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgTemplateOutlet, PluckPipe, JoinPipe, FormatValuePipe],
 })
 export class BiaTableOutputComponent<CrudItem>

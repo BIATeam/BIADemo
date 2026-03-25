@@ -8,7 +8,7 @@ export interface Notification extends BaseDto {
   descriptionTranslated: string;
   type: OptionDto;
   read: boolean;
-  createdDate: string;
+  createdDate: Date;
   createdBy: OptionDto | null;
   siteId: number;
   notifiedUsers: OptionDto[];
@@ -48,4 +48,5 @@ export interface NotificationData {
   route: string[] | null;
   display: string;
   teams: NotificationTeam[] | null;
+  downloadFileGuid: string | null;
 }

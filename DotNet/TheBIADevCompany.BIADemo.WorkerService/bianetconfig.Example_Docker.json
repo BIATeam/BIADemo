@@ -46,10 +46,6 @@
         "Type": "IdP",
         "IdpRoles": [ "BiaAppAdmin" ]
       }
-    ],
-    "UserProfile": {
-      //remove url for faster debug (http://localhost/DMIndex/UserProfile/GetUserProfile)
-      "url": ""
-    }
+    ]
   }
 }

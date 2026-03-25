@@ -1,14 +1,15 @@
 ﻿import {
   Component,
+  DestroyRef,
   ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
+  effect,
+  inject,
+  input,
+  viewChild,
 } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AuthService } from '@bia-team/bia-ng/core';
-import { Subscription } from 'rxjs';
+import { map } from 'rxjs';
 import { LayoutHelperService } from '../../services/layout-helper.service';
 import { BiaLayoutService } from '../layout/services/layout.service';
 
@@ -16,40 +17,51 @@ import { BiaLayoutService } from '../layout/services/layout.service';
   selector: 'bia-hangfire-container',
   templateUrl: './hangfire-container.component.html',
   styleUrls: ['./hangfire-container.component.scss'],
-  imports: [FormsModule],
 })
-export class HangfireContainerComponent implements OnInit, OnDestroy {
-  @Input() url = '';
+export class HangfireContainerComponent {
+  readonly url = input('');
 
-  @ViewChild('hangfireForm', { static: false }) hangfireForm: ElementRef;
+  private readonly authService = inject(AuthService);
+  protected readonly layoutService = inject(BiaLayoutService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  protected sub = new Subscription();
-  public token = '';
+  protected readonly iframeEl =
+    viewChild<ElementRef<HTMLIFrameElement>>('iframeEl');
 
-  constructor(
-    protected authService: AuthService,
-    protected readonly layoutService: BiaLayoutService
-  ) {}
+  private readonly token = toSignal(
+    this.authService.getLightToken().pipe(map(info => info.token))
+  );
 
-  ngOnInit() {
-    this.sub.add(
-      this.authService.getLightToken().subscribe(authinfo => {
-        this.token = authinfo.token;
-        setTimeout(() => this.hangfireForm.nativeElement.submit());
-      })
-    );
+  constructor() {
+    effect(() => {
+      const token = this.token();
+      const iframe = this.iframeEl();
+      if (!token || !iframe) return;
+
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = this.url();
+      form.target = iframe.nativeElement.name;
+      form.style.display = 'none';
+
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'jwt_token';
+      input.value = token;
+      form.appendChild(input);
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+    });
+
+    this.destroyRef.onDestroy(() => {
+      document.cookie =
+        'HangFireCookie=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    });
   }
 
-  ngOnDestroy() {
-    // remove cookie HangFireCookie
-    document.cookie =
-      'HangFireCookie=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
-  }
-
-  getIFrameHeight(): string {
+  protected getIFrameHeight(): string {
     return `calc(${LayoutHelperService.defaultContainerHeight(this.layoutService, ' + 3.5rem')})`;
   }
 }

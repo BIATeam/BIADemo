@@ -46,7 +46,7 @@ import {
   selector: 'bia-notification-form',
   templateUrl: './notification-form.component.html',
   styleUrls: ['./notification-form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

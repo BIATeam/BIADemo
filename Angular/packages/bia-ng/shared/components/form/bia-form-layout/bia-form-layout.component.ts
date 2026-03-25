@@ -23,7 +23,7 @@ import { BiaFormFieldComponent } from '../bia-form-field/bia-form-field.componen
   selector: 'bia-form-layout',
   templateUrl: './bia-form-layout.component.html',
   styleUrls: ['./bia-form-layout.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

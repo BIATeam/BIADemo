@@ -37,6 +37,7 @@ export class UserAddFromLdapComponent implements OnInit {
     this._display = val;
     this.displayChange.emit(this._display);
   }
+  @Input() appendTo: any = 'body';
 
   @Output() displayChange = new EventEmitter<boolean>();
   usersFromDirectory$: Observable<UserFromDirectory[]>;

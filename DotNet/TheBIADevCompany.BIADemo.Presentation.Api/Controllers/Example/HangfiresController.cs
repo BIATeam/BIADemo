@@ -15,9 +15,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using TheBIADevCompany.BIADemo.Application.Job;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
-    using TheBIADevCompany.BIADemo.Crosscutting.Common.Error;
     using TheBIADevCompany.BIADemo.Domain.Dto.User;
 
     /// <summary>
@@ -26,14 +24,17 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
     public class HangfiresController : BiaControllerBase
     {
         private readonly IBiaClaimsPrincipalService biaClaimsPrincipalService;
+        private readonly IBiaDemoTestHangfireService biaDemoTestHangfireService;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HangfiresController"/> class.
         /// </summary>
         /// <param name="biaClaimsPrincipalService">The BIA claims principal service.</param>
-        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService)
+        /// <param name="biaDemoTestHangfireService">The BIA demo test hangfire service.</param>
+        public HangfiresController(IBiaClaimsPrincipalService biaClaimsPrincipalService, IBiaDemoTestHangfireService biaDemoTestHangfireService)
         {
             this.biaClaimsPrincipalService = biaClaimsPrincipalService;
+            this.biaDemoTestHangfireService = biaDemoTestHangfireService;
         }
 
         /// <summary>
@@ -96,27 +97,15 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Example
         }
 
         /// <summary>
-        /// Throw unhandled exception.
+        /// Prepare the background download of example file.
         /// </summary>
-        /// <returns><see cref="IActionResult"/>.</returns>
-        /// <exception cref="BadHttpRequestException">Thrown exception.</exception>
-        [HttpGet("[action]")]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GenerateUnhandledError()
+        /// <returns>No content.</returns>
+        [HttpPost("[action]")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult PrepareBackgroundDownloadFileExample()
         {
-            throw new BadHttpRequestException("Unhandled error");
-        }
-
-        /// <summary>
-        /// Throw handled exception.
-        /// </summary>
-        /// <returns><see cref="IActionResult"/>.</returns>
-        /// <exception cref="FrontUserException">Thrown exception.</exception>
-        [HttpGet("[action]")]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public IActionResult GenerateHandledError()
-        {
-            throw FrontUserException.Create(ErrorId.HangfireHandledError);
+            this.biaDemoTestHangfireService.PrepareBackgroundDownloadFileExample(this.biaClaimsPrincipalService.GetUserId());
+            return this.NoContent();
         }
     }
 }

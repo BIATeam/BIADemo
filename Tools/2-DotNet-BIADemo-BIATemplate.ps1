@@ -21,7 +21,7 @@ function ReplaceProjectName {
     [string]$oldName,
     [string]$newName
   )
-  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config, *.sql | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+  Get-ChildItem -File -Recurse -include *.csproj, *.cs, *.sln, *.json, *.config, *.sql, *.slnf | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
     $file = $_.FullName
     $oldContent = [System.IO.File]::ReadAllText($file);
     $newContent = $oldContent.Replace($oldName, $newName);
@@ -95,6 +95,18 @@ function CopyBiaFolder {
   }
 }
 
+function RemoveDirectoryPackagesBiaFromSln {
+  Get-ChildItem -File -Recurse -include *.sln | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" } | ForEach-Object { 
+    $file = $_.FullName
+    $content = Get-Content $file
+    $newContent = $content | Where-Object { $_ -notmatch "Directory\.Packages\.Bia\.props = Directory\.Packages\.Bia\.props" }
+    if ($content -ne $newContent) {
+      $fileRel = Resolve-Path -Path "$file" -Relative
+      Write-Verbose "Remove line in $fileRel" -Verbose
+      $newContent | Set-Content $file
+    }
+  }
+}
 
 ###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
@@ -115,14 +127,14 @@ Write-Host "Remove *\bin"
 RemoveItemFolder -path '*\bin'
 Write-Host "Remove *\obj"
 RemoveItemFolder -path '*\obj'
+Write-Host "Remove *\Resources"
+RemoveItemFolder -path '*\Resources'
 
 
-Write-Host "Remove Migrations and keep .editconfig"
-Remove-Item '*.BIADemo.Infrastructure.Data\Migrations\*.cs' -Recurse -Force -Confirm:$false
-Remove-Item '*.BIADemo.Infrastructure.Data\Migrations\*.sql' -Recurse -Force -Confirm:$false
-Remove-Item '*.BIADemo.Infrastructure.Data\MigrationsPostGreSql\*.cs' -Recurse -Force -Confirm:$false
-Remove-Item '*.BIADemo.Infrastructure.Data\MigrationsPostGreSql\*.sql' -Recurse -Force -Confirm:$false
-Remove-Item '*.BIADemo.Infrastructure.Data\MigrationsPostGreSql\*.txt' -Recurse -Force -Confirm:$false
+Write-Host "Remove Migrations"
+Remove-Item '*Infrastructure.Data.*\Migrations\*.cs' -Recurse -Force -Confirm:$false
+Remove-Item '*Infrastructure.Data.*\Migrations\*.sql' -Recurse -Force -Confirm:$false
+Remove-Item '*Infrastructure.Data.*\Migrations\*.txt' -Recurse -Force -Confirm:$false
 
 Write-Host "Remove BIA demo only files"
 RemoveBIADemoOnlyFiles
@@ -132,6 +144,9 @@ RemoveEmptyFolder "."
 
 Write-Host "Remove code example partial files"
 RemoveCodeExample
+
+Write-Host "Remove Directory.Packages.Bia.props from sln"
+RemoveDirectoryPackagesBiaFromSln
 
 Write-Host "Remove comment except BIADemo"
 RemoveCommentExceptBIADemo

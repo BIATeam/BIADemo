@@ -24,7 +24,7 @@ namespace TheBIADevCompany.BIADemo.Application.Fleet
     /// <summary>
     /// The application service used for pilot.
     /// </summary>
-    public class PilotAppService : CrudAppServiceBase<PilotDto, Pilot, Guid, PagingFilterFormatDto, PilotMapper>, IPilotAppService
+    public class PilotAppService : CrudAppServiceListAndItemBase<PilotDto, PilotListDto, Pilot, Guid, PagingFilterFormatDto, PilotMapper, PilotListMapper>, IPilotAppService
     {
         /// <summary>
         /// The current AncestorTeamId.

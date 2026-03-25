@@ -20,10 +20,15 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         public virtual void CreateModel(ModelBuilder modelBuilder)
         {
             this.CreateNotificationModel(modelBuilder);
+            this.CreateNotificationModelData(modelBuilder);
             this.CreateNotificationTypeModel(modelBuilder);
+            this.CreateNotificationTypeModelData(modelBuilder);
             this.CreateNotificationUserModel(modelBuilder);
+            this.CreateNotificationUserModelData(modelBuilder);
             this.CreateNotificationTeamModel(modelBuilder);
+            this.CreateNotificationTeamModelData(modelBuilder);
             this.CreateNotificationTeamRoleModel(modelBuilder);
+            this.CreateNotificationTeamRoleModelData(modelBuilder);
         }
 
         /// <summary>
@@ -41,6 +46,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the notification model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationModelData(ModelBuilder modelBuilder)
+        {
+        }
+
+        /// <summary>
         /// Create the model for notification types.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
@@ -49,11 +62,21 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationType>().HasKey(nt => nt.Id);
             modelBuilder.Entity<NotificationType>().Property(nt => nt.Code).IsRequired().HasMaxLength(10);
             modelBuilder.Entity<NotificationType>().Property(r => r.Label).IsRequired().HasMaxLength(50);
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Task, Code = "task", Label = "Task" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Info, Code = "info", Label = "Info" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Success, Code = "success", Label = "Success" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Warning, Code = "warn", Label = "Warn" });
-            modelBuilder.Entity<NotificationType>().HasData(new NotificationType { Id = (int)BiaNotificationTypeId.Error, Code = "error", Label = "Error" });
+        }
+
+        /// <summary>
+        /// Creates the notification type model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTypeModelData(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<NotificationType>().HasData(
+                new NotificationType { Id = (int)BiaNotificationTypeId.Task, Code = "task", Label = "Task" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Info, Code = "info", Label = "Info" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Success, Code = "success", Label = "Success" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Warning, Code = "warn", Label = "Warn" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.Error, Code = "error", Label = "Error" },
+                new NotificationType { Id = (int)BiaNotificationTypeId.DownloadReady, Code = "downloadr", Label = "Download Ready" });
         }
 
         /// <summary>
@@ -65,6 +88,14 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
             modelBuilder.Entity<NotificationUser>().HasKey(nu => new { nu.UserId, nu.NotificationId });
             modelBuilder.Entity<NotificationUser>().HasOne(nu => nu.User).WithMany(u => u.NotificationUsers).HasForeignKey(nu => nu.UserId).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<NotificationUser>().HasOne(nu => nu.Notification).WithMany(n => n.NotifiedUsers).HasForeignKey(nu => nu.NotificationId);
+        }
+
+        /// <summary>
+        /// Creates the notification users model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationUserModelData(ModelBuilder modelBuilder)
+        {
         }
 
         /// <summary>
@@ -80,12 +111,28 @@ namespace BIA.Net.Core.Infrastructure.Data.ModelBuilders
         }
 
         /// <summary>
+        /// Creates the notification teams model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTeamModelData(ModelBuilder modelBuilder)
+        {
+        }
+
+        /// <summary>
         /// Create the model for notification team roles.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
         protected virtual void CreateNotificationTeamRoleModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<NotificationTeamRole>().HasKey(ntr => new { ntr.NotificationTeamId, ntr.RoleId });
+        }
+
+        /// <summary>
+        /// Creates the notification team roles model data.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder.</param>
+        protected virtual void CreateNotificationTeamRoleModelData(ModelBuilder modelBuilder)
+        {
         }
     }
 }

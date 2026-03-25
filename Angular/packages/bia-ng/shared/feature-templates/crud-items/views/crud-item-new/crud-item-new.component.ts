@@ -19,11 +19,13 @@ import { CrudItemComponent } from '../crud-item/crud-item.component';
   styleUrls: ['./crud-item-new.component.scss'],
   imports: [CrudItemFormComponent, AsyncPipe],
 })
-export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
-  extends CrudItemComponent<CrudItem>
+export class CrudItemNewComponent<
+  TFormCrudItem extends BaseDto<string | number>,
+>
+  extends CrudItemComponent<TFormCrudItem>
   implements OnInit, OnDestroy
 {
-  itemTemplate$?: Observable<CrudItem | undefined>;
+  itemTemplate$?: Observable<TFormCrudItem | undefined>;
   readonly itemTemplateId = computed(() => {
     const nav = this.router.currentNavigation();
     return nav?.extras.state?.itemTemplateId as string | undefined;
@@ -31,7 +33,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemSingleService<CrudItem>
+    public crudItemService: CrudItemSingleService<TFormCrudItem>
   ) {
     super(injector, crudItemService);
 
@@ -69,7 +71,7 @@ export class CrudItemNewComponent<CrudItem extends BaseDto<string | number>>
     }
   }
 
-  onSubmitted(crudItemToCreate: CrudItem) {
+  onSubmitted(crudItemToCreate: TFormCrudItem) {
     const successActionType = this.crudItemService.createSuccessActionType;
 
     if (successActionType) {

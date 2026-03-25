@@ -1,6 +1,6 @@
 ﻿import { OptionDto } from '@bia-team/bia-ng/models';
 import { createAction, props } from '@ngrx/store';
-import { storeKey } from '../airport-option.contants';
+import { storeKey } from '../airport-option.constants';
 
 export namespace DomainAirportOptionsActions {
   export const loadAll = createAction('[' + storeKey + '] Load all');

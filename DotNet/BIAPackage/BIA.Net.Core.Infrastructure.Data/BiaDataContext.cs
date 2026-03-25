@@ -22,6 +22,7 @@ namespace BIA.Net.Core.Infrastructure.Data
     using BIA.Net.Core.Common.Helpers;
     using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.DistCache.Entities;
+    using BIA.Net.Core.Domain.File.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Infrastructure.Data.Helpers;
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
@@ -84,6 +85,16 @@ namespace BIA.Net.Core.Infrastructure.Data
         /// Gets or sets the AnnouncementAudit.
         /// </summary>
         public DbSet<AnnouncementAudit> AnnouncementAudit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the FileDownloadData.
+        /// </summary>
+        public DbSet<FileDownloadData> FileDownloadData { get; set; }
+
+        /// <summary>
+        /// Represents the database table for file download tokens.
+        /// </summary>
+        public DbSet<FileDownloadToken> FileDownloadTokens { get; set; }
 
         /// <summary>
         /// Save Change on DataBase.
@@ -386,6 +397,7 @@ namespace BIA.Net.Core.Infrastructure.Data
         {
             DistCacheModelBuilder.CreateDistCacheModel(modelBuilder);
             AnnouncementModelBuilder.CreateModel(modelBuilder);
+            FileDownloadModelBuilder.CreateModel(modelBuilder);
         }
 
         /// <summary>

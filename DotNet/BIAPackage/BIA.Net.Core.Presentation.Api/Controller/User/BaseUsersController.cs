@@ -14,6 +14,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
     using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.User;
 #pragma warning disable BIA001 // Forbidden reference to Domain layer in Presentation layer
     using BIA.Net.Core.Domain.Entity.Interface;
@@ -33,17 +34,19 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
     /// <typeparam name="TUser">The type of the user.</typeparam>
     /// <typeparam name="TUserFromDirectoryDto">The type of the user from directory dto.</typeparam>
     /// <typeparam name="TUserFromDirectory">The type of the user from directory.</typeparam>
+    /// <typeparam name="TPagingFilterFormatDto">The type of filter.</typeparam>
     /// <seealso cref="BIA.Net.Core.Presentation.Api.Controller.Base.BiaControllerBase" />
-    public abstract class BaseUsersController<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> : BiaControllerBase
+    public abstract class BaseUsersController<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> : BiaControllerBase
         where TUserDto : BaseUserDto, new()
         where TUser : BaseEntityUser, IEntity<int>, new()
         where TUserFromDirectoryDto : BaseUserFromDirectoryDto, new()
         where TUserFromDirectory : IUserFromDirectory, new()
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// The service user.
         /// </summary>
-        private readonly IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService;
+        private readonly IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> userService;
 
         /// <summary>
         /// The configuration of the BiaNet section.
@@ -51,11 +54,11 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         private readonly BiaNetSection configuration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseUsersController{TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory}"/> class.
+        /// Initializes a new instance of the <see cref="BaseUsersController{TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto}"/> class.
         /// </summary>
         /// <param name="userService">The user service.</param>
         /// <param name="configuration">The configuration.</param>
-        protected BaseUsersController(IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory> userService, IOptions<BiaNetSection> configuration)
+        protected BaseUsersController(IBaseUserAppService<TUserDto, TUser, TUserFromDirectoryDto, TUserFromDirectory, TPagingFilterFormatDto> userService, IOptions<BiaNetSection> configuration)
         {
             this.userService = userService;
             this.configuration = configuration.Value;
@@ -86,7 +89,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = nameof(BiaPermissionId.User_List_Access))]
-        public async Task<IActionResult> GetAll([FromBody] PagingFilterFormatDto filters)
+        public async Task<IActionResult> GetAll([FromBody] TPagingFilterFormatDto filters)
         {
             var (results, total) = await this.userService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
@@ -381,7 +384,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         /// <returns>a csv file.</returns>
         [HttpPost("csv")]
         [Authorize(Roles = nameof(BiaPermissionId.User_List_Access))]
-        public virtual async Task<IActionResult> GetFile([FromBody] PagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetFile([FromBody] TPagingFilterFormatDto filters)
         {
             byte[] buffer = await this.userService.GetCsvAsync(filters);
             return this.File(buffer, BiaConstants.Csv.ContentType + $";charset={BiaConstants.Csv.CharsetEncoding}", $"Planes{BiaConstants.Csv.Extension}");

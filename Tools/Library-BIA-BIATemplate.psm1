@@ -9,7 +9,7 @@ $docsFolder = '.bia'
 function RemoveFolderContents {
   param (
     [string]$Path,
-	$Exclude
+    $Exclude
   )
   if (Test-Path $Path) {
     Write-Host "delete " $Path " folder" 
@@ -41,17 +41,17 @@ function ReplaceProjectNameRecurse {
 function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
   $indent = 0;
   ($json -Split '\n' |
-    % {
-      if ($_ -match '[\}\]]') {
-        # This line contains  ] or }, decrement the indentation level
-        $indent--
-      }
-      $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
-      if ($_ -match '[\{\[]') {
-        # This line contains [ or {, increment the indentation level
-        $indent++
-      }
-      $line
+  % {
+    if ($_ -match '[\}\]]') {
+      # This line contains  ] or }, decrement the indentation level
+      $indent--
+    }
+    $line = (' ' * $indent * 2) + $_.TrimStart().Replace(':  ', ': ')
+    if ($_ -match '[\{\[]') {
+      # This line contains [ or {, increment the indentation level
+      $indent++
+    }
+    $line
   }) -Join "`n"
 }
 
@@ -70,7 +70,7 @@ function DeleteLine($start, $end, $file) {
   $end--
   
   (Get-Content $file) | Where-Object {
-	(($i -ne $start - 1 -or $_.Trim() -ne '') -and 
+    (($i -ne $start - 1 -or $_.Trim() -ne '') -and 
     ($i -lt $start -or $i -gt $end))
     $i++
   } | set-content $file
@@ -136,29 +136,29 @@ function RemoveFolder {
 }
 
 function RemoveCodeBetweenMarkers {
-    param (
+  param (
     [string]$file,
     [string]$marker
   )
-    $lineBegin = @()
+  $lineBegin = @()
   
-    $searchWord = "Begin $marker"
-    $starts = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $starts
+  $searchWord = "Begin $marker"
+  $starts = GetLineNumber -pattern $searchWord -file $file
+  $lineBegin += $starts
   
-    $searchWord = "End $marker"
-    $ends = GetLineNumber -pattern $searchWord -file $file
-    $lineBegin += $ends
+  $searchWord = "End $marker"
+  $ends = GetLineNumber -pattern $searchWord -file $file
+  $lineBegin += $ends
   
-    if ($lineBegin -and $lineBegin.Length -gt 0) {
-        Write-Host "Remove code between markers $marker :"
-        $lineBegin = $lineBegin | Sort-Object
-        for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
-        $start = [int]$lineBegin[$i - 1]
-        $end = [int]$lineBegin[$i]
-        DeleteLine -start $start -end $end -file $file
-        }
+  if ($lineBegin -and $lineBegin.Length -gt 0) {
+    Write-Host "Remove code between markers $marker :"
+    $lineBegin = $lineBegin | Sort-Object
+    for ($i = $lineBegin.Length - 1; $i -gt 0; $i = $i - 2) {
+      $start = [int]$lineBegin[$i - 1]
+      $end = [int]$lineBegin[$i]
+      DeleteLine -start $start -end $end -file $file
     }
+  }
 }
 
 
@@ -214,19 +214,17 @@ function CopyFileFolder() {
     [string]$newPath
   )
 
-  if($include.EndsWith('*'))
-  {
+  if ($include.EndsWith('*')) {
     # Directory found
     $dirPath = $include.Replace('*', '')
     Write-Host "Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\$docsFolder\$feature\$dirPath" -Recurse -Force"
     Copy-Item -Path "$oldPath\$dirPath" -Destination "$newPath\$docsFolder\$feature\$dirPath" -Recurse -Force
     Get-ChildItem -File -Recurse -Path "$newPath\$docsFolder\$feature\$dirPath" | Where-Object { $_.FullName -NotLike "*/bin/*" -and $_.FullName -NotLike "*/obj/*" -and $_.FullName -NotLike "*.ps1" -and $_.FullName -NotLike "*.md" } | ForEach-Object {
-        RemoveCodeBetweenMarkers $_.FullName "Partial"
-        RemoveCodeBetweenMarkers $_.FullName "BIADemo"
+      RemoveCodeBetweenMarkers $_.FullName "Partial"
+      RemoveCodeBetweenMarkers $_.FullName "BIADemo"
     }
   } 
-  else
-  {       
+  else {       
     # File found
     $index = $include.lastIndexOf('\')
     $fileName = $include.Substring($index + 1)
@@ -240,25 +238,23 @@ function RemoveFileFolder() {
   param (
     [string]$exclude, 
     [string]$feature
-        #[string]$newPath
+    #[string]$newPath
   )
 
-  if($exclude.EndsWith('*'))
-  {
+  if ($exclude.EndsWith('*')) {
     # Directory found
     $dirPath = $exclude.Replace('*', '')
     Write-Host "RemoveItemFolder -path $newPath\$docsFolder\$feature\$dirPath"
     RemoveItemFolder -path "$newPath\$docsFolder\$feature\$dirPath"
   } 
-  else
-  {       
+  else {       
     # File found
     Write-Host "Remove-Item "$newPath\$docsFolder\$feature\$exclude" -Force"
     Remove-Item "$newPath\$docsFolder\$feature\$exclude" -Force
   }
 }
 
-function ExtractPartialFile(){
+function ExtractPartialFile() {
   param (
     [string]$partial,
     [string]$feature
@@ -287,8 +283,7 @@ function ExtractPartial {
   # Search occurences of markers
   [int[]]$startIndexes = GetLineNumber -pattern $partialMarkerBegin -file $sourceFile
   [int[]]$endIndexes = GetLineNumber -pattern $partialMarkerEnd -file $sourceFile
-  if($startIndexes.Count -ne $endIndexes.Count)
-  {
+  if ($startIndexes.Count -ne $endIndexes.Count) {
     Write-Error "File '$sourceFile' not correctly formated: partial marker count incorrect (start : [$startIndexes], end: [$endIndexes])."
     return
   }
@@ -298,49 +293,45 @@ function ExtractPartial {
 
   # Extract lines between markers
   [string[]]$content = Get-Content -Path $sourceFile
-  For($i=0; $i -lt $startIndexes.Count; $i++) 
-  {
-    Add-Content -Path $destinationFile -Value $content[($startIndexes[$i]-1)..($endIndexes[$i]-1)]
+  For ($i = 0; $i -lt $startIndexes.Count; $i++) {
+    Add-Content -Path $destinationFile -Value $content[($startIndexes[$i] - 1)..($endIndexes[$i] - 1)]
   }
 }
 
-function GenerateZipArchive(){
-    param(
-        [object]$settings,
-        [string]$oldPath,
-        [string]$newPath
-    )
+function GenerateZipArchive() {
+  param(
+    [object]$settings,
+    [string]$oldPath,
+    [string]$newPath
+  )
 
-    $feature = $settings.Feature
-    Write-Host "Feature: $feature"
+  $feature = $settings.Feature
+  Write-Host "Feature: $feature"
 
-    # Copy files/folders
-    ForEach($include in $settings.Contains.Include)
-    {
-        Write-Host "CopyFileFolder -include $include -feature $feature"
-        CopyFileFolder -include $include -feature $feature -oldPath $oldPath -newPath $newPath
-    }
+  # Copy files/folders
+  ForEach ($include in $settings.Contains.Include) {
+    Write-Host "CopyFileFolder -include $include -feature $feature"
+    CopyFileFolder -include $include -feature $feature -oldPath $oldPath -newPath $newPath
+  }
 
-    # Remove files/folders
-    ForEach($exclude in $settings.Contains.Exclude)
-    {
-        Write-Host "RemoveFileFolder -exclude $exclude -feature $feature"
-        RemoveFileFolder -exclude $exclude -feature $feature
-    }
+  # Remove files/folders
+  ForEach ($exclude in $settings.Contains.Exclude) {
+    Write-Host "RemoveFileFolder -exclude $exclude -feature $feature"
+    RemoveFileFolder -exclude $exclude -feature $feature
+  }
 
-    # Extract partial
-    ForEach($partial in $settings.Partial)
-    {
-        Write-Host "ExtractPartialFile -partial $partial -feature $feature"
-        ExtractPartialFile -partial $partial -feature $feature
-    }
+  # Extract partial
+  ForEach ($partial in $settings.Partial) {
+    Write-Host "ExtractPartialFile -partial $partial -feature $feature"
+    ExtractPartialFile -partial $partial -feature $feature
+  }
 
-    # Create Zip
-    $zipName = $settings.ZipName
-    Write-Host "Zip $feature to $zipName" 
-    compress-archive -path ".\$docsFolder\$feature\*" -destinationpath ".\$docsFolder\$zipName" -compressionlevel optimal
+  # Create Zip
+  $zipName = $settings.ZipName
+  Write-Host "Zip $feature to $zipName" 
+  compress-archive -path ".\$docsFolder\$feature\*" -destinationpath ".\$docsFolder\$zipName" -compressionlevel optimal
 
-    # Delete temp folder
-    Write-Host "RemoveFolder -path .\$docsFolder\$feature"
-    RemoveFolder -path ".\$docsFolder\$feature" 
+  # Delete temp folder
+  Write-Host "RemoveFolder -path .\$docsFolder\$feature"
+  RemoveFolder -path ".\$docsFolder\$feature" 
 }

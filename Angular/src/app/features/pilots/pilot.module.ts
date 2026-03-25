@@ -4,8 +4,10 @@ import { PermissionGuard } from '@bia-team/bia-ng/core';
 import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { AirportOptionModule } from 'src/app/domains/airport-option/airport-option.module';
 import { Permission } from 'src/app/shared/permission';
 import { PilotReadComponent } from '../pilots/views/pilot-read/pilot-read.component';
+import { pilotListCRUDConfiguration } from './pilot-list.constants';
 import { pilotCRUDConfiguration } from './pilot.constants';
 import { PilotService } from './services/pilot.service';
 import { FeaturePilotsStore } from './store/pilot.state';
@@ -23,7 +25,7 @@ export const ROUTES: Routes = [
       breadcrumb: null,
       permission: Permission.Pilot_List_Access,
       injectComponent: PilotsIndexComponent,
-      configuration: pilotCRUDConfiguration,
+      configuration: pilotListCRUDConfiguration,
     },
     component: DynamicLayoutComponent,
     canActivate: [PermissionGuard],
@@ -60,7 +62,7 @@ export const ROUTES: Routes = [
       {
         path: 'view',
         data: {
-          featureConfiguration: pilotCRUDConfiguration,
+          featureConfiguration: pilotListCRUDConfiguration,
           featureServiceType: PilotService,
           leftWidth: 60,
         },
@@ -122,6 +124,7 @@ export const ROUTES: Routes = [
     ),
     EffectsModule.forFeature([PilotsEffects]),
     // Domain Modules:
+    AirportOptionModule,
   ],
 })
 export class PilotModule {}

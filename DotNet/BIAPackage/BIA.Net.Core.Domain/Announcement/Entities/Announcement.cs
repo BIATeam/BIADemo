@@ -33,11 +33,11 @@ namespace BIA.Net.Core.Domain.Announcement.Entities
         /// <summary>
         /// Gets or sets the start display date.
         /// </summary>
-        public DateTime Start { get; set; }
+        public DateTimeOffset Start { get; set; }
 
         /// <summary>
         /// Gets or sets the end display date.
         /// </summary>
-        public DateTime End { get; set; }
+        public DateTimeOffset End { get; set; }
     }
 }

@@ -9,12 +9,8 @@ namespace BIA.Net.Core.Ioc
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;
-    using BIA.Net.Core.Application.Permission;
-    using BIA.Net.Core.Application.Services;
-    using BIA.Net.Core.Application.Translation;
     using BIA.Net.Core.Common.Configuration;
     using BIA.Net.Core.Common.Configuration.AuthenticationSection;
-    using BIA.Net.Core.Common.Enum;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.RepoContract.BiaApi;
@@ -24,6 +20,7 @@ namespace BIA.Net.Core.Ioc
     using BIA.Net.Core.Infrastructure.Service.Repositories.BiaApi;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Helper;
     using BIA.Net.Core.Infrastructure.Service.Repositories.Ldap;
+    using BIA.Net.Core.Ioc.Param;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -32,25 +29,6 @@ namespace BIA.Net.Core.Ioc
     /// </summary>
     public static class BiaIocContainer
     {
-        /// <summary>
-        /// The method used to register all instances.
-        /// </summary>
-        /// <param name="collection">The collection of services.</param>
-        /// <param name="configuration">The application configuration.</param>
-        /// <param name="isUnitTest">Are we configuring IoC for unit tests? If so, some IoC shall not be performed here but replaced by
-        /// specific ones in BIAIocContainerTest.</param>
-        public static void ConfigureContainer(IServiceCollection collection, IConfiguration configuration, bool isUnitTest = false)
-        {
-            ConfigureInfrastructureServiceContainer(collection, configuration);
-            ConfigureDomainContainer(collection);
-
-            if (!isUnitTest)
-            {
-                ConfigureInfrastructureDataContainer(collection);
-                ConfigureCommonContainer(collection, configuration);
-            }
-        }
-
         /// <summary>
         /// Creates the HTTP client handler.
         /// </summary>
@@ -105,8 +83,8 @@ namespace BIA.Net.Core.Ioc
             Assembly classAssembly = Assembly.Load(assemblyName);
             Assembly interfaceAssembly = !string.IsNullOrWhiteSpace(interfaceAssemblyName) ? Assembly.Load(interfaceAssemblyName) : classAssembly;
 
-            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => type.IsClass && !type.IsAbstract);
-            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => type.IsInterface);
+            IEnumerable<Type> classTypes = classAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsClass && !type.IsAbstract);
+            IEnumerable<Type> interfaceTypes = interfaceAssembly.GetTypes().Where(type => !type.IsGenericTypeDefinition && type.IsInterface);
 
             if (excludedServiceNames != null)
             {
@@ -165,11 +143,15 @@ namespace BIA.Net.Core.Ioc
             }
         }
 
-        private static void ConfigureDomainContainer(IServiceCollection collection)
+        /// <summary>
+        /// Configures the domain container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureDomainContainer(ParamIocContainer param)
         {
             // IT'S NOT NECESSARY TO DECLARE Services (They are automatically managed by the method BiaIocContainer.RegisterServicesFromAssembly)
             RegisterServicesFromAssembly(
-                collection: collection,
+                collection: param.Collection,
                 assemblyName: "BIA.Net.Core.Domain",
                 serviceLifetime: ServiceLifetime.Transient);
 
@@ -180,64 +162,85 @@ namespace BIA.Net.Core.Ioc
             List<Type> derivedBiaBaseMapperTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, biaBaseMapperType);
             foreach (var type in derivedBiaBaseMapperTypes)
             {
-                collection.AddScoped(type);
+                param.Collection.AddScoped(type);
             }
 
             Type biaBaseQueryModelMapperType = typeof(BiaBaseQueryModelMapper<,,,,,>);
             List<Type> derivedBiaBaseQueryModelMapperTypes = ReflectiveEnumerator.GetDerivedTypes(assembly, biaBaseQueryModelMapperType);
             foreach (var type in derivedBiaBaseQueryModelMapperTypes)
             {
-                collection.AddScoped(type);
+                param.Collection.AddScoped(type);
             }
         }
 
-        private static void ConfigureCommonContainer(IServiceCollection collection, IConfiguration configuration)
+        /// <summary>
+        /// Configures the common container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureCommonContainer(ParamIocContainer param)
         {
+            if (param.IsUnitTest)
+            {
+                return;
+            }
+
             // Configuration
-            collection.Configure<BiaNetSection>(options => configuration.GetSection("BiaNet").Bind(options));
+            param.Collection.Configure<BiaNetSection>(options => param.Configuration.GetSection("BiaNet").Bind(options));
         }
 
-        private static void ConfigureInfrastructureDataContainer(IServiceCollection collection)
+        /// <summary>
+        /// Configures the infrastructure data container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureInfrastructureDataContainer(ParamIocContainer param)
         {
-            collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
-            collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
-            collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
-            collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
+            if (param.IsUnitTest)
+            {
+                return;
+            }
 
-            // Infrastructure Data
+            param.Collection.AddScoped(typeof(ITGenericRepository<,>), typeof(TGenericRepositoryEF<,>));
+            param.Collection.AddScoped(typeof(ITGenericArchiveRepository<,>), typeof(TGenericArchiveRepository<,>));
+            param.Collection.AddScoped(typeof(ITGenericCleanRepository<,>), typeof(TGenericCleanRepository<,>));
+            param.Collection.AddScoped<IViewQueryCustomizer, ViewQueryCustomizer>();
+            param.Collection.AddScoped<IFileDownloadTokenRepository, FileDownloadTokenRepository>();
         }
 
-        private static void ConfigureInfrastructureServiceContainer(IServiceCollection collection, IConfiguration configuration)
+        /// <summary>
+        /// Configures the infrastructure service container.
+        /// </summary>
+        /// <param name="param">The parameter.</param>
+        public static void ConfigureInfrastructureServiceContainer(ParamIocContainer param)
         {
             BiaNetSection biaNetSection = null;
 
-            if (configuration != null)
+            if (param.Configuration != null)
             {
                 biaNetSection = new BiaNetSection();
-                configuration.GetSection("BiaNet").Bind(biaNetSection);
+                param.Configuration.GetSection("BiaNet").Bind(biaNetSection);
             }
 
             // Infrastructure Service
-            collection.AddTransient<ILdapRepositoryHelper, LdapRepositoryHelper>();
-            collection.AddTransient<IBiaLocalCache, BiaLocalCache>();
+            param.Collection.AddTransient<ILdapRepositoryHelper, LdapRepositoryHelper>();
+            param.Collection.AddTransient<IBiaLocalCache, BiaLocalCache>();
 
             if (biaNetSection?.CommonFeatures?.DistributedCache?.IsActive == true)
             {
-                collection.AddTransient<IBiaDistributedCache, BiaDistributedCache>();
+                param.Collection.AddTransient<IBiaDistributedCache, BiaDistributedCache>();
             }
             else
             {
-                collection.AddTransient<IBiaDistributedCache, BiaLocalCache>();
+                param.Collection.AddTransient<IBiaDistributedCache, BiaLocalCache>();
             }
 
-            collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() =>
+            param.Collection.AddHttpClient<IWakeUpWebApps, WakeUpWebApps>().ConfigurePrimaryHttpMessageHandler(() =>
                 CreateHttpClientHandler(biaNetSection));
 
-            collection.AddTransient<IFileRepository, FileRepository>();
-            collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
+            param.Collection.AddTransient<IFileRepository, FileRepository>();
+            param.Collection.AddHttpClient<IImageUrlRepository, ImageUrlRepository>().ConfigurePrimaryHttpMessageHandler(() =>
                 GetHttpMessagehandler(biaNetSection.ProfileConfiguration?.AuthenticationConfiguration, biaNetSection));
 
-            collection.AddHttpClient<IBiaWebApiAuthRepository, BiaWebApiAuthRepository>().ConfigurePrimaryHttpMessageHandler(() =>
+            param.Collection.AddHttpClient<IBiaWebApiAuthRepository, BiaWebApiAuthRepository>().ConfigurePrimaryHttpMessageHandler(() =>
             CreateHttpClientHandler(biaNetSection));
         }
 

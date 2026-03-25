@@ -60,6 +60,8 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
         {
 #if UseHubForClientInEngine
             this.clientForHubService = clientForHubService;
+            this.EntityName = "engine";
+            this.EntityNamePlural = "engines";
 #endif
             this.engineService = engineService;
         }
@@ -127,7 +129,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var createdDto = await this.engineService.AddAsync(dto);
 #if UseHubForClientInEngine
-                await this.clientForHubService.SendTargetedMessage(createdDto.PlaneId.ToString(), "engines", "refresh-engines");
+                await this.SendEntityChangedAsync(createdDto.PlaneId.ToString());
 #endif
                 return this.CreatedAtAction("Get", new { id = createdDto.Id }, createdDto);
             }
@@ -166,7 +168,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var updatedDto = await this.engineService.UpdateAsync(dto);
 #if UseHubForClientInEngine
-                await this.clientForHubService.SendTargetedMessage(updatedDto.PlaneId.ToString(), "engines", "refresh-engines");
+                await this.SendEntityChangedAsync(updatedDto.PlaneId.ToString());
 #endif
                 return this.Ok(updatedDto);
             }
@@ -210,7 +212,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDto = await this.engineService.RemoveAsync(id);
 #if UseHubForClientInEngine
-                await this.clientForHubService.SendTargetedMessage(deletedDto.PlaneId.ToString(), "engines", "refresh-engines");
+                await this.SendEntityChangedAsync(deletedDto.PlaneId.ToString());
 #endif
                 return this.Ok();
             }
@@ -242,10 +244,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var deletedDtos = await this.engineService.RemoveAsync(ids);
 #if UseHubForClientInEngine
-                deletedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
-                });
+                await this.SendEntityChangedAsync(parentKeys: deletedDtos.Select(m => m.PlaneId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -280,10 +279,7 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             {
                 var savedDtos = await this.engineService.SaveAsync(dtoList);
 #if UseHubForClientInEngine
-                savedDtos.Select(m => m.PlaneId).Distinct().ToList().ForEach(async parentId =>
-                {
-                    await this.clientForHubService.SendTargetedMessage(parentId.ToString(), "engines", "refresh-engines");
-                });
+                await this.SendEntityChangedAsync(parentKeys: savedDtos.Select(m => m.PlaneId.ToString()).Distinct().ToList());
 #endif
                 return this.Ok();
             }
@@ -350,7 +346,25 @@ namespace TheBIADevCompany.BIADemo.Presentation.Api.Controllers.Fleet
             this.engineService.LaunchJobManuallyExample();
             return this.Ok();
         }
-
+#pragma warning disable SA1512 // Single-line comments should not be followed by blank line
         // End BIADemo
+
+#if UseHubForClientInEngine
+        /// <summary>
+        /// Notifies clients that entity have changed.
+        /// </summary>
+        /// <param name="parentKey">The parent key.</param>
+        /// <param name="parentKeys">The parent keys.</param>
+        /// <returns>
+        /// A task representing the asynchronous operation.
+        /// </returns>
+        private async Task SendEntityChangedAsync(string parentKey = null, List<string> parentKeys = null)
+        {
+            await this.SendEntityChangedAsync(
+                clientForHubService: this.clientForHubService,
+                parentKey: parentKey,
+                parentKeys: parentKeys);
+        }
+#endif
     }
 }

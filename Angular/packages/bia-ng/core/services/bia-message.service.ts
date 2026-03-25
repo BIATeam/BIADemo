@@ -132,6 +132,7 @@ export class BiaMessageService {
         severity = 'error';
         break;
       case NotificationType.Task:
+      case NotificationType.DownloadReady:
         severity = 'info';
         sticky = true;
         break;

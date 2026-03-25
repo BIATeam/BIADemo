@@ -17,6 +17,14 @@ namespace BIA.Net.Core.Domain.Service
         /// <summary>
         /// Initializes a new instance of the <see cref="UserContext"/> class.
         /// </summary>
+        public UserContext()
+        {
+            // Do nothing
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserContext"/> class.
+        /// </summary>
         /// <param name="culture">The wanted culture.</param>
         /// <param name="acceptedCultures">The accepted cultures in config.</param>
         public UserContext(string culture, IEnumerable<Culture> acceptedCultures)

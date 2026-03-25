@@ -11,10 +11,10 @@ import { CrudConfig } from '../../model/crud-config';
 import { CrudItemSingleService } from '../../services/crud-item-single.service';
 
 export abstract class CrudItemComponent<
-  CrudItem extends BaseDto<string | number>,
+  TFormCrudItem extends BaseDto<string | number>,
 > {
   protected sub = new Subscription();
-  public crudConfiguration: CrudConfig<CrudItem>;
+  public crudConfiguration: CrudConfig<TFormCrudItem>;
 
   protected store: Store<BiaAppState>;
   protected router: Router;
@@ -24,7 +24,7 @@ export abstract class CrudItemComponent<
 
   constructor(
     protected injector: Injector,
-    public crudItemService: CrudItemSingleService<CrudItem>
+    public crudItemService: CrudItemSingleService<TFormCrudItem>
   ) {
     this.store = this.injector.get<Store<BiaAppState>>(Store);
     this.router = this.injector.get<Router>(Router);
@@ -35,7 +35,7 @@ export abstract class CrudItemComponent<
     this.actions = this.injector.get<Actions>(Actions);
   }
 
-  abstract onSubmitted(crudItemToUpdate: CrudItem): void;
+  abstract onSubmitted(crudItemToUpdate: TFormCrudItem): void;
 
   onCancelled() {
     this.navigateBack();

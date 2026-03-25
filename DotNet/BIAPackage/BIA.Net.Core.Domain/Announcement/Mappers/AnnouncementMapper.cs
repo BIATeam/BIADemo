@@ -55,9 +55,9 @@ namespace BIA.Net.Core.Domain.Announcement.Mappers
         public override void DtoToEntity(AnnouncementDto dto, ref Announcement entity)
         {
             base.DtoToEntity(dto, ref entity);
-            entity.End = dto.End.UtcDateTime;
+            entity.End = dto.End;
             entity.RawContent = dto.RawContent;
-            entity.Start = dto.Start.UtcDateTime;
+            entity.Start = dto.Start;
             entity.TypeId = dto.Type.Id;
         }
 

@@ -27,7 +27,7 @@ import { Member } from '../../model/member';
   selector: 'bia-member-form-edit',
   templateUrl: './member-form-edit.component.html',
   styleUrls: ['./member-form-edit.component.scss'],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ReactiveFormsModule,

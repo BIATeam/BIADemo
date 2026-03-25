@@ -13,6 +13,7 @@ namespace BIA.Net.Core.Application.Notification
     using BIA.Net.Core.Common.Exceptions;
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Dto.Base;
+    using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Notification;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Notification.Mappers;
@@ -29,18 +30,20 @@ namespace BIA.Net.Core.Application.Notification
     /// <typeparam name="TBaseNotification">The type of the base notification.</typeparam>
     /// <typeparam name="TBaseNotificationMapper">The type of the base notification mapper.</typeparam>
     /// <typeparam name="TBaseNotificationListItemMapper">The type of the base notification list item mapper.</typeparam>
+    /// <typeparam name="TPagingFilterFormatDto">The type of filter.</typeparam>
     public abstract class BaseNotificationAppService<
         TBaseNotificationDto,
         TBaseNotificationListItemDto,
         TBaseNotification,
         TBaseNotificationMapper,
-        TBaseNotificationListItemMapper> :
+        TBaseNotificationListItemMapper,
+        TPagingFilterFormatDto> :
         CrudAppServiceListAndItemBase<
             TBaseNotificationDto,
             TBaseNotificationListItemDto,
             TBaseNotification,
             int,
-            PagingFilterFormatDto,
+            TPagingFilterFormatDto,
             TBaseNotificationMapper,
             TBaseNotificationListItemMapper>
         where TBaseNotificationDto : BaseNotificationDto, new()
@@ -48,6 +51,7 @@ namespace BIA.Net.Core.Application.Notification
         where TBaseNotification : BaseNotification, new()
         where TBaseNotificationMapper : BaseNotificationMapper<TBaseNotificationDto, TBaseNotification>
         where TBaseNotificationListItemMapper : BaseNotificationListItemMapper<TBaseNotificationListItemDto, TBaseNotification>
+        where TPagingFilterFormatDto : class, IPagingFilterFormatDto, new()
     {
         /// <summary>
         /// The claims principal.
@@ -60,7 +64,7 @@ namespace BIA.Net.Core.Application.Notification
         private readonly IClientForHubService clientForHubService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseNotificationAppService{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TBaseNotificationMapper, TBaseNotificationListItemMapper}"/> class.
+        /// Initializes a new instance of the <see cref="BaseNotificationAppService{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification, TBaseNotificationMapper, TBaseNotificationListItemMapper, TPagingFilterFormatDto}"/> class.
         /// </summary>
         /// <param name="repository">The repository.</param>
         /// <param name="principal">The principal.</param>
@@ -227,7 +231,7 @@ namespace BIA.Net.Core.Application.Notification
         }
 
         /// <inheritdoc cref="IBaseNotificationAppService{TBaseNotificationDto, TBaseNotificationListItemDto, TBaseNotification}.GetRangeWithAllAccessAsync"/>
-        public async Task<(IEnumerable<TBaseNotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(PagingFilterFormatDto pagingFilterFormatDto)
+        public async Task<(IEnumerable<TBaseNotificationListItemDto> Results, int Total)> GetRangeWithAllAccessAsync(TPagingFilterFormatDto pagingFilterFormatDto)
         {
             return await this.GetRangeAsync(pagingFilterFormatDto, accessMode: AccessMode.All);
         }

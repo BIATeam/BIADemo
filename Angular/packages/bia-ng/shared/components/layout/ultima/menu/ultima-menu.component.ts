@@ -56,6 +56,7 @@ export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
   isScrollable = false;
   isAtStart = false;
   isAtEnd = false;
+  scrollContentResizeObserver: ResizeObserver | null = null;
 
   constructor(private readonly layoutService: BiaLayoutService) {
     effect(() => {
@@ -67,10 +68,8 @@ export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit() {
     this.checkScrollable();
     this.updateButtonState();
-    window.addEventListener('resize', () => {
-      this.checkScrollable();
-      this.updateButtonState();
-    });
+
+    this.setUpScrollContentResizeObserver();
   }
 
   checkScrollable() {
@@ -121,9 +120,20 @@ export class BiaUltimaMenuComponent implements AfterViewInit, OnDestroy {
 
   ngOnDestroy() {
     this.stopScrolling();
-    window.removeEventListener('resize', () => {
-      this.checkScrollable();
-      this.updateButtonState();
-    });
+    if (this.scrollContentResizeObserver) {
+      this.scrollContentResizeObserver.disconnect();
+    }
+  }
+
+  setUpScrollContentResizeObserver() {
+    if (this.scrollContent) {
+      this.scrollContentResizeObserver = new ResizeObserver(() => {
+        this.checkScrollable();
+        this.updateButtonState();
+      });
+      this.scrollContentResizeObserver.observe(
+        this.scrollContent.nativeElement
+      );
+    }
   }
 }
