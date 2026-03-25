@@ -8,7 +8,8 @@
     "declarationMap": true,
     "inlineSources": true,
     "strictPropertyInitialization": false,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "types": ["node"]
   },
   "angularCompilerOptions": {
     "flatModuleOutFile": "bia-ng.js",
