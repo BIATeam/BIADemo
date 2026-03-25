@@ -16,10 +16,10 @@
 		<PackageReference Include="NLog.Extensions.Hosting" />
 		<PackageReference Include="NLog.Extensions.Logging" />
 		<PackageReference Include="Bonura.NLog.HangfireLayouts" />
-	</ItemGroup>
+    <PackageReference Include="BIA.Net.Core.WorkerService" />
+  </ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\TheBIADevCompany.BIADemo.Crosscutting.Ioc\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj" />
-		<ProjectReference Include="..\BIAPackage\BIA.Net.Core.WorkerService\BIA.Net.Core.WorkerService.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Update="appsettings.*.json">

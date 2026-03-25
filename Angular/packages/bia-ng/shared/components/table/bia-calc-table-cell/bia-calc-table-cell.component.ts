@@ -9,7 +9,7 @@ import {
   WritableSignal,
 } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
-import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
+import { BiaFieldConfig } from '@bia-team/bia-ng/models';
 import { PrimeTemplate } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { BiaTableInputComponent } from '../bia-table-input/bia-table-input.component';

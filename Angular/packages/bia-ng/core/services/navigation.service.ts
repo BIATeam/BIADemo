@@ -1,5 +1,5 @@
 ﻿import { Injectable, inject } from '@angular/core';
-import { BiaNavigation } from 'packages/bia-ng/models/public-api';
+import { BiaNavigation } from '@bia-team/bia-ng/models';
 import { AuthService } from './auth.service';
 
 @Injectable({
