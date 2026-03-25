@@ -1,1 +1,1 @@
-export const FRAMEWORK_VERSION = '7.0.0';
+export const FRAMEWORK_VERSION = '8.0.0';
