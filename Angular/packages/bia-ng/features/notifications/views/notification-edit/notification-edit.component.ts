@@ -3,7 +3,7 @@ import { Component, Injector } from '@angular/core';
 import {
   CrudItemEditComponent,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { NotificationFormComponent } from '../../components/notification-form/notification-form.component';
 import { Notification } from '../../model/notification';
 import { notificationCRUDConfiguration } from '../../notification.constants';

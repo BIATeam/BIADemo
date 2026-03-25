@@ -6,7 +6,7 @@ import {
   CrudItemImportFormComponent,
   CrudItemImportService,
   SAME_LIST_FORM_MODELS,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 import { Pilot } from '../../model/pilot';
 import { PilotList } from '../../model/pilot-list';
@@ -16,7 +16,7 @@ import { PilotService } from '../../services/pilot.service';
 @Component({
   selector: 'app-pilot-import',
   templateUrl:
-    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
   providers: [
     CrudItemImportService,
