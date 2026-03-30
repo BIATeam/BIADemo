@@ -54,8 +54,8 @@
 		<PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
 		<PackageVersion Include="PdfPig" Version="0.1.14" />
 		<PackageVersion Include="RabbitMQ.Client" Version="7.2.0" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="10.21.0.135717" />
-		<PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.5" />
+		<PackageVersion Include="SonarAnalyzer.CSharp" Version="10.21.0.136894" />
+		<PackageVersion Include="Swashbuckle.AspNetCore.SwaggerUI" Version="10.1.7" />
 		<PackageVersion Include="System.Configuration.ConfigurationManager" Version="10.0.5" />
 		<PackageVersion Include="System.DirectoryServices" Version="10.0.5" />
 		<PackageVersion Include="System.DirectoryServices.AccountManagement" Version="10.0.5" />
