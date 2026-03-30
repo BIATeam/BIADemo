@@ -1,17 +1,17 @@
 ﻿{
-    "solution":  {
-                     "path":  "BIADemo.sln",
-                     "projects":  [
-                                      "TheBIADevCompany.BIADemo.Application\\TheBIADevCompany.BIADemo.Application.csproj",
-                                      "TheBIADevCompany.BIADemo.Crosscutting.Common\\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj",
-                                      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj",
-                                      "TheBIADevCompany.BIADemo.Domain.Dto\\TheBIADevCompany.BIADemo.Domain.Dto.csproj",
-                                      "TheBIADevCompany.BIADemo.Domain\\TheBIADevCompany.BIADemo.Domain.csproj",
-                                      "TheBIADevCompany.BIADemo.Infrastructure.Data\\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj",
-                                      "TheBIADevCompany.BIADemo.Infrastructure.Service\\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj",
-                                      "TheBIADevCompany.BIADemo.Presentation.Api\\TheBIADevCompany.BIADemo.Presentation.Api.csproj",
-                                      "TheBIADevCompany.BIADemo.Test\\TheBIADevCompany.BIADemo.Test.csproj",
-                                      "TheBIADevCompany.BIADemo.WorkerService\\TheBIADevCompany.BIADemo.WorkerService.csproj"
-                                  ]
-                 }
+  "solution": {
+    "path": "BIADemo.sln",
+    "projects": [
+      "TheBIADevCompany.BIADemo.Application\\TheBIADevCompany.BIADemo.Application.csproj",
+      "TheBIADevCompany.BIADemo.Crosscutting.Common\\TheBIADevCompany.BIADemo.Crosscutting.Common.csproj",
+      "TheBIADevCompany.BIADemo.Crosscutting.Ioc\\TheBIADevCompany.BIADemo.Crosscutting.Ioc.csproj",
+      "TheBIADevCompany.BIADemo.Domain.Dto\\TheBIADevCompany.BIADemo.Domain.Dto.csproj",
+      "TheBIADevCompany.BIADemo.Domain\\TheBIADevCompany.BIADemo.Domain.csproj",
+      "TheBIADevCompany.BIADemo.Infrastructure.Data\\TheBIADevCompany.BIADemo.Infrastructure.Data.csproj",
+      "TheBIADevCompany.BIADemo.Infrastructure.Service\\TheBIADevCompany.BIADemo.Infrastructure.Service.csproj",
+      "TheBIADevCompany.BIADemo.Presentation.Api\\TheBIADevCompany.BIADemo.Presentation.Api.csproj",
+      "TheBIADevCompany.BIADemo.Test\\TheBIADevCompany.BIADemo.Test.csproj",
+      "TheBIADevCompany.BIADemo.WorkerService\\TheBIADevCompany.BIADemo.WorkerService.csproj"
+    ]
+  }
 }
