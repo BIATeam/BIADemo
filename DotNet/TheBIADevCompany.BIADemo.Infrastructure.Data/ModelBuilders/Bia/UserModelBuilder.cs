@@ -40,21 +40,5 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
         }
-
-        private static void BiaCreateTeamTypeRoleModelData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Role>()
-                .HasMany(p => p.TeamTypes)
-                .WithMany(r => r.Roles)
-                .UsingEntity(rt =>
-                {
-                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
-                });
-        }
-
-        private static void BiaCreateRoleModelData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
-        }
     }
 }
