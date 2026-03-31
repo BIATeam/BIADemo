@@ -3,7 +3,6 @@ const eslint = require('@eslint/js');
 const { defineConfig } = require('eslint/config');
 const tseslint = require('typescript-eslint');
 const angular = require('angular-eslint');
-const prettierRecommended = require('eslint-plugin-prettier/recommended');
 const eslintConfigPrettier = require('eslint-config-prettier');
 
 module.exports = defineConfig([
@@ -17,7 +16,6 @@ module.exports = defineConfig([
       eslint.configs.recommended,
       ...tseslint.configs.recommended,
       ...angular.configs.tsRecommended,
-      prettierRecommended,
       eslintConfigPrettier,
     ],
     processor: angular.processInlineTemplates,
@@ -27,7 +25,6 @@ module.exports = defineConfig([
       },
     },
     rules: {
-      'prettier/prettier': 'error',
       '@typescript-eslint/no-namespace': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'error',
@@ -89,7 +86,6 @@ module.exports = defineConfig([
     extends: [
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
-      prettierRecommended,
       eslintConfigPrettier,
     ],
     rules: {
@@ -98,7 +94,6 @@ module.exports = defineConfig([
       '@angular-eslint/template/elements-content': 'off',
       '@angular-eslint/template/label-has-associated-control': 'off',
       '@angular-eslint/template/no-autofocus': 'off',
-      'prettier/prettier': ['error', { parser: 'angular' }],
       eqeqeq: ['error', 'always', { null: 'ignore' }],
     },
   },
