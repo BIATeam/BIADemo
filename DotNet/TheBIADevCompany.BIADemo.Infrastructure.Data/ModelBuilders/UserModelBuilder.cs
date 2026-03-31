@@ -50,7 +50,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 #pragma warning disable CS0162 // Unreachable code detected
                 // DO NOT CHANGE INDENTATION (For BIATemplate)
                 // End BIADemo
-                BiaCreateRoleModelData(modelBuilder);
+                modelBuilder.Entity<Role>().HasData(new Role { Id = (int)RoleId.SiteAdmin, Code = "Site_Admin", Label = "Site administrator" });
 
                 // Begin BIADemo
 #pragma warning restore CS0162 // Unreachable code detected
@@ -128,13 +128,14 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         protected override void CreateTeamTypeRoleModelData(ModelBuilder modelBuilder)
         {
             base.CreateTeamTypeRoleModelData(modelBuilder);
-            BiaCreateTeamTypeRoleModelData(modelBuilder);
 
             modelBuilder.Entity<Role>()
                 .HasMany(p => p.TeamTypes)
                 .WithMany(r => r.Roles)
                 .UsingEntity(rt =>
                 {
+                    rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.SiteAdmin });
+
                     // Begin BIADemo
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.Site, RolesId = (int)RoleId.Pilot });
                     rt.HasData(new { TeamTypesId = (int)TeamTypeId.AircraftMaintenanceCompany, RolesId = (int)RoleId.Supervisor });
