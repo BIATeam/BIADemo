@@ -39,13 +39,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 new RoleTranslation { RoleId = (int)BiaRoleId.BackReadOnly, LanguageId = LanguageId.Spanish, Id = 1000302, Label = "Visualización de tareas en segundo plano" });
         }
 
-        private static void BiaCreateRoleTranslationModelDataSiteAdmin(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<RoleTranslation>().HasData(
-                   new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.French, Id = 101, Label = "Administrateur du site" },
-                   new RoleTranslation { RoleId = (int)RoleId.SiteAdmin, LanguageId = LanguageId.Spanish, Id = 102, Label = "Administrador del sitio" });
-        }
-
         private static void BiaCreateNotificationTypeTranslationModelData(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<NotificationTypeTranslation>().HasData(

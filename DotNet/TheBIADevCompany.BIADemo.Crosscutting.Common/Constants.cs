@@ -19,7 +19,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             // Except BIADemo public const string BackEndVersion = "0.0.0";
             // Begin BIADemo
-            public const string BackEndVersion = "7.0.0";
+            public const string BackEndVersion = "7.0.1";
 
             // End BIADemo
 
@@ -28,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common
             /// </summary>
             // Except BIADemo public const string FrontEndVersion = "0.0.0";
             // Begin BIADemo
-            public const string FrontEndVersion = "7.0.0";
+            public const string FrontEndVersion = "7.0.1";
 
             // End BIADemo
         }
