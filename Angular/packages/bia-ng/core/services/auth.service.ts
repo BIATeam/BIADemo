@@ -39,6 +39,9 @@ const STORAGE_RELOADED_KEY = 'isReloaded';
   providedIn: 'root',
 })
 export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
+  protected readonly httpCodeUpgradeRequired = 426;
+  protected readonly httpCodeUnknownServerError = 520;
+
   protected sub = new Subscription();
   protected authInfoSubject: BehaviorSubject<AuthInfo> =
     new BehaviorSubject<AuthInfo>(new AuthInfo());
@@ -49,6 +52,8 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         (authInfo: AuthInfo) => authInfo !== null && authInfo !== undefined
       )
     );
+  protected isInLogin = false;
+  protected loginRetryCount = 0;
 
   constructor(
     injector: Injector,
@@ -92,7 +97,6 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     this.authInfoSubject.next(new AuthInfo());
   }
 
-  protected isInLogin = false;
   public login(): Observable<AuthInfo> {
     if (this.isInLogin) {
       console.info('isInLogin');
@@ -101,13 +105,30 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     this.isInLogin = true;
     return this.checkFrontEndVersion().pipe(
       take(1),
-      switchMap((isCorrectVersion: boolean) => {
-        if (isCorrectVersion === true) {
-          return this.getAuthInfo();
-        } else {
-          this.getLatestVersion();
+      switchMap((isCorrectVersion: boolean | undefined) => {
+        if (isCorrectVersion === undefined) {
+          if (this.loginRetryCount < 3) {
+            console.warn(
+              'The front-end version could not be checked, attempting to retry...'
+            );
+            this.loginRetryCount++;
+            this.isInLogin = false;
+            return this.login();
+          }
+          console.error(
+            `The front-end version could not be checked after retrying, redirecting to error page with code ${this.httpCodeUnknownServerError}.`
+          );
+          this.navigateToErrorPage(this.httpCodeUnknownServerError);
           return NEVER;
         }
+
+        this.loginRetryCount = 0;
+        if (isCorrectVersion === true) {
+          return this.getAuthInfo();
+        }
+
+        this.getLatestVersion();
+        return NEVER;
       }),
       finalize(() => {
         console.info('Finalize login');
@@ -464,11 +485,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     // if a refresh has already been done and no update was found, the SW can't resolve the version mismatch
     if (isReloaded === String(true) && !updateAvailable) {
       sessionStorage.removeItem(STORAGE_RELOADED_KEY);
-      const httpCodeUpgradeRequired = 426;
-      window.location.href =
-        BiaAppConstantsService.allEnvironments.urlErrorPage +
-        '?num=' +
-        httpCodeUpgradeRequired;
+      console.error(
+        `No update found after reload, redirecting to error page with code ${this.httpCodeUpgradeRequired}.`
+      );
+      this.navigateToErrorPage(this.httpCodeUpgradeRequired);
     } else {
       if (updateAvailable) {
         await this.biaSwUpdateService.activateUpdate();
@@ -484,6 +504,13 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     }
   }
 
+  private navigateToErrorPage(httpErrorCode: number) {
+    window.location.href =
+      BiaAppConstantsService.allEnvironments.urlErrorPage +
+      '?num=' +
+      httpErrorCode;
+  }
+
   protected refresh() {
     localStorage.removeItem(BiaAppConstantsService.storageAppSettingsKey());
     localStorage.removeItem(BiaAppConstantsService.storageAppSettingsKey());
@@ -492,16 +519,19 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     location.reload();
   }
 
-  protected checkFrontEndVersion(): Observable<boolean> {
+  protected checkFrontEndVersion(): Observable<boolean | undefined> {
     return this.getFrontEndVersion().pipe(
-      map((version: string) => {
+      map((version: string | undefined) => {
+        if (!version || version.length === 0) {
+          return undefined;
+        }
         return version === BiaAppConstantsService.allEnvironments.version;
       }),
       catchError(err => {
         if (BiaOnlineOfflineService.isServerAvailable(err) !== true) {
           return of(true);
         }
-        return of(false);
+        return of(undefined);
       })
     );
   }
