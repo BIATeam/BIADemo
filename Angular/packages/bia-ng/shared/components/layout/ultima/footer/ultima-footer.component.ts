@@ -1,3 +1,4 @@
+import { CdkPortalOutlet } from '@angular/cdk/portal';
 import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -14,7 +15,7 @@ import { BiaLayoutService } from '../../services/layout.service';
   templateUrl: './ultima-footer.component.html',
   styleUrls: ['./ultima-footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.Eager,
-  imports: [NgClass, Ripple, AsyncPipe],
+  imports: [NgClass, Ripple, AsyncPipe, CdkPortalOutlet],
 })
 export class BiaUltimaFooterComponent {
   @Input() companyName: string;
