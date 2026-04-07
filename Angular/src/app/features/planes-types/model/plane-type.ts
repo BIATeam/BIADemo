@@ -17,6 +17,7 @@ export const planeTypeFieldsConfiguration: BiaFieldsConfig<PlaneType> = {
   columns: [
     Object.assign(new BiaFieldConfig('title', 'planeType.title'), {
       isRequired: true,
+      maxlength: 64,
     }),
     Object.assign(
       new BiaFieldConfig('certificationDate', 'planeType.certificationDate'),

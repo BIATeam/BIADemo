@@ -52,6 +52,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
       ...[
         Object.assign(new BiaFieldConfig('code', 'maintenanceTeam.code'), {
           type: PropType.String,
+          maxlength: 64,
         }),
         Object.assign(
           new BiaFieldConfig('isActive', 'maintenanceTeam.isActive'),

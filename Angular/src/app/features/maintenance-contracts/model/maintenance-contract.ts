@@ -37,8 +37,8 @@ export const maintenanceContractFieldsConfiguration: BiaFieldsConfig<Maintenance
       Object.assign(
         new BiaFieldConfig('description', 'maintenanceContract.description'),
         {
-          maxlength: 64,
-          validators: [Validators.maxLength(64)],
+          maxlength: 2056,
+          validators: [Validators.maxLength(2056)],
         }
       ),
       Object.assign(

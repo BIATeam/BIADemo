@@ -46,6 +46,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     Object.assign(new BiaFieldConfig('reference', 'engine.reference'), {
       type: PropType.String,
       isRequired: true,
+      maxlength: 64,
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'engine.manufacturer'), {
       type: PropType.String,

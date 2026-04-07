@@ -25,6 +25,7 @@ export const pilotListFieldsConfiguration: BiaFieldsConfig<PilotList> = {
       {
         type: PropType.String,
         isRequired: true,
+        maxlength: 64,
       }
     ),
     Object.assign(new BiaFieldConfig('name', 'pilot.name'), {
