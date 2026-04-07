@@ -41,7 +41,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     /// The database context.
     /// </summary>
     [AuditDbContext(Mode = AuditOptionMode.OptIn, IncludeEntityObjects = false, AuditEventType = "{database}_{context}")]
-    public partial class DataContext : BiaDataContext
+    public class DataContext : BiaDataContext
     {
         /// <summary>
         /// The current logger.

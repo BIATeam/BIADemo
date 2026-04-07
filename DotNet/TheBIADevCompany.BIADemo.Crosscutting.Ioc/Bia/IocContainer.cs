@@ -171,28 +171,25 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Ioc
                 options.AppVersion = Application.BackEndVersion;
             });
 
-            if (dbEngine == DbProvider.PostGreSql)
+            collection.AddDbContext<IDbContextDatabase, Infrastructure.Data.DataContext>(options =>
             {
-                collection.AddDbContext<IDbContextDatabase, Infrastructure.Data.DataContextPostGreSql>(options =>
+                if (dbEngine == DbProvider.PostGreSql)
                 {
                     options.UseNpgsql(connectionString, optionsBuilder =>
                     {
                         optionsBuilder.MigrationsAssembly(DatabaseMigrations.AssemblyNamePostgreSQL);
                     });
                     options.ReplaceService<IHistoryRepository, BiaNpgsqlHistoryRepository>();
-                });
-            }
-            else
-            {
-                collection.AddDbContext<IDbContextDatabase, Infrastructure.Data.DataContext>(options =>
+                }
+                else
                 {
                     options.UseSqlServer(connectionString, optionsBuilder =>
                     {
                         optionsBuilder.MigrationsAssembly(DatabaseMigrations.AssemblyNameSqlServer);
                     });
                     options.ReplaceService<IHistoryRepository, BiaSqlServerHistoryRepository>();
-                });
-            }
+                }
+            });
         }
 
 #endif

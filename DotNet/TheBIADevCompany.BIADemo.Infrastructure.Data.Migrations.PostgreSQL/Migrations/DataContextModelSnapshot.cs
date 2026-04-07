@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -11,16 +10,14 @@ using TheBIADevCompany.BIADemo.Infrastructure.Data;
 
 namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Migrations
 {
-    [DbContext(typeof(DataContextPostGreSql))]
-    [Migration("20260219161903_Initial")]
-    partial class Initial
+    [DbContext(typeof(DataContext))]
+    partial class DataContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.2")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -188,6 +185,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("ExpiredAtDateTime")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<string>("FileContentType")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -243,8 +243,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                     b.Property<int?>("CreatedById")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -672,14 +672,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         },
                         new
                         {
-                            Id = 103,
-                            Label = "Aufgabe",
-                            LanguageId = 4,
-                            NotificationTypeId = 1,
-                            RowVersionXmin = 0u
-                        },
-                        new
-                        {
                             Id = 201,
                             Label = "Information",
                             LanguageId = 2,
@@ -691,14 +683,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                             Id = 202,
                             Label = "Información",
                             LanguageId = 3,
-                            NotificationTypeId = 2,
-                            RowVersionXmin = 0u
-                        },
-                        new
-                        {
-                            Id = 203,
-                            Label = "Information",
-                            LanguageId = 4,
                             NotificationTypeId = 2,
                             RowVersionXmin = 0u
                         },
@@ -720,14 +704,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         },
                         new
                         {
-                            Id = 303,
-                            Label = "Erfolg",
-                            LanguageId = 4,
-                            NotificationTypeId = 3,
-                            RowVersionXmin = 0u
-                        },
-                        new
-                        {
                             Id = 401,
                             Label = "Avertissement",
                             LanguageId = 2,
@@ -739,14 +715,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                             Id = 402,
                             Label = "Advertencia",
                             LanguageId = 3,
-                            NotificationTypeId = 4,
-                            RowVersionXmin = 0u
-                        },
-                        new
-                        {
-                            Id = 403,
-                            Label = "Erwärmen",
-                            LanguageId = 4,
                             NotificationTypeId = 4,
                             RowVersionXmin = 0u
                         },
@@ -768,14 +736,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         },
                         new
                         {
-                            Id = 503,
-                            Label = "Fehler",
-                            LanguageId = 4,
-                            NotificationTypeId = 5,
-                            RowVersionXmin = 0u
-                        },
-                        new
-                        {
                             Id = 601,
                             Label = "Téléchargement prêt",
                             LanguageId = 2,
@@ -788,6 +748,46 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                             Label = "Descarga lista",
                             LanguageId = 3,
                             NotificationTypeId = 6,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 103,
+                            Label = "Aufgabe",
+                            LanguageId = 4,
+                            NotificationTypeId = 1,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 203,
+                            Label = "Information",
+                            LanguageId = 4,
+                            NotificationTypeId = 2,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 303,
+                            Label = "Erfolg",
+                            LanguageId = 4,
+                            NotificationTypeId = 3,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 403,
+                            Label = "Erwärmen",
+                            LanguageId = 4,
+                            NotificationTypeId = 4,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 503,
+                            Label = "Fehler",
+                            LanguageId = 4,
+                            NotificationTypeId = 5,
                             RowVersionXmin = 0u
                         },
                         new
@@ -853,14 +853,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                         },
                         new
                         {
-                            Id = 1000103,
-                            Label = "Administrator",
-                            LanguageId = 4,
-                            RoleId = 10001,
-                            RowVersionXmin = 0u
-                        },
-                        new
-                        {
                             Id = 1000201,
                             Label = "Administrateur des tâches en arrière-plan",
                             LanguageId = 2,
@@ -872,14 +864,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                             Id = 1000202,
                             Label = "Administrador de tareas en segundo plano",
                             LanguageId = 3,
-                            RoleId = 10002,
-                            RowVersionXmin = 0u
-                        },
-                        new
-                        {
-                            Id = 1000203,
-                            Label = "Administrator für Hintergrundaufgaben",
-                            LanguageId = 4,
                             RoleId = 10002,
                             RowVersionXmin = 0u
                         },
@@ -897,6 +881,22 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                             Label = "Visualización de tareas en segundo plano",
                             LanguageId = 3,
                             RoleId = 10003,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 1000103,
+                            Label = "Administrator",
+                            LanguageId = 4,
+                            RoleId = 10001,
+                            RowVersionXmin = 0u
+                        },
+                        new
+                        {
+                            Id = 1000203,
+                            Label = "Administrator für Hintergrundaufgaben",
+                            LanguageId = 4,
+                            RoleId = 10002,
                             RowVersionXmin = 0u
                         },
                         new
