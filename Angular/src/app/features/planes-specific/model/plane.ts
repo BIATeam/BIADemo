@@ -34,6 +34,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       isFrozen: true,
       minWidth: '50px',
       maxConstraints: 5,
+      maxlength: 64,
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {
       isSearchable: false,

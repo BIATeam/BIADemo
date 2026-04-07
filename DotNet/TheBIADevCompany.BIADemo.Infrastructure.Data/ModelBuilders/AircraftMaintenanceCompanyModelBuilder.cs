@@ -33,7 +33,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateAircraftMaintenanceCompanyModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AircraftMaintenanceCompany>().ToTable("AircraftMaintenanceCompanies");
-            modelBuilder.Entity<AircraftMaintenanceCompany>().Property(p => p.Title).IsRequired().HasMaxLength(64);
         }
 
         /// <summary>
@@ -43,7 +42,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         private static void CreateMaintenanceTeamModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MaintenanceTeam>().ToTable("MaintenanceTeams");
-            modelBuilder.Entity<MaintenanceTeam>().Property(p => p.Title).IsRequired().HasMaxLength(64);
             modelBuilder.Entity<MaintenanceTeam>().Property(p => p.AircraftMaintenanceCompanyId).IsRequired(); // relationship 1-*
             modelBuilder.Entity<MaintenanceTeam>().HasOne(x => x.AircraftMaintenanceCompany).WithMany(x => x.MaintenanceTeams).OnDelete(DeleteBehavior.ClientCascade);
 
@@ -94,6 +92,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
                 .WithMany()
                 .UsingEntity<MaintenanceContractPlane>();
             modelBuilder.Entity<MaintenanceContract>().Property(p => p.ContractNumber).IsRequired().HasMaxLength(64)/*.UseCollation("SQL_Latin1_General_CP1_CS_AS")*/;
+            modelBuilder.Entity<MaintenanceContract>().Property(p => p.Description).HasMaxLength(2056);
             modelBuilder.Entity<MaintenanceContract>()
                 .HasOne(x => x.Site)
                 .WithMany(x => x.MaintenanceContracts)

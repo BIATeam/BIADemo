@@ -23,6 +23,7 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
       type: PropType.String,
       isRequired: true,
       isOnlyInitializable: true,
+      maxlength: 450,
     }),
     Object.assign(
       new BiaFieldConfig('departureAirport', 'flight.departureAirport'),

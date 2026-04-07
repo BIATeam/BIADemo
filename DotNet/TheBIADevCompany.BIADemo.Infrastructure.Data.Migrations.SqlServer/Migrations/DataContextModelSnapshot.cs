@@ -17,7 +17,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.4")
+                .HasAnnotation("ProductVersion", "10.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -1009,8 +1009,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -1573,7 +1573,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Manufacturer")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<DateTime>("NextMaintenanceDate")
                         .HasColumnType("datetime2");
@@ -2189,7 +2190,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer.Migr
                         .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(2056)
+                        .HasColumnType("nvarchar(2056)");
 
                     b.Property<DateTime?>("FixedDate")
                         .HasColumnType("datetime2");

@@ -55,12 +55,14 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       isRequired: true,
       // Begin BIAToolKit Generation Ignore
       isOnlyInitializable: true,
+      maxlength: 64,
       // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {
       type: PropType.String,
       // Begin BIAToolKit Generation Ignore
       isOnlyUpdatable: true,
+      maxlength: 64,
       // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('isActive', 'plane.isActive'), {

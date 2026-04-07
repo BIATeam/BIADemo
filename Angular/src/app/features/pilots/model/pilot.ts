@@ -31,15 +31,18 @@ export const pilotFieldsConfiguration: BiaFieldsConfig<Pilot> = {
       {
         type: PropType.String,
         isRequired: true,
+        maxlength: 64,
       }
     ),
     Object.assign(new BiaFieldConfig('firstName', 'pilot.firstName'), {
       type: PropType.String,
       isRequired: true,
+      maxlength: 128,
     }),
     Object.assign(new BiaFieldConfig('lastName', 'pilot.lastName'), {
       type: PropType.String,
       isRequired: true,
+      maxlength: 128,
     }),
     Object.assign(new BiaFieldConfig('birthdate', 'pilot.birthdate'), {
       type: PropType.Date,

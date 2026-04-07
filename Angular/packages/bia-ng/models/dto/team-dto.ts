@@ -12,6 +12,7 @@ export interface TeamDto {
 export const teamFieldsConfigurationColumns: BiaFieldConfig<TeamDto>[] = [
   Object.assign(new BiaFieldConfig<TeamDto>('title', 'bia.team.title'), {
     isRequired: true,
+    maxlength: 256,
   }),
   Object.assign(new BiaFieldConfig('admins', 'bia.team.admins'), {
     type: PropType.ManyToMany,

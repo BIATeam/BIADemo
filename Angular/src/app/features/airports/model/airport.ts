@@ -16,9 +16,11 @@ export const airportFieldsConfiguration: BiaFieldsConfig<Airport> = {
   columns: [
     Object.assign(new BiaFieldConfig('name', 'airport.name'), {
       isRequired: true,
+      maxlength: 64,
     }),
     Object.assign(new BiaFieldConfig('city', 'airport.city'), {
       isRequired: true,
+      maxlength: 64,
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'airport.rowVersion'), {
       isVisible: false,

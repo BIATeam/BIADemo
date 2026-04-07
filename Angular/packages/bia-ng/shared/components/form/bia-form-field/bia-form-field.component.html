@@ -230,6 +230,7 @@
                     [rows]="field.multiline.rows"
                     [cols]="field.multiline.cols"
                     [style]="!field.multiline.resize ? 'resize: none' : ''"
+                    [maxlength]="field.maxlength"
                     class="h-full"
                     fluid></textarea>
                 } @else {
@@ -237,7 +238,7 @@
                     [formControlName]="field.field"
                     type="text"
                     pInputText
-                    maxlength="field.maxlength"
+                    [maxlength]="field.maxlength"
                     style="width: 100%" />
                 }
                 <label>
