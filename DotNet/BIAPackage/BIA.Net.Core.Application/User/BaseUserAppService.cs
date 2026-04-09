@@ -116,7 +116,6 @@ namespace BIA.Net.Core.Application.User
             this.identityProviderRepository = identityProviderRepository;
             this.userIdentityKeyDomainService = userIdentityKeyDomainService;
             this.principal = principal as BiaClaimsPrincipal;
-            this.FiltersContext.Add(AccessMode.Read, new DirectSpecification<TUser>(u => u.IsActive));
         }
 
         /// <inheritdoc />
