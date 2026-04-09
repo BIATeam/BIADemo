@@ -257,7 +257,8 @@
     "lastName": "Last Name",
     "listOf": "List of users",
     "login": "Login",
-    "cannotAddMember": "Cannot add member ${login} on ldap repository."
+    "cannotAddMember": "Cannot add member ${login} on ldap repository.",
+    "isActive": "Active"
   },
   "notification": {
     "action": "Action",

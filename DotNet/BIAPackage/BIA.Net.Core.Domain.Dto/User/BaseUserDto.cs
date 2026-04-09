@@ -43,5 +43,10 @@ namespace BIA.Net.Core.Domain.Dto.User
         /// Gets or sets the teams.
         /// </summary>
         public ICollection<UserTeamDto> Teams { get; set; }
+
+        /// <summary>
+        /// Gets or sets the isActive status.
+        /// </summary>
+        public bool IsActive { get; set; }
     }
 }

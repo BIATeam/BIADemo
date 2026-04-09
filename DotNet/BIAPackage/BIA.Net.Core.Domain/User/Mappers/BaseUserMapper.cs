@@ -57,6 +57,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
                             .Select(role => role.Label))
                         .OrderBy(x => x)
                     },
+                    { HeaderName.IsActive, user => user.IsActive },
                 };
             }
         }
@@ -132,6 +133,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
                     TeamTypeId = m.Team.TeamTypeId,
                 })
                 .ToList(),
+                IsActive = entity.IsActive,
             });
         }
 
@@ -146,6 +148,7 @@ namespace BIA.Net.Core.Domain.User.Mappers
                 { HeaderName.Guid, () => CSVString(dto.Guid.ToString()) },
                 { HeaderName.Roles, () => CSVList(dto.Roles) },
                 { HeaderName.Teams, () => CSVList(dto.Teams.Select(t => new OptionDto { Display = t.Title })) },
+                { HeaderName.IsActive, () => CSVBool(dto.IsActive) },
             };
         }
 
@@ -192,6 +195,11 @@ namespace BIA.Net.Core.Domain.User.Mappers
             /// header name Teams.
             /// </summary>
             public const string Teams = "teams";
+
+            /// <summary>
+            /// header name IsActive.
+            /// </summary>
+            public const string IsActive = "isActive";
         }
     }
 }
