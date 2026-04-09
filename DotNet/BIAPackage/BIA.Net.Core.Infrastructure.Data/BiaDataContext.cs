@@ -506,6 +506,27 @@ namespace BIA.Net.Core.Infrastructure.Data
             }
         }
 
+        /// <summary>
+        /// Removes entity types coming from <c>BIA.Net.Core.Domain</c> from this EF Core model.
+        /// In a Database First approach, the model must stay aligned with the database schema only,
+        /// so shared BIA domain types are ignored to errors.
+        /// </summary>
+        /// <param name="modelBuilder">The model builder used to configure the EF Core model.</param>
+        protected virtual void IgnoreBiaNetCoreDomainEntities(ModelBuilder modelBuilder)
+        {
+            List<Type> entitiesToIgnore = modelBuilder.Model.GetEntityTypes()
+                .Where(e => e.ClrType?.Namespace?.StartsWith("BIA.Net.Core.Domain", StringComparison.Ordinal) ?? false)
+                .Select(e => e.ClrType)
+                .Where(t => t is not null)
+                .Distinct()
+                .ToList();
+
+            foreach (Type entityType in entitiesToIgnore)
+            {
+                modelBuilder.Ignore(entityType);
+            }
+        }
+
         private static string GetColumnNameFromSqlExceptionNullInsert(string sqlExceptionMessage)
         {
             string pattern = @"column\s'([^']*)'";
