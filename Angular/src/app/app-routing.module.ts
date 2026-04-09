@@ -195,7 +195,6 @@ const routes: Routes = [
                 m => m.ExamplesModule
               ),
           },
-          // End BIADemo
           {
             path: 'sites',
             data: {
@@ -205,6 +204,7 @@ const routes: Routes = [
             loadChildren: () =>
               import('./features/sites/site.module').then(m => m.SiteModule),
           },
+          // End BIADemo
           {
             path: 'users',
             data: {

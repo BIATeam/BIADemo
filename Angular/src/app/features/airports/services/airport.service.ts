@@ -72,7 +72,6 @@ export class AirportService extends CrudItemService<Airport> {
   }
   public create(crudItem: Airport) {
     // TODO after creation of CRUD Airport : map parent Key on the corresponding field
-    // crudItem.siteId = this.getParentIds()[0],
     this.store.dispatch(FeatureAirportsActions.create({ airport: crudItem }));
   }
   public update(crudItem: Airport) {

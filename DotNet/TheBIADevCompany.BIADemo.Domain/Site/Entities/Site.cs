@@ -1,21 +1,15 @@
+// BIADemo only
 // <copyright file="Site.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
     using Audit.EntityFramework;
     using BIA.Net.Core.Common.Attributes;
     using BIA.Net.Core.Common.Enum;
-    using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.User.Entities;
-
-    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
-
-    // End BIADemo
 
     /// <summary>
     /// The site entity.
@@ -36,8 +30,6 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
         [AuditIgnore]
         public uint RowVersionXminSite { get; set; }
 
-        // Begin BIADemo
-
         /// <summary>
         /// Get or set the unique identifier (common to all applications) of a site.
         /// </summary>
@@ -48,6 +40,5 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Entities
         /// </summary>
         public virtual ICollection<MaintenanceContract> MaintenanceContracts { get; set; }
 
-        // End BIADemo
     }
 }

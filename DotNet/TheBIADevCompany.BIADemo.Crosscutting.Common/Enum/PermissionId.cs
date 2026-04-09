@@ -9,7 +9,10 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     /// </summary>
     public enum PermissionId
     {
-#if BIA_FRONT_FEATURE
+        // BIAToolKit - Begin PermissionId
+        // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - Begin Partial PermissionId Site
+
         /// <summary>
         /// Site Create.
         /// </summary>
@@ -99,10 +102,8 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         /// Site Options.
         /// </summary>
         Site_Options,
-#endif
 
-        // BIAToolKit - Begin PermissionId
-        // Begin BIAToolKit Generation Ignore
+        // BIAToolKit - End Partial PermissionId Site
         // BIAToolKit - Begin Partial PermissionId Plane
 
         /// <summary>

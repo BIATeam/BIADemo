@@ -10,7 +10,6 @@ export interface Notification extends BaseDto {
   read: boolean;
   createdDate: Date;
   createdBy: OptionDto | null;
-  siteId: number;
   notifiedUsers: OptionDto[];
   notifiedTeams: NotificationTeam[];
   jData: string;

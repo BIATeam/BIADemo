@@ -3,7 +3,6 @@ export enum Permission {
   // Begin BIADemo
   Hangfire_Access = 'Hangfire_Access',
   // End BIADemo
-
   Home_Access = 'Home_Access',
 
   // BIAToolKit - Begin Permission
@@ -103,7 +102,6 @@ export enum Permission {
   MaintenanceContract_Save = 'MaintenanceContract_Save',
   MaintenanceContract_Update = 'MaintenanceContract_Update',
 
-  // End BIADemo
   Site_Create = 'Site_Create',
   Site_Delete = 'Site_Delete',
   Site_List_Access = 'Site_List_Access',
@@ -115,4 +113,6 @@ export enum Permission {
   Site_Member_List_Access = 'Site_Member_List_Access',
   Site_Member_Update = 'Site_Member_Update',
   Site_Member_Save = 'Site_Member_Save',
+
+  // End BIADemo
 }

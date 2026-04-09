@@ -14,9 +14,9 @@ namespace TheBIADevCompany.BIADemo.Test.Data
 #if BIA_FRONT_FEATURE
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
     using TheBIADevCompany.BIADemo.Infrastructure.Data;
@@ -38,42 +38,6 @@ namespace TheBIADevCompany.BIADemo.Test.Data
             // Do nothing. Used to create the DbContext through IoC.
         }
 #if BIA_FRONT_FEATURE
-
-        #region Sites methods
-
-        /// <inheritdoc cref="IDataSites.CountSites"/>
-        public int CountSites()
-        {
-            return this.GetDbContext().Sites.Count();
-        }
-
-        /// <inheritdoc cref="IDataSites.GetSite(int)"/>
-        public Site GetSite(int id)
-        {
-            return this.GetDbContext().Sites.Find(id);
-        }
-
-        /// <inheritdoc cref="IDataSites.InitDefaultSites"/>
-        public void InitDefaultSites()
-        {
-            int id = 1;
-
-            foreach (string title in DataConstants.DefaultSitesTitles)
-            {
-                Site site = new Site
-                {
-                    Id = id++,
-                    Title = title,
-                    Members = new List<Member>(),
-                };
-
-                this.GetDbContext().Sites.Add(site);
-            }
-
-            this.GetDbContext().SaveChanges();
-        }
-
-        #endregion Sites methods
 
         #region Users methods
 
@@ -138,6 +102,42 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         #endregion Users methods
 
         // Begin BIADemo
+        #region Sites methods
+
+        /// <inheritdoc cref="IDataSites.CountSites"/>
+        public int CountSites()
+        {
+            return this.GetDbContext().Sites.Count();
+        }
+
+        /// <inheritdoc cref="IDataSites.GetSite(int)"/>
+        public Site GetSite(int id)
+        {
+            return this.GetDbContext().Sites.Find(id);
+        }
+
+        /// <inheritdoc cref="IDataSites.InitDefaultSites"/>
+        public void InitDefaultSites()
+        {
+            int id = 1;
+
+            foreach (string title in DataConstants.DefaultSitesTitles)
+            {
+                Site site = new Site
+                {
+                    Id = id++,
+                    Title = title,
+                    Members = new List<Member>(),
+                };
+
+                this.GetDbContext().Sites.Add(site);
+            }
+
+            this.GetDbContext().SaveChanges();
+        }
+
+        #endregion Sites methods
+
         #region Planes methods
 
         /// <inheritdoc cref="IDataPlanes.InitDefaultPlanes"/>
@@ -207,14 +207,12 @@ namespace TheBIADevCompany.BIADemo.Test.Data
         /// <inheritdoc />
         public override void InitDefaultData()
         {
-#if BIA_FRONT_FEATURE
+            // Begin BIADemo
             this.InitDefaultSites();
 
-            // Begin BIADemo
             this.InitDefaultPlanes();
 
             // End BIADemo
-#endif
         }
 
         #endregion AbstractMockEntityFrameworkInMemory methods

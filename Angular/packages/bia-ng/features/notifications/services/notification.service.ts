@@ -1,7 +1,6 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'packages/bia-ng/core/public-api';
-import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 import { CrudItemService } from 'packages/bia-ng/shared/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
@@ -61,7 +60,7 @@ export class NotificationService extends CrudItemService<
 
   public getParentIds(): any[] {
     // TODO after creation of CRUD Notification : adapt the parent Key tothe context. It can be null if root crud
-    return [this.authService.getCurrentTeamId(BiaTeamTypeId.Site)];
+    return [];
   }
 
   public getFeatureName() {
@@ -83,8 +82,6 @@ export class NotificationService extends CrudItemService<
   }
   public create(crudItem: Notification) {
     // TODO after creation of CRUD Notification : map parent Key on the corresponding field
-    let indexParent = 0;
-    crudItem.siteId = this.getParentIds()[indexParent++];
     this.store.dispatch(
       FeatureNotificationsActions.create({ notification: crudItem })
     );

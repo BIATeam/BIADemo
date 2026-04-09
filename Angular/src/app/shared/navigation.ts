@@ -9,14 +9,16 @@ export const NAVIGATION: BiaNavigation[] = [
     path: ['/users'],
     icon: 'pi pi-users',
   },
+  // BIAToolKit - Begin NavigationDomain
+  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial NavigationDomain Site
   {
     labelKey: 'app.sites',
     permissions: [Permission.Site_List_Access],
     path: ['/sites'],
     icon: 'pi pi-home',
   },
-  // BIAToolKit - Begin NavigationDomain
-  // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - End Partial NavigationDomain Site
   // BIAToolKit - Begin Partial NavigationDomain Maintenance
   {
     labelKey: 'app.maintenance',

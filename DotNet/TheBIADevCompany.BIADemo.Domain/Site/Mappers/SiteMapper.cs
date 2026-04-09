@@ -1,3 +1,4 @@
+// BIADemo only
 // <copyright file="SiteMapper.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -36,10 +37,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
             {
                 return new ExpressionCollection<Site>(base.ExpressionCollection)
                 {
-                    // Begin BIADemo
                     { SiteHeaderName.UniqueIdentifier, team => team.UniqueIdentifier },
-
-                    // End BIADemo
                 };
             }
         }
@@ -61,10 +59,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
         {
             base.DtoToEntity(dto, ref entity);
 
-            // Begin BIADemo
             entity.UniqueIdentifier = dto.UniqueIdentifier;
-
-            // End BIADemo
         }
 
         /// <summary>
@@ -75,10 +70,7 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
         {
             return base.EntityToDto().CombineMapping(entity => new SiteDto
             {
-                // Begin BIADemo
                 UniqueIdentifier = entity.UniqueIdentifier,
-
-                // End BIADemo
             });
         }
 
@@ -87,14 +79,9 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
         {
             return new Dictionary<string, Func<string>>(base.DtoToCellMapping(dto))
             {
-                // Begin BIADemo
                 { SiteHeaderName.UniqueIdentifier, () => CSVString(dto.UniqueIdentifier) },
-
-                // End BIADemo
             };
         }
-
-        // Begin BIADemo
 
         /// <inheritdoc />
         public override Expression<Func<Site, object>>[] IncludesBeforeDelete()
@@ -105,21 +92,15 @@ namespace TheBIADevCompany.BIADemo.Domain.Site.Mappers
             ];
         }
 
-        // End BIADemo
-
         /// <summary>
         /// Header names.
         /// </summary>
         public struct SiteHeaderName
         {
-            // Begin BIADemo
-
             /// <summary>
             /// Header name for unique identifier.
             /// </summary>
             public const string UniqueIdentifier = "uniqueIdentifier";
-
-            // End BIADemo
         }
     }
 }

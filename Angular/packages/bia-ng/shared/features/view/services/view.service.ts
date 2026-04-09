@@ -1,7 +1,6 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'packages/bia-ng/core/public-api';
-import { BiaTeamTypeId } from 'packages/bia-ng/models/enum/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { map, Observable } from 'rxjs';
@@ -46,7 +45,7 @@ export class ViewService extends CrudItemService<View> {
 
   public getParentIds(): any[] {
     // TODO after creation of CRUD Plane : adapt the parent Key to the context. It can be null if root crud
-    return [this.authService.getCurrentTeamId(BiaTeamTypeId.Site)];
+    return [];
   }
 
   public getFeatureName() {

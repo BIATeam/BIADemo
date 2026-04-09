@@ -20,8 +20,8 @@
     "maintenance": "Maintenance",
     "maintenanceTeams": "Equipes de maintenance",
     "maintenanceContracts": "Contrats de maintenance",
-    "End BIADemo": "To remove in project up to here",
-    "sites": "Sites"
+    "sites": "Sites",
+    "End BIADemo": "To remove in project up to here"
   },
   "Begin BIADemo": "To remove in project from here",
   "aircraftMaintenanceCompany": {
@@ -184,7 +184,6 @@
     "listOf": "Liste des types d'avions",
     "title": "Titre"
   },
-  "End BIADemo": "To remove in project up to here",
   "site": {
     "add": "Ajouter site",
     "admins": "Administrateurs",
@@ -195,5 +194,6 @@
     "title": "Titre",
     "headerLabel": "Site",
     "uniqueIdentifier": "Identifiant unique"
-  }
+  },
+  "End BIADemo": "To remove in project up to here"
 }

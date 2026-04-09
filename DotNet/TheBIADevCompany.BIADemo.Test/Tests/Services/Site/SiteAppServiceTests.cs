@@ -1,3 +1,4 @@
+// BIADemo only
 // <copyright file="SiteAppServiceTests.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
