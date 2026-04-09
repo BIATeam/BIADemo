@@ -53,6 +53,9 @@ export enum RoleMode {
 enum AppTeamTypeId {
   // BIAToolKit - Begin TeamTypeIdConstants
   // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial TeamTypeIdConstants Site
+  Site = 2,
+  // BIAToolKit - End Partial TeamTypeIdConstants Site
   // BIAToolKit - Begin Partial TeamTypeIdConstants AircraftMaintenanceCompany
   AircraftMaintenanceCompany = 3,
   // BIAToolKit - End Partial TeamTypeIdConstants AircraftMaintenanceCompany
@@ -67,9 +70,11 @@ export type TeamTypeId = AppTeamTypeId | BiaTeamTypeId;
 export const TeamTypeId = { ...AppTeamTypeId, ...BiaTeamTypeId };
 
 const TeamTypeRightPrefix: { key: TeamTypeId; value: string }[] = [
-  { key: TeamTypeId.Site, value: 'Site' },
   // BIAToolKit - Begin TeamTypeRightPrefixConstants
   // Begin BIAToolKit Generation Ignore
+  // BIAToolKit - Begin Partial TeamTypeRightPrefixConstants Site
+  { key: TeamTypeId.Site, value: 'Site' },
+  // BIAToolKit - End Partial TeamTypeRightPrefixConstants Site
   // BIAToolKit - Begin Partial TeamTypeRightPrefixConstants AircraftMaintenanceCompany
   {
     key: TeamTypeId.AircraftMaintenanceCompany,

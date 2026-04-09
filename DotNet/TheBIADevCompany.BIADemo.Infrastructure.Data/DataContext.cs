@@ -8,7 +8,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
     using Audit.EntityFramework;
     using BIA.Net.Core.Domain.Audit;
 #if BIA_FRONT_FEATURE
-    using BIA.Net.Core.Domain.Announcement.Entities;
     using BIA.Net.Core.Domain.Notification.Entities;
     using BIA.Net.Core.Domain.Translation.Entities;
     using BIA.Net.Core.Domain.User.Entities;
@@ -22,13 +21,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
     // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
-
-    // End BIADemo
-    // Begin BIADemo
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
+    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
     // End BIADemo
-    using TheBIADevCompany.BIADemo.Domain.Site.Entities;
     using TheBIADevCompany.BIADemo.Domain.User.Entities;
 #endif
     using BIA.Net.Core.Infrastructure.Data.ModelBuilders;
@@ -67,11 +63,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<AuditLog> AuditLogs { get; set; }
 
 #if BIA_FRONT_FEATURE
-        /// <summary>
-        /// Gets or sets the Site DBSet.
-        /// </summary>
-        public DbSet<Site> Sites { get; set; }
-
         /// <summary>
         /// Gets or sets the User DBSet.
         /// </summary>
@@ -138,6 +129,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
         public DbSet<UserDefaultTeam> UserDefaultTeams { get; set; }
 
         // Begin BIADemo
+
+        /// <summary>
+        /// Gets or sets the Site DBSet.
+        /// </summary>
+        public DbSet<Site> Sites { get; set; }
 
         /// <summary>
         /// Gets or sets the Aircraft Maintenance Company DBSet.
@@ -223,13 +219,13 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 #if BIA_FRONT_FEATURE
 
             new TranslationModelBuilder().CreateModel(modelBuilder);
-            SiteModelBuilder.CreateSiteModel(modelBuilder);
             new UserModelBuilder().CreateModel(modelBuilder);
             ViewModelBuilder.CreateModel(modelBuilder);
             new NotificationModelBuilder().CreateModel(modelBuilder);
             new AuditModelBuilder().CreateModel(modelBuilder);
 
             // Begin BIADemo
+            SiteModelBuilder.CreateSiteModel(modelBuilder);
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
             PilotModelBuilder.CreateModel(modelBuilder);

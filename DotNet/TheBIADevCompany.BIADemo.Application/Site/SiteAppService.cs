@@ -1,21 +1,16 @@
+// BIADemo only
 // <copyright file="SiteAppService.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
 
 namespace TheBIADevCompany.BIADemo.Application.Site
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
     using System.Security.Principal;
-    using System.Threading.Tasks;
     using BIA.Net.Core.Application.Services;
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.RepoContract;
     using BIA.Net.Core.Domain.Service;
-    using BIA.Net.Core.Domain.Specification;
-    using BIA.Net.Core.Domain.User.Specifications;
     using TheBIADevCompany.BIADemo.Application.User;
     using TheBIADevCompany.BIADemo.Crosscutting.Common.Enum;
     using TheBIADevCompany.BIADemo.Domain.Dto.Site;

@@ -1,3 +1,4 @@
+// BIADemo only
 // <copyright file="SiteModelBuilder.cs" company="TheBIADevCompany">
 // Copyright (c) TheBIADevCompany. All rights reserved.
 // </copyright>
@@ -19,11 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         public static void CreateSiteModel(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Site>().ToTable("Sites");
-
-            // Begin BIADemo
             modelBuilder.Entity<Site>().HasIndex(u => new { u.UniqueIdentifier }).IsUnique();
-
-            // End BIADemo
         }
     }
 }

@@ -48,7 +48,6 @@ export class UserService extends CrudItemService<User> {
 
   public getParentIds(): any[] {
     // TODO after creation of CRUD User : adapt the parent Key tothe context. It can be null if root crud
-    // return this.authService.getCurrentTeamId(TeamTypeId.Site);
     return [];
   }
 
@@ -71,7 +70,6 @@ export class UserService extends CrudItemService<User> {
   }
   public create(crudItem: User) {
     // TODO after creation of CRUD User : map parent Key on the corresponding field
-    // crudItem.siteId = this.getParentIds()[0],
     this.store.dispatch(FeatureUsersActions.create({ user: crudItem }));
   }
   public update(crudItem: User) {

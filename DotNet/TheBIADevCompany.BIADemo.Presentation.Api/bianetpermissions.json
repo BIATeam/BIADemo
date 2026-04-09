@@ -434,6 +434,64 @@
           "Admin"
         ]
       },
+      // Site
+      {
+        "Names": [
+          "Site_Access_All",
+          "Site_Create",
+          "Site_Update",
+          "Site_Delete",
+          "Site_Save"
+        ],
+        "Roles": [
+          "Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Site_List_Access",
+          "Site_Read",
+          "Site_Member_List_Access"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Member"
+        ]
+      },
+      {
+        "Names": [
+          "Site_Member_Create",
+          "Site_Member_Read",
+          "Site_Member_Update",
+          "Site_Member_Delete",
+          "Site_Member_Save"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Site_View_Add_TeamView",
+          "Site_View_Update_TeamView",
+          "Site_View_Set_Default_TeamView"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ]
+      },
+      {
+        "Names": [
+          "Site_View_Assign_To_Team"
+        ],
+        "Roles": [
+          "Admin",
+          "Site_Admin"
+        ],
+        "IsTransversal": true
+      },
       // End BIADemo
       // Home
       {
@@ -505,64 +563,6 @@
         "Roles": [
           "User"
         ]
-      },
-      // Site
-      {
-        "Names": [
-          "Site_Access_All",
-          "Site_Create",
-          "Site_Update",
-          "Site_Delete",
-          "Site_Save"
-        ],
-        "Roles": [
-          "Admin"
-        ]
-      },
-      {
-        "Names": [
-          "Site_List_Access",
-          "Site_Read",
-          "Site_Member_List_Access"
-        ],
-        "Roles": [
-          "Admin",
-          "Site_Member"
-        ]
-      },
-      {
-        "Names": [
-          "Site_Member_Create",
-          "Site_Member_Read",
-          "Site_Member_Update",
-          "Site_Member_Delete",
-          "Site_Member_Save"
-        ],
-        "Roles": [
-          "Admin",
-          "Site_Admin"
-        ]
-      },
-      {
-        "Names": [
-          "Site_View_Add_TeamView",
-          "Site_View_Update_TeamView",
-          "Site_View_Set_Default_TeamView"
-        ],
-        "Roles": [
-          "Admin",
-          "Site_Admin"
-        ]
-      },
-      {
-        "Names": [
-          "Site_View_Assign_To_Team"
-        ],
-        "Roles": [
-          "Admin",
-          "Site_Admin"
-        ],
-        "IsTransversal": true
       },
       // Team
       {

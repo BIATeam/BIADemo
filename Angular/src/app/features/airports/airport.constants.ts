@@ -9,7 +9,6 @@ export const airportCRUDConfiguration: CrudConfig<Airport> = new CrudConfig({
   useCalcMode: false,
   useSignalR: true,
   useView: false,
-  // useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
   usePopup: true,
   useOfflineMode: false,
   // IMPORTANT: this key should be unique in all the application. By default, if storeKey is not specified, value will be 'feature-' + featureName.
