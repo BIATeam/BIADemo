@@ -1,7 +1,7 @@
 <div>
   <div [ngClass]="{ 'table-compact': crudConfiguration.useCompactMode }">
     <bia-table-header
-      [headerTitle]="'member.listOf' | translate"
+      [headerTitle]="headerTitle | translate"
       [parentDisplayName]="(parentDisplayItemName$ | async) ?? ''"
       [canAdd]="canAdd && !crudConfiguration.useCalcMode"
       [canClone]="canAdd && crudConfiguration.isCloneable"
@@ -9,8 +9,8 @@
       [canImport]="canSave && crudConfiguration.useImport"
       [canExportCSV]="true"
       (create)="onCreate()"
-      (exportCSV)="onExportCSV('member.listOf')"
-      (fullExportCSV)="onExportCSV('member.listOf', true)"
+      (exportCSV)="onExportCSV(headerTitle)"
+      (fullExportCSV)="onExportCSV(headerTitle, true)"
       (import)="onImport()"
       (clone)="onClone()"
       (delete)="onDelete()"
