@@ -5,6 +5,7 @@ import {
   BiaFieldsConfig,
   OptionDto,
 } from 'packages/bia-ng/models/public-api';
+import { FilterMatchMode, FilterOperator } from 'primeng/api';
 import { UserTeam } from './user-team';
 
 // TODO after creation of CRUD User : adapt the model
@@ -45,6 +46,13 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
       type: PropType.Boolean,
       isEditable: false,
       isHideByDefault: true,
+      defaultFilter: [
+        {
+          value: true,
+          matchMode: FilterMatchMode.CONTAINS,
+          operator: FilterOperator.AND,
+        },
+      ],
     }),
   ],
 };

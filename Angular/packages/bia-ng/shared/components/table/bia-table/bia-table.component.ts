@@ -26,7 +26,12 @@ import {
   BiaTableState,
   KeyValuePair,
 } from 'packages/bia-ng/models/public-api';
-import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
+import {
+  FilterMetadata,
+  PrimeTemplate,
+  SortMeta,
+  TableState,
+} from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import {
   Table,
@@ -165,8 +170,10 @@ export class BiaTableComponent<TDto extends { id: number | string }>
   protected defaultSortOrder: number;
   protected defaultPageSize: number;
   protected defaultColumns: string[];
-
   protected expandedRows = {};
+  protected defaultFilters: {
+    [field: string]: FilterMetadata | FilterMetadata[];
+  } = {};
 
   constructor(
     public authService: AuthService,
@@ -241,6 +248,9 @@ export class BiaTableComponent<TDto extends { id: number | string }>
 
   protected onConfigurationChange(changes: SimpleChanges) {
     if (this.configuration && changes.configuration) {
+      if (changes.configuration.isFirstChange()) {
+        this.setDefaultFilters();
+      }
       this.updateDisplayedColumns(true);
     }
   }
@@ -285,6 +295,16 @@ export class BiaTableComponent<TDto extends { id: number | string }>
     }
     this.defaultSortField = this.sortFieldValue;
     this.defaultSortOrder = this.sortOrderValue;
+  }
+
+  protected setDefaultFilters() {
+    const filters: { [field: string]: FilterMetadata | FilterMetadata[] } = {};
+    this.configuration.columns.forEach(col => {
+      if (col.defaultFilter !== undefined) {
+        filters[col.field] = col.defaultFilter;
+      }
+    });
+    this.defaultFilters = filters;
   }
 
   protected updateDisplayedColumns(saveTableState: boolean) {

@@ -4,6 +4,7 @@ import {
   PrimeNGFiltering,
   PropType,
 } from 'packages/bia-ng/models/enum/public-api';
+import { FilterMetadata } from 'primeng/api';
 
 export class BiaFieldNumberFormat {
   autoLocale: string; // property automaticaly set when culture change.
@@ -90,6 +91,7 @@ export class BiaFieldConfig<TDto> {
   multiline?: BiaFieldMultilineString;
   asLocalDateTime: boolean = false;
   allowSelectFilter: boolean;
+  defaultFilter?: FilterMetadata | FilterMetadata[];
 
   get isDate() {
     return (
@@ -171,6 +173,7 @@ export class BiaFieldConfig<TDto> {
         multiline: this.multiline,
         asLocalDateTime: this.asLocalDateTime,
         allowSelectFilter: this.allowSelectFilter,
+        defaultFilter: this.defaultFilter,
       }
     );
   }
