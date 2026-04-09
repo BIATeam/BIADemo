@@ -36,8 +36,11 @@ export class MembersIndexComponent
 {
   teamTypeId: number;
   memberService: MemberService;
+  headerTitle: string = 'member.listOf';
+
   @ViewChild(MemberTableComponent, { static: false })
   declare crudItemTableComponent: MemberTableComponent;
+
   constructor(protected injector: Injector) {
     super(injector, injector.get<MemberService>(MemberService));
     this.crudConfiguration = memberCRUDConfiguration;
