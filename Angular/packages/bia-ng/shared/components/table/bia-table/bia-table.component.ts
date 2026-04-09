@@ -17,6 +17,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
+  clone,
   TABLE_FILTER_GLOBAL,
 } from 'packages/bia-ng/core/public-api';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
@@ -301,7 +302,7 @@ export class BiaTableComponent<TDto extends { id: number | string }>
     const filters: { [field: string]: FilterMetadata | FilterMetadata[] } = {};
     this.configuration.columns.forEach(col => {
       if (col.defaultFilter !== undefined) {
-        filters[col.field] = col.defaultFilter;
+        filters[col.field] = clone(col.defaultFilter);
       }
     });
     this.defaultFilters = filters;
