@@ -257,7 +257,8 @@
     "lastName": "Nom",
     "listOf": "Liste des utilisateurs",
     "login": "Login",
-    "cannotAddMember": "Impossible d'ajouter le membre ${login} dans le groupe AD."
+    "cannotAddMember": "Impossible d'ajouter le membre ${login} dans le groupe AD.",
+    "isActive": "Actif"
   },
   "notification": {
     "action": "Action",

@@ -268,7 +268,8 @@
     "lastName": "Apellido",
     "listOf": "Lista de usuarios",
     "login": "Login",
-    "cannotAddMember": "No se puede añadir el miembro ${login} en el repositorio ldap."
+    "cannotAddMember": "No se puede añadir el miembro ${login} en el repositorio ldap.",
+    "isActive": "Activo"
   },
   "notification": {
     "action": "Action",

@@ -17,6 +17,7 @@ export interface User extends BaseDto {
   displayName: string;
   roles: OptionDto[];
   teams: UserTeam[];
+  isActive: boolean;
 }
 
 // TODO after creation of CRUD User : adapt the field configuration
@@ -39,6 +40,11 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
     }),
     Object.assign(new BiaFieldConfig('roles', 'member.roles'), {
       type: PropType.ManyToMany,
+    }),
+    Object.assign(new BiaFieldConfig('isActive', 'user.isActive'), {
+      type: PropType.Boolean,
+      isEditable: false,
+      isHideByDefault: true,
     }),
   ],
 };
