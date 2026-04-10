@@ -293,12 +293,33 @@ export const planeFormLayoutConfiguration: BiaFormLayoutConfig<Plane> =
     new BiaFormLayoutConfigRow([
       new BiaFormLayoutConfigField(
         'motorsCount',
-        new BiaFormLayoutConfigColumnSize(6, 6, 6, 6)
+        new BiaFormLayoutConfigColumnSize(6, 6, 12, 12)
       ),
     ]),
     new BiaFormLayoutConfigRow([
       new BiaFormLayoutConfigField('probability'),
       new BiaFormLayoutConfigField('capacity'),
+      new BiaFormLayoutConfigField('totalFlightHours'),
+    ]),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigField(
+        'fuelCapacity',
+        new BiaFormLayoutConfigColumnSize(4, 6, 12, 12)
+      ),
+      new BiaFormLayoutConfigField(
+        'originalPrice',
+        new BiaFormLayoutConfigColumnSize(8, 12, 12, 12)
+      ),
+    ]),
+    new BiaFormLayoutConfigRow([
+      new BiaFormLayoutConfigField(
+        'fuelLevel',
+        new BiaFormLayoutConfigColumnSize(3, 3, 3, 6)
+      ),
+      new BiaFormLayoutConfigField(
+        'estimatedPrice',
+        new BiaFormLayoutConfigColumnSize(9, 9, 9, 12)
+      ),
     ]),
     // End BIAToolKit Generation Ignore
   ]);
