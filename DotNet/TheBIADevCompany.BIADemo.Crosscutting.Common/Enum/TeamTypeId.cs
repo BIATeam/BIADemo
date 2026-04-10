@@ -13,10 +13,14 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
         // All = 0,
         // Root = 1,
 
+        // Begin BIADemo
+
         /// <summary>
         /// Value for site.
         /// </summary>
         Site = 2,
+
+        // End BIADemo
 
         // Begin BIAToolKit Generation Ignore
 #pragma warning disable S1135 // Track uses of "TODO" tags

@@ -91,7 +91,6 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         protected override void CreateTeamTypeModelData(ModelBuilder modelBuilder)
         {
             base.CreateTeamTypeModelData(modelBuilder);
-            BiaCreateTeamTypeModelData(modelBuilder);
 
             // Begin BIAToolKit Generation Ignore
             // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany

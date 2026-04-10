@@ -35,10 +35,5 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
 #endif
             });
         }
-
-        private static void BiaCreateTeamTypeModelData(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
-        }
     }
 }
