@@ -19,6 +19,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
         /// </summary>
         public static readonly ImmutableList<BiaTeamConfig<BaseEntityTeam>> Config = new ImmutableListBuilder<BiaTeamConfig<BaseEntityTeam>>()
         {
+            // Begin BIADemo
             new()
             {
                 TeamTypeId = (int)TeamTypeId.Site,
@@ -28,6 +29,7 @@ namespace TheBIADevCompany.BIADemo.Domain.User
                 DisplayInHeader = true,
                 Label = "site.headerLabel",
             },
+            // End BIADemo
 
             // BIAToolKit - Begin TeamConfig
             // BIAToolKit - End TeamConfig

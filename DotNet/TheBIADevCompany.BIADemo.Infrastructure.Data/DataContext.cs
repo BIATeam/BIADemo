@@ -187,6 +187,9 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 
         // End BIADemo
 
+        // BIAToolKit - Begin DbSet
+        // BIAToolKit - End DbSet
+
         // BIAToolKit - Begin DbSetAudit
         // Begin BIAToolKit Generation Ignore
         // BIAToolKit - Begin Partial DbSetAudit Plane
@@ -224,8 +227,11 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
             new NotificationModelBuilder().CreateModel(modelBuilder);
             new AuditModelBuilder().CreateModel(modelBuilder);
 
+            // BIAToolKit - Begin DomainModelBuilder
+            // BIAToolKit - End DomainModelBuilder
+
             // Begin BIADemo
-            SiteModelBuilder.CreateSiteModel(modelBuilder);
+            SiteModelBuilder.CreateModel(modelBuilder);
             PlaneModelBuilder.CreateModel(modelBuilder);
             AircraftMaintenanceCompanyModelBuilder.CreateModel(modelBuilder);
             PilotModelBuilder.CreateModel(modelBuilder);

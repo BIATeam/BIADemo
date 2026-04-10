@@ -9,12 +9,13 @@ namespace TheBIADevCompany.BIADemo.Crosscutting.Common.Enum
     /// </summary>
     public enum RoleId
     {
+        // Begin BIADemo
+
         /// <summary>
         /// The site admin role identifier.
         /// </summary>
         SiteAdmin = 1,
 
-        // Begin BIADemo
 #pragma warning disable SA1602 // Enumeration items should be documented
         Pilot = 2,
         Supervisor = 101,
