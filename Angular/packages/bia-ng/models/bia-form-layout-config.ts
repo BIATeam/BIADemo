@@ -28,7 +28,7 @@ export class BiaFormLayoutConfigRow<TDto> {
 
     const undefinedLgSizeColumns = this.columns.length - definedLgSizes.length;
     const lgSize = Math.floor(remainingLgSize / undefinedLgSizeColumns);
-    return generateColumnClassFromLgSize(lgSize);
+    return generateColumnClassFromLgSize(lgSize, this.columns.length);
   }
 }
 
@@ -127,9 +127,24 @@ export class BiaFormLayoutConfigColumnSize {
   ) {}
 }
 
-function generateColumnClassFromLgSize(lgSize: number): string {
-  const mdSize = Math.min(12, Math.ceil(lgSize * 1.5));
-  const smSize = Math.min(12, Math.ceil(lgSize * 2));
+/**
+ * Snaps a raw size up to the nearest clean grid division of 12.
+ * Valid divisions: 1, 2, 3, 4, 6, 12
+ */
+function snapToGrid(size: number): number {
+  const gridDivisions = [1, 2, 3, 4, 6, 12];
+  return gridDivisions.find(d => d >= size) ?? 12;
+}
+
+/**
+ * Generates responsive column classes.
+ * md: fits at most 2 columns per row (col-6 each), or full-width if only 1 column.
+ * sm: always full-width.
+ */
+function generateColumnClassFromLgSize(lgSize: number, colsInRow = 1): string {
+  // const mdColsPerRow = colsInRow <= 1 ? 1 : 2;
+  const mdSize = snapToGrid(Math.ceil(12 / colsInRow));
+  const smSize = 12;
   return `col-12 lg:col-${lgSize} md:col-${mdSize} sm:col-${smSize}`;
 }
 
