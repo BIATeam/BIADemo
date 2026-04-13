@@ -166,11 +166,9 @@
         "add",
         "${input:migrationName}",
         "--project",
-        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
-        "-c",
-        "DataContext"
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB"
       ],
       "problemMatcher": []
     },
@@ -184,18 +182,14 @@
         "add",
         "${input:migrationName}",
         "--project",
-        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
-        "-c",
-        "DataContextPostGreSql",
-        "-o",
-        "MigrationsPostGreSql"
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB"
       ],
       "problemMatcher": []
     },
     {
-      "label": "Database Udpate SqlServer",
+      "label": "Database Udpate",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -203,14 +197,12 @@
         "database",
         "update",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
-        "-c",
-        "DataContext"
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB"
       ],
       "problemMatcher": []
     },
     {
-      "label": "Database Rollback SqlServer",
+      "label": "Database Rollback",
       "command": "dotnet",
       "type": "process",
       "args": [
@@ -219,9 +211,7 @@
         "update",
         "${input:migrationTarget}",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
-        "-c",
-        "DataContext"
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB"
       ],
       "problemMatcher": []
     },
@@ -234,11 +224,9 @@
         "migrations",
         "remove",
         "--project",
-        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.SqlServer",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
-        "-c",
-        "DataContext"
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB"
       ],
       "problemMatcher": []
     },
@@ -251,11 +239,9 @@
         "migrations",
         "remove",
         "--project",
-        "DotNet\\TheBIADevCompany.BIADemo.Infrastructure.Data",
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL",
         "-s",
-        "DotNet\\TheBIADevCompany.BIADemo.Presentation.Api",
-        "-c",
-        "DataContextPostGreSql"
+        "${workspaceFolder}/DotNet/TheBIADevCompany.BIADemo.DeployDB"
       ],
       "problemMatcher": []
     }
