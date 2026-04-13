@@ -20,6 +20,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data
 #if BIA_FRONT_FEATURE
 
     // Begin BIADemo
+    using TheBIADevCompany.BIADemo.Domain.Fleet.Entities;
     using TheBIADevCompany.BIADemo.Domain.Maintenance.Entities;
     using TheBIADevCompany.BIADemo.Domain.Site.Entities;
 
