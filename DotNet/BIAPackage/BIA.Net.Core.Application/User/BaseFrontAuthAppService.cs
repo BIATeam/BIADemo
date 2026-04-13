@@ -405,7 +405,7 @@ namespace BIA.Net.Core.Application.User
                 };
 
                 var defaultTeam = correspondingTeams.FirstOrDefault(x => x.IsDefault) ?? automaticallySelectedTeam;
-                var teamLogin = Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId);
+                var teamLogin = loginParam.CurrentTeamLogins == null ? null : Array.Find(loginParam.CurrentTeamLogins, ct => ct.TeamTypeId == teamConfig.TeamTypeId);
 
                 if (teamLogin is null && defaultTeam is not null)
                 {
