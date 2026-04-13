@@ -1,6 +1,8 @@
 ﻿import { BiaPermission } from 'packages/bia-ng/core/public-api';
 import { BiaNavigation } from 'packages/bia-ng/models/public-api';
+// BIAToolKit - Begin PermissionImport
 import { Permission } from './permission';
+// BIAToolKit - End PermissionImport
 
 export const NAVIGATION: BiaNavigation[] = [
   {
