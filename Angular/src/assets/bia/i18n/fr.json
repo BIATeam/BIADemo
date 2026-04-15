@@ -120,6 +120,7 @@
     "save": "Sauvegarder",
     "search": "Rechercher",
     "select": "Sélectionner",
+    "selectRole": "Sélectionner un rôle",
     "selectionActions": "Sélection menu",
     "settings": "Paramètres",
     "showAdvancedFilters": "Afficher les filtres avancés",
@@ -359,6 +360,7 @@
       "Nov",
       "Dec"
     ],
+    "noFileChosenMessage": "Aucun fichier choisi",
     "noFilter": "Pas de filtre",
     "notContains": "Ne contient pas",
     "notEmpty": "Non vide",

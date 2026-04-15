@@ -489,7 +489,8 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                     FileContentType = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     FilePath = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
                     RequestDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    RequestByUserId = table.Column<int>(type: "integer", nullable: false)
+                    RequestByUserId = table.Column<int>(type: "integer", nullable: false),
+                    ExpiredAtDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -512,7 +513,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL.Mig
                     Description = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
                     TypeId = table.Column<int>(type: "integer", nullable: false),
                     Read = table.Column<bool>(type: "boolean", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    CreatedDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedById = table.Column<int>(type: "integer", nullable: true),
                     JData = table.Column<string>(type: "text", nullable: true),
                     Discriminator = table.Column<string>(type: "character varying(21)", maxLength: 21, nullable: false),
