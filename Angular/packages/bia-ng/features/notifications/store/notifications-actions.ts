@@ -5,43 +5,46 @@ import { Notification } from '../model/notification';
 import { NotificationListItem } from '../model/notification-list-item';
 import { notificationCRUDConfiguration } from '../notification.constants';
 
+const STORE_KEY = notificationCRUDConfiguration.storeKey;
+
 export namespace FeatureNotificationsActions {
   export const loadAllByPost = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Load all by post',
+    '[' + STORE_KEY + '] Load all by post',
     props<{ event: TableLazyLoadEvent }>()
   );
 
   export const load = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Load',
+    '[' + STORE_KEY + '] Load',
     props<{ id: number }>()
   );
 
   export const setUnread = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Set Unread',
+    '[' + STORE_KEY + '] Set Unread',
     props<{ id: number }>()
   );
+
   export const create = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Create',
+    '[' + STORE_KEY + '] Create',
     props<{ notification: Notification }>()
   );
 
   export const update = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Update',
+    '[' + STORE_KEY + '] Update',
     props<{ notification: Notification }>()
   );
 
   export const remove = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Remove',
+    '[' + STORE_KEY + '] Remove',
     props<{ id: number }>()
   );
 
   export const multiRemove = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Multi Remove',
+    '[' + STORE_KEY + '] Multi Remove',
     props<{ ids: number[] }>()
   );
 
   export const loadAllByPostSuccess = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Load all by post success',
+    '[' + STORE_KEY + '] Load all by post success',
     props<{
       result: DataResult<NotificationListItem[]>;
       event: TableLazyLoadEvent;
@@ -49,20 +52,18 @@ export namespace FeatureNotificationsActions {
   );
 
   export const loadSuccess = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Load success',
+    '[' + STORE_KEY + '] Load success',
     props<{ notification: Notification }>()
   );
 
   export const failure = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Failure',
+    '[' + STORE_KEY + '] Failure',
     props<{ error: any }>()
   );
 
   export const clearAll = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Clear all in state'
+    '[' + STORE_KEY + '] Clear all in state'
   );
 
-  export const clearCurrent = createAction(
-    '[' + notificationCRUDConfiguration.storeKey + '] Clear current'
-  );
+  export const clearCurrent = createAction('[' + STORE_KEY + '] Clear current');
 }

@@ -1,4 +1,4 @@
-﻿import { inject, Injectable } from '@angular/core';
+﻿import { inject, Injectable, InjectionToken } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -22,9 +22,13 @@ import { FeatureNotificationsStore } from './notification.state';
 import { FeatureNotificationsActions } from './notifications-actions';
 
 /**
- * Effects file is for isolating and managing side effects of the application in one place
- * Http requests, Sockets, Routing, LocalStorage, etc
+ * Injection token for the notification CRUD configuration used by effects.
+ * Override this in BiaNotificationModule.forFeature() providers to use a custom config.
  */
+export const NOTIFICATION_CRUD_CONFIG = new InjectionToken(
+  'NOTIFICATION_CRUD_CONFIG',
+  { providedIn: 'root', factory: () => notificationCRUDConfiguration }
+);
 
 @Injectable()
 export class NotificationsEffects {
@@ -32,6 +36,7 @@ export class NotificationsEffects {
   protected notificationDas: NotificationDas = inject(NotificationDas);
   protected biaMessageService: BiaMessageService = inject(BiaMessageService);
   protected store: Store<BiaAppState> = inject(Store<BiaAppState>);
+  protected crudConfig = inject(NOTIFICATION_CRUD_CONFIG);
 
   loadAllByPost$ = createEffect(() =>
     this.actions$.pipe(
@@ -60,8 +65,8 @@ export class NotificationsEffects {
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.load),
       map(x => x?.id),
-      switchMap(id => {
-        return this.notificationDas.get({ id: id }).pipe(
+      switchMap(id =>
+        this.notificationDas.get({ id: id }).pipe(
           map(notification =>
             FeatureNotificationsActions.loadSuccess({ notification })
           ),
@@ -69,8 +74,8 @@ export class NotificationsEffects {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
-        );
-      })
+        )
+      )
     )
   );
 
@@ -78,8 +83,8 @@ export class NotificationsEffects {
     this.actions$.pipe(
       ofType(FeatureNotificationsActions.setUnread),
       map(x => x?.id),
-      switchMap(id => {
-        return this.notificationDas.setUnread(id).pipe(
+      switchMap(id =>
+        this.notificationDas.setUnread(id).pipe(
           map(notification =>
             FeatureNotificationsActions.loadSuccess({ notification })
           ),
@@ -87,8 +92,8 @@ export class NotificationsEffects {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
-        );
-      })
+        )
+      )
     )
   );
 
@@ -103,24 +108,20 @@ export class NotificationsEffects {
           )
         )
       ),
-      switchMap(([notification, event]) => {
-        return this.notificationDas.post({ item: notification }).pipe(
+      switchMap(([notification, event]) =>
+        this.notificationDas.post({ item: notification }).pipe(
           map(() => {
             this.biaMessageService.showAddSuccess();
-            if (notificationCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureNotificationsActions.loadAllByPost({
-                event: event,
-              });
-            }
+            return this.crudConfig.useSignalR
+              ? biaSuccessWaitRefreshSignalR()
+              : FeatureNotificationsActions.loadAllByPost({ event });
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
-        );
-      })
+        )
+      )
     )
   );
 
@@ -135,26 +136,22 @@ export class NotificationsEffects {
           )
         )
       ),
-      switchMap(([notification, event]) => {
-        return this.notificationDas
+      switchMap(([notification, event]) =>
+        this.notificationDas
           .put({ item: notification, id: notification.id })
           .pipe(
             map(() => {
               this.biaMessageService.showUpdateSuccess();
-              if (notificationCRUDConfiguration.useSignalR) {
-                return biaSuccessWaitRefreshSignalR();
-              } else {
-                return FeatureNotificationsActions.loadAllByPost({
-                  event: event,
-                });
-              }
+              return this.crudConfig.useSignalR
+                ? biaSuccessWaitRefreshSignalR()
+                : FeatureNotificationsActions.loadAllByPost({ event });
             }),
             catchError(err => {
               this.biaMessageService.showErrorHttpResponse(err);
               return of(FeatureNotificationsActions.failure({ error: err }));
             })
-          );
-      })
+          )
+      )
     )
   );
 
@@ -169,24 +166,20 @@ export class NotificationsEffects {
           )
         )
       ),
-      switchMap(([id, event]) => {
-        return this.notificationDas.delete({ id: id }).pipe(
+      switchMap(([id, event]) =>
+        this.notificationDas.delete({ id: id }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (notificationCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureNotificationsActions.loadAllByPost({
-                event: event,
-              });
-            }
+            return this.crudConfig.useSignalR
+              ? biaSuccessWaitRefreshSignalR()
+              : FeatureNotificationsActions.loadAllByPost({ event });
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
-        );
-      })
+        )
+      )
     )
   );
 
@@ -201,24 +194,20 @@ export class NotificationsEffects {
           )
         )
       ),
-      switchMap(([ids, event]) => {
-        return this.notificationDas.deletes({ ids: ids }).pipe(
+      switchMap(([ids, event]) =>
+        this.notificationDas.deletes({ ids: ids }).pipe(
           map(() => {
             this.biaMessageService.showDeleteSuccess();
-            if (notificationCRUDConfiguration.useSignalR) {
-              return biaSuccessWaitRefreshSignalR();
-            } else {
-              return FeatureNotificationsActions.loadAllByPost({
-                event: event,
-              });
-            }
+            return this.crudConfig.useSignalR
+              ? biaSuccessWaitRefreshSignalR()
+              : FeatureNotificationsActions.loadAllByPost({ event });
           }),
           catchError(err => {
             this.biaMessageService.showErrorHttpResponse(err);
             return of(FeatureNotificationsActions.failure({ error: err }));
           })
-        );
-      })
+        )
+      )
     )
   );
 }
