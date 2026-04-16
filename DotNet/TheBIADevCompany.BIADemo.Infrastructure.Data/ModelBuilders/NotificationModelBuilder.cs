@@ -22,6 +22,12 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         protected override void CreateNotificationModel(ModelBuilder modelBuilder)
         {
             base.CreateNotificationModel(modelBuilder);
+            // Begin BIADemo
+            modelBuilder.Entity<TheBIADevCompany.BIADemo.Domain.Notification.Entities.Notification>()
+                .Property(n => n.AcknowledgedAt)
+                .IsRequired(false);
+
+            // End BIADemo
         }
 
         /// <inheritdoc/>

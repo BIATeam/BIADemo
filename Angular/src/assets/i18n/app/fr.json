@@ -116,6 +116,10 @@
     "currentAirport": "Aéroport actuel",
     "operationAirports": "Aéroports des opérations"
   },
+  "notification": {
+    "acknowledgedAt": "Accusé de réception",
+    "acknowledge": "Accuser réception"
+  },
   "pilot": {
     "add": "Ajouter pilote",
     "baseAirport": "Aéroport de base",

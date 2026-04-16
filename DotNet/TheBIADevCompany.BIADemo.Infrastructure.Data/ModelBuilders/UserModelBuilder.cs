@@ -91,6 +91,10 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Data.ModelBuilders
         {
             base.CreateTeamTypeModelData(modelBuilder);
 
+            // Begin BIADemo
+            modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.Site, Name = "Site" });
+
+            // End BIADemo
             // Begin BIAToolKit Generation Ignore
             // BIAToolKit - Begin Partial TeamTypeModelBuilder AircraftMaintenanceCompany
             modelBuilder.Entity<TeamType>().HasData(new TeamType { Id = (int)TeamTypeId.AircraftMaintenanceCompany, Name = "AircraftMaintenanceCompany" });
