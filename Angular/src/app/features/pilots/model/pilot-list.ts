@@ -1,4 +1,6 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { PropType,
+  TableColumnVisibility
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -52,8 +54,8 @@ export const pilotListFieldsConfiguration: BiaFieldsConfig<PilotList> = {
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'pilot.rowVersion'), {
-      isVisible: false,
-      isVisibleInTable: false,
+      isVisibleInForm: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

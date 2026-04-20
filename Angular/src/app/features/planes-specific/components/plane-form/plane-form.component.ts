@@ -68,7 +68,7 @@ export class PlaneFormComponent
   constructor() {
     super();
     this.engineColumnsToDisplay = this.engineCrudConfig.columns
-      .filter(col => col.isVisibleInTable && !col.isHideByDefault)
+      .filter(col => col.isVisibleInTable && !col.isHiddenByDefault)
       .map(col => <KeyValuePair>{ key: col.field, value: col.header });
   }
 

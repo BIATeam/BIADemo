@@ -1,5 +1,8 @@
 ﻿import { Validators } from '@angular/forms';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import {
+  PropType,
+  TableColumnVisibility,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   Announcement,
   BiaFieldConfig,
@@ -34,8 +37,8 @@ export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {
       validators: [Validators.required, Validators.minLength(1)],
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'announcement.rowVersion'), {
-      isVisible: false,
-      isVisibleInTable: false,
+      isVisibleInForm: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

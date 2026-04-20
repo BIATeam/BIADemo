@@ -1,4 +1,8 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import {
+  FieldEditMode,
+  PropType,
+  TableColumnVisibility,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -25,16 +29,16 @@ export interface User extends BaseDto {
 export const userFieldsConfiguration: BiaFieldsConfig<User> = {
   columns: [
     Object.assign(new BiaFieldConfig('lastName', 'user.lastName'), {
-      isEditable: false,
+      fieldEditMode: FieldEditMode.ReadOnly,
     }),
     Object.assign(new BiaFieldConfig('firstName', 'user.firstName'), {
-      isEditable: false,
+      fieldEditMode: FieldEditMode.ReadOnly,
     }),
     Object.assign(new BiaFieldConfig('login', 'user.login'), {
-      isOnlyInitializable: true,
+      fieldEditMode: FieldEditMode.InitializableOnly,
     }),
     Object.assign(new BiaFieldConfig('teams', 'member.teams'), {
-      isEditable: false,
+      fieldEditMode: FieldEditMode.ReadOnly,
       specificOutput: true,
       isSortable: false,
       isSearchable: false,
@@ -44,8 +48,8 @@ export const userFieldsConfiguration: BiaFieldsConfig<User> = {
     }),
     Object.assign(new BiaFieldConfig('isActive', 'user.isActive'), {
       type: PropType.Boolean,
-      isEditable: false,
-      isHideByDefault: true,
+      fieldEditMode: FieldEditMode.ReadOnly,
+      tableColumnVisibility: TableColumnVisibility.AvailableButHidden,
       defaultFilter: [
         {
           value: true,

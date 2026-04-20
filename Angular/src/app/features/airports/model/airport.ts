@@ -4,6 +4,7 @@
   BiaFieldsConfig,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
+import { TableColumnVisibility } from 'packages/bia-ng/models/enum/public-api';
 
 // TODO after creation of CRUD Airport : adapt the model
 export interface Airport extends BaseDto, VersionedDto {
@@ -23,8 +24,8 @@ export const airportFieldsConfiguration: BiaFieldsConfig<Airport> = {
       maxlength: 64,
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'airport.rowVersion'), {
-      isVisible: false,
-      isVisibleInTable: false,
+      isVisibleInForm: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

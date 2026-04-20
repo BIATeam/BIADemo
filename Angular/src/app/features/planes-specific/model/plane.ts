@@ -2,6 +2,7 @@
 import {
   PrimeNGFiltering,
   PropType,
+  TableColumnVisibility
 } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
@@ -61,7 +62,7 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
         isRequired: true,
         type: PropType.TimeSecOnly,
         minWidth: '50px',
-        isHideByDefault: true,
+        tableColumnVisibility: TableColumnVisibility.AvailableButHidden,
       }
     ),
     Object.assign(new BiaFieldConfig('capacity', 'plane.capacity'), {
@@ -94,8 +95,8 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
-      isVisible: false,
-      isVisibleInTable: false,
+      isVisibleInForm: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

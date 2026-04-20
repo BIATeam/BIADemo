@@ -1,8 +1,10 @@
 ﻿import { ValidatorFn } from '@angular/forms';
 import {
+  FieldEditMode,
   NumberMode,
   PrimeNGFiltering,
   PropType,
+  TableColumnVisibility,
 } from 'packages/bia-ng/models/enum/public-api';
 import { FilterMetadata } from 'primeng/api';
 
@@ -66,12 +68,10 @@ export class BiaFieldConfig<TDto> {
   isSearchable: boolean;
   isSortable: boolean;
   icon: string;
-  isEditable: boolean;
-  isOnlyInitializable: boolean;
-  isOnlyUpdatable: boolean;
+  fieldEditMode: FieldEditMode;
   isEditableChoice: boolean;
-  isVisible: boolean;
-  isHideByDefault: boolean;
+  isVisibleInForm: boolean;
+  tableColumnVisibility: TableColumnVisibility;
   maxlength: number;
   translateKey: string;
   searchPlaceholder: string;
@@ -85,7 +85,6 @@ export class BiaFieldConfig<TDto> {
   alignFrozen: string;
   displayFormat: BiaFieldNumberFormat | BiaFieldDateFormat | null;
   maxConstraints = 10;
-  isVisibleInTable: boolean;
   filterWithDisplay: boolean;
   customDisplayFormat: boolean = true;
   multiline?: BiaFieldMultilineString;
@@ -110,6 +109,31 @@ export class BiaFieldConfig<TDto> {
     return this.type.toLowerCase();
   }
 
+  /** True when the field is editable in at least one form mode. */
+  get isEditable(): boolean {
+    return this.fieldEditMode !== FieldEditMode.ReadOnly;
+  }
+
+  /** True when the field is editable only on create (disabled on edit). */
+  get isOnlyInitializable(): boolean {
+    return this.fieldEditMode === FieldEditMode.InitializableOnly;
+  }
+
+  /** True when the field is editable only on update (disabled on create). */
+  get isOnlyUpdatable(): boolean {
+    return this.fieldEditMode === FieldEditMode.UpdatableOnly;
+  }
+
+  get isVisibleInTable(): boolean {
+    return this.tableColumnVisibility !== TableColumnVisibility.Hidden;
+  }
+
+  get isHiddenByDefault(): boolean {
+    return (
+      this.tableColumnVisibility === TableColumnVisibility.AvailableButHidden
+    );
+  }
+
   constructor(field: keyof TDto & string, header: string, maxlength = 255) {
     this.field = field;
     this.header = header;
@@ -118,12 +142,10 @@ export class BiaFieldConfig<TDto> {
     this.isSearchable = true;
     this.isSortable = true;
     this.icon = '';
-    this.isEditable = true;
-    this.isOnlyInitializable = false;
-    this.isOnlyUpdatable = false;
+    this.fieldEditMode = FieldEditMode.Editable;
     this.isEditableChoice = false;
-    this.isVisible = true;
-    this.isHideByDefault = false;
+    this.isVisibleInForm = true;
+    this.tableColumnVisibility = TableColumnVisibility.Visible;
     this.maxlength = maxlength;
     this.isRequired = false;
     this.specificOutput = false;
@@ -134,7 +156,6 @@ export class BiaFieldConfig<TDto> {
     this.isFrozen = false;
     this.alignFrozen = 'left';
     this.displayFormat = null;
-    this.isVisibleInTable = true;
     this.filterWithDisplay = false;
     this.multiline = undefined;
     this.asLocalDateTime = false;
@@ -150,12 +171,10 @@ export class BiaFieldConfig<TDto> {
         isSearchable: this.isSearchable,
         isSortable: this.isSortable,
         icon: this.icon,
-        isEditable: this.isEditable,
-        isOnlyInitializable: this.isOnlyInitializable,
-        isOnlyUpdatable: this.isOnlyUpdatable,
+        fieldEditMode: this.fieldEditMode,
         isChoiceEditable: this.isEditableChoice,
-        isVisible: this.isVisible,
-        isHideByDefault: this.isHideByDefault,
+        isVisibleInForm: this.isVisibleInForm,
+        tableColumnVisibility: this.tableColumnVisibility,
         translateKey: this.translateKey,
         searchPlaceholder: this.searchPlaceholder,
         isRequired: this.isRequired,
@@ -167,7 +186,6 @@ export class BiaFieldConfig<TDto> {
         isFrozen: this.isFrozen,
         alignFrozen: this.alignFrozen,
         displayFormat: this.displayFormat,
-        isVisibleInTable: this.isVisibleInTable,
         filterWithDisplay: this.filterWithDisplay,
         customDisplayFormat: this.customDisplayFormat,
         multiline: this.multiline,

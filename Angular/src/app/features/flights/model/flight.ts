@@ -1,4 +1,7 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { PropType,
+  FieldEditMode,
+  TableColumnVisibility
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -22,7 +25,7 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
     Object.assign(new BiaFieldConfig('id', 'flight.id'), {
       type: PropType.String,
       isRequired: true,
-      isOnlyInitializable: true,
+      fieldEditMode: FieldEditMode.InitializableOnly,
       maxlength: 450,
     }),
     Object.assign(
@@ -40,8 +43,8 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'flight.rowVersion'), {
-      isVisible: false,
-      isVisibleInTable: false,
+      isVisibleInForm: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

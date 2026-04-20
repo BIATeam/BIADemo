@@ -3,6 +3,8 @@ import {
   NumberMode,
   PrimeNGFiltering,
   PropType,
+  FieldEditMode,
+  TableColumnVisibility
 } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
@@ -54,14 +56,14 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       type: PropType.String,
       isRequired: true,
       // Begin BIAToolKit Generation Ignore
-      isOnlyInitializable: true,
+      fieldEditMode: FieldEditMode.InitializableOnly,
       maxlength: 64,
       // End BIAToolKit Generation Ignore
     }),
     Object.assign(new BiaFieldConfig('manufacturer', 'plane.manufacturer'), {
       type: PropType.String,
       // Begin BIAToolKit Generation Ignore
-      isOnlyUpdatable: true,
+      fieldEditMode: FieldEditMode.UpdatableOnly,
       maxlength: 64,
       // End BIAToolKit Generation Ignore
     }),
@@ -254,8 +256,8 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'plane.rowVersion'), {
-      isVisible: false,
-      isVisibleInTable: false,
+      isVisibleInForm: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };
