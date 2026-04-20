@@ -1,7 +1,4 @@
-/**
- * Enum defining the visibility states for table columns.
- * Controls both the availability in the column selector and the default display state.
- */
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum TableColumnVisibility {
   /**
    * Column is not available in the table at all.

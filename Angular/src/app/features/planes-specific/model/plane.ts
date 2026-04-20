@@ -2,7 +2,7 @@
 import {
   PrimeNGFiltering,
   PropType,
-  TableColumnVisibility
+  TableColumnVisibility,
 } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,

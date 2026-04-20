@@ -1,6 +1,4 @@
-/**
- * Enum defining when a field is editable in forms.
- */
+/* eslint-disable @typescript-eslint/naming-convention */
 export enum FieldEditMode {
   /**
    * Field is not editable in any form (create or edit).

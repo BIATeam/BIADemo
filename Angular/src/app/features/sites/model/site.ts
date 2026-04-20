@@ -1,6 +1,7 @@
-﻿import { PropType,
+﻿import {
   FieldEditMode,
-  TableColumnVisibility
+  PropType,
+  TableColumnVisibility,
 } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,

@@ -1,4 +1,5 @@
-﻿import {
+﻿import { TableColumnVisibility } from 'packages/bia-ng/models/enum/public-api';
+import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
@@ -7,7 +8,6 @@
   teamFieldsConfigurationColumns,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
-import { TableColumnVisibility } from 'packages/bia-ng/models/enum/public-api';
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the model
 export interface AircraftMaintenanceCompany

@@ -1,10 +1,10 @@
 ﻿import { Validators } from '@angular/forms';
 import {
+  FieldEditMode,
   NumberMode,
   PrimeNGFiltering,
   PropType,
-  FieldEditMode,
-  TableColumnVisibility
+  TableColumnVisibility,
 } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,

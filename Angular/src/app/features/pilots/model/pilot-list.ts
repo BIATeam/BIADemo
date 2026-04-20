@@ -1,5 +1,6 @@
-﻿import { PropType,
-  TableColumnVisibility
+﻿import {
+  PropType,
+  TableColumnVisibility,
 } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
