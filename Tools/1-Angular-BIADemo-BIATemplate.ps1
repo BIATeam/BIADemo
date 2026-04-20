@@ -95,6 +95,8 @@ Set-Location -Path $newPath
 Write-Host "RemoveFolder src\app\features\aircraft-maintenance-companies"
 RemoveFolder -path 'src\app\features\aircraft-maintenance-companies'
 
+Write-Host "RemoveFolder src\app\features\specific-notifications"
+RemoveFolder -path 'src\app\features\specific-notifications'
 Write-Host "RemoveFolder src\app\features\sites"
 RemoveFolder -path 'src\app\features\sites'
 Write-Host "RemoveFolder src\app\features\planes"
