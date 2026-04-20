@@ -224,7 +224,7 @@ const routes: Routes = [
               canNavigate: true,
             },
             loadChildren: () =>
-              import('./features/notifications/specific-notification.module').then(
+              import('./features/specific-notifications/specific-notification.module').then(
                 m => m.SpecificNotificationModule
               ),
           },

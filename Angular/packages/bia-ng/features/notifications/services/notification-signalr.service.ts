@@ -115,7 +115,7 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
     return okUser && okTeam;
   }
 
-  override destroy(crudItemService: NotificationService) {
+  override destroy(_crudItemService: NotificationService) {
     console.log(
       '%c [Notifications] Unregister SignalR : refresh-notification',
       'color: purple; font-weight: bold'
