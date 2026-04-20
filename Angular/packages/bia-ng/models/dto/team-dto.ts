@@ -1,4 +1,7 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import {
+  FieldEditMode,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import { BiaFieldConfig } from '../bia-field-config';
 import { OptionDto } from '../option-dto';
 
@@ -16,7 +19,7 @@ export const teamFieldsConfigurationColumns: BiaFieldConfig<TeamDto>[] = [
   }),
   Object.assign(new BiaFieldConfig('admins', 'bia.team.admins'), {
     type: PropType.ManyToMany,
-    isEditable: false,
+    fieldEditMode: FieldEditMode.ReadOnly,
     isVisible: false,
   }),
 ];

@@ -1,4 +1,8 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import {
+  FieldEditMode,
+  PropType,
+  TableColumnVisibility,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -33,21 +37,20 @@ export const memberFieldsConfiguration: BiaFieldsConfig<Member> = {
       type: PropType.OneToMany,
     }),
     Object.assign(new BiaFieldConfig('lastName', 'user.lastName'), {
-      isEditable: false,
-      isHideByDefault: true,
+      fieldEditMode: FieldEditMode.ReadOnly,
+      tableColumnVisibility: TableColumnVisibility.AvailableButHidden,
     }),
     Object.assign(new BiaFieldConfig('firstName', 'user.firstName'), {
-      isEditable: false,
-      isHideByDefault: true,
+      fieldEditMode: FieldEditMode.ReadOnly,
+      tableColumnVisibility: TableColumnVisibility.AvailableButHidden,
     }),
     Object.assign(new BiaFieldConfig('login', 'user.login'), {
-      isEditable: false,
-      isOnlyInitializable: true,
+      fieldEditMode: FieldEditMode.InitializableOnly,
     }),
     Object.assign(new BiaFieldConfig('isActive', 'member.isActive'), {
-      isEditable: false,
+      fieldEditMode: FieldEditMode.ReadOnly,
       type: PropType.Boolean,
-      isHideByDefault: true,
+      tableColumnVisibility: TableColumnVisibility.AvailableButHidden,
     }),
     Object.assign(new BiaFieldConfig<Member>('roles', 'member.roles'), {
       type: PropType.ManyToMany,

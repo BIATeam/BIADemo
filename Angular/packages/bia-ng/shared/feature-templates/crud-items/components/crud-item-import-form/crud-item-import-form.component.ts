@@ -15,7 +15,10 @@ import {
 } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { clone } from 'packages/bia-ng/core/public-api';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import {
+  FieldEditMode,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   AppSettings,
   BiaFieldConfig,
@@ -234,7 +237,7 @@ export class CrudItemImportFormComponent<TDto extends { id: number | string }> {
             'bia.errors'
           ),
           {
-            isEditable: false,
+            fieldEditMode: FieldEditMode.ReadOnly,
             type: PropType.String,
           }
         ),

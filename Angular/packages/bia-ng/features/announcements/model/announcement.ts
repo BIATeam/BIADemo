@@ -35,7 +35,7 @@ export const announcementFieldsConfiguration: BiaFieldsConfig<Announcement> = {
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'announcement.rowVersion'), {
       isVisible: false,
-      isVisibleInTable: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

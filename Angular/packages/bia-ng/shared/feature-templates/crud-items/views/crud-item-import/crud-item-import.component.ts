@@ -12,7 +12,10 @@ import {
   BiaTranslationService,
   clone,
 } from 'packages/bia-ng/core/public-api';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import {
+  FieldEditMode,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import { BaseDto, BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { Subscription, take } from 'rxjs';
 import { BiaFieldHelperService } from '../../../../components/form/bia-field-base/bia-field-helper.service';
@@ -123,7 +126,7 @@ export abstract class CrudItemImportComponent<
 
   protected getColumnId(): BiaFieldConfig<TFormCrudItem> {
     return Object.assign(new BiaFieldConfig<TFormCrudItem>('id', 'bia.id'), {
-      isEditable: false,
+      fieldEditMode: FieldEditMode.ReadOnly,
       type: PropType.Number,
     });
   }
