@@ -7,6 +7,7 @@
   teamFieldsConfigurationColumns,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
+import { TableColumnVisibility } from 'packages/bia-ng/models/enum/public-api';
 
 // TODO after creation of CRUD Team AircraftMaintenanceCompany : adapt the model
 export interface AircraftMaintenanceCompany
@@ -25,7 +26,7 @@ export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<Airc
           ),
           {
             isVisible: false,
-            isVisibleInTable: false,
+            tableColumnVisibility: TableColumnVisibility.Hidden,
           }
         ),
       ],

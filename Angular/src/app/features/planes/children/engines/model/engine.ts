@@ -3,6 +3,7 @@ import {
   NumberMode,
   PrimeNGFiltering,
   PropType,
+  TableColumnVisibility
 } from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
@@ -207,7 +208,7 @@ export const engineFieldsConfiguration: BiaFieldsConfig<Engine> = {
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'engine.rowVersion'), {
       isVisible: false,
-      isVisibleInTable: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

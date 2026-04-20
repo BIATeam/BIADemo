@@ -1,4 +1,7 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { PropType,
+  FieldEditMode,
+  TableColumnVisibility
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -27,14 +30,14 @@ export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
     ),
     // End BIADemo
     Object.assign(new BiaFieldConfig<Site>('admins', 'site.admins'), {
-      isEditable: false,
+      fieldEditMode: FieldEditMode.ReadOnly,
       isVisible: false,
       type: PropType.ManyToMany,
       filterWithDisplay: false,
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'site.rowVersion'), {
       isVisible: false,
-      isVisibleInTable: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };

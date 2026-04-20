@@ -1,4 +1,6 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+﻿import { PropType,
+  TableColumnVisibility
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BaseDto,
   BiaFieldConfig,
@@ -28,7 +30,7 @@ export const planeTypeFieldsConfiguration: BiaFieldsConfig<PlaneType> = {
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'planeType.rowVersion'), {
       isVisible: false,
-      isVisibleInTable: false,
+      tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
 };
