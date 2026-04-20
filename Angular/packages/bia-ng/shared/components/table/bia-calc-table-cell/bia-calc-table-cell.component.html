@@ -16,7 +16,7 @@
           "></ng-container>
       </ng-template>
     </bia-table-input>
-  } @else if (col.isVisible) {
+  } @else if (col.isVisibleInForm) {
     <!-- OUTPUT MODE (Non-editable field) -->
     <bia-table-output [field]="col" [data]="getCellData(rowData, col)">
       <ng-template pTemplate="specificOutput">
