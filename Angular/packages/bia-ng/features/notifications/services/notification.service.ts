@@ -25,6 +25,9 @@ export class NotificationService extends CrudItemService<
   _createSuccessActionType = FeatureNotificationsActions.loadAllByPost.type;
   _updateFailureActionType = FeatureNotificationsActions.failure.type;
 
+  /** Exposed so that NotificationsIndexComponent (and subclasses) can read it without hardcoding */
+  public crudConfiguration = notificationCRUDConfiguration;
+
   constructor(
     protected store: Store<BiaAppState>,
     public dasService: NotificationDas,

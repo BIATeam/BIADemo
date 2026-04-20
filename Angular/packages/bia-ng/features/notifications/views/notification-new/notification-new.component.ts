@@ -18,6 +18,7 @@ export class NotificationNewComponent extends CrudItemNewComponent<Notification>
     public notificationService: NotificationService
   ) {
     super(injector, notificationService);
-    this.crudConfiguration = notificationCRUDConfiguration;
+    this.crudConfiguration =
+      notificationService.crudConfiguration ?? notificationCRUDConfiguration;
   }
 }

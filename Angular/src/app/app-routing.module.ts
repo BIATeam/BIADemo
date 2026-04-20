@@ -216,6 +216,7 @@ const routes: Routes = [
                 m => m.UserModule
               ),
           },
+          // Begin BIADemo
           {
             path: 'notifications',
             data: {
@@ -223,10 +224,22 @@ const routes: Routes = [
               canNavigate: true,
             },
             loadChildren: () =>
-              import('./features/bia-features/notifications/notification.module').then(
-                m => m.NotificationModule
+              import('./features/specific-notifications/specific-notification.module').then(
+                m => m.SpecificNotificationModule
               ),
           },
+          // End BIADemo
+          // Except BIADemo {
+          // Except BIADemo   path: 'notifications',
+          // Except BIADemo   data: {
+          // Except BIADemo     breadcrumb: 'app.notifications',
+          // Except BIADemo     canNavigate: true,
+          // Except BIADemo   },
+          // Except BIADemo   loadChildren: () =>
+          // Except BIADemo     import('./features/bia-features/notifications/notification.module').then(
+          // Except BIADemo       m => m.NotificationModule
+          // Except BIADemo     ),
+          // Except BIADemo },
           {
             path: 'backgroundtask',
             data: {

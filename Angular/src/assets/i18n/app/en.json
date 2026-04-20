@@ -116,6 +116,10 @@
     "currentAirport": "Current airport",
     "operationAirports": "Operations airports"
   },
+  "notification": {
+    "acknowledgedAt": "Acknowledged at",
+    "acknowledge": "Acknowledge"
+  },
   "pilot": {
     "add": "Add pilot",
     "baseAirport": "Base airport",

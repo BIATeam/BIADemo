@@ -30,7 +30,6 @@ export class CrudItemHistoricalComponent<
     super(injector, crudItemService);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onSubmitted(_: TFormCrudItem): void {
     this.navigateBack();
   }

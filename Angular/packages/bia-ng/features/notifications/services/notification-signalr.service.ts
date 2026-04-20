@@ -11,14 +11,16 @@ import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { first } from 'rxjs/operators';
 import { Notification } from '../model/notification';
 import { NotificationListItem } from '../model/notification-list-item';
-import { FeatureNotificationsStore } from '../store/notification.state';
-import { FeatureNotificationsActions } from '../store/notifications-actions';
+import { NotificationService } from './notification.service';
 
 /**
- * Service managing SignalR events for hangfire jobs.
- * To use it:
- * - Add a parameter of this type in the constructor of your component (for dependency injection)
- * - Call the 'initialize()' method on it, so that dependency injection is truly performed
+ * SignalR service for the notification CRUD feature.
+ *
+ * Overrides the base CrudItemSignalRService to add user/team/role filtering:
+ * only triggers a list refresh when the incoming notification actually targets
+ * the current user, so unrelated notifications don't cause unnecessary reloads.
+ *
+ * Override `isInMyDisplay()` in a subclass to customize the filtering logic.
  */
 @Injectable({
   providedIn: 'root',
@@ -29,26 +31,16 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
 > {
   protected myTeams: Team[];
 
-  /**
-   * Constructor.
-   * @param store the store.
-   * @param signalRService the service managing the SignalR connection.
-   */
   constructor(
-    protected store: Store<BiaAppState>,
-    protected signalRService: BiaSignalRService,
+    protected override store: Store<BiaAppState>,
+    protected override signalRService: BiaSignalRService,
     protected authService: AuthService,
-    protected injector: Injector
+    protected override injector: Injector
   ) {
     super(injector);
-    // Do nothing.
   }
 
-  /**
-   * Initialize SignalR communication.
-   * Note: this method has been created so that we have to call one method on this class, otherwise dependency injection is not working.
-   */
-  initialize() {
+  override initialize(crudItemService: NotificationService) {
     this.store.select(CoreTeamsStore.getAllTeams).subscribe(teams => {
       this.myTeams = teams;
     });
@@ -57,62 +49,50 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
       '%c [Notifications] Register SignalR : refresh-notification',
       'color: purple; font-weight: bold'
     );
+
     this.signalRService.addMethod('refresh-notification', args => {
       const notification: Notification = JSON.parse(args);
       if (this.isInMyDisplay(notification)) {
-        this.store
-          .select(FeatureNotificationsStore.getLastLazyLoadEvent)
-          .pipe(first())
-          .subscribe(event => {
-            console.log(
-              '%c [Notifications] RefreshSuccess',
-              'color: green; font-weight: bold'
-            );
-            this.store.dispatch(
-              FeatureNotificationsActions.loadAllByPost({
-                event: event,
-              })
-            );
-          });
+        crudItemService.lastLazyLoadEvent$.pipe(first()).subscribe(event => {
+          console.log(
+            '%c [Notifications] RefreshSuccess',
+            'color: green; font-weight: bold'
+          );
+          crudItemService.loadAllByPost(event);
+        });
       }
     });
+
     this.signalRService.addMethod('refresh-notifications-several', args => {
       const notifications: Notification[] = JSON.parse(args);
-      if (
-        notifications.some(notification => this.isInMyDisplay(notification))
-      ) {
-        this.store
-          .select(FeatureNotificationsStore.getLastLazyLoadEvent)
-          .pipe(first())
-          .subscribe(event => {
-            console.log(
-              '%c [Notifications] RefreshSuccess',
-              'color: green; font-weight: bold'
-            );
-            this.store.dispatch(
-              FeatureNotificationsActions.loadAllByPost({
-                event: event,
-              })
-            );
-          });
+      if (notifications.some(n => this.isInMyDisplay(n))) {
+        crudItemService.lastLazyLoadEvent$.pipe(first()).subscribe(event => {
+          console.log(
+            '%c [Notifications] RefreshSuccess',
+            'color: green; font-weight: bold'
+          );
+          crudItemService.loadAllByPost(event);
+        });
       }
     });
+
     this.targetedFeature = { featureName: 'notifications' };
     this.signalRService.joinGroup(this.targetedFeature);
   }
 
-  protected isInMyDisplay(notification: Notification) {
+  /**
+   * Returns true if the notification targets the current user.
+   * Override this in a subclass to customize filtering logic.
+   */
+  protected isInMyDisplay(notification: Notification): boolean {
     const decryptedToken = this.authService.getDecryptedToken();
 
-    // OK if no notifiedUsers are specified or if the current user is amongst the notifiedUsers
-    const okUser: boolean =
+    const okUser =
       !notification.notifiedUsers ||
       notification.notifiedUsers.length === 0 ||
       notification.notifiedUsers.some(u => u.id === decryptedToken.id);
 
-    // OK if no notifiedTeams are specified or if the current user is part of one of the notifiedTeams.
-    // If the notifiedTeam targets specific roles, the current user must have one of these roles assigned in the given team
-    const okTeam: boolean =
+    const okTeam =
       !notification.notifiedTeams ||
       notification.notifiedTeams.length === 0 ||
       notification.notifiedTeams.some(notifiedTeam =>
@@ -127,22 +107,21 @@ export class NotificationsSignalRService extends CrudItemSignalRService<
               );
             }
             return true;
-          } else {
-            return false;
           }
+          return false;
         })
       );
 
     return okUser && okTeam;
   }
 
-  destroy() {
+  override destroy(_crudItemService: NotificationService) {
     console.log(
       '%c [Notifications] Unregister SignalR : refresh-notification',
       'color: purple; font-weight: bold'
     );
     this.signalRService.removeMethod('refresh-notification');
-    this.signalRService.removeMethod('refresh-notification');
+    this.signalRService.removeMethod('refresh-notifications-several');
     this.signalRService.leaveGroup(this.targetedFeature);
   }
 }

@@ -50,7 +50,9 @@ export class NotificationsIndexComponent
     protected authService: AuthService
   ) {
     super(injector, notificationService);
-    this.crudConfiguration = notificationCRUDConfiguration;
+    // Read config from the service so subclasses only need to provide their own service
+    this.crudConfiguration =
+      notificationService.crudConfiguration ?? notificationCRUDConfiguration;
   }
 
   onDetail(notificationId: number) {

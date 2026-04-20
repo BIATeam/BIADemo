@@ -21,6 +21,7 @@ export class NotificationEditComponent extends CrudItemEditComponent<Notificatio
     public notificationService: NotificationService
   ) {
     super(injector, notificationService);
-    this.crudConfiguration = notificationCRUDConfiguration;
+    this.crudConfiguration =
+      notificationService.crudConfiguration ?? notificationCRUDConfiguration;
   }
 }
