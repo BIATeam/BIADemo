@@ -135,51 +135,55 @@
     } @else {
       <ng-container *ngTemplateOutlet="formFields"></ng-container>
     }
-    <div class="footer-container bia-form-fixed-buttons">
-      @if (showFormHelp) {
-        <i
-          class="pi pi-question-circle"
-          [pTooltip]="tooltipContent"
-          tooltipPosition="top"
-          tooltipStyleClass="bia-tooltip-large"
-          positionLeft="80"></i>
-      }
-      <div class="flex gap-2 align-items-center info-locked-container">
-        @if (isCrudItemOutdated) {
-          <button
-            pButton
-            class="info-locked-button"
-            type="button"
-            icon="pi pi-info"
-            [rounded]="true"
-            severity="warn"
-            [outlined]="true"
-            size="small"></button>
+    @if (showFooter) {
+      <div class="footer-container bia-form-fixed-buttons">
+        @if (showFormHelp) {
+          <i
+            class="pi pi-question-circle"
+            [pTooltip]="tooltipContent"
+            tooltipPosition="top"
+            tooltipStyleClass="bia-tooltip-large"
+            positionLeft="80"></i>
         }
-        @if (isCrudItemOutdated) {
-          <span class="info-locked-label">{{
-            'bia.outdatedData' | translate
-          }}</span>
-        }
+        <div class="flex gap-2 align-items-center info-locked-container">
+          @if (isCrudItemOutdated) {
+            <button
+              pButton
+              class="info-locked-button"
+              type="button"
+              icon="pi pi-info"
+              [rounded]="true"
+              severity="warn"
+              [outlined]="true"
+              size="small"></button>
+          }
+          @if (isCrudItemOutdated) {
+            <span class="info-locked-label">{{
+              'bia.outdatedData' | translate
+            }}</span>
+          }
+        </div>
+        <div class="flex gap-3">
+          @if (showCancelButton) {
+            <button
+              pButton
+              icon="pi pi-times"
+              label="{{ cancelButtonLabel | translate }}"
+              type="button"
+              class="p-button-outlined"
+              (click)="onCancel()"></button>
+          }
+          @if (isSubmitButtonVisible) {
+            <button
+              pButton
+              icon="pi {{ submitButtonIcon }}"
+              label="{{ submitButtonLabel | translate }}"
+              type="submit"
+              [loading]="submittingForm"
+              [disabled]="isSubmitButtonDisabled"></button>
+          }
+        </div>
       </div>
-      <div class="flex gap-3">
-        <button
-          pButton
-          icon="pi pi-times"
-          label="{{ cancelButtonLabel | translate }}"
-          type="button"
-          class="p-button-outlined"
-          (click)="onCancel()"></button>
-        @if (isSubmitButtonVisible) {
-          <button
-            pButton
-            icon="pi {{ submitButtonIcon }}"
-            label="{{ submitButtonLabel | translate }}"
-            type="submit"
-            [loading]="submittingForm"
-            [disabled]="isSubmitButtonDisabled"></button>
-        }
-      </div>
-    </div>
+    }
   </form>
 }
