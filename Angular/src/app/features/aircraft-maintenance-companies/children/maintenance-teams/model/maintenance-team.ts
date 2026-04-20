@@ -292,7 +292,7 @@ export const maintenanceTeamFieldsConfiguration: BiaFieldsConfig<MaintenanceTeam
         Object.assign(
           new BiaFieldConfig('rowVersion', 'maintenanceTeam.rowVersion'),
           {
-            isVisible: false,
+            isVisibleInForm: false,
             tableColumnVisibility: TableColumnVisibility.Hidden,
           }
         ),

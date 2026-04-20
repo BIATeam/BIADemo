@@ -31,12 +31,12 @@ export const siteFieldsConfiguration: BiaFieldsConfig<Site> = {
     // End BIADemo
     Object.assign(new BiaFieldConfig<Site>('admins', 'site.admins'), {
       fieldEditMode: FieldEditMode.ReadOnly,
-      isVisible: false,
+      isVisibleInForm: false,
       type: PropType.ManyToMany,
       filterWithDisplay: false,
     }),
     Object.assign(new BiaFieldConfig('rowVersion', 'site.rowVersion'), {
-      isVisible: false,
+      isVisibleInForm: false,
       tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],

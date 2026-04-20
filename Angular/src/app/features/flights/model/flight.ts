@@ -43,7 +43,7 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'flight.rowVersion'), {
-      isVisible: false,
+      isVisibleInForm: false,
       tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],

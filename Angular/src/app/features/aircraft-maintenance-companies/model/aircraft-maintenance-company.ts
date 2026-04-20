@@ -25,7 +25,7 @@ export const aircraftMaintenanceCompanyFieldsConfiguration: BiaFieldsConfig<Airc
             'aircraftMaintenanceCompany.rowVersion'
           ),
           {
-            isVisible: false,
+            isVisibleInForm: false,
             tableColumnVisibility: TableColumnVisibility.Hidden,
           }
         ),

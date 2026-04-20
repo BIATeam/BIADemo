@@ -54,7 +54,7 @@ export const pilotListFieldsConfiguration: BiaFieldsConfig<PilotList> = {
       }
     ),
     Object.assign(new BiaFieldConfig('rowVersion', 'pilot.rowVersion'), {
-      isVisible: false,
+      isVisibleInForm: false,
       tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
