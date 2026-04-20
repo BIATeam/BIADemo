@@ -70,7 +70,7 @@ export class BiaFieldConfig<TDto> {
   icon: string;
   fieldEditMode: FieldEditMode;
   isEditableChoice: boolean;
-  isVisible: boolean;
+  isVisibleInForm: boolean;
   tableColumnVisibility: TableColumnVisibility;
   maxlength: number;
   translateKey: string;
@@ -144,7 +144,7 @@ export class BiaFieldConfig<TDto> {
     this.icon = '';
     this.fieldEditMode = FieldEditMode.Editable;
     this.isEditableChoice = false;
-    this.isVisible = true;
+    this.isVisibleInForm = true;
     this.tableColumnVisibility = TableColumnVisibility.Visible;
     this.maxlength = maxlength;
     this.isRequired = false;
@@ -173,7 +173,7 @@ export class BiaFieldConfig<TDto> {
         icon: this.icon,
         fieldEditMode: this.fieldEditMode,
         isChoiceEditable: this.isEditableChoice,
-        isVisible: this.isVisible,
+        isVisibleInForm: this.isVisibleInForm,
         tableColumnVisibility: this.tableColumnVisibility,
         translateKey: this.translateKey,
         searchPlaceholder: this.searchPlaceholder,
