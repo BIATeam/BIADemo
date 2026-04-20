@@ -88,6 +88,9 @@ export class BiaFormComponent<TDto extends { id: number | string }>
   @Input() showPopupButton = false;
   @Input() showFullPageButton = false;
   @Input() showFormHelp = true;
+  @Input() showHeader = true;
+  @Input() showFooter = true;
+  @Input() showCancelButton = true;
   @Input() canFix?: boolean;
   @Input() shown = true;
   @Output() save = new EventEmitter<any>();
@@ -579,10 +582,11 @@ export class BiaFormComponent<TDto extends { id: number | string }>
 
   get showHeaderContainer(): boolean {
     return (
-      this.isFixableButtonVisible ||
-      this.showPopupButton ||
-      this.showSplitButton ||
-      this.showFullPageButton
+      this.showHeader &&
+      (this.isFixableButtonVisible ||
+        this.showPopupButton ||
+        this.showSplitButton ||
+        this.showFullPageButton)
     );
   }
 
