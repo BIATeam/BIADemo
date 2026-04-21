@@ -115,11 +115,57 @@ namespace BIA.Net.Core.Infrastructure.Data
 
                 return await base.SaveChangesAsync(cancellationToken);
             }
+            catch (DbUpdateConcurrencyException concurrencyEx)
+            {
+                // Refresh the original values for each conflicting entry so EF Core
+                // no longer sees a mismatch, then retry the commit once.
+                await this.RefreshConcurrencyConflictsAsync(concurrencyEx, cancellationToken);
+
+                try
+                {
+                    return await base.SaveChangesAsync(cancellationToken);
+                }
+                catch (Exception retryEx)
+                {
+                    this.logger.LogError(retryEx, "An error occured while saving data after concurrency retry.");
+                    this.RollbackChanges();
+                    throw this.ManageException(retryEx);
+                }
+            }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "An error occured while saving data.");
                 this.RollbackChanges();
                 throw this.ManageException(ex);
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the original values of all conflicting entries from the database so that
+        /// EF Core no longer sees a concurrency mismatch on the next save attempt.
+        /// Entries whose row has been deleted by another process are detached.
+        /// </summary>
+        /// <param name="concurrencyException">The <see cref="DbUpdateConcurrencyException"/> that triggered the refresh.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        protected virtual async Task RefreshConcurrencyConflictsAsync(
+            DbUpdateConcurrencyException concurrencyException,
+            CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in concurrencyException.Entries)
+            {
+                var databaseValues = await entry.GetDatabaseValuesAsync(cancellationToken);
+                if (databaseValues != null)
+                {
+                    // Overwrite the snapshot EF is comparing against with the current DB values,
+                    // keeping our pending changes intact.
+                    entry.OriginalValues.SetValues(databaseValues);
+                }
+                else
+                {
+                    // Row was deleted by another process – detach to skip it.
+                    entry.State = EntityState.Detached;
+                }
             }
         }
 
