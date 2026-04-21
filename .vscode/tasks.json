@@ -189,7 +189,7 @@
       "problemMatcher": []
     },
     {
-      "label": "Database Udpate",
+      "label": "Database Update",
       "command": "dotnet",
       "type": "process",
       "args": [

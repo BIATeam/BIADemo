@@ -1,3 +1,4 @@
+export * from './bia-advanced-filter/bia-advanced-filter.component';
 export * from './bia-button-group/bia-button-group.component';
 export * from './bia-buttons/public-api';
 export * from './bia-external-site/bia-external-site.component';
