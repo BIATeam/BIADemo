@@ -1,6 +1,7 @@
 export * from './announcement';
 export * from './app-settings';
 export * from './auth-info';
+export * from './bia-advanced-filter-config';
 export * from './bia-button-and-menu-item';
 export * from './bia-field-config';
 export * from './bia-form-layout-config';

@@ -1,0 +1,183 @@
+<ng-template #template>
+  <div
+    [hidden]="hidden"
+    class="bia-advanced-filter flex-grow-1"
+    style="min-width: 300px">
+    <button
+      type="button"
+      icon="pi pi-times"
+      class="p-button-rounded p-button-text flat"
+      pButton
+      (click)="onClose()"
+      pTooltip="{{ 'bia.hideAdvancedFilters' | translate }}"></button>
+
+    <form (submit)="onFilter()" class="flex flex-column" [formGroup]="form">
+      <div
+        class="header flex flex-row align-items-center align-content-center align-self-stretch">
+        <h1>{{ 'bia.filters' | translate }}</h1>
+      </div>
+
+      @for (f of resolvedFields; track f.fieldConfig.field) {
+        <div class="flex flex-row justify-content-center">
+          <div class="app-filter-container flex-1" style="max-width: 90%">
+            @if (f.fieldConfig.specificInput) {
+              <ng-container
+                *ngTemplateOutlet="
+                  specificInputTemplate;
+                  context: { fieldConfig: f.fieldConfig, form: form }
+                "></ng-container>
+            } @else {
+              @switch (f.type) {
+                @case (propType.OneToMany) {
+                  <p-floatlabel variant="on">
+                    <p-select
+                      [options]="getOptions(f)"
+                      placeholder="&nbsp;"
+                      [formControlName]="f.controlName"
+                      optionLabel="display"
+                      optionValue="id"
+                      datakey="id"
+                      [style]="{ width: '100%' }"
+                      [showClear]="true"
+                      appendTo="body"
+                      [filter]="f.fieldConfig.allowSelectFilter ?? false">
+                      <ng-template #selectedItem let-selected>
+                        <span>{{ selected.display | translate }}</span>
+                      </ng-template>
+                      <ng-template #item let-option>
+                        {{ option.display | translate }}
+                      </ng-template>
+                    </p-select>
+                    <label>{{ f.fieldConfig.header | translate }}</label>
+                  </p-floatlabel>
+                }
+
+                @case (propType.ManyToMany) {
+                  <p-floatlabel variant="on">
+                    <p-multiSelect
+                      [formControlName]="f.controlName"
+                      [options]="getOptions(f)"
+                      optionLabel="display"
+                      optionValue="id"
+                      datakey="id"
+                      appendTo="body"
+                      [showClear]="true"
+                      [style]="{ width: '100%' }">
+                      <ng-template #selectedItems let-selected>
+                        @for (item of selected; track item.id) {
+                          <span>{{ item.display | translate }}</span>
+                        }
+                      </ng-template>
+                      <ng-template #item let-option>
+                        {{ option.display | translate }}
+                      </ng-template>
+                    </p-multiSelect>
+                    <label>{{ f.fieldConfig.header | translate }}</label>
+                  </p-floatlabel>
+                }
+
+                @case (propType.Boolean) {
+                  <p-floatlabel variant="on">
+                    <p-select
+                      [options]="[
+                        { label: ('bia.yes' | translate), value: true },
+                        { label: ('bia.no' | translate), value: false },
+                      ]"
+                      placeholder="&nbsp;"
+                      [formControlName]="f.controlName"
+                      optionLabel="label"
+                      optionValue="value"
+                      [style]="{ width: '100%' }"
+                      [showClear]="true"
+                      appendTo="body"></p-select>
+                    <label>{{ f.fieldConfig.header | translate }}</label>
+                  </p-floatlabel>
+                }
+
+                @case (propType.Number) {
+                  @if (f.numberFormat; as fmt) {
+                    <p-floatlabel variant="on">
+                      <p-inputNumber
+                        [formControlName]="f.controlName"
+                        [mode]="fmt.mode"
+                        [currency]="fmt.currency"
+                        [minFractionDigits]="fmt.minFractionDigits"
+                        [maxFractionDigits]="fmt.maxFractionDigits"
+                        [locale]="fmt.autoLocale || 'en-US'"
+                        [showClear]="true" />
+                      <label>{{ f.fieldConfig.header | translate }}</label>
+                    </p-floatlabel>
+                  }
+                }
+
+                @case (propType.Date) {
+                  @if (f.dateFormat; as fmt) {
+                    <p-floatlabel variant="on">
+                      <p-date-picker
+                        [formControlName]="f.controlName"
+                        placeholder="&nbsp;"
+                        showButtonBar="true"
+                        appendTo="body"
+                        [dateFormat]="fmt.autoPrimeDateFormat"
+                        [inputStyle]="{ width: '100%' }"
+                        [showClear]="true"
+                        [view]="
+                          getDateView(fmt.autoPrimeDateFormat)
+                        "></p-date-picker>
+                      <label>{{ f.fieldConfig.header | translate }}</label>
+                    </p-floatlabel>
+                  }
+                }
+
+                @case (propType.DateTime) {
+                  @if (f.dateFormat; as fmt) {
+                    <p-floatlabel variant="on">
+                      <p-date-picker
+                        [formControlName]="f.controlName"
+                        [showTime]="true"
+                        [dateFormat]="fmt.autoPrimeDateFormat"
+                        [hourFormat]="fmt.autoHourFormat.toString()"
+                        placeholder="&nbsp;"
+                        [inputStyle]="{ width: '100%' }"
+                        appendTo="body"
+                        [showClear]="true"
+                        [hideOnDateTimeSelect]="false"></p-date-picker>
+                      <label>{{ f.fieldConfig.header | translate }}</label>
+                    </p-floatlabel>
+                  }
+                }
+
+                @default {
+                  <p-floatlabel variant="on">
+                    <input
+                      pInputText
+                      [formControlName]="f.controlName"
+                      style="width: 100%" />
+                    <label>{{ f.fieldConfig.header | translate }}</label>
+                  </p-floatlabel>
+                }
+              }
+            }
+          </div>
+        </div>
+      }
+
+      <div class="flex flex-row justify-content-around align-content-around">
+        <button
+          pButton
+          label="{{ 'bia.reset' | translate }}"
+          class="flex-1 p-button-outlined"
+          style="max-width: 33%"
+          type="button"
+          (click)="onReset()"></button>
+        <button
+          type="submit"
+          pButton
+          label="{{ 'bia.filter' | translate }}"
+          class="flex-1"
+          style="max-width: 33%"
+          [loading]="submittingForm"></button>
+      </div>
+    </form>
+  </div>
+</ng-template>
