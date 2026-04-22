@@ -70,9 +70,10 @@
   },
   "flight": {
     "add": "Add flight",
-    "arrivalAirport": "Arrival airport",
-    "departureAirport": "Departure airport",
+    "arrivalAirport": "Arrival",
+    "departureAirport": "Departure",
     "edit": "Edit flight",
+    "groupAirport": "Airport",
     "id": "Flight number",
     "import": "Import flights",
     "listOf": "List of flights",

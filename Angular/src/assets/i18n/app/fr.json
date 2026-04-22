@@ -70,9 +70,10 @@
   },
   "flight": {
     "add": "Ajouter vol",
-    "arrivalAirport": "Aéroport d'arrivé",
-    "departureAirport": "Aéroport de départ",
+    "arrivalAirport": "Arrivée",
+    "departureAirport": "Départ",
     "edit": "Modifier vol",
+    "groupAirport": "Aéroport",
     "id": "Numéro de vol",
     "import": "Importer vols",
     "listOf": "Liste des vols",

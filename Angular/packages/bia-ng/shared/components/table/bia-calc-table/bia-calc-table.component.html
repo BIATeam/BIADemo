@@ -2,7 +2,7 @@
   <form [formGroup]="form" class="bia-calc-form">
     <p-table
       #dt
-      [reorderableColumns]="reorderableColumns"
+      [reorderableColumns]="reorderableColumns && !configuration.columnGroup"
       [resizableColumns]="isResizableColumn"
       [columnResizeMode]="'expand'"
       [columns]="displayedColumns"

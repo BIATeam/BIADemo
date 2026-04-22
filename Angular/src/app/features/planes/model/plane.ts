@@ -259,17 +259,6 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
-  columnGroup: {
-    rows: [
-      [
-        { header: 'plane.groupFuel', fieldKeys: ['fuelCapacity', 'fuelLevel'] },
-        {
-          header: 'plane.groupPrice',
-          fieldKeys: ['originalPrice', 'estimatedPrice'],
-        },
-      ],
-    ],
-  },
 };
 
 // TODO after creation of CRUD Plane : adapt the form layout configuration

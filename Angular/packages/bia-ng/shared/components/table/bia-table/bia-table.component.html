@@ -1,7 +1,7 @@
 @if (configuration) {
   <p-table
     #dt
-    [reorderableColumns]="reorderableColumns"
+    [reorderableColumns]="reorderableColumns && !configuration.columnGroup"
     [resizableColumns]="isResizableColumn"
     [columnResizeMode]="'expand'"
     [columns]="displayedColumns"
