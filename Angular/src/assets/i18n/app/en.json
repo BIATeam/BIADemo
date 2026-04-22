@@ -173,6 +173,8 @@
     "groupIdentification": "Identification",
     "groupStatus": "Status",
     "groupTracking": "Tracking",
+    "groupFuel": "Fuel",
+    "groupPrice": "Price",
     "enginesNumberRange": {
       "title": "Number of engines",
       "zero": "0 engines",

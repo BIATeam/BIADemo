@@ -38,89 +38,258 @@
       (onRowCollapse)="onRowCollapse($event)"
       (onPage)="pageChange.emit($event)">
       <ng-template pTemplate="header" let-columns>
-        <tr>
-          @if (canSelectElement === true && !readOnly) {
-            <th
-              class="bia-table-select-col"
-              [style.width]="widthSelect"
-              [alignFrozen]="alignFrozenSelect"
-              biaFrozenColumn
-              [frozen]="isSelectFrozen">
-              @if (canSelectMultipleElement) {
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        @if (computedHeaderRows) {
+          @for (groupRow of computedHeaderRows; track $index) {
+            <tr>
+              @if ($first) {
+                @if (canSelectElement === true && !readOnly) {
+                  <th
+                    class="bia-table-select-col"
+                    [style.width]="widthSelect"
+                    [alignFrozen]="alignFrozenSelect"
+                    biaFrozenColumn
+                    [frozen]="isSelectFrozen"
+                    [attr.rowspan]="getGroupedColumnRowspan()">
+                    @if (canSelectMultipleElement) {
+                      <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    }
+                  </th>
+                }
+                @if (canExpandRow) {
+                  <th
+                    [style.width]="widthExpand"
+                    [alignFrozen]="alignFrozenSelect"
+                    biaFrozenColumn
+                    [frozen]="isSelectFrozen"
+                    [attr.rowspan]="getGroupedColumnRowspan()"></th>
+                }
+                @if (showFixableState) {
+                  <th
+                    [style.width]="widthSelect"
+                    [alignFrozen]="alignFrozenSelect"
+                    biaFrozenColumn
+                    [frozen]="isSelectFrozen"
+                    [attr.rowspan]="getGroupedColumnRowspan()">
+                    {{ 'bia.fixed' | translate }}
+                  </th>
+                }
               }
-            </th>
-          }
-          @if (canExpandRow) {
-            <th
-              [style.width]="widthExpand"
-              [alignFrozen]="alignFrozenSelect"
-              biaFrozenColumn
-              [frozen]="isSelectFrozen"></th>
-          }
-          @if (showFixableState) {
-            <th
-              [style.width]="widthSelect"
-              [alignFrozen]="alignFrozenSelect"
-              biaFrozenColumn
-              [frozen]="isSelectFrozen">
-              {{ 'bia.fixed' | translate }}
-            </th>
-          }
-          @for (col of columns; track $index) {
-            @if (col?.isSortable === true) {
-              <th
-                [pSortableColumn]="col.field"
-                pReorderableColumn
-                pResizableColumn
-                [style.min-width]="col.minWidth"
-                [style.max-width]="col.maxWidth"
-                [alignFrozen]="col.alignFrozen"
-                biaFrozenColumn
-                [frozen]="col.isFrozen"
-                pTooltip="{{
-                  isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
-                }}"
-                tooltipPosition="top">
-                <span class="nowrap">
-                  @if (!!col?.icon) {
-                    <i
-                      class="{{ col?.icon }} bia-column-icon"
-                      pTooltip="{{ getColumnHeader(col) }}"
-                      tooltipPosition="top"></i>
-                  } @else {
-                    {{ getColumnHeader(col) }}
+              @for (cell of groupRow; track $index) {
+                @if (cell.isGroup) {
+                  <th [attr.colspan]="cell.colspan > 1 ? cell.colspan : null">
+                    {{ cell.header | translate }}
+                  </th>
+                } @else {
+                  @if (getColumnConfig(cell.field!); as col) {
+                    @if (col.isSortable) {
+                      <th
+                        [pSortableColumn]="col.field"
+                        pReorderableColumn
+                        pResizableColumn
+                        [style.min-width]="col.minWidth"
+                        [style.max-width]="col.maxWidth"
+                        [alignFrozen]="col.alignFrozen"
+                        biaFrozenColumn
+                        [frozen]="col.isFrozen"
+                        [attr.rowspan]="cell.rowspan"
+                        pTooltip="{{
+                          isResizableColumn && !col.icon
+                            ? getColumnHeader(col)
+                            : ''
+                        }}"
+                        tooltipPosition="top">
+                        <span class="nowrap">
+                          @if (!!col.icon) {
+                            <i
+                              class="{{ col.icon }} bia-column-icon"
+                              pTooltip="{{ getColumnHeader(col) }}"
+                              tooltipPosition="top"></i>
+                          } @else {
+                            {{ getColumnHeader(col) }}
+                          }
+                          <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </span>
+                      </th>
+                    } @else {
+                      <th
+                        pReorderableColumn
+                        pResizableColumn
+                        [style.min-width]="col.minWidth"
+                        [style.max-width]="col.maxWidth"
+                        [alignFrozen]="col.alignFrozen"
+                        biaFrozenColumn
+                        [frozen]="col.isFrozen"
+                        [attr.rowspan]="cell.rowspan"
+                        pTooltip="{{
+                          isResizableColumn && !col.icon
+                            ? getColumnHeader(col)
+                            : ''
+                        }}"
+                        tooltipPosition="top">
+                        <span class="nowrap">
+                          @if (!!col.icon) {
+                            <i
+                              class="{{ col.icon }} bia-column-icon"
+                              pTooltip="{{ getColumnHeader(col) }}"
+                              tooltipPosition="top"></i>
+                          } @else {
+                            {{ getColumnHeader(col) }}
+                          }
+                        </span>
+                      </th>
+                    }
                   }
-                  <p-sortIcon [field]="col.field"></p-sortIcon>
-                </span>
-              </th>
-            } @else {
+                }
+              }
+            </tr>
+          }
+          <!-- Leaf row: only grouped columns -->
+          <tr>
+            @for (col of columns; track $index) {
+              @if (isColumnGrouped(col.field)) {
+                @if (col.isSortable === true) {
+                  <th
+                    [pSortableColumn]="col.field"
+                    pReorderableColumn
+                    pResizableColumn
+                    [style.min-width]="col.minWidth"
+                    [style.max-width]="col.maxWidth"
+                    [alignFrozen]="col.alignFrozen"
+                    biaFrozenColumn
+                    [frozen]="col.isFrozen"
+                    pTooltip="{{
+                      isResizableColumn && !col?.icon
+                        ? getColumnHeader(col)
+                        : ''
+                    }}"
+                    tooltipPosition="top">
+                    <span class="nowrap">
+                      @if (!!col?.icon) {
+                        <i
+                          class="{{ col?.icon }} bia-column-icon"
+                          pTooltip="{{ getColumnHeader(col) }}"
+                          tooltipPosition="top"></i>
+                      } @else {
+                        {{ getColumnHeader(col) }}
+                      }
+                      <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </span>
+                  </th>
+                } @else {
+                  <th
+                    pReorderableColumn
+                    pResizableColumn
+                    [style.min-width]="col.minWidth"
+                    [style.max-width]="col.maxWidth"
+                    [alignFrozen]="col.alignFrozen"
+                    biaFrozenColumn
+                    [frozen]="col.isFrozen"
+                    pTooltip="{{
+                      isResizableColumn && !col?.icon
+                        ? getColumnHeader(col)
+                        : ''
+                    }}"
+                    tooltipPosition="top">
+                    <span class="nowrap">
+                      @if (!!col?.icon) {
+                        <i
+                          class="{{ col?.icon }} bia-column-icon"
+                          pTooltip="{{ getColumnHeader(col) }}"
+                          tooltipPosition="top"></i>
+                      } @else {
+                        {{ getColumnHeader(col) }}
+                      }
+                    </span>
+                  </th>
+                }
+              }
+            }
+          </tr>
+        } @else {
+          <tr>
+            @if (canSelectElement === true && !readOnly) {
               <th
-                pReorderableColumn
-                pResizableColumn
-                [style.min-width]="col.minWidth"
-                [style.max-width]="col.maxWidth"
-                [alignFrozen]="col.alignFrozen"
+                class="bia-table-select-col"
+                [style.width]="widthSelect"
+                [alignFrozen]="alignFrozenSelect"
                 biaFrozenColumn
-                [frozen]="col.isFrozen"
-                pTooltip="{{
-                  isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
-                }}"
-                tooltipPosition="top">
-                <span class="nowrap">
-                  @if (!!col?.icon) {
-                    <i
-                      class="{{ col?.icon }} bia-column-icon"
-                      pTooltip="{{ getColumnHeader(col) }}"
-                      tooltipPosition="top"></i>
-                  } @else {
-                    {{ getColumnHeader(col) }}
-                  }
-                </span>
+                [frozen]="isSelectFrozen">
+                @if (canSelectMultipleElement) {
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                }
               </th>
             }
-          }
-        </tr>
+            @if (canExpandRow) {
+              <th
+                [style.width]="widthExpand"
+                [alignFrozen]="alignFrozenSelect"
+                biaFrozenColumn
+                [frozen]="isSelectFrozen"></th>
+            }
+            @if (showFixableState) {
+              <th
+                [style.width]="widthSelect"
+                [alignFrozen]="alignFrozenSelect"
+                biaFrozenColumn
+                [frozen]="isSelectFrozen">
+                {{ 'bia.fixed' | translate }}
+              </th>
+            }
+            @for (col of columns; track $index) {
+              @if (col?.isSortable === true) {
+                <th
+                  [pSortableColumn]="col.field"
+                  pReorderableColumn
+                  pResizableColumn
+                  [style.min-width]="col.minWidth"
+                  [style.max-width]="col.maxWidth"
+                  [alignFrozen]="col.alignFrozen"
+                  biaFrozenColumn
+                  [frozen]="col.isFrozen"
+                  pTooltip="{{
+                    isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
+                  }}"
+                  tooltipPosition="top">
+                  <span class="nowrap">
+                    @if (!!col?.icon) {
+                      <i
+                        class="{{ col?.icon }} bia-column-icon"
+                        pTooltip="{{ getColumnHeader(col) }}"
+                        tooltipPosition="top"></i>
+                    } @else {
+                      {{ getColumnHeader(col) }}
+                    }
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                  </span>
+                </th>
+              } @else {
+                <th
+                  pReorderableColumn
+                  pResizableColumn
+                  [style.min-width]="col.minWidth"
+                  [style.max-width]="col.maxWidth"
+                  [alignFrozen]="col.alignFrozen"
+                  biaFrozenColumn
+                  [frozen]="col.isFrozen"
+                  pTooltip="{{
+                    isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
+                  }}"
+                  tooltipPosition="top">
+                  <span class="nowrap">
+                    @if (!!col?.icon) {
+                      <i
+                        class="{{ col?.icon }} bia-column-icon"
+                        pTooltip="{{ getColumnHeader(col) }}"
+                        tooltipPosition="top"></i>
+                    } @else {
+                      {{ getColumnHeader(col) }}
+                    }
+                  </span>
+                </th>
+              }
+            }
+          </tr>
+        }
         @if (showColSearch === true) {
           <tr class="searchTR">
             @if (canSelectElement === true && !readOnly) {

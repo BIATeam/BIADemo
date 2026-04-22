@@ -173,6 +173,8 @@
     "groupIdentification": "Identification",
     "groupStatus": "Statut",
     "groupTracking": "Suivi",
+    "groupFuel": "Carburant",
+    "groupPrice": "Prix",
     "enginesNumberRange": {
       "title": "Nombre de moteurs",
       "zero": "0 moteurs",

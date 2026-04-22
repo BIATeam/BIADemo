@@ -21,7 +21,6 @@ import {
   OptionDto,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
-
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto, VersionedDto, FixableDto {
   siteId: number;
@@ -260,6 +259,17 @@ export const planeFieldsConfiguration: BiaFieldsConfig<Plane> = {
       tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
+  columnGroup: {
+    rows: [
+      [
+        { header: 'plane.groupFuel', fieldKeys: ['fuelCapacity', 'fuelLevel'] },
+        {
+          header: 'plane.groupPrice',
+          fieldKeys: ['originalPrice', 'estimatedPrice'],
+        },
+      ],
+    ],
+  },
 };
 
 // TODO after creation of CRUD Plane : adapt the form layout configuration

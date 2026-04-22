@@ -768,4 +768,84 @@ export class BiaTableComponent<TDto extends { id: number | string }>
     }
     return header;
   }
+
+  get computedHeaderRows():
+    | {
+        header: string;
+        field?: string;
+        colspan: number;
+        rowspan: number;
+        isGroup: boolean;
+      }[][]
+    | null {
+    const group = this.configuration?.columnGroup;
+    if (!group || !this.displayedColumns) return null;
+
+    const totalGroupRows = group.rows.length;
+
+    return group.rows.map(groupRow => {
+      const result: {
+        header: string;
+        field?: string;
+        colspan: number;
+        rowspan: number;
+        isGroup: boolean;
+      }[] = [];
+      const emittedGroupCells = new Set<string>();
+      const fieldToCell = new Map<string, any>();
+
+      for (const cell of groupRow) {
+        for (const key of cell.fieldKeys) {
+          fieldToCell.set(key, cell);
+        }
+      }
+
+      for (const col of this.displayedColumns) {
+        const field = col.field as string;
+        const cell = fieldToCell.get(field);
+
+        if (!cell) {
+          result.push({
+            header: col.header,
+            field,
+            colspan: 1,
+            rowspan: totalGroupRows + 1,
+            isGroup: false,
+          });
+        } else {
+          const cellKey = cell.header;
+          if (!emittedGroupCells.has(cellKey)) {
+            emittedGroupCells.add(cellKey);
+            const colspan = cell.fieldKeys.filter((k: string) =>
+              this.displayedColumns.some(c => (c.field as string) === k)
+            ).length;
+            result.push({
+              header: cell.header,
+              colspan,
+              rowspan: 1,
+              isGroup: true,
+            });
+          }
+        }
+      }
+
+      return result;
+    });
+  }
+
+  getGroupedColumnRowspan(): number {
+    return (this.configuration?.columnGroup?.rows.length ?? 0) + 1;
+  }
+
+  isColumnGrouped(field: string): boolean {
+    const group = this.configuration?.columnGroup;
+    if (!group) return false;
+    return group.rows.some(row =>
+      row.some(cell => cell.fieldKeys.includes(field))
+    );
+  }
+
+  getColumnConfig(field: string): BiaFieldConfig<TDto> | undefined {
+    return this.displayedColumns?.find(c => (c.field as string) === field);
+  }
 }
