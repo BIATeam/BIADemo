@@ -805,6 +805,8 @@ export class BiaTableComponent<TDto extends { id: number | string }>
       group.rows.flatMap(row => row.flatMap(cell => cell.fieldKeys))
     );
 
+    const emittedUngroupedFields = new Set<string>();
+
     this._computedHeaderRows = group.rows.map(groupRow => {
       const result: {
         header: string;
@@ -827,13 +829,19 @@ export class BiaTableComponent<TDto extends { id: number | string }>
         const cell = fieldToCell.get(field);
 
         if (!cell) {
-          result.push({
-            header: col.header,
-            field,
-            colspan: 1,
-            rowspan: totalGroupRows + 1,
-            isGroup: false,
-          });
+          if (
+            !this.groupedFields.has(field) &&
+            !emittedUngroupedFields.has(field)
+          ) {
+            emittedUngroupedFields.add(field);
+            result.push({
+              header: col.header,
+              field,
+              colspan: 1,
+              rowspan: totalGroupRows + 1,
+              isGroup: false,
+            });
+          }
         } else {
           if (!emittedGroupCells.has(cell)) {
             emittedGroupCells.add(cell);
