@@ -7,6 +7,7 @@ import {
   TableColumnVisibility,
 } from 'packages/bia-ng/models/enum/public-api';
 import { FilterMetadata } from 'primeng/api';
+import { BiaColumnGroupConfig } from './bia-column-group-config';
 
 export class BiaFieldNumberFormat {
   autoLocale: string; // property automaticaly set when culture change.
@@ -201,4 +202,5 @@ export interface BiaFieldsConfig<TDto> {
   columns: BiaFieldConfig<TDto>[];
   formValidators?: ValidatorFn[];
   advancedFilter?: any;
+  columnGroup?: BiaColumnGroupConfig;
 }

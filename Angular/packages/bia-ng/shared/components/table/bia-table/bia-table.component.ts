@@ -22,6 +22,7 @@ import {
 } from 'packages/bia-ng/core/public-api';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
+  BiaColumnGroupCell,
   BiaFieldConfig,
   BiaFieldsConfig,
   BiaTableState,
@@ -166,6 +167,19 @@ export class BiaTableComponent<TDto extends { id: number | string }>
 
   displayedColumns: BiaFieldConfig<TDto>[];
   showLoading$: Observable<any>;
+
+  protected _computedHeaderRows:
+    | {
+        header: string;
+        field?: string;
+        colspan: number;
+        rowspan: number;
+        isGroup: boolean;
+      }[][]
+    | null = null;
+  protected groupedColumnRowspan = 1;
+  protected groupedFields = new Set<string>();
+  protected displayedColumnsMap = new Map<string, BiaFieldConfig<TDto>>();
 
   protected defaultSortField: string;
   protected defaultSortOrder: number;
@@ -322,6 +336,7 @@ export class BiaTableComponent<TDto extends { id: number | string }>
 
     if (arraysEqual(displayedColumns, this.displayedColumns) !== true) {
       this.displayedColumns = displayedColumns;
+      this.refreshColumnGroupState();
       if (saveTableState === true) {
         this.saveTableState();
       }
@@ -767,5 +782,99 @@ export class BiaTableComponent<TDto extends { id: number | string }>
       );
     }
     return header;
+  }
+
+  protected refreshColumnGroupState() {
+    const group = this.configuration?.columnGroup;
+
+    this.displayedColumnsMap = new Map(
+      (this.displayedColumns ?? []).map(c => [c.field as string, c])
+    );
+
+    if (!group || !this.displayedColumns) {
+      this._computedHeaderRows = null;
+      this.groupedColumnRowspan = 1;
+      this.groupedFields = new Set();
+      return;
+    }
+
+    const totalGroupRows = group.rows.length;
+    this.groupedColumnRowspan = totalGroupRows + 1;
+
+    this.groupedFields = new Set(
+      group.rows.flatMap(row => row.flatMap(cell => cell.fieldKeys))
+    );
+
+    this._computedHeaderRows = group.rows.map(groupRow => {
+      const result: {
+        header: string;
+        field?: string;
+        colspan: number;
+        rowspan: number;
+        isGroup: boolean;
+      }[] = [];
+      const emittedGroupCells = new Set<BiaColumnGroupCell>();
+      const fieldToCell = new Map<string, BiaColumnGroupCell>();
+
+      for (const cell of groupRow) {
+        for (const key of cell.fieldKeys) {
+          fieldToCell.set(key, cell);
+        }
+      }
+
+      for (const col of this.displayedColumns) {
+        const field = col.field as string;
+        const cell = fieldToCell.get(field);
+
+        if (!cell) {
+          result.push({
+            header: col.header,
+            field,
+            colspan: 1,
+            rowspan: totalGroupRows + 1,
+            isGroup: false,
+          });
+        } else {
+          if (!emittedGroupCells.has(cell)) {
+            emittedGroupCells.add(cell);
+            const colspan = cell.fieldKeys.filter(k =>
+              this.displayedColumnsMap.has(k)
+            ).length;
+            result.push({
+              header: cell.header,
+              colspan,
+              rowspan: 1,
+              isGroup: true,
+            });
+          }
+        }
+      }
+
+      return result;
+    });
+  }
+
+  get computedHeaderRows():
+    | {
+        header: string;
+        field?: string;
+        colspan: number;
+        rowspan: number;
+        isGroup: boolean;
+      }[][]
+    | null {
+    return this._computedHeaderRows;
+  }
+
+  getGroupedColumnRowspan(): number {
+    return this.groupedColumnRowspan;
+  }
+
+  isColumnGrouped(field: string): boolean {
+    return this.groupedFields.has(field);
+  }
+
+  getColumnConfig(field: string): BiaFieldConfig<TDto> | undefined {
+    return this.displayedColumnsMap.get(field);
   }
 }

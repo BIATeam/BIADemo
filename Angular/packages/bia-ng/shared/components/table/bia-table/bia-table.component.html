@@ -1,7 +1,7 @@
 @if (configuration) {
   <p-table
     #dt
-    [reorderableColumns]="reorderableColumns"
+    [reorderableColumns]="reorderableColumns && !configuration.columnGroup"
     [resizableColumns]="isResizableColumn"
     [columnResizeMode]="'expand'"
     [columns]="displayedColumns"
@@ -36,92 +36,139 @@
     (onRowCollapse)="onRowCollapse($event)"
     (onPage)="pageChange.emit($event)">
     <ng-template pTemplate="header" let-columns>
-      <tr>
-        @if (canSelectElement === true && !readOnly) {
-          <th
-            class="bia-table-select-col"
-            [style.width]="widthSelect"
-            [alignFrozen]="alignFrozenSelect"
-            biaFrozenColumn
-            [frozen]="isSelectFrozen">
-            @if (canSelectMultipleElement) {
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      <ng-template #colHeader let-col let-rowspan="rowspan">
+        <th
+          [pSortableColumn]="col.isSortable ? col.field : null"
+          pReorderableColumn
+          [pReorderableColumnDisabled]="col.isFrozen"
+          pResizableColumn
+          [style.min-width]="col.minWidth"
+          [style.max-width]="col.maxWidth"
+          [alignFrozen]="col.alignFrozen"
+          biaFrozenColumn
+          [frozen]="col.isFrozen"
+          [attr.rowspan]="rowspan ?? null"
+          pTooltip="{{
+            isResizableColumn && !col.icon ? getColumnHeader(col) : ''
+          }}"
+          tooltipPosition="top">
+          <span class="nowrap">
+            @if (col.icon) {
+              <i
+                class="{{ col.icon }} bia-column-icon"
+                pTooltip="{{ getColumnHeader(col) }}"
+                tooltipPosition="top"></i>
+            } @else {
+              {{ getColumnHeader(col) }}
             }
-          </th>
-        }
-        @if (canExpandRow) {
-          <th
-            [style.width]="widthExpand"
-            [alignFrozen]="alignFrozenSelect"
-            biaFrozenColumn
-            [frozen]="isSelectFrozen"></th>
-        }
-        @if (showFixableState) {
-          <th
-            [style.width]="widthSelect"
-            [alignFrozen]="alignFrozenSelect"
-            biaFrozenColumn
-            [frozen]="isSelectFrozen">
-            {{ 'bia.fixed' | translate }}
-          </th>
-        }
-        @for (col of columns; track $index) {
-          @if (col?.isSortable === true) {
-            <th
-              [pSortableColumn]="col.field"
-              pReorderableColumn
-              [pReorderableColumnDisabled]="col.isFrozen"
-              pResizableColumn
-              [style.min-width]="col.minWidth"
-              [style.max-width]="col.maxWidth"
-              [alignFrozen]="col.alignFrozen"
-              biaFrozenColumn
-              [frozen]="col.isFrozen"
-              pTooltip="{{
-                isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
-              }}"
-              tooltipPosition="top">
-              <span class="nowrap">
-                @if (!!col?.icon) {
-                  <i
-                    class="{{ col?.icon }} bia-column-icon"
-                    pTooltip="{{ getColumnHeader(col) }}"
-                    tooltipPosition="top"></i>
-                } @else {
-                  {{ getColumnHeader(col) }}
+            @if (col.isSortable) {
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            }
+          </span>
+        </th>
+      </ng-template>
+
+      @if (computedHeaderRows) {
+        @for (groupRow of computedHeaderRows; track $index) {
+          <tr>
+            @if ($first) {
+              @if (canSelectElement === true && !readOnly) {
+                <th
+                  class="bia-table-select-col"
+                  [style.width]="widthSelect"
+                  [alignFrozen]="alignFrozenSelect"
+                  biaFrozenColumn
+                  [frozen]="isSelectFrozen"
+                  [attr.rowspan]="groupedColumnRowspan">
+                  @if (canSelectMultipleElement) {
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  }
+                </th>
+              }
+              @if (canExpandRow) {
+                <th
+                  [style.width]="widthExpand"
+                  [alignFrozen]="alignFrozenSelect"
+                  biaFrozenColumn
+                  [frozen]="isSelectFrozen"
+                  [attr.rowspan]="groupedColumnRowspan"></th>
+              }
+              @if (showFixableState) {
+                <th
+                  [style.width]="widthSelect"
+                  [alignFrozen]="alignFrozenSelect"
+                  biaFrozenColumn
+                  [frozen]="isSelectFrozen"
+                  [attr.rowspan]="groupedColumnRowspan">
+                  {{ 'bia.fixed' | translate }}
+                </th>
+              }
+            }
+            @for (cell of groupRow; track $index) {
+              @if (cell.isGroup) {
+                <th [attr.colspan]="cell.colspan > 1 ? cell.colspan : null">
+                  {{ cell.header | translate }}
+                </th>
+              } @else {
+                @if (getColumnConfig(cell.field!); as col) {
+                  <ng-container
+                    *ngTemplateOutlet="
+                      colHeader;
+                      context: { $implicit: col, rowspan: cell.rowspan }
+                    ">
+                  </ng-container>
                 }
-                <p-sortIcon [field]="col.field"></p-sortIcon>
-              </span>
+              }
+            }
+          </tr>
+        }
+        <!-- Leaf row: only grouped columns -->
+        <tr>
+          @for (col of columns; track $index) {
+            @if (isColumnGrouped(col.field)) {
+              <ng-container
+                *ngTemplateOutlet="colHeader; context: { $implicit: col }">
+              </ng-container>
+            }
+          }
+        </tr>
+      } @else {
+        <tr>
+          @if (canSelectElement === true && !readOnly) {
+            <th
+              class="bia-table-select-col"
+              [style.width]="widthSelect"
+              [alignFrozen]="alignFrozenSelect"
+              biaFrozenColumn
+              [frozen]="isSelectFrozen">
+              @if (canSelectMultipleElement) {
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              }
             </th>
           }
-          @if (col?.isSortable !== true) {
+          @if (canExpandRow) {
             <th
-              pReorderableColumn
-              [pReorderableColumnDisabled]="col.isFrozen"
-              pResizableColumn
-              [style.min-width]="col.minWidth"
-              [style.max-width]="col.maxWidth"
-              [alignFrozen]="col.alignFrozen"
+              [style.width]="widthExpand"
+              [alignFrozen]="alignFrozenSelect"
               biaFrozenColumn
-              [frozen]="col.isFrozen"
-              pTooltip="{{
-                isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
-              }}"
-              tooltipPosition="top">
-              <span class="nowrap">
-                @if (!!col?.icon) {
-                  <i
-                    class="{{ col?.icon }} bia-column-icon"
-                    pTooltip="{{ getColumnHeader(col) }}"
-                    tooltipPosition="top"></i>
-                } @else {
-                  {{ getColumnHeader(col) }}
-                }
-              </span>
+              [frozen]="isSelectFrozen"></th>
+          }
+          @if (showFixableState) {
+            <th
+              [style.width]="widthSelect"
+              [alignFrozen]="alignFrozenSelect"
+              biaFrozenColumn
+              [frozen]="isSelectFrozen">
+              {{ 'bia.fixed' | translate }}
             </th>
           }
-        }
-      </tr>
+          @for (col of columns; track $index) {
+            <ng-container
+              *ngTemplateOutlet="colHeader; context: { $implicit: col }">
+            </ng-container>
+          }
+        </tr>
+      }
       @if (showColSearch === true) {
         <tr class="searchTR">
           @if (canSelectElement === true && !readOnly) {

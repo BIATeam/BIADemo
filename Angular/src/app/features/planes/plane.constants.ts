@@ -23,11 +23,11 @@ export const planeCRUDConfiguration: CrudConfig<Plane> = new CrudConfig({
   isCloneable: true,
   featureNameSingular: 'app.plane',
   // End BIAToolKit Generation Ignore
-  useCalcMode: true,
+  useCalcMode: false,
   useSignalR: false,
   useView: true,
   useViewTeamWithTypeId: TeamTypeId.Site, // use to filter view by teams => should know the type of team
-  usePopup: false,
+  usePopup: true,
   useSplit: false,
   useOfflineMode: false,
   useCompactMode: false,

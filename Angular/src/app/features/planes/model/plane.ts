@@ -21,7 +21,6 @@ import {
   OptionDto,
   VersionedDto,
 } from 'packages/bia-ng/models/public-api';
-
 // TODO after creation of CRUD Plane : adapt the model
 export interface Plane extends BaseDto, VersionedDto, FixableDto {
   siteId: number;

@@ -70,9 +70,10 @@
   },
   "flight": {
     "add": "Añadir vuelo",
-    "arrivalAirport": "Aeropuerto de llegada",
-    "departureAirport": "Aeropuerto de salida",
+    "arrivalAirport": "Llegada",
+    "departureAirport": "Salida",
     "edit": "Editar vuelo",
+    "groupAirport": "Aeropuerto",
     "id": "Número de vuelo",
     "import": "Importar vuelos",
     "listOf": "Lista de vuelos",
@@ -173,6 +174,8 @@
     "groupIdentification": "Identificación",
     "groupStatus": "Estado",
     "groupTracking": "Seguimiento",
+    "groupFuel": "Combustible",
+    "groupPrice": "Precio",
     "enginesNumberRange": {
       "title": "Nombre de motores",
       "zero": "0 motores",

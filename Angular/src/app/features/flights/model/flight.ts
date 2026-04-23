@@ -48,6 +48,16 @@ export const flightFieldsConfiguration: BiaFieldsConfig<Flight> = {
       tableColumnVisibility: TableColumnVisibility.Hidden,
     }),
   ],
+  columnGroup: {
+    rows: [
+      [
+        {
+          header: 'flight.groupAirport',
+          fieldKeys: ['departureAirport', 'arrivalAirport'],
+        },
+      ],
+    ],
+  },
 };
 
 // TODO after creation of CRUD Flight : adapt the form layout configuration
