@@ -24,7 +24,6 @@ namespace BIA.Net.Core.Domain.Service
     using BIA.Net.Core.Domain.Dto.Base;
     using BIA.Net.Core.Domain.Dto.Base.Interface;
     using BIA.Net.Core.Domain.Dto.Historic;
-    using BIA.Net.Core.Domain.Dto.User;
     using BIA.Net.Core.Domain.Entity.Interface;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.QueryOrder;
@@ -1388,33 +1387,6 @@ namespace BIA.Net.Core.Domain.Service
         protected virtual void SetGetRangeFilterSpecifications(ref Specification<TEntity> specification, IPagingFilterFormatDto filters)
         {
             specification ??= this.GetFilterSpecification(filters);
-            if (typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)) && filters is IPagingFilterFormatDto<TeamAdvancedFilterDto> teamFilters)
-            {
-                specification &= this.GetTeamAdvancedFilterSpecification(teamFilters);
-            }
-        }
-
-        /// <summary>
-        /// Return specification based on the given team advanced <paramref name="filters"/> used in <see cref="GetRangeAsync(TFilterDto, TKey, Specification{TEntity}, Expression{Func{TEntity, bool}}, string, string, string, bool)"/>.
-        /// </summary>
-        /// <param name="filters">The filter.</param>
-        /// <returns>
-        /// The specification.
-        /// </returns>
-        protected virtual Specification<TEntity> GetTeamAdvancedFilterSpecification(IPagingFilterFormatDto<TeamAdvancedFilterDto> filters)
-        {
-            Specification<TEntity> specification = new TrueSpecification<TEntity>();
-            if (!typeof(IEntityTeam).IsAssignableFrom(typeof(TEntity)))
-            {
-                return specification;
-            }
-
-            if (filters.AdvancedFilter is not null && filters.AdvancedFilter.UserId > 0)
-            {
-                specification &= new DirectSpecification<TEntity>(entity => ((IEntityTeam)entity).Members.Any(a => a.UserId == filters.AdvancedFilter.UserId));
-            }
-
-            return specification;
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     /// <summary>
     /// The application service used for maintenanceTeam.
     /// </summary>
-    public class MaintenanceTeamAppService : CrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, MaintenanceTeamMapper>, IMaintenanceTeamAppService
+    public class MaintenanceTeamAppService : TeamCrudAppServiceBase<MaintenanceTeamDto, MaintenanceTeam, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, MaintenanceTeamMapper>, IMaintenanceTeamAppService
     {
         /// <summary>
         /// The current AncestorTeamId.

@@ -26,7 +26,7 @@ namespace TheBIADevCompany.BIADemo.Application.Maintenance
     /// <summary>
     /// The application service used for aircraftMaintenanceCompany.
     /// </summary>
-    public class AircraftMaintenanceCompanyAppService : CrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, AircraftMaintenanceCompanyMapper>, IAircraftMaintenanceCompanyAppService
+    public class AircraftMaintenanceCompanyAppService : TeamCrudAppServiceBase<AircraftMaintenanceCompanyDto, AircraftMaintenanceCompany, int, PagingFilterFormatDto<TeamAdvancedFilterDto>, AircraftMaintenanceCompanyMapper>, IAircraftMaintenanceCompanyAppService
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AircraftMaintenanceCompanyAppService"/> class.
