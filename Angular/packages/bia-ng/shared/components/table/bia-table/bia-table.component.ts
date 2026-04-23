@@ -22,6 +22,7 @@ import {
 } from 'packages/bia-ng/core/public-api';
 import { PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
+  BiaColumnGroupCell,
   BiaFieldConfig,
   BiaFieldsConfig,
   BiaTableState,
@@ -166,6 +167,19 @@ export class BiaTableComponent<TDto extends { id: number | string }>
 
   displayedColumns: BiaFieldConfig<TDto>[];
   showLoading$: Observable<any>;
+
+  protected _computedHeaderRows:
+    | {
+        header: string;
+        field?: string;
+        colspan: number;
+        rowspan: number;
+        isGroup: boolean;
+      }[][]
+    | null = null;
+  protected groupedColumnRowspan = 1;
+  protected groupedFields = new Set<string>();
+  protected displayedColumnsMap = new Map<string, BiaFieldConfig<TDto>>();
 
   protected defaultSortField: string;
   protected defaultSortOrder: number;
@@ -322,6 +336,7 @@ export class BiaTableComponent<TDto extends { id: number | string }>
 
     if (arraysEqual(displayedColumns, this.displayedColumns) !== true) {
       this.displayedColumns = displayedColumns;
+      this.refreshColumnGroupState();
       if (saveTableState === true) {
         this.saveTableState();
       }
@@ -769,21 +784,28 @@ export class BiaTableComponent<TDto extends { id: number | string }>
     return header;
   }
 
-  get computedHeaderRows():
-    | {
-        header: string;
-        field?: string;
-        colspan: number;
-        rowspan: number;
-        isGroup: boolean;
-      }[][]
-    | null {
+  protected refreshColumnGroupState() {
     const group = this.configuration?.columnGroup;
-    if (!group || !this.displayedColumns) return null;
+
+    this.displayedColumnsMap = new Map(
+      (this.displayedColumns ?? []).map(c => [c.field as string, c])
+    );
+
+    if (!group || !this.displayedColumns) {
+      this._computedHeaderRows = null;
+      this.groupedColumnRowspan = 1;
+      this.groupedFields = new Set();
+      return;
+    }
 
     const totalGroupRows = group.rows.length;
+    this.groupedColumnRowspan = totalGroupRows + 1;
 
-    return group.rows.map(groupRow => {
+    this.groupedFields = new Set(
+      group.rows.flatMap(row => row.flatMap(cell => cell.fieldKeys))
+    );
+
+    this._computedHeaderRows = group.rows.map(groupRow => {
       const result: {
         header: string;
         field?: string;
@@ -791,8 +813,8 @@ export class BiaTableComponent<TDto extends { id: number | string }>
         rowspan: number;
         isGroup: boolean;
       }[] = [];
-      const emittedGroupCells = new Set<string>();
-      const fieldToCell = new Map<string, any>();
+      const emittedGroupCells = new Set<BiaColumnGroupCell>();
+      const fieldToCell = new Map<string, BiaColumnGroupCell>();
 
       for (const cell of groupRow) {
         for (const key of cell.fieldKeys) {
@@ -813,11 +835,10 @@ export class BiaTableComponent<TDto extends { id: number | string }>
             isGroup: false,
           });
         } else {
-          const cellKey = cell.header;
-          if (!emittedGroupCells.has(cellKey)) {
-            emittedGroupCells.add(cellKey);
-            const colspan = cell.fieldKeys.filter((k: string) =>
-              this.displayedColumns.some(c => (c.field as string) === k)
+          if (!emittedGroupCells.has(cell)) {
+            emittedGroupCells.add(cell);
+            const colspan = cell.fieldKeys.filter(k =>
+              this.displayedColumnsMap.has(k)
             ).length;
             result.push({
               header: cell.header,
@@ -833,19 +854,27 @@ export class BiaTableComponent<TDto extends { id: number | string }>
     });
   }
 
+  get computedHeaderRows():
+    | {
+        header: string;
+        field?: string;
+        colspan: number;
+        rowspan: number;
+        isGroup: boolean;
+      }[][]
+    | null {
+    return this._computedHeaderRows;
+  }
+
   getGroupedColumnRowspan(): number {
-    return (this.configuration?.columnGroup?.rows.length ?? 0) + 1;
+    return this.groupedColumnRowspan;
   }
 
   isColumnGrouped(field: string): boolean {
-    const group = this.configuration?.columnGroup;
-    if (!group) return false;
-    return group.rows.some(row =>
-      row.some(cell => cell.fieldKeys.includes(field))
-    );
+    return this.groupedFields.has(field);
   }
 
   getColumnConfig(field: string): BiaFieldConfig<TDto> | undefined {
-    return this.displayedColumns?.find(c => (c.field as string) === field);
+    return this.displayedColumnsMap.get(field);
   }
 }

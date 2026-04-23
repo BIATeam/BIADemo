@@ -38,6 +38,38 @@
       (onRowCollapse)="onRowCollapse($event)"
       (onPage)="pageChange.emit($event)">
       <ng-template pTemplate="header" let-columns>
+        <ng-template #colHeader let-col let-rowspan="rowspan">
+          <th
+            [pSortableColumn]="col.isSortable ? col.field : null"
+            pReorderableColumn
+            [pReorderableColumnDisabled]="col.isFrozen"
+            pResizableColumn
+            [style.min-width]="col.minWidth"
+            [style.max-width]="col.maxWidth"
+            [alignFrozen]="col.alignFrozen"
+            biaFrozenColumn
+            [frozen]="col.isFrozen"
+            [attr.rowspan]="rowspan ?? null"
+            pTooltip="{{
+              isResizableColumn && !col.icon ? getColumnHeader(col) : ''
+            }}"
+            tooltipPosition="top">
+            <span class="nowrap">
+              @if (col.icon) {
+                <i
+                  class="{{ col.icon }} bia-column-icon"
+                  pTooltip="{{ getColumnHeader(col) }}"
+                  tooltipPosition="top"></i>
+              } @else {
+                {{ getColumnHeader(col) }}
+              }
+              @if (col.isSortable) {
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              }
+            </span>
+          </th>
+        </ng-template>
+
         @if (computedHeaderRows) {
           @for (groupRow of computedHeaderRows; track $index) {
             <tr>
@@ -49,7 +81,7 @@
                     [alignFrozen]="alignFrozenSelect"
                     biaFrozenColumn
                     [frozen]="isSelectFrozen"
-                    [attr.rowspan]="getGroupedColumnRowspan()">
+                    [attr.rowspan]="groupedColumnRowspan">
                     @if (canSelectMultipleElement) {
                       <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                     }
@@ -61,7 +93,7 @@
                     [alignFrozen]="alignFrozenSelect"
                     biaFrozenColumn
                     [frozen]="isSelectFrozen"
-                    [attr.rowspan]="getGroupedColumnRowspan()"></th>
+                    [attr.rowspan]="groupedColumnRowspan"></th>
                 }
                 @if (showFixableState) {
                   <th
@@ -69,7 +101,7 @@
                     [alignFrozen]="alignFrozenSelect"
                     biaFrozenColumn
                     [frozen]="isSelectFrozen"
-                    [attr.rowspan]="getGroupedColumnRowspan()">
+                    [attr.rowspan]="groupedColumnRowspan">
                     {{ 'bia.fixed' | translate }}
                   </th>
                 }
@@ -81,63 +113,12 @@
                   </th>
                 } @else {
                   @if (getColumnConfig(cell.field!); as col) {
-                    @if (col.isSortable) {
-                      <th
-                        [pSortableColumn]="col.field"
-                        pReorderableColumn
-                        pResizableColumn
-                        [style.min-width]="col.minWidth"
-                        [style.max-width]="col.maxWidth"
-                        [alignFrozen]="col.alignFrozen"
-                        biaFrozenColumn
-                        [frozen]="col.isFrozen"
-                        [attr.rowspan]="cell.rowspan"
-                        pTooltip="{{
-                          isResizableColumn && !col.icon
-                            ? getColumnHeader(col)
-                            : ''
-                        }}"
-                        tooltipPosition="top">
-                        <span class="nowrap">
-                          @if (!!col.icon) {
-                            <i
-                              class="{{ col.icon }} bia-column-icon"
-                              pTooltip="{{ getColumnHeader(col) }}"
-                              tooltipPosition="top"></i>
-                          } @else {
-                            {{ getColumnHeader(col) }}
-                          }
-                          <p-sortIcon [field]="col.field"></p-sortIcon>
-                        </span>
-                      </th>
-                    } @else {
-                      <th
-                        pReorderableColumn
-                        pResizableColumn
-                        [style.min-width]="col.minWidth"
-                        [style.max-width]="col.maxWidth"
-                        [alignFrozen]="col.alignFrozen"
-                        biaFrozenColumn
-                        [frozen]="col.isFrozen"
-                        [attr.rowspan]="cell.rowspan"
-                        pTooltip="{{
-                          isResizableColumn && !col.icon
-                            ? getColumnHeader(col)
-                            : ''
-                        }}"
-                        tooltipPosition="top">
-                        <span class="nowrap">
-                          @if (!!col.icon) {
-                            <i
-                              class="{{ col.icon }} bia-column-icon"
-                              pTooltip="{{ getColumnHeader(col) }}"
-                              tooltipPosition="top"></i>
-                          } @else {
-                            {{ getColumnHeader(col) }}
-                          }
-                        </span>
-                      </th>
-                    }
+                    <ng-container
+                      *ngTemplateOutlet="
+                        colHeader;
+                        context: { $implicit: col, rowspan: cell.rowspan }
+                      ">
+                    </ng-container>
                   }
                 }
               }
@@ -147,61 +128,9 @@
           <tr>
             @for (col of columns; track $index) {
               @if (isColumnGrouped(col.field)) {
-                @if (col.isSortable === true) {
-                  <th
-                    [pSortableColumn]="col.field"
-                    pReorderableColumn
-                    pResizableColumn
-                    [style.min-width]="col.minWidth"
-                    [style.max-width]="col.maxWidth"
-                    [alignFrozen]="col.alignFrozen"
-                    biaFrozenColumn
-                    [frozen]="col.isFrozen"
-                    pTooltip="{{
-                      isResizableColumn && !col?.icon
-                        ? getColumnHeader(col)
-                        : ''
-                    }}"
-                    tooltipPosition="top">
-                    <span class="nowrap">
-                      @if (!!col?.icon) {
-                        <i
-                          class="{{ col?.icon }} bia-column-icon"
-                          pTooltip="{{ getColumnHeader(col) }}"
-                          tooltipPosition="top"></i>
-                      } @else {
-                        {{ getColumnHeader(col) }}
-                      }
-                      <p-sortIcon [field]="col.field"></p-sortIcon>
-                    </span>
-                  </th>
-                } @else {
-                  <th
-                    pReorderableColumn
-                    pResizableColumn
-                    [style.min-width]="col.minWidth"
-                    [style.max-width]="col.maxWidth"
-                    [alignFrozen]="col.alignFrozen"
-                    biaFrozenColumn
-                    [frozen]="col.isFrozen"
-                    pTooltip="{{
-                      isResizableColumn && !col?.icon
-                        ? getColumnHeader(col)
-                        : ''
-                    }}"
-                    tooltipPosition="top">
-                    <span class="nowrap">
-                      @if (!!col?.icon) {
-                        <i
-                          class="{{ col?.icon }} bia-column-icon"
-                          pTooltip="{{ getColumnHeader(col) }}"
-                          tooltipPosition="top"></i>
-                      } @else {
-                        {{ getColumnHeader(col) }}
-                      }
-                    </span>
-                  </th>
-                }
+                <ng-container
+                  *ngTemplateOutlet="colHeader; context: { $implicit: col }">
+                </ng-container>
               }
             }
           </tr>
@@ -236,57 +165,9 @@
               </th>
             }
             @for (col of columns; track $index) {
-              @if (col?.isSortable === true) {
-                <th
-                  [pSortableColumn]="col.field"
-                  pReorderableColumn
-                  pResizableColumn
-                  [style.min-width]="col.minWidth"
-                  [style.max-width]="col.maxWidth"
-                  [alignFrozen]="col.alignFrozen"
-                  biaFrozenColumn
-                  [frozen]="col.isFrozen"
-                  pTooltip="{{
-                    isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
-                  }}"
-                  tooltipPosition="top">
-                  <span class="nowrap">
-                    @if (!!col?.icon) {
-                      <i
-                        class="{{ col?.icon }} bia-column-icon"
-                        pTooltip="{{ getColumnHeader(col) }}"
-                        tooltipPosition="top"></i>
-                    } @else {
-                      {{ getColumnHeader(col) }}
-                    }
-                    <p-sortIcon [field]="col.field"></p-sortIcon>
-                  </span>
-                </th>
-              } @else {
-                <th
-                  pReorderableColumn
-                  pResizableColumn
-                  [style.min-width]="col.minWidth"
-                  [style.max-width]="col.maxWidth"
-                  [alignFrozen]="col.alignFrozen"
-                  biaFrozenColumn
-                  [frozen]="col.isFrozen"
-                  pTooltip="{{
-                    isResizableColumn && !col?.icon ? getColumnHeader(col) : ''
-                  }}"
-                  tooltipPosition="top">
-                  <span class="nowrap">
-                    @if (!!col?.icon) {
-                      <i
-                        class="{{ col?.icon }} bia-column-icon"
-                        pTooltip="{{ getColumnHeader(col) }}"
-                        tooltipPosition="top"></i>
-                    } @else {
-                      {{ getColumnHeader(col) }}
-                    }
-                  </span>
-                </th>
-              }
+              <ng-container
+                *ngTemplateOutlet="colHeader; context: { $implicit: col }">
+              </ng-container>
             }
           </tr>
         }
