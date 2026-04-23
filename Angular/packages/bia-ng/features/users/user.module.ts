@@ -1,13 +1,16 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BiaPermission, PermissionGuard } from '@bia-team/bia-ng/core';
-import { RoleOptionModule } from '@bia-team/bia-ng/domains';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import {
+  BiaPermission,
+  PermissionGuard,
+} from 'packages/bia-ng/core/public-api';
+import { RoleOptionModule } from 'packages/bia-ng/domains/public-api';
 import {
   DynamicLayoutComponent,
   UserFromDirectoryModule,
-} from '@bia-team/bia-ng/shared';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+} from 'packages/bia-ng/shared/public-api';
 import { UserService } from './services/user.service';
 import { FeatureUsersStore } from './store/user.state';
 import { UsersEffects } from './store/users-effects';

@@ -1,9 +1,9 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PermissionGuard } from '@bia-team/bia-ng/core';
-import { DynamicLayoutComponent } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { PermissionGuard } from 'packages/bia-ng/core/public-api';
+import { DynamicLayoutComponent } from 'packages/bia-ng/shared/public-api';
 import { AircraftMaintenanceCompanyOptionModule } from 'src/app/domains/aircraft-maintenance-company-option/aircraft-maintenance-company-option.module';
 import { PlaneOptionModule } from 'src/app/domains/plane-option/plane-option.module';
 import { SiteOptionModule } from 'src/app/domains/site-option/site-option.module';

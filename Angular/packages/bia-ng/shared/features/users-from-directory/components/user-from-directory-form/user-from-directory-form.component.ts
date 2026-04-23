@@ -14,9 +14,9 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { AppSettingsService } from '@bia-team/bia-ng/core';
-import { LdapDomain } from '@bia-team/bia-ng/models';
 import { TranslateModule } from '@ngx-translate/core';
+import { AppSettingsService } from 'packages/bia-ng/core/public-api';
+import { LdapDomain } from 'packages/bia-ng/models/public-api';
 import { AutoComplete } from 'primeng/autocomplete';
 import { ButtonDirective } from 'primeng/button';
 import { FloatLabel } from 'primeng/floatlabel';
