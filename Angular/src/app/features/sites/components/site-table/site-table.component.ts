@@ -23,6 +23,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { Site } from '../../model/site';
 
 @Component({
@@ -50,6 +51,7 @@ import { Site } from '../../model/site';
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class SiteTableComponent extends CrudItemTableComponent<Site> {

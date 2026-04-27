@@ -23,6 +23,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { PilotList } from '../../model/pilot-list';
 
 @Component({
@@ -50,6 +51,7 @@ import { PilotList } from '../../model/pilot-list';
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class PilotTableComponent extends CrudItemTableComponent<PilotList> {

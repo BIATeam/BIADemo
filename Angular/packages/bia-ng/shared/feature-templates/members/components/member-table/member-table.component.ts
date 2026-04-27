@@ -14,6 +14,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { BiaCalcTableCellComponent } from '../../../../components/table/bia-calc-table-cell/bia-calc-table-cell.component';
 import { BiaFrozenColumnDirective } from '../../../../components/table/bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../../../../components/table/bia-table-filter/bia-table-filter.component';
@@ -48,6 +49,7 @@ import { Member } from '../../model/member';
     TranslateModule,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class MemberTableComponent extends CrudItemTableComponent<Member> {

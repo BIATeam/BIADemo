@@ -23,6 +23,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { MaintenanceContract } from '../../model/maintenance-contract';
 
 @Component({
@@ -50,6 +51,7 @@ import { MaintenanceContract } from '../../model/maintenance-contract';
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class MaintenanceContractTableComponent extends CrudItemTableComponent<MaintenanceContract> {

@@ -5,6 +5,7 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   Output,
@@ -20,7 +21,7 @@ import {
   clone,
   TABLE_FILTER_GLOBAL,
 } from 'packages/bia-ng/core/public-api';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import { DtoState, PropType } from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaColumnGroupCell,
   BiaFieldConfig,
@@ -30,10 +31,12 @@ import {
 } from 'packages/bia-ng/models/public-api';
 import {
   FilterMetadata,
+  MenuItem,
   PrimeTemplate,
   SortMeta,
   TableState,
 } from 'primeng/api';
+import { ContextMenu } from 'primeng/contextmenu';
 import { Skeleton } from 'primeng/skeleton';
 import {
   Table,
@@ -45,6 +48,7 @@ import {
 } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
 import { Observable, of, timer } from 'rxjs';
+import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { TableHelperService } from '../../../services/table-helper.service';
 import { BiaFrozenColumnDirective } from '../bia-frozen-column/bia-frozen-column.directive';
 import { BiaTableFilterComponent } from '../bia-table-filter/bia-table-filter.component';
@@ -80,6 +84,7 @@ const arraysEqual = (a1: any, a2: any) =>
     AsyncPipe,
     TranslateModule,
     BiaFrozenColumnDirective,
+    ContextMenu,
   ],
 })
 export class BiaTableComponent<TDto extends { id: number | string }>
@@ -125,6 +130,8 @@ export class BiaTableComponent<TDto extends { id: number | string }>
   @Input() sortMode: 'single' | 'multiple' = 'multiple';
   @Input() multiSortMeta?: SortMeta[] | null;
   @Input() ignoreSpecificOutput = false;
+  @Input() copyRowSeparator = '\t';
+  @Input() showContextMenu = true;
   @Input() canExpandRow = false;
   @Input() expandedRowTemplate: TemplateRef<any>;
 
@@ -153,6 +160,7 @@ export class BiaTableComponent<TDto extends { id: number | string }>
   @Output() pageChange = new EventEmitter<TablePageEvent>();
 
   @ViewChild('dt', { static: false }) table: Table | undefined;
+  @ViewChild('cm', { static: false }) contextMenu: ContextMenu | undefined;
 
   @ContentChildren(PrimeTemplate) templates: QueryList<any>;
   specificOutputTemplate: TemplateRef<any>;
@@ -189,6 +197,12 @@ export class BiaTableComponent<TDto extends { id: number | string }>
   protected defaultFilters: {
     [field: string]: FilterMetadata | FilterMetadata[];
   } = {};
+
+  protected contextMenuRow: any = null;
+  protected contextMenuCol: BiaFieldConfig<TDto> | null = null;
+  contextMenuItems: MenuItem[] = [];
+
+  protected formatValuePipe = inject(FormatValuePipe);
 
   constructor(
     public authService: AuthService,
@@ -772,6 +786,91 @@ export class BiaTableComponent<TDto extends { id: number | string }>
 
   onRowCollapse(event: TableRowCollapseEvent) {
     this.rowCollapse.emit(event);
+  }
+
+  onContextMenuSelect(
+    event: MouseEvent,
+    rowData: any,
+    col: BiaFieldConfig<TDto>
+  ) {
+    if (!this.showContextMenu) {
+      return;
+    }
+    event.preventDefault();
+    this.contextMenuRow = rowData;
+    this.contextMenuCol = col;
+    this.contextMenuItems = [
+      {
+        label: this.translateService.instant('bia.copyRow'),
+        icon: 'pi pi-copy',
+        command: () => this.copyRow(),
+      },
+      {
+        label: this.translateService.instant('bia.copyCell'),
+        icon: 'pi pi-clone',
+        command: () => this.copyCell(),
+      },
+    ];
+    this.contextMenu?.show(event);
+  }
+
+  protected copyRow() {
+    if (!this.contextMenuRow) {
+      return;
+    }
+    const values = this.displayedColumns.map(col => {
+      const raw = this.getCellData(this.contextMenuRow, col);
+      return this.getCopyText(raw, col);
+    });
+    navigator.clipboard.writeText(values.join(this.copyRowSeparator));
+  }
+
+  protected copyCell() {
+    if (!this.contextMenuRow || !this.contextMenuCol) {
+      return;
+    }
+    const raw = this.getCellData(this.contextMenuRow, this.contextMenuCol);
+    const text = this.getCopyText(raw, this.contextMenuCol);
+    navigator.clipboard.writeText(text);
+  }
+
+  protected getCopyText(raw: any, col: BiaFieldConfig<TDto>): string {
+    if (raw === null || raw === undefined) {
+      return '';
+    }
+
+    if (col.type === PropType.OneToMany) {
+      return this.getOneToManyDisplay(raw);
+    }
+
+    if (col.type === PropType.ManyToMany) {
+      return this.getManyToManyDisplay(raw);
+    }
+
+    return this.formatValuePipe.transform(raw, col) ?? '';
+  }
+
+  protected getOneToManyDisplay(raw: any): string {
+    if (raw && raw.display !== undefined && raw.display !== null) {
+      return String(raw.display);
+    }
+
+    if (Array.isArray(raw)) {
+      return raw.map(item => this.getOneToManyDisplay(item)).join(', ');
+    }
+
+    return String(raw);
+  }
+
+  protected getManyToManyDisplay(raw: any): string {
+    if (!Array.isArray(raw)) {
+      return this.getOneToManyDisplay(raw);
+    }
+
+    return raw
+      .filter(item => item?.dtoState !== DtoState.Deleted)
+      .map(item => this.getOneToManyDisplay(item))
+      .join(', ');
   }
 
   getColumnHeader(fieldConfig: BiaFieldConfig<TDto>): string {

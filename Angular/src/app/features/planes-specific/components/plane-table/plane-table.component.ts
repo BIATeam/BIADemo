@@ -23,6 +23,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { Plane } from '../../model/plane';
 
 @Component({
@@ -50,6 +51,7 @@ import { Plane } from '../../model/plane';
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class PlaneTableComponent extends CrudItemTableComponent<Plane> {

@@ -23,6 +23,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { Airport } from '../../model/airport';
 
 @Component({
@@ -50,6 +51,7 @@ import { Airport } from '../../model/airport';
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class AirportTableComponent extends CrudItemTableComponent<Airport> {

@@ -25,6 +25,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { Plane } from '../../model/plane';
 
@@ -53,6 +54,7 @@ import { Plane } from '../../model/plane';
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class PlaneTableComponent

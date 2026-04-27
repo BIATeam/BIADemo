@@ -25,6 +25,7 @@ import {
 import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BiaFieldConfig } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
+import { ContextMenu } from 'primeng/contextmenu';
 import { MultiSelect } from 'primeng/multiselect';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
@@ -60,6 +61,7 @@ import { BiaTableComponent } from '../bia-table/bia-table.component';
     TranslateModule,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class BiaCalcTableComponent<TDto extends { id: number | string }>

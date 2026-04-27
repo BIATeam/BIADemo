@@ -23,6 +23,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { Engine } from 'src/app/features/planes-specific/model/engine';
 
 @Component({
@@ -50,6 +51,7 @@ import { Engine } from 'src/app/features/planes-specific/model/engine';
     TranslateModule,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class EngineTableComponent extends CrudItemTableComponent<Engine> {

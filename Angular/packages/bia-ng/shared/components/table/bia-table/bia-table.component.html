@@ -1,4 +1,10 @@
 @if (configuration) {
+  @if (showContextMenu) {
+    <p-contextMenu
+      #cm
+      [model]="contextMenuItems"
+      appendTo="body"></p-contextMenu>
+  }
   <p-table
     #dt
     [reorderableColumns]="reorderableColumns && !configuration.columnGroup"
@@ -265,6 +271,7 @@
           <td
             [class]="'bia-column-' + col.typeLowerCase"
             (click)="clickElementData(rowData)"
+            (contextmenu)="onContextMenuSelect($event, rowData, col)"
             [style.min-width]="col.minWidth"
             [style.max-width]="col.maxWidth"
             [alignFrozen]="col.alignFrozen"

@@ -25,6 +25,8 @@
     "cancel": "Cancel",
     "clearAll": "Clear all",
     "clone": "Clone",
+    "copyCell": "Copy cell",
+    "copyRow": "Copy row",
     "close": "Close",
     "confirm": "Confirm",
     "creation": "Creation",

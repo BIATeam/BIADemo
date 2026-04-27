@@ -18,6 +18,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { BiaCalcTableCellComponent } from '../../../../components/table/bia-calc-table-cell/bia-calc-table-cell.component';
 import { BiaCalcTableComponent } from '../../../../components/table/bia-calc-table/bia-calc-table.component';
 import { BiaFrozenColumnDirective } from '../../../../components/table/bia-frozen-column/bia-frozen-column.directive';
@@ -52,6 +53,7 @@ import { CrudHelperService } from '../../../../services/crud-helper.service';
     TranslateModule,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class CrudItemTableComponent<CrudItem extends BaseDto<string | number>>

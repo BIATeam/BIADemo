@@ -23,6 +23,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import { TableModule } from 'primeng/table';
 import { Tooltip } from 'primeng/tooltip';
+import { ContextMenu } from 'primeng/contextmenu';
 import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-company';
 
 @Component({
@@ -50,6 +51,7 @@ import { AircraftMaintenanceCompany } from '../../model/aircraft-maintenance-com
     BiaTableFooterControllerComponent,
     BiaFrozenColumnDirective,
     BiaCalcTableCellComponent,
+    ContextMenu,
   ],
 })
 export class AircraftMaintenanceCompanyTableComponent extends CrudItemTableComponent<AircraftMaintenanceCompany> {
