@@ -103,29 +103,39 @@ export class BiaFieldBaseComponent<CrudItem>
 
     this.fieldSubscriptionsInitialized = true;
 
-    this.sub.add(
-      this.biaTranslationService.currentCulture$.subscribe(culture => {
-        if (culture && this.field instanceof BiaFieldConfig) {
-          const field = this.field.clone();
-          field.displayFormat ||= new BiaFieldNumberFormat();
-          if (field.displayFormat instanceof BiaFieldNumberFormat) {
-            field.displayFormat.autoLocale = culture;
-          }
-          this.field = field;
-        }
-      })
-    );
-
-    this.sub.add(
-      this.biaTranslationService.currentCultureDateFormat$.subscribe(
-        dateFormat => {
-          if (this.field instanceof BiaFieldConfig) {
+    if (this.field.type === PropType.Number) {
+      this.sub.add(
+        this.biaTranslationService.currentCulture$.subscribe(culture => {
+          if (culture && this.field instanceof BiaFieldConfig) {
             const field = this.field.clone();
-            BiaFieldHelperService.setDateFormat(field, dateFormat);
+            field.displayFormat ||= new BiaFieldNumberFormat();
+            if (field.displayFormat instanceof BiaFieldNumberFormat) {
+              field.displayFormat.autoLocale = culture;
+            }
             this.field = field;
           }
-        }
-      )
-    );
+        })
+      );
+    }
+
+    if (
+      this.field.type === PropType.DateTime ||
+      this.field.type === PropType.Date ||
+      this.field.type === PropType.Time ||
+      this.field.type === PropType.TimeOnly ||
+      this.field.type === PropType.TimeSecOnly
+    ) {
+      this.sub.add(
+        this.biaTranslationService.currentCultureDateFormat$.subscribe(
+          dateFormat => {
+            if (this.field instanceof BiaFieldConfig) {
+              const field = this.field.clone();
+              BiaFieldHelperService.setDateFormat(field, dateFormat);
+              this.field = field;
+            }
+          }
+        )
+      );
+    }
   }
 }
