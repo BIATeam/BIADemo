@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Copyright>Copyright © BIA 2026</Copyright>
     <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
-    <Version>7.0.2</Version>
+    <Version>7.0.3</Version>
     <PackageIcon>LogoBIA.png</PackageIcon>
     <Authors>BIA Team</Authors>
     <Company>BIA</Company>

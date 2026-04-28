@@ -1,6 +1,6 @@
 {
   "name": "@bia-team/bia-ng",
-  "version": "7.0.2",
+  "version": "7.0.3",
   "peerDependencies": {
     "@angular/animations": "~21.2.6",
     "@angular/cdk": "~21.2.4",
