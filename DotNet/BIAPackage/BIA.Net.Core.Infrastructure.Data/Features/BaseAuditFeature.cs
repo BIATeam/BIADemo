@@ -9,10 +9,8 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
     using System.Security.Principal;
     using System.Text.Json;
-    using System.Threading;
     using System.Threading.Tasks;
     using Audit.Core;
     using Audit.EntityFramework;
@@ -23,14 +21,11 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
     using BIA.Net.Core.Domain.Authentication;
     using BIA.Net.Core.Domain.Mapper;
     using BIA.Net.Core.Domain.RepoContract;
-    using BIA.Net.Core.Domain.User.Entities;
+    using BIA.Net.Core.Infrastructure.Data.Helpers;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.ChangeTracking;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
-    using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
-    using static System.Formats.Asn1.AsnWriter;
 
     /// <summary>
     /// The Audit Feature.
@@ -260,10 +255,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 }
 
                 var linkedEntity = linkedEntityPropertyReference.TargetEntry.Entity;
-                var linkedEntityPropertyDisplayPropertyInfo = linkedEntity.GetType().GetProperty(auditPropertyMapper.LinkedEntityPropertyDisplayName)
-                    ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
+                var linkedEntityDisplayExpression = auditPropertyMapper.LinkedEntityPropertyDisplayExpression;
+                var linkedEntityDisplayExpressionCompiled = linkedEntityDisplayExpression.Compile();
 
-                var valueDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null)?.ToString();
+                var valueDisplay = linkedEntityDisplayExpressionCompiled.DynamicInvoke(linkedEntity)?.ToString();
                 auditChanges.Add(new AuditChange(
                     auditedEntityProperty.Name,
                     isInsertAudit ? null : auditedEntityPropertyValue,
@@ -307,7 +302,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                     ?? throw new BadBiaFrameworkUsageException($"Unable to find any reference of type {auditPropertyMapper.LinkedEntityType} into {entityEntry.Entity.GetType()}");
 
                 var originalDisplay = await this.RetrieveOriginalDisplayChangeFromPreviousAudit(auditEntity, change.ColumnName)
-                    ?? await this.GetEntityDisplayValue(auditPropertyMapper.LinkedEntityType, change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayName);
+                    ?? await this.GetEntityDisplayValue(auditPropertyMapper.LinkedEntityType, change.OriginalValue, auditPropertyMapper.LinkedEntityPropertyDisplayExpression);
 
                 if (linkedEntityPropertyReference.TargetEntry is null)
                 {
@@ -326,10 +321,10 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 }
 
                 var linkedEntity = linkedEntityPropertyReference.TargetEntry.Entity;
-                var linkedEntityPropertyDisplayPropertyInfo = linkedEntity.GetType().GetProperty(auditPropertyMapper.LinkedEntityPropertyDisplayName)
-                    ?? throw new BadBiaFrameworkUsageException($"Unable to find property {auditPropertyMapper.LinkedEntityPropertyDisplayName} into {linkedEntity.GetType()}");
+                var linkedEntityDisplayExpression = auditPropertyMapper.LinkedEntityPropertyDisplayExpression;
+                var linkedEntityDisplayExpressionCompiled = linkedEntityDisplayExpression.Compile();
 
-                var newDisplay = linkedEntityPropertyDisplayPropertyInfo.GetValue(linkedEntity, null)?.ToString();
+                var newDisplay = linkedEntityDisplayExpressionCompiled.DynamicInvoke(linkedEntity)?.ToString();
                 auditChanges.Add(new AuditChange(
                     change.ColumnName,
                     change.OriginalValue,
@@ -342,14 +337,14 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
         }
 
         /// <summary>
-        /// Retrieve the value of the <paramref name="displayPropertyName"/> of an <paramref name="entityType"/> by its <paramref name="identifierValue"/>.
+        /// Retrieve the value of the <paramref name="displayPropertyExpression"/> of an <paramref name="entityType"/> by its <paramref name="identifierValue"/>.
         /// </summary>
         /// <param name="entityType">The entity type.</param>
         /// <param name="identifierValue">The entity identifier value.</param>
-        /// <param name="displayPropertyName">The entity display property name.</param>
+        /// <param name="displayPropertyExpression">The entity display property expression.</param>
         /// <returns>The display property name value of the entity as <see cref="string"/>.</returns>
         /// <exception cref="BadBiaFrameworkUsageException">.</exception>
-        private async Task<string> GetEntityDisplayValue(Type entityType, object identifierValue, string displayPropertyName)
+        private async Task<string> GetEntityDisplayValue(Type entityType, object identifierValue, LambdaExpression displayPropertyExpression)
         {
             if (identifierValue == null)
             {
@@ -395,13 +390,20 @@ namespace BIA.Net.Core.Infrastructure.Data.Features
                 identifierKeyPredicateExpression);
 
             // Set expression : "SELECT entity.displayPropertyName"
-            var displayPropertyExpression = Expression.Call(
-                typeof(EF),
-                nameof(EF.Property),
-                [typeof(object)],
-                entityExpressionParameter,
-                Expression.Constant(displayPropertyName));
-            var displayPropertySelectorExpression = Expression.Lambda(displayPropertyExpression, entityExpressionParameter);
+            LambdaExpression lambda = displayPropertyExpression;
+
+            var replacedBody = new ReplaceParameterVisitor(
+                lambda.Parameters[0],
+                entityExpressionParameter).Visit(lambda.Body);
+
+            Expression body = replacedBody.Type != typeof(object)
+                ? Expression.Convert(replacedBody, typeof(object))
+                : replacedBody;
+
+            Type funcType = typeof(Func<,>).MakeGenericType(entityType, typeof(object));
+
+            LambdaExpression displayPropertySelectorExpression =
+                Expression.Lambda(funcType, body, entityExpressionParameter);
 
             // Call expression "SELECT entity.displayPropertyName WHERE entity.identifierProperty = identifierKey"
             var displayPropertySelectExpression = Expression.Call(

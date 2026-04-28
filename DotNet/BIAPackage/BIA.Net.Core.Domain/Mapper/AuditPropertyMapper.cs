@@ -24,7 +24,7 @@ namespace BIA.Net.Core.Domain.Mapper
         public string EntityPropertyIdentifierName => Common.Helpers.PropertyMapper.GetPropertyName(this.EntityPropertyIdentifier);
 
         /// <inheritdoc/>
-        public string LinkedEntityPropertyDisplayName => Common.Helpers.PropertyMapper.GetPropertyName(this.LinkedEntityPropertyDisplay);
+        public LambdaExpression LinkedEntityPropertyDisplayExpression => this.LinkedEntityPropertyDisplay;
 
         /// <summary>
         /// Selector of the <typeparamref name="TEntity"/> property that have reference to the <typeparamref name="TLinkedEntity"/>.
