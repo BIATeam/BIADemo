@@ -1,10 +1,7 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AuthService } from 'packages/bia-ng/core/public-api';
-import {
-  CrudItemService,
-  CrudItemSignalRService,
-} from 'packages/bia-ng/shared/public-api';
+import { CrudItemService } from 'packages/bia-ng/shared/public-api';
 import { TableLazyLoadEvent } from 'primeng/table';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/state';
@@ -14,6 +11,7 @@ import { FeatureAirportsStore } from '../store/airport.state';
 import { FeatureAirportsActions } from '../store/airports-actions';
 import { AirportDas } from './airport-das.service';
 import { AirportOptionsService } from './airport-options.service';
+import { AirportSignalRService } from './airport-signalr.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +24,7 @@ export class AirportService extends CrudItemService<Airport> {
   constructor(
     private store: Store<AppState>,
     public dasService: AirportDas,
-    public signalRService: CrudItemSignalRService<Airport>,
+    public signalRService: AirportSignalRService,
     public optionsService: AirportOptionsService,
     protected injector: Injector,
     // required only for parent key

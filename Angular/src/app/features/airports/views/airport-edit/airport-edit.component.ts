@@ -35,7 +35,7 @@ export class AirportEditComponent
     super.ngOnInit();
 
     if (this.useSignalR) {
-      this.signalrService.initialize();
+      this.signalrService.initialize(this.airportService);
 
       this.signalrService.registerUpdate(async args => {
         const updatedCrudItem = JSON.parse(args) as Airport;
@@ -57,7 +57,7 @@ export class AirportEditComponent
     super.ngOnDestroy();
 
     if (this.useSignalR) {
-      this.signalrService.destroy();
+      this.signalrService.destroy(this.airportService);
     }
   }
 }
