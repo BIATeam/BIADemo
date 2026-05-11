@@ -170,7 +170,7 @@ namespace BIA.Net.Core.Application.Archive
         {
             var targetArchiveFileName = $"{this.GetArchiveNameTemplate(item)}.zip";
             var targetArchiveFilePath = Path.Combine(targetArchiveDirectoryPath, targetArchiveFileName);
-            var sourceArchiveFilePath = Path.GetRandomFileName();
+            var sourceArchiveFilePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
             try
             {
