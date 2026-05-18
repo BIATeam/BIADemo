@@ -572,9 +572,20 @@ namespace BIA.Net.Core.Infrastructure.Service.Repositories
                 if (response.IsSuccessStatusCode)
                 {
                     string res = await response.Content.ReadAsStringAsync();
-                    TResult result = JsonConvert.DeserializeObject<TResult>(res);
-                    httpContent?.Dispose();
-                    return (result, response.IsSuccessStatusCode, default(string), response.StatusCode);
+                    string contentType = response.Content.Headers.ContentType?.MediaType;
+
+                    if (contentType == MediaTypeNames.Application.Json)
+                    {
+                        TResult result = JsonConvert.DeserializeObject<TResult>(res);
+                        httpContent?.Dispose();
+                        return (result, response.IsSuccessStatusCode, default(string), response.StatusCode);
+                    }
+                    else
+                    {
+                        this.Logger.LogWarning("Expected JSON but got '{ContentType}'. Returning default value.", contentType);
+                        httpContent?.Dispose();
+                        return (default(TResult), response.IsSuccessStatusCode, "Response is not JSON.", response.StatusCode);
+                    }
                 }
                 else
                 {

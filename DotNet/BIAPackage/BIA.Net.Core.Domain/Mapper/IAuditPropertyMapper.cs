@@ -5,6 +5,7 @@
 namespace BIA.Net.Core.Domain.Mapper
 {
     using System;
+    using System.Linq.Expressions;
 
     /// <summary>
     /// Interface for audit property mappers.
@@ -27,8 +28,8 @@ namespace BIA.Net.Core.Domain.Mapper
         string EntityPropertyIdentifierName { get; }
 
         /// <summary>
-        /// Property name of the linked entity used as display.
+        /// Property of the linked entity used as display.
         /// </summary>
-        string LinkedEntityPropertyDisplayName { get; }
+        LambdaExpression LinkedEntityPropertyDisplayExpression { get; }
     }
 }

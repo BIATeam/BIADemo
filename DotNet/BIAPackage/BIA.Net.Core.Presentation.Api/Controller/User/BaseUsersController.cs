@@ -75,7 +75,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Options))]
-        public async Task<IActionResult> GetAllOptions(string filter = null)
+        public virtual async Task<IActionResult> GetAllOptions(string filter = null)
         {
             var results = await this.userService.GetAllOptionsAsync(filter);
             return this.Ok(results);
@@ -89,7 +89,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [HttpPost("all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = nameof(BiaPermissionId.User_List_Access))]
-        public async Task<IActionResult> GetAll([FromBody] TPagingFilterFormatDto filters)
+        public virtual async Task<IActionResult> GetAll([FromBody] TPagingFilterFormatDto filters)
         {
             var (results, total) = await this.userService.GetRangeAsync(filters);
             this.HttpContext.Response.Headers.Append(BiaConstants.HttpHeaders.TotalCount, total.ToString());
@@ -107,7 +107,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = nameof(BiaPermissionId.User_ListAD))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null, int returnSize = 10)
+        public virtual async Task<IActionResult> GetAllFromAD(string filter, string ldapName = null, int returnSize = 10)
         {
             if (filter.Contains('\n') || (ldapName != null && ldapName.Contains('\n')))
             {
@@ -143,7 +143,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Read))]
-        public async Task<IActionResult> Get(int id)
+        public virtual async Task<IActionResult> Get(int id)
         {
             if (id == 0)
             {
@@ -173,7 +173,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Add))]
-        public async Task<IActionResult> Add([FromBody] TUserDto dto)
+        public virtual async Task<IActionResult> Add([FromBody] TUserDto dto)
         {
             try
             {
@@ -200,7 +200,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status303SeeOther)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Add))]
-        public async Task<IActionResult> Add([FromBody] IEnumerable<TUserFromDirectoryDto> users)
+        public virtual async Task<IActionResult> Add([FromBody] IEnumerable<TUserFromDirectoryDto> users)
         {
             ResultAddUsersFromDirectoryDto result = await this.userService.AddFromDirectory(users);
             if (result.Errors.Any())
@@ -224,7 +224,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(BiaPermissionId.User_UpdateRoles))]
-        public async Task<IActionResult> Update(int id, [FromBody] TUserDto dto)
+        public virtual async Task<IActionResult> Update(int id, [FromBody] TUserDto dto)
         {
             if (id == 0 || dto == null || dto.Id != id)
             {
@@ -259,7 +259,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Delete))]
-        public async Task<IActionResult> RemoveInGroup(int id)
+        public virtual async Task<IActionResult> RemoveInGroup(int id)
         {
             if (id == 0)
             {
@@ -286,7 +286,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Delete))]
-        public async Task<IActionResult> Remove([FromQuery] List<int> ids)
+        public virtual async Task<IActionResult> Remove([FromQuery] List<int> ids)
         {
             if (ids?.Any() != true)
             {
@@ -325,7 +325,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Save))]
-        public async Task<IActionResult> Save(IEnumerable<TUserDto> dtos)
+        public virtual async Task<IActionResult> Save(IEnumerable<TUserDto> dtos)
         {
             var dtoList = dtos.ToList();
             if (!dtoList.Any())
@@ -363,7 +363,7 @@ namespace BIA.Net.Core.Presentation.Api.Controller.User
         [HttpGet("synchronize")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [Authorize(Roles = nameof(BiaPermissionId.User_Sync))]
-        public async Task<IActionResult> Synchronize(bool fullSynchro = false)
+        public virtual async Task<IActionResult> Synchronize(bool fullSynchro = false)
         {
             if (this.configuration?.Authentication?.Keycloak?.IsActive == true)
             {
