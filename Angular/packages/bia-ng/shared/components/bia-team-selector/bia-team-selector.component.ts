@@ -8,23 +8,23 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AppSettingsService,
   AuthService,
   BiaTeamsActions,
   BiaTranslationService,
   CoreTeamsStore,
-} from 'packages/bia-ng/core/public-api';
-import { RoleMode } from 'packages/bia-ng/models/enum/public-api';
+} from '@bia-team/bia-ng/core';
 import {
   AuthInfo,
   RoleDto,
   Team,
   TeamConfigDto,
-} from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
+} from '@bia-team/bia-ng/models';
+import { RoleMode } from '@bia-team/bia-ng/models/enum';
+import { BiaAppState } from '@bia-team/bia-ng/store';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MultiSelect } from 'primeng/multiselect';
 import { Select } from 'primeng/select';
 import { Tooltip } from 'primeng/tooltip';

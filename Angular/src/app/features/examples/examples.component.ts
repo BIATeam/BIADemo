@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
+import { LocaleDatePipe } from '@bia-team/bia-ng/shared';
 import { Store } from '@ngrx/store';
-import { LocaleDatePipe } from 'packages/bia-ng/shared/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import { AppState } from 'src/app/store/state';

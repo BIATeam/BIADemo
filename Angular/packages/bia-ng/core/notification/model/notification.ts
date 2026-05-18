@@ -1,6 +1,6 @@
 ﻿/* eslint-disable @typescript-eslint/naming-convention */
 
-import { OptionDto } from 'packages/bia-ng/models/public-api';
+import { OptionDto } from '@bia-team/bia-ng/models';
 
 export interface Notification {
   id: number;

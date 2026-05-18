@@ -3,7 +3,7 @@ import { Component, Injector } from '@angular/core';
 import {
   CrudItemReadComponent,
   SpinnerComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 import { PlaneFormComponent } from '../../components/plane-form/plane-form.component';
 import { PlaneSpecific } from '../../model/plane-specific';

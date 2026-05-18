@@ -1,5 +1,5 @@
 ﻿import { Component, Input } from '@angular/core';
-import { BiaButtonAndMenuItem } from 'packages/bia-ng/models/public-api';
+import { BiaButtonAndMenuItem } from '@bia-team/bia-ng/models';
 import { ButtonDirective } from 'primeng/button';
 import { Divider } from 'primeng/divider';
 import { TieredMenu } from 'primeng/tieredmenu';

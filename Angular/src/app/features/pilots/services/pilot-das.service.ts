@@ -1,5 +1,5 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from 'packages/bia-ng/core/public-api';
+import { AbstractDas } from '@bia-team/bia-ng/core';
 import { Pilot, pilotFieldsConfiguration } from '../model/pilot';
 import { PilotList } from '../model/pilot-list';
 

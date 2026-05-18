@@ -1,9 +1,6 @@
-﻿import { createEntityAdapter, EntityState } from '@ngrx/entity';
+﻿import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
-import {
-  CrudState,
-  DEFAULT_CRUD_STATE,
-} from 'packages/bia-ng/models/public-api';
 import { MaintenanceContract } from '../model/maintenance-contract';
 import { FeatureMaintenanceContractsActions } from './maintenance-contracts-actions';
 

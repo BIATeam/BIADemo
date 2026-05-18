@@ -1,7 +1,7 @@
 ﻿import { Injectable, OnDestroy } from '@angular/core';
+import { AppSettings } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Store } from '@ngrx/store';
-import { AppSettings } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { getAppSettings } from '../app-settings/store/app-settings.state';
