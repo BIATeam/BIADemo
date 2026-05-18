@@ -9,4 +9,14 @@ export declare const enum HttpStatusCodeCustom {
    * HTTP status code 498.
    */
   InvalidToken = 498, // Unofficial code, often used for authentication token issues
+
+  /**
+   * HTTP status code 426.
+   */
+  UpgradeRequired = 426,
+
+  /**
+   * HTTP status code 520.
+   */
+  UnknownServerError = 520, // Unofficial code, used when the server returns an unexpected error
 }

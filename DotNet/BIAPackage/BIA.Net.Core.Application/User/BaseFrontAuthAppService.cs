@@ -627,7 +627,7 @@ namespace BIA.Net.Core.Application.User
             }
             else
             {
-                var loginParamParentTeam = loginParam.CurrentTeamLogins.FirstOrDefault(ct => ct.TeamTypeId == parentTeamTypeId);
+                var loginParamParentTeam = loginParam.CurrentTeamLogins?.FirstOrDefault(ct => ct.TeamTypeId == parentTeamTypeId);
                 if (loginParamParentTeam is null)
                 {
                     return;

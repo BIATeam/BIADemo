@@ -7,7 +7,7 @@ import {
   LoginParamDto,
   Token,
 } from '@bia-team/bia-ng/models';
-import { RoleMode } from '@bia-team/bia-ng/models/enum';
+import { HttpStatusCodeCustom, RoleMode } from '@bia-team/bia-ng/models/enum';
 import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
@@ -39,9 +39,6 @@ const STORAGE_RELOADED_KEY = 'isReloaded';
   providedIn: 'root',
 })
 export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
-  protected readonly httpCodeUpgradeRequired = 426;
-  protected readonly httpCodeUnknownServerError = 520;
-
   protected sub = new Subscription();
   protected authInfoSubject: BehaviorSubject<AuthInfo> =
     new BehaviorSubject<AuthInfo>(new AuthInfo());
@@ -106,7 +103,10 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     return this.checkFrontEndVersion().pipe(
       take(1),
       switchMap((isCorrectVersion: boolean | undefined) => {
-        if (isCorrectVersion === undefined) {
+        if (
+          this.appSettingsService.appSettings?.keycloak?.isActive !== true &&
+          isCorrectVersion === undefined
+        ) {
           if (this.loginRetryCount < 3) {
             console.warn(
               'The front-end version could not be checked, attempting to retry...'
@@ -116,9 +116,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
             return this.login();
           }
           console.error(
-            `The front-end version could not be checked after retrying, redirecting to error page with code ${this.httpCodeUnknownServerError}.`
+            `The front-end version could not be checked after retrying, redirecting to error page with code ${HttpStatusCodeCustom.UnknownServerError}.`
           );
-          this.navigateToErrorPage(this.httpCodeUnknownServerError);
+          this.navigateToErrorPage(HttpStatusCodeCustom.UnknownServerError);
           return NEVER;
         }
 
@@ -486,9 +486,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
     if (isReloaded === String(true) && !updateAvailable) {
       sessionStorage.removeItem(STORAGE_RELOADED_KEY);
       console.error(
-        `No update found after reload, redirecting to error page with code ${this.httpCodeUpgradeRequired}.`
+        `No update found after reload, redirecting to error page with code ${HttpStatusCodeCustom.UpgradeRequired}.`
       );
-      this.navigateToErrorPage(this.httpCodeUpgradeRequired);
+      this.navigateToErrorPage(HttpStatusCodeCustom.UpgradeRequired);
     } else {
       if (updateAvailable) {
         await this.biaSwUpdateService.activateUpdate();
