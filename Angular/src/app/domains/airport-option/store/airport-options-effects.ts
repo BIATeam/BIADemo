@@ -1,10 +1,10 @@
 ﻿import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   BiaDataChangeService,
   BiaMessageService,
   BiaOnlineOfflineService,
-} from '@bia-team/bia-ng/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+} from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { enableSignalrRefresh, storeKey } from '../airport-option.constants';

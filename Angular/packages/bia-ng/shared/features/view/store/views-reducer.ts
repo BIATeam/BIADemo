@@ -1,6 +1,9 @@
-﻿import { CrudState, DEFAULT_CRUD_STATE } from '@bia-team/bia-ng/models';
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+﻿import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
+import {
+  CrudState,
+  DEFAULT_CRUD_STATE,
+} from 'packages/bia-ng/models/public-api';
 import { View } from '../model/view';
 import { ViewsActions } from './views-actions';
 

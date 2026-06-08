@@ -9,15 +9,18 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { BiaTranslationService } from '@bia-team/bia-ng/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BiaTranslationService } from 'packages/bia-ng/core/public-api';
+import {
+  PrimeNGFiltering,
+  PropType,
+} from 'packages/bia-ng/models/enum/public-api';
 import {
   BiaFieldConfig,
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
   OptionDto,
-} from '@bia-team/bia-ng/models';
-import { PrimeNGFiltering, PropType } from '@bia-team/bia-ng/models/enum';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+} from 'packages/bia-ng/models/public-api';
 import {
   FilterMatchMode,
   FilterMetadata,

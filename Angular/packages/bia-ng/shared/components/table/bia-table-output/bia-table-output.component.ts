@@ -10,7 +10,7 @@ import {
   QueryList,
   TemplateRef,
 } from '@angular/core';
-import { DtoState } from '@bia-team/bia-ng/models/enum';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { FormatValuePipe } from '../../../pipes/format-value.pipe';
 import { JoinPipe } from '../../../pipes/join.pipe';

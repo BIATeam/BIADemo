@@ -1,4 +1,4 @@
-﻿import { DtoState } from '@bia-team/bia-ng/models/enum';
+﻿import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import { BaseDto } from './dto/base-dto';
 
 export class OptionDto extends BaseDto {
