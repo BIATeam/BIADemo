@@ -140,35 +140,6 @@ namespace BIA.Net.Core.Infrastructure.Data
             }
         }
 
-        /// <summary>
-        /// Refreshes the original values of all conflicting entries from the database so that
-        /// EF Core no longer sees a concurrency mismatch on the next save attempt.
-        /// Entries whose row has been deleted by another process are detached.
-        /// </summary>
-        /// <param name="concurrencyException">The <see cref="DbUpdateConcurrencyException"/> that triggered the refresh.</param>
-        /// <param name="cancellationToken">Cancellation token.</param>
-        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
-        protected virtual async Task RefreshConcurrencyConflictsAsync(
-            DbUpdateConcurrencyException concurrencyException,
-            CancellationToken cancellationToken = default)
-        {
-            foreach (var entry in concurrencyException.Entries)
-            {
-                var databaseValues = await entry.GetDatabaseValuesAsync(cancellationToken);
-                if (databaseValues != null)
-                {
-                    // Overwrite the snapshot EF is comparing against with the current DB values,
-                    // keeping our pending changes intact.
-                    entry.OriginalValues.SetValues(databaseValues);
-                }
-                else
-                {
-                    // Row was deleted by another process – detach to skip it.
-                    entry.State = EntityState.Detached;
-                }
-            }
-        }
-
         /// <inheritdoc />
         public async Task<int> CommitAsync()
         {
@@ -433,6 +404,35 @@ namespace BIA.Net.Core.Infrastructure.Data
         public void SetCommandTimeout(TimeSpan timeout)
         {
             this.Database.SetCommandTimeout(timeout);
+        }
+
+        /// <summary>
+        /// Refreshes the original values of all conflicting entries from the database so that
+        /// EF Core no longer sees a concurrency mismatch on the next save attempt.
+        /// Entries whose row has been deleted by another process are detached.
+        /// </summary>
+        /// <param name="concurrencyException">The <see cref="DbUpdateConcurrencyException"/> that triggered the refresh.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
+        protected virtual async Task RefreshConcurrencyConflictsAsync(
+            DbUpdateConcurrencyException concurrencyException,
+            CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in concurrencyException.Entries)
+            {
+                var databaseValues = await entry.GetDatabaseValuesAsync(cancellationToken);
+                if (databaseValues != null)
+                {
+                    // Overwrite the snapshot EF is comparing against with the current DB values,
+                    // keeping our pending changes intact.
+                    entry.OriginalValues.SetValues(databaseValues);
+                }
+                else
+                {
+                    // Row was deleted by another process – detach to skip it.
+                    entry.State = EntityState.Detached;
+                }
+            }
         }
 
         /// <summary>

@@ -177,9 +177,17 @@ Write-Output "Bia Demo framework version : $frameworkVersion"
 
 ReplaceProjectNameRecurse -oldName 'file:./dist/bia-ng' -newName $frameworkVersion -Path "$newPath\package.json" -ExcludeDir ('dist', 'node_modules', 'packages', '.angular', 'scss')
 
-$a = Get-Content $newPath'\angular.json' -raw | ConvertFrom-Json
+$a = Get-Content $newPath'\angular.json' -Raw | ConvertFrom-Json
 $a.projects.BIATemplate.architect.build.options.serviceWorker = $false
-$a | ConvertTo-Json -depth 32 | Format-Json | set-content $newPath'\angular.json'
+
+# Ensure src/ngsw-worker.js is present in assets
+$assets = $a.projects.BIATemplate.architect.build.options.assets
+
+if ('src/ngsw-worker.js' -notin $assets) {
+    $assets += 'src/ngsw-worker.js'
+    $a.projects.BIATemplate.architect.build.options.assets = $assets
+}
+$a | ConvertTo-Json -Depth 32 | Format-Json | Set-Content $newPath'\angular.json'
 (Get-Content -Path "src\environments\all-environments.ts") -replace 'enableWorkerService: true', 'enableWorkerService: false' | Set-Content -Path "src\environments\all-environments.ts"
 
 Write-Host "npm install"
