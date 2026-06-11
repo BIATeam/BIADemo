@@ -3,9 +3,9 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "@bia-team/bia-ng/*": ["./dist/bia-ng/*"]
+      "@bia-team/bia-ng/*": ["./dist/bia-ng/*"],
+      "*": ["./*"]
     },
-    "baseUrl": "./",
     "esModuleInterop": true,
     "noUnusedLocals": true,
     "outDir": "./dist/out-tsc",
