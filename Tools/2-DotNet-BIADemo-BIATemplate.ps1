@@ -111,13 +111,15 @@ function RemoveDirectoryPackagesBiaFromSln {
 ###### ###### ###### Start process ###### ###### ######
 RemoveFolder -path $newPath
 
+New-Item -ItemType Directory -Path $newPath -Force | Out-Null
+
 Write-Host "Copy from $oldPath to $newPath"
-Copy-Item -Path $oldPath -Destination $newPath -Recurse -Force
+
+Get-ChildItem -Path $oldPath -Force |
+    Where-Object { $_.Name -ne 'BIAPackage' } |
+    Copy-Item -Destination $newPath -Recurse -Force
 
 CopyBiaFolder -oldPath $oldPath -newPath $newPath
-
-$biaPackage = $newPath + "\BIAPackage"
-RemoveFolder -path $biaPackage
 
 Set-Location -Path $newPath
 

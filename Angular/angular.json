@@ -52,8 +52,7 @@
               "src/assets",
               "src/config.json",
               "src/web.config",
-              "src/manifest.webmanifest",
-              "src/ngsw-worker.js"
+              "src/manifest.webmanifest"
             ],
             "styles": [
               "node_modules/primeicons/primeicons.css",

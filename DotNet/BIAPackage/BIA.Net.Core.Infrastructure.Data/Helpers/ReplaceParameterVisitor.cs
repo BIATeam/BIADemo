@@ -38,7 +38,7 @@ namespace BIA.Net.Core.Infrastructure.Data.Helpers
         /// </returns>
         protected override Expression VisitParameter(ParameterExpression node)
         {
-            return node == oldParam ? newExpr : base.VisitParameter(node);
+            return node == this.oldParam ? this.newExpr : base.VisitParameter(node);
         }
     }
 }
