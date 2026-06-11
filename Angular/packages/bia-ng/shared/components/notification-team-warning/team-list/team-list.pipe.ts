@@ -1,5 +1,5 @@
 ﻿import { Pipe, PipeTransform } from '@angular/core';
-import { Notification } from 'packages/bia-ng/core/public-api';
+import { Notification } from '@bia-team/bia-ng/core';
 
 @Pipe({ name: 'teamList' })
 export class TeamListPipe implements PipeTransform {

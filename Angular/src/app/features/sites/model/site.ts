@@ -1,11 +1,11 @@
-﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
-import {
+﻿import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   TeamDto,
   VersionedDto,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
 
 // TODO after creation of CRUD Team Site : adapt the model
 export interface Site extends BaseDto, TeamDto, VersionedDto {

@@ -1,7 +1,4 @@
-﻿import {
-  EnvironmentType,
-  RoleMode,
-} from 'packages/bia-ng/models/enum/public-api';
+﻿import { EnvironmentType, RoleMode } from '@bia-team/bia-ng/models/enum';
 import { PermissionInfo } from './permission-info';
 
 export interface AppSettings {

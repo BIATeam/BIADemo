@@ -1,5 +1,5 @@
-﻿import { createAction, props } from '@ngrx/store';
-import { LdapDomain } from 'packages/bia-ng/models/public-api';
+﻿import { LdapDomain } from '@bia-team/bia-ng/models';
+import { createAction, props } from '@ngrx/store';
 
 export namespace DomainLdapDomainsActions {
   export const loadAll = createAction('[Domain LDAP Domains] Load all');

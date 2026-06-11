@@ -1,7 +1,7 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { AuthService, BiaPermission } from 'packages/bia-ng/core/public-api';
-import { DomainUserOptionsStore } from 'packages/bia-ng/domains/public-api';
+import { AuthService, BiaPermission } from '@bia-team/bia-ng/core';
+import { DomainUserOptionsStore } from '@bia-team/bia-ng/domains';
 import { skip } from 'rxjs/operators';
 import { CrudItemNewComponent } from '../../../crud-items/views/crud-item-new/crud-item-new.component';
 import { MemberFormNewComponent } from '../../components/member-form-new/member-form-new.component';

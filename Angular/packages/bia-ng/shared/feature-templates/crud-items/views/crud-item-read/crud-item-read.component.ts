@@ -1,6 +1,6 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
-import { BaseDto } from 'packages/bia-ng/models/public-api';
+import { BaseDto } from '@bia-team/bia-ng/models';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';
 import { CrudItemFormComponent } from '../../components/crud-item-form/crud-item-form.component';
 import { FormReadOnlyMode } from '../../model/crud-config';
