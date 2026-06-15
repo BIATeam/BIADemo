@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 import {
   animate,
-  AnimationEvent,
   state,
   style,
   transition,
@@ -9,7 +8,6 @@ import {
 } from '@angular/animations';
 import { NgClass } from '@angular/common';
 import {
-  AfterViewChecked,
   Component,
   ElementRef,
   HostBinding,
@@ -25,7 +23,6 @@ import {
   RouterLinkActive,
 } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { DomHandler } from 'primeng/dom';
 import { Ripple } from 'primeng/ripple';
 import { Tooltip } from 'primeng/tooltip';
 import { Subscription } from 'rxjs';
@@ -79,9 +76,7 @@ import { BiaUltimaLayoutModule } from '../ultima-layout.module';
     BiaUltimaLayoutModule,
   ],
 })
-export class BiaUltimaMenuItemComponent
-  implements OnInit, OnDestroy, AfterViewChecked
-{
+export class BiaUltimaMenuItemComponent implements OnInit, OnDestroy {
   @Input() item: MenuItem;
 
   @Input() index!: number;
@@ -157,22 +152,6 @@ export class BiaUltimaMenuItemComponent
     }
   }
 
-  ngAfterViewChecked() {
-    if (
-      this.root &&
-      this.active &&
-      this.layoutService.isDesktop() &&
-      (this.layoutService.isHorizontal() ||
-        this.layoutService.isSlim() ||
-        this.layoutService.isSlimPlus())
-    ) {
-      this.calculatePosition(
-        this.submenu?.nativeElement,
-        this.submenu?.nativeElement.parentElement
-      );
-    }
-  }
-
   updateActiveStateFromRoute() {
     const activeRoute = this.router.isActive(this.item.routerLink[0], {
       paths: 'subset',
@@ -183,50 +162,6 @@ export class BiaUltimaMenuItemComponent
 
     if (activeRoute) {
       this.menuService.onMenuStateChange({ key: this.key, routeEvent: true });
-    }
-  }
-
-  onSubmenuAnimated(event: AnimationEvent) {
-    if (
-      event.toState === 'visible' &&
-      this.layoutService.isDesktop() &&
-      (this.layoutService.isHorizontal() ||
-        this.layoutService.isSlim() ||
-        this.layoutService.isSlimPlus())
-    ) {
-      const el = <HTMLUListElement>event.element;
-      const elParent = <HTMLUListElement>el.parentElement;
-      this.calculatePosition(el, elParent);
-    }
-  }
-
-  calculatePosition(overlay: HTMLElement, target: HTMLElement) {
-    if (overlay) {
-      const { left, top } = target.getBoundingClientRect();
-      const [vWidth, vHeight] = [window.innerWidth, window.innerHeight];
-      const [oWidth, oHeight] = [overlay.offsetWidth, overlay.offsetHeight];
-      const scrollbarWidth = DomHandler.calculateScrollbarWidth();
-      const topbarEl = document.querySelector('.layout-topbar') as HTMLElement;
-      const topbarHeight = topbarEl?.offsetHeight || 0;
-      // reset
-      overlay.style.top = '';
-      overlay.style.left = '';
-
-      if (this.layoutService.isHorizontal()) {
-        const width = left + oWidth + scrollbarWidth;
-        overlay.style.left =
-          vWidth < width ? `${left - (width - vWidth)}px` : `${left}px`;
-      } else if (
-        this.layoutService.isSlim() ||
-        this.layoutService.isSlimPlus()
-      ) {
-        const topOffset = top - topbarHeight;
-        const height = topOffset + oHeight + topbarHeight;
-        overlay.style.top =
-          vHeight < height
-            ? `${topOffset - (height - vHeight)}px`
-            : `${topOffset}px`;
-      }
     }
   }
 
