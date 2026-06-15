@@ -5,8 +5,8 @@
   Renderer2,
   RendererFactory2,
 } from '@angular/core';
-import { THEME_DARK, THEME_LIGHT } from '@bia-team/bia-ng/core';
-import { ColorScheme } from '@bia-team/bia-ng/models';
+import { THEME_DARK, THEME_LIGHT } from 'packages/bia-ng/core/public-api';
+import { ColorScheme } from 'packages/bia-ng/models/public-api';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BiaLayoutService } from './layout.service';

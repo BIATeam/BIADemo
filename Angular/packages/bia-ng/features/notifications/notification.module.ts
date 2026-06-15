@@ -1,17 +1,20 @@
 ﻿import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { BiaPermission, PermissionGuard } from '@bia-team/bia-ng/core';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import {
+  BiaPermission,
+  PermissionGuard,
+} from 'packages/bia-ng/core/public-api';
 import {
   LanguageOptionModule,
   NotificationTypeOptionModule,
   RoleOptionModule,
   TeamOptionModule,
   UserOptionModule,
-} from '@bia-team/bia-ng/domains';
-import { DynamicLayoutComponent } from '@bia-team/bia-ng/shared';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+} from 'packages/bia-ng/domains/public-api';
+import { DynamicLayoutComponent } from 'packages/bia-ng/shared/public-api';
 import { notificationCRUDConfiguration } from './notification.constants';
 import { NotificationService } from './services/notification.service';
 import { FeatureNotificationsStore } from './store/notification.state';

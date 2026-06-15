@@ -1,12 +1,12 @@
 ﻿import { AsyncPipe } from '@angular/common';
 import { Component, Injector, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Store } from '@ngrx/store';
 import {
   BiaLayoutService,
   CrudItemItemComponent,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
-import { Store } from '@ngrx/store';
+} from 'packages/bia-ng/shared/public-api';
 import { first } from 'rxjs/operators';
 import { AppState } from 'src/app/store/state';
 import { Plane } from '../../model/plane';
@@ -15,9 +15,9 @@ import { PlaneService } from '../../services/plane.service';
 @Component({
   selector: 'app-planes-specific-item',
   templateUrl:
-    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.html',
   styleUrls: [
-    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
+    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-item/crud-item-item.component.scss',
   ],
   imports: [RouterOutlet, AsyncPipe, SpinnerComponent],
 })

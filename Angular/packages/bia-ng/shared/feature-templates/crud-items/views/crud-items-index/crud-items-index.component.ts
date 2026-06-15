@@ -9,6 +9,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router, Routes } from '@angular/router';
+import { Actions } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MotionOptions } from '@primeuix/motion';
+import { saveAs } from 'file-saver';
 import {
   AuthService,
   BiaAppConstantsService,
@@ -16,7 +21,8 @@ import {
   BiaOnlineOfflineService,
   BiaTranslationService,
   clone,
-} from '@bia-team/bia-ng/core';
+} from 'packages/bia-ng/core/public-api';
+import { DtoState } from 'packages/bia-ng/models/enum/public-api';
 import {
   AuthInfo,
   BaseDto,
@@ -26,14 +32,8 @@ import {
   FixableDto,
   KeyValuePair,
   PagingFilterFormatDto,
-} from '@bia-team/bia-ng/models';
-import { DtoState } from '@bia-team/bia-ng/models/enum';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Actions } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { MotionOptions } from '@primeuix/motion';
-import { saveAs } from 'file-saver';
+} from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { MenuItem, PrimeTemplate, SortMeta } from 'primeng/api';
 import { MultiSelect } from 'primeng/multiselect';
 import { TableLazyLoadEvent } from 'primeng/table';

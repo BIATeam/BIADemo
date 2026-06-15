@@ -1,6 +1,9 @@
-﻿import { DateFormat } from '@bia-team/bia-ng/core';
-import { BiaFieldConfig, BiaFieldDateFormat } from '@bia-team/bia-ng/models';
-import { PropType } from '@bia-team/bia-ng/models/enum';
+﻿import { DateFormat } from 'packages/bia-ng/core/public-api';
+import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import {
+  BiaFieldConfig,
+  BiaFieldDateFormat,
+} from 'packages/bia-ng/models/public-api';
 
 export class BiaFieldHelperService {
   public static setDateFormat<T>(

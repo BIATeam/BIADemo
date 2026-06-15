@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core';
-import { TargetedFeature } from '@bia-team/bia-ng/models';
+import { TargetedFeature } from 'packages/bia-ng/models/public-api';
 import { BiaSignalRService } from './bia-signalr.service';
 
 @Injectable({ providedIn: 'root' })

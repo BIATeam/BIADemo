@@ -1,5 +1,5 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from '@bia-team/bia-ng/core';
+import { AbstractDas } from 'packages/bia-ng/core/public-api';
 import { Observable } from 'rxjs';
 import { UserFromDirectory } from '../model/user-from-directory';
 
