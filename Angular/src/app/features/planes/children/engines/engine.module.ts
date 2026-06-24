@@ -1,12 +1,9 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PermissionGuard } from '@bia-team/bia-ng/core';
+import { DynamicLayoutComponent, LayoutMode } from '@bia-team/bia-ng/shared';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { PermissionGuard } from 'packages/bia-ng/core/public-api';
-import {
-  DynamicLayoutComponent,
-  LayoutMode,
-} from 'packages/bia-ng/shared/public-api';
 import { PartOptionModule } from 'src/app/domains/part-option/part-option.module';
 import { Permission } from 'src/app/shared/permission';
 import { engineCRUDConfiguration } from './engine.constants';

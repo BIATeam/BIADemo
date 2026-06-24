@@ -1,6 +1,6 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { AbstractDas } from 'packages/bia-ng/core/public-api';
-import { Announcement } from 'packages/bia-ng/models/public-api';
+import { AbstractDas } from '@bia-team/bia-ng/core';
+import { Announcement } from '@bia-team/bia-ng/models';
 import { announcementFieldsConfiguration } from '../public-api';
 
 @Injectable({

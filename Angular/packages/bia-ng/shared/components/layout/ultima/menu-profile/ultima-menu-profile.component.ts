@@ -12,14 +12,14 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { TranslateModule } from '@ngx-translate/core';
 import {
   AppSettingsService,
   AuthService,
   BiaEnvironmentService,
   BiaPermission,
   BiaTranslationService,
-} from 'packages/bia-ng/core/public-api';
+} from '@bia-team/bia-ng/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';

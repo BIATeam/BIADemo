@@ -13,19 +13,19 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
   TABLE_FILTER_GLOBAL,
-} from 'packages/bia-ng/core/public-api';
-import { PropType } from 'packages/bia-ng/models/enum/public-api';
+} from '@bia-team/bia-ng/core';
 import {
   BiaFieldConfig,
   BiaFieldsConfig,
   BiaTableState,
   KeyValuePair,
-} from 'packages/bia-ng/models/public-api';
+} from '@bia-team/bia-ng/models';
+import { PropType } from '@bia-team/bia-ng/models/enum';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PrimeTemplate, SortMeta, TableState } from 'primeng/api';
 import { Skeleton } from 'primeng/skeleton';
 import {

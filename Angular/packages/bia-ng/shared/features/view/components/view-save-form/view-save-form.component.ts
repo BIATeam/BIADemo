@@ -8,9 +8,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { PermissionTeams, Team } from '@bia-team/bia-ng/models';
+import { DtoState, ViewType } from '@bia-team/bia-ng/models/enum';
 import { TranslateModule } from '@ngx-translate/core';
-import { DtoState, ViewType } from 'packages/bia-ng/models/enum/public-api';
-import { PermissionTeams, Team } from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { Listbox } from 'primeng/listbox';

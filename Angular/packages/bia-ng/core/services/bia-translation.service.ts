@@ -1,12 +1,12 @@
 ﻿import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { AppSettings } from '@bia-team/bia-ng/models';
+import { BiaAppState } from '@bia-team/bia-ng/store';
 import { Store } from '@ngrx/store';
 import {
   mergeDeep,
   TranslateService,
   TranslateStore,
 } from '@ngx-translate/core';
-import { AppSettings } from 'packages/bia-ng/models/public-api';
-import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { PrimeNG } from 'primeng/config';
 import { DatePicker } from 'primeng/datepicker';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';

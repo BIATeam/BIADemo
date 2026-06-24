@@ -4,7 +4,7 @@ import {
   BiaFormComponent,
   CrudItemImportComponent,
   CrudItemImportFormComponent,
-} from 'packages/bia-ng/shared/public-api';
+} from '@bia-team/bia-ng/shared';
 import { Permission } from 'src/app/shared/permission';
 import { maintenanceContractCRUDConfiguration } from '../../maintenance-contract.constants';
 import { MaintenanceContract } from '../../model/maintenance-contract';
@@ -13,7 +13,7 @@ import { MaintenanceContractService } from '../../services/maintenance-contract.
 @Component({
   selector: 'app-maintenance-contract-import',
   templateUrl:
-    '../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
 })
 export class MaintenanceContractImportComponent extends CrudItemImportComponent<MaintenanceContract> {
