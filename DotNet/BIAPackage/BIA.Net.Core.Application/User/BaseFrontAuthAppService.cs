@@ -393,10 +393,31 @@ namespace BIA.Net.Core.Application.User
                 this.CleanChildTeamsFromLoginParam(loginParam, teamConfig.TeamTypeId, teamsConfig, allTeams);
             }
 
+            var orderedTeamsConfig = teamsConfig.OrderBy(tc => tc.Parents == null ? 0 : 1).ThenBy(tc => tc.Parents?.Count ?? 0);
+
             // get user rights
-            foreach (var teamConfig in teamsConfig)
+            foreach (var teamConfig in orderedTeamsConfig)
             {
-                var correspondingTeams = allTeams.Where(t => t.TeamTypeId == teamConfig.TeamTypeId);
+                IEnumerable<BaseDtoVersionedTeam> correspondingTeams;
+                if (teamConfig.Parents != null)
+                {
+                    var parentTeam = userData.CurrentTeams.FirstOrDefault(t => t.TeamTypeId == teamConfig.Parents[0].TeamTypeId);
+                    if (parentTeam == null)
+                    {
+                        correspondingTeams = [];
+                    }
+                    else
+                    {
+                        correspondingTeams = allTeams.Where(t =>
+                            t.TeamTypeId == teamConfig.TeamTypeId
+                            && t.ParentTeamId == parentTeam.TeamId);
+                    }
+                }
+                else
+                {
+                    correspondingTeams = allTeams.Where(t => t.TeamTypeId == teamConfig.TeamTypeId);
+                }
+
                 var automaticallySelectedTeam = teamConfig.TeamAutomaticSelectionMode switch
                 {
                     TeamSelectionMode.None => null,

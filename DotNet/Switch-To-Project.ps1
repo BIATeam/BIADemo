@@ -17,8 +17,10 @@ function AddProjectToSlnf {
         $slnfContent.solution.projects = @($slnfContent.solution.projects | Sort-Object)
         
         # Save with proper formatting
-        $json = $slnfContent | ConvertTo-Json -Depth 10
         $absoluteSlnfPath = (Resolve-Path $slnfFile).Path
+        $projects = $slnfContent.solution.projects | Sort-Object
+        $projectLines = ($projects | ForEach-Object { "      `"$($_ -replace '\\','\\')`"" }) -join ",`n"
+        $json = "{`n  `"solution`": {`n    `"path`": `"$($slnfContent.solution.path)`",`n    `"projects`": [`n$projectLines`n    ]`n  }`n}"
         [System.IO.File]::WriteAllText($absoluteSlnfPath, $json, [System.Text.Encoding]::UTF8)
     }
 }
