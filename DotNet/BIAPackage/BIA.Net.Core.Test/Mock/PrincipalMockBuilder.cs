@@ -28,6 +28,17 @@ namespace BIA.Net.Core.Test.Mock
         }
 
         /// <summary>
+        /// The mock to build accessor.
+        /// </summary>
+        protected Mock<BiaClaimsPrincipal> Mock
+        {
+            get
+            {
+                return this.mock;
+            }
+        }
+
+        /// <summary>
         /// Get the mocked object.
         /// </summary>
         /// <returns>The mocked principal.</returns>
@@ -101,6 +112,19 @@ namespace BIA.Net.Core.Test.Mock
         {
             this.mock.Setup(p => p.GetUserLogin())
                 .Returns(login);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Mock the value returned by the <see cref="BiaClaimsPrincipal.MockPrincipalRoleIds"/> method.
+        /// </summary>
+        /// <param name="roleIds">The roleIds for the user.</param>
+        /// <returns>The updated mock builder.</returns>
+        public PrincipalMockBuilder MockPrincipalRoleIds(IEnumerable<int> roleIds)
+        {
+            this.mock.Setup(p => p.GetRoleIds())
+                .Returns(roleIds);
 
             return this;
         }

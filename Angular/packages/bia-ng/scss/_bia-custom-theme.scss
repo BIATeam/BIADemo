@@ -607,3 +607,12 @@ bia-form-layout .p-tabs .p-tabpanel > .bia-form-row {
 .p-panel .p-panel-content-container {
   display: block;
 }
+
+@media screen and (min-width: 992px) {
+  .layout-wrapper.layout-slim .layout-menu .layout-root-menuitem > ul,
+  .layout-wrapper.layout-slim-plus .layout-menu .layout-root-menuitem > ul,
+  .layout-wrapper.layout-horizontal .layout-menu .layout-root-menuitem > ul {
+    max-height: 32rem;
+    transform: none;
+  }
+}
