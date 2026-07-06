@@ -211,7 +211,6 @@ export class BiaUltimaMenuItemComponent implements OnInit, OnDestroy {
   }
 
   onSubmenuAnimated(event: AnimationEvent) {
-    console.log('onSubmenuAnimated', event);
     if (
       event.toState === 'visible' &&
       this.layoutService.isDesktop() &&
