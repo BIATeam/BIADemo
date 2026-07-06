@@ -5,7 +5,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)BIA.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup Label="AnalyzersNugets" Condition="!$(MSBuildProjectDirectory.Contains('Migrations'))">
+  <PropertyGroup>
+    <IsBiaPackageProject Condition="'$(MSBuildProjectName)' != '' and $(MSBuildProjectName.StartsWith('BIA.Net'))">true</IsBiaPackageProject>
+  </PropertyGroup>
+  <ItemGroup Label="AnalyzersNugets" Condition="!$(MSBuildProjectDirectory.Contains('Migrations')) and '$(IsBiaPackageProject)' != 'true'">
     <PackageReference Include="SonarAnalyzer.CSharp">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -19,9 +22,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  <PropertyGroup>
-    <IsBiaPackageProject Condition="'$(MSBuildProjectName)' != '' and $(MSBuildProjectName.StartsWith('BIA.Net'))">true</IsBiaPackageProject>
-  </PropertyGroup>
   <ItemGroup Condition="'$(IsBiaPackageProject)' != 'true'">
     <Using Include="System" />
     <Using Include="System.Collections.Generic" />
