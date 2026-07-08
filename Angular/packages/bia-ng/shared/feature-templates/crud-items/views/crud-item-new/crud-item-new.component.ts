@@ -1,4 +1,4 @@
-﻿import { AsyncPipe } from '@angular/common';
+﻿import { AsyncPipe, Location } from '@angular/common';
 import {
   Component,
   computed,
@@ -28,10 +28,15 @@ export class CrudItemNewComponent<
   extends CrudItemComponent<TFormCrudItem>
   implements OnInit, OnDestroy
 {
+  location: Location;
+
   itemTemplate$?: Observable<TFormCrudItem | undefined>;
   readonly itemTemplateId = computed(() => {
-    const nav = this.router.currentNavigation();
-    return nav?.extras.state?.itemTemplateId as string | undefined;
+    return (
+      this.location.getState() as {
+        itemTemplateId?: string;
+      }
+    ).itemTemplateId;
   });
 
   constructor(
@@ -39,6 +44,8 @@ export class CrudItemNewComponent<
     public crudItemService: CrudItemSingleService<TFormCrudItem>
   ) {
     super(injector, crudItemService);
+
+    this.location = injector.get<Location>(Location);
 
     if (this.itemTemplateId()) {
       this.itemTemplate$ = this.crudItemService.crudItem$.pipe(

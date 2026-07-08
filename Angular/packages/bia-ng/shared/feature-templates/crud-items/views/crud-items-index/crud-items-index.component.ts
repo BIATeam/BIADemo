@@ -556,7 +556,7 @@ export class CrudItemsIndexComponent<
   }
 
   protected resetEditableRow() {
-    this.crudItemTableComponent.resetEditableRow();
+    this.crudItemTableComponent?.resetEditableRow();
   }
 
   onDelete() {
