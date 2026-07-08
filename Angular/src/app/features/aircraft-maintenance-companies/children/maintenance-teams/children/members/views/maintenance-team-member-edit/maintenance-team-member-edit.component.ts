@@ -5,14 +5,14 @@ import {
   MemberFormEditComponent,
   MemberModule,
   SpinnerComponent,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { TeamTypeId } from 'src/app/shared/constants';
 import { MaintenanceTeamService } from '../../../../services/maintenance-team.service';
 
 @Component({
   selector: 'app-maintenance-team-member-edit',
   templateUrl:
-    '../../../../../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/members/views/member-edit/member-edit.component.html',
+    '../../../../../../../../../../packages/bia-ng/shared/feature-templates/members/views/member-edit/member-edit.component.html',
   imports: [MemberModule, AsyncPipe, SpinnerComponent, MemberFormEditComponent],
 })
 export class MaintenanceTeamMemberEditComponent

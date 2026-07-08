@@ -5,13 +5,13 @@ import {
   CrudItemImportFormComponent,
   MemberImportComponent,
   MemberService,
-} from '@bia-team/bia-ng/shared';
+} from 'packages/bia-ng/shared/public-api';
 import { Permission } from 'src/app/shared/permission';
 
 @Component({
   selector: 'app-site-member-import',
   templateUrl:
-    '../../../../../../../../node_modules/@bia-team/bia-ng/templates/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
+    '../../../../../../../../packages/bia-ng/shared/feature-templates/crud-items/views/crud-item-import/crud-item-import.component.html',
   imports: [CrudItemImportFormComponent, AsyncPipe, BiaFormComponent],
 })
 export class SiteMemberImportComponent extends MemberImportComponent {

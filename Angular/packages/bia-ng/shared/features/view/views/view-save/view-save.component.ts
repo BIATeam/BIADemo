@@ -1,20 +1,20 @@
 ﻿import { CommonModule } from '@angular/common';
 import { Component, inject, Inject, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   AppSettingsService,
   BiaAppConstantsService,
   BiaPermission,
   CoreTeamsStore,
-} from '@bia-team/bia-ng/core';
+} from 'packages/bia-ng/core/public-api';
 import {
   BaseDto,
   BiaTableState,
   PermissionTeams,
   Team,
-} from '@bia-team/bia-ng/models';
-import { Store } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/models/public-api';
 import { ButtonDirective } from 'primeng/button';
 import { map, Observable, of } from 'rxjs';
 import { SpinnerComponent } from '../../../../components/spinner/spinner.component';

@@ -1,17 +1,17 @@
 ﻿import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Store, select } from '@ngrx/store';
+import { TranslateModule } from '@ngx-translate/core';
 import {
   AuthService,
   BiaAppConstantsService,
   BiaPermission,
   CoreTeamsStore,
-} from '@bia-team/bia-ng/core';
-import { CurrentTeamDto, Team } from '@bia-team/bia-ng/models';
-import { ViewType } from '@bia-team/bia-ng/models/enum';
-import { BiaAppState } from '@bia-team/bia-ng/store';
-import { Store, select } from '@ngrx/store';
-import { TranslateModule } from '@ngx-translate/core';
+} from 'packages/bia-ng/core/public-api';
+import { ViewType } from 'packages/bia-ng/models/enum/public-api';
+import { CurrentTeamDto, Team } from 'packages/bia-ng/models/public-api';
+import { BiaAppState } from 'packages/bia-ng/store/public-api';
 import { AccordionModule } from 'primeng/accordion';
 import { ConfirmationService, SharedModule } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';

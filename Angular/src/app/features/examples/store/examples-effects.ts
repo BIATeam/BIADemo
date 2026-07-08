@@ -1,6 +1,6 @@
 ﻿import { Injectable } from '@angular/core';
-import { BiaMessageService } from '@bia-team/bia-ng/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { BiaMessageService } from 'packages/bia-ng/core/public-api';
 import { of } from 'rxjs';
 import { catchError, exhaustMap, map } from 'rxjs/operators';
 import { ExamplesDas } from '../service/examples-das.service';

@@ -5,9 +5,9 @@
   Output,
   ViewChild,
 } from '@angular/core';
-import { BiaDialogService } from '@bia-team/bia-ng/core';
-import { CurrentTeamDto, Team } from '@bia-team/bia-ng/models';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BiaDialogService } from 'packages/bia-ng/core/public-api';
+import { CurrentTeamDto, Team } from 'packages/bia-ng/models/public-api';
 import { Confirmation, ConfirmationService, PrimeTemplate } from 'primeng/api';
 import { ButtonDirective } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';

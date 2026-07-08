@@ -1,8 +1,11 @@
 ﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { BiaPermission, PermissionGuard } from '@bia-team/bia-ng/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import {
+  BiaPermission,
+  PermissionGuard,
+} from 'packages/bia-ng/core/public-api';
 import { LayoutMode } from '../../components/layout/dynamic-layout/dynamic-layout.component';
 import { viewCRUDConfiguration } from './model/view.constants';
 import { ViewsStore } from './store/view.state';

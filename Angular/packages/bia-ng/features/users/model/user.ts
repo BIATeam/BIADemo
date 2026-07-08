@@ -1,10 +1,10 @@
-﻿import {
+﻿import { PropType } from 'packages/bia-ng/models/enum/public-api';
+import {
   BaseDto,
   BiaFieldConfig,
   BiaFieldsConfig,
   OptionDto,
-} from '@bia-team/bia-ng/models';
-import { PropType } from '@bia-team/bia-ng/models/enum';
+} from 'packages/bia-ng/models/public-api';
 import { UserTeam } from './user-team';
 
 // TODO after creation of CRUD User : adapt the model

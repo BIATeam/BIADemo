@@ -17,11 +17,11 @@ import {
   ReactiveFormsModule,
   UntypedFormGroup,
 } from '@angular/forms';
+import { MotionOptions } from '@primeuix/motion';
 import {
   BiaFieldDateFormat,
   BiaFieldNumberFormat,
-} from '@bia-team/bia-ng/models';
-import { MotionOptions } from '@primeuix/motion';
+} from 'packages/bia-ng/models/public-api';
 import { PrimeTemplate } from 'primeng/api';
 import { AutoFocusModule } from 'primeng/autofocus';
 import { BaseComponent } from 'primeng/basecomponent';
