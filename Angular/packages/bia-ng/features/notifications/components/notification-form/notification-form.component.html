@@ -143,7 +143,7 @@
                         placeholder="&nbsp;"
                         formControlName="languageToAdd"
                         optionLabel="display"
-                        datakey="id"
+                        [dataKey]="'id'"
                         [style]="{ width: '100%' }"
                         (onChange)="onSelectionLanguage()"
                         appendTo="body">
@@ -180,7 +180,7 @@
               placeholder="&nbsp;"
               formControlName="type"
               optionLabel="display"
-              datakey="id"
+              [dataKey]="'id'"
               [style]="{ width: '100%' }">
             </p-select>
             <label
@@ -249,7 +249,7 @@
                         placeholder="&nbsp;"
                         formControlName="team"
                         optionLabel="display"
-                        datakey="id"
+                        [dataKey]="'id'"
                         [style]="{ width: '100%' }"
                         [showClear]="true"
                         appendTo="body"></p-select>
@@ -259,7 +259,7 @@
                         [options]="getOptionDto('notifiedRoles')"
                         formControlName="roles"
                         optionLabel="display"
-                        datakey="id"
+                        [dataKey]="'id'"
                         [style]="{ width: '100%' }"
                         appendTo="body"></p-multiSelect>
                     </td>
@@ -286,7 +286,7 @@
               placeholder="&nbsp;"
               formControlName="createdBy"
               optionLabel="display"
-              datakey="id"
+              [dataKey]="'id'"
               [style]="{ width: '100%' }"
               [showClear]="true"></p-select>
             <label>{{ 'notification.createdBy' | translate }}</label>
@@ -301,7 +301,7 @@
               appendTo="body"
               formControlName="notifiedUsers"
               optionLabel="display"
-              datakey="id"
+              [dataKey]="'id'"
               [style]="{ width: '100%' }"></p-multiSelect>
             <label>{{ 'notification.notifiedUsers' | translate }}</label>
           </p-floatlabel>

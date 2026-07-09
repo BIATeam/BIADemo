@@ -29,7 +29,7 @@
     [virtualScroll]="virtualScroll"
     [virtualScrollItemSize]="rowHeight"
     [virtualScrollOptions]="{ scrollHeight: scrollHeightValue }"
-    dataKey="id"
+    [dataKey]="'id'"
     [expandedRowKeys]="expandedRows"
     (onRowExpand)="onRowExpand($event)"
     (onRowCollapse)="onRowCollapse($event)"
