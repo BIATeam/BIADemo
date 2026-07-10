@@ -1,5 +1,5 @@
 ﻿// BIADemo only
-// <copyright file="ExampleAppService.cs" company="PlaceholderCompany">
+// <copyright file="ExampleAppService.cs" company="TheBIADevCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 

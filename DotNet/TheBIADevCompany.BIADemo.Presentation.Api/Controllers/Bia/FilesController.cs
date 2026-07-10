@@ -1,4 +1,4 @@
-﻿// <copyright file="FilesController.cs" company="PlaceholderCompany">
+﻿// <copyright file="FilesController.cs" company="TheBIADevCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 

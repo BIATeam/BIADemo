@@ -1,5 +1,5 @@
 ﻿// BIADemo only
-// <copyright file="IBiaDemoRoleApiRepository.cs" company="PlaceholderCompany">
+// <copyright file="IBiaDemoRoleApiRepository.cs" company="TheBIADevCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 

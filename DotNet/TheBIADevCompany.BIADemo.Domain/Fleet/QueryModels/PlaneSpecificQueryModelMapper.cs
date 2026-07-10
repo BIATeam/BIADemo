@@ -1,5 +1,5 @@
 ﻿// BIADemo only
-// <copyright file="PlaneSpecificQueryModelMapper.cs" company="PlaceholderCompany">
+// <copyright file="PlaneSpecificQueryModelMapper.cs" company="TheBIADevCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 

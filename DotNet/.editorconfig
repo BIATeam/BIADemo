@@ -6,3 +6,15 @@ end_of_line = crlf
 [**/Migrations*/*.cs]
 generated_code = true
 dotnet_analyzer_diagnostic.severity = none
+
+[**/ModelBuilders/AuditModelBuilder.cs]
+dotnet_diagnostic.S1185.severity = none
+
+[**/ModelBuilders/NotificationModelBuilder.cs]
+dotnet_diagnostic.S1185.severity = none
+
+[**/ModelBuilders/TranslationModelBuilder.cs]
+dotnet_diagnostic.S1185.severity = none
+
+[**/ModelBuilders/UserModelBuilder.cs]
+dotnet_diagnostic.S1185.severity = none

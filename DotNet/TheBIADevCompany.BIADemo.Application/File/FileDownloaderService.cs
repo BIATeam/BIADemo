@@ -1,4 +1,4 @@
-﻿// <copyright file="FileDownloaderService.cs" company="PlaceholderCompany">
+﻿// <copyright file="FileDownloaderService.cs" company="TheBIADevCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 

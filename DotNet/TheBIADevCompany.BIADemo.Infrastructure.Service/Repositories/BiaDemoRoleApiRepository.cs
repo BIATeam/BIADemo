@@ -1,5 +1,5 @@
 ﻿// BIADemo only
-// <copyright file="BiaDemoRoleApiRepository.cs" company="PlaceholderCompany">
+// <copyright file="BiaDemoRoleApiRepository.cs" company="TheBIADevCompany">
 // Copyright (c) PlaceholderCompany. All rights reserved.
 // </copyright>
 
@@ -23,7 +23,7 @@ namespace TheBIADevCompany.BIADemo.Infrastructure.Service.Repositories
     public class BiaDemoRoleApiRepository(
         HttpClient httpClient,
         IConfiguration configuration,
-        ILogger<RoleApiRepository<ApiRolesForApp>> logger,
+        ILogger<BiaDemoRoleApiRepository> logger,
         IBiaDistributedCache distributedCache)
         : RoleApiRepository<ApiRolesForApp>(httpClient, configuration, logger, distributedCache), IBiaDemoRoleApiRepository
     {

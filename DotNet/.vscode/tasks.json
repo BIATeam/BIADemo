@@ -103,9 +103,7 @@
         "--project",
         "TheBIADevCompany.BIADemo.Infrastructure.Data.Migrations.PostgreSQL",
         "-s",
-        "TheBIADevCompany.BIADemo.DeployDB",
-        "-c",
-        "DataContextPostGreSql"
+        "TheBIADevCompany.BIADemo.DeployDB"
       ],
       "problemMatcher": []
     },
