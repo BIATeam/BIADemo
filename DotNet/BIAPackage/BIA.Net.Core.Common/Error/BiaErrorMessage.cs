@@ -1,4 +1,4 @@
-// <copyright file="BiaErrorMessage.cs" company="BIA">
+ï»¿// <copyright file="BiaErrorMessage.cs" company="BIA">
 // Copyright (c) BIA. All rights reserved.
 // </copyright>
 
@@ -48,12 +48,12 @@ namespace BIA.Net.Core.Common.Error
 
             // MemberAlreadyExists
             AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Member already exists.");
-            AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Le membre existe déjà.");
+            AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "Le membre existe dÃ©jÃ .");
             AddTranslation(languageEnglishId, (int)BiaErrorId.MemberAlreadyExists, "El miembro ya existe.");
 
             // AddEntity
             AddTranslation(languageEnglishId, (int)BiaErrorId.AddEntity, "Unable to add {0}.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.AddEntity, "Impossible d’ajouter {0}.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.AddEntity, "Impossible dâ€™ajouter {0}.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.AddEntity, "No se puede agregar {0}.");
 
             // DeleteEntity
@@ -73,53 +73,53 @@ namespace BIA.Net.Core.Common.Error
 
             // DatabaseForeignKeyConstraint
             AddTranslation(languageEnglishId, (int)BiaErrorId.DatabaseForeignKeyConstraint, "One or many {0} are linked to dependant entities. Ensure to remove all dependant entities first.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseForeignKeyConstraint, "Un ou plusieurs {0} sont liés à des entités dépendantes. Veuillez supprimer toutes les entités dépendantes avant.");
-            AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseForeignKeyConstraint, "Uno o varios {0} están vinculados a entidades dependientes. Asegúrese de eliminar primero todas las entidades dependientes.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseForeignKeyConstraint, "Un ou plusieurs {0} sont liÃ©s Ã  des entitÃ©s dÃ©pendantes. Veuillez supprimer toutes les entitÃ©s dÃ©pendantes avant.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseForeignKeyConstraint, "Uno o varios {0} estÃ¡n vinculados a entidades dependientes. AsegÃºrese de eliminar primero todas las entidades dependientes.");
 
             // DatabaseUniqueConstraint
             AddTranslation(languageEnglishId, (int)BiaErrorId.DatabaseUniqueConstraint, "An entity {0} already exists with these values.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseUniqueConstraint, "Une entité {0} existe déjà avec ces valeurs.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseUniqueConstraint, "Une entitÃ© {0} existe dÃ©jÃ  avec ces valeurs.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseUniqueConstraint, "Ya existe una entidad {0} con estos valores.");
 
             // DatabaseDuplicateKey
             AddTranslation(languageEnglishId, (int)BiaErrorId.DatabaseDuplicateKey, "An entity {0} already exists with these values.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseDuplicateKey, "Une entité {0} existe déjà avec ces valeurs.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseDuplicateKey, "Une entitÃ© {0} existe dÃ©jÃ  avec ces valeurs.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseDuplicateKey, "Ya existe una entidad {0} con estos valores.");
 
             // DatabaseNullValueInsert
             AddTranslation(languageEnglishId, (int)BiaErrorId.DatabaseNullValueInsert, "Field {0} cannot be null in entity {1}.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseNullValueInsert, "Le champ {0} ne peut pas être nul dans l’entité {1}.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseNullValueInsert, "Le champ {0} ne peut pas Ãªtre nul dans lâ€™entitÃ© {1}.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseNullValueInsert, "El campo {0} no puede ser nulo en la entidad {1}.");
 
             // DatabaseLoginUser
             AddTranslation(languageEnglishId, (int)BiaErrorId.DatabaseLoginUser, "Unable to login to the database.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseLoginUser, "Impossible de se connecter à la base de données.");
-            AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseLoginUser, "No se puede iniciar sesión en la base de datos.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseLoginUser, "Impossible de se connecter Ã  la base de donnÃ©es.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseLoginUser, "No se puede iniciar sesiÃ³n en la base de datos.");
 
             // DatabaseOpen
             AddTranslation(languageEnglishId, (int)BiaErrorId.DatabaseOpen, "Unable to open the database.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseOpen, "Impossible d’ouvrir la base de données.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.DatabaseOpen, "Impossible dâ€™ouvrir la base de donnÃ©es.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.DatabaseOpen, "No se puede abrir la base de datos.");
 
             // Cannot add view for selected teams
             AddTranslation(languageEnglishId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "Can't add view for these teams.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "Impossible d'ajouter une vue pour ces équipes.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "Impossible d'ajouter une vue pour ces Ã©quipes.");
             AddTranslation(languageSpanishId, (int)BiaErrorId.CannotAddViewForSelectedTeams, "No se puede agregar vista para estos equipos.");
 
             // File to download expired
             AddTranslation(languageEnglishId, (int)BiaErrorId.FileToDownloadExpired, "The file you are trying to download has expired. Please regenerate the file and try again.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.FileToDownloadExpired, "Le fichier que vous essayez de télécharger a expiré. Veuillez régénérer le fichier et réessayer.");
-            AddTranslation(languageSpanishId, (int)BiaErrorId.FileToDownloadExpired, "El archivo que está intentando descargar ha expirado. Por favor regenere el archivo e inténtelo de nuevo.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.FileToDownloadExpired, "Le fichier que vous essayez de tÃ©lÃ©charger a expirÃ©. Veuillez rÃ©gÃ©nÃ©rer le fichier et rÃ©essayer.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.FileToDownloadExpired, "El archivo que estÃ¡ intentando descargar ha expirado. Por favor regenere el archivo e intÃ©ntelo de nuevo.");
 
             // File to download not found
             AddTranslation(languageEnglishId, (int)BiaErrorId.FileToDownloadNotFound, "The file you are trying to download was not found.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.FileToDownloadNotFound, "Le fichier que vous essayez de télécharger est introuvable.");
-            AddTranslation(languageSpanishId, (int)BiaErrorId.FileToDownloadNotFound, "El archivo que está intentando descargar no fue encontrado.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.FileToDownloadNotFound, "Le fichier que vous essayez de tÃ©lÃ©charger est introuvable.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.FileToDownloadNotFound, "El archivo que estÃ¡ intentando descargar no fue encontrado.");
 
             // Unauthorized file to download
             AddTranslation(languageEnglishId, (int)BiaErrorId.UnauthorizeFileToDownload, "You are not authorized to download this file.");
-            AddTranslation(languageFrenchId, (int)BiaErrorId.UnauthorizeFileToDownload, "Vous n'êtes pas autorisé à télécharger ce fichier.");
-            AddTranslation(languageSpanishId, (int)BiaErrorId.UnauthorizeFileToDownload, "No está autorizado para descargar este archivo.");
+            AddTranslation(languageFrenchId, (int)BiaErrorId.UnauthorizeFileToDownload, "Vous n'Ãªtes pas autorisÃ© Ã  tÃ©lÃ©charger ce fichier.");
+            AddTranslation(languageSpanishId, (int)BiaErrorId.UnauthorizeFileToDownload, "No estÃ¡ autorizado para descargar este archivo.");
         }
 
         /// <summary>
