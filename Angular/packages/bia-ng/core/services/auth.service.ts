@@ -15,7 +15,14 @@ import {
   Token,
 } from 'packages/bia-ng/models/public-api';
 import { BiaAppState } from 'packages/bia-ng/store/public-api';
-import { BehaviorSubject, NEVER, Observable, Subscription, of } from 'rxjs';
+import {
+  BehaviorSubject,
+  NEVER,
+  Observable,
+  Subscription,
+  of,
+  throwError,
+} from 'rxjs';
 import {
   catchError,
   filter,
@@ -482,28 +489,30 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
   }
 
   protected async getLatestVersion() {
-    const updateAvailable = await this.biaSwUpdateService.checkForUpdate();
+    if (this.biaSwUpdateService.isEnabled()) {
+      const updateAvailable = await this.biaSwUpdateService.checkForUpdate();
 
-    const isReloaded = sessionStorage.getItem(STORAGE_RELOADED_KEY);
-    // if a refresh has already been done and no update was found, the SW can't resolve the version mismatch
-    if (isReloaded === String(true) && !updateAvailable) {
-      sessionStorage.removeItem(STORAGE_RELOADED_KEY);
-      console.error(
-        `No update found after reload, redirecting to error page with code ${HttpStatusCodeCustom.UpgradeRequired}.`
-      );
-      this.navigateToErrorPage(HttpStatusCodeCustom.UpgradeRequired);
-    } else {
-      if (updateAvailable) {
-        await this.biaSwUpdateService.activateUpdate();
+      const isReloaded = sessionStorage.getItem(STORAGE_RELOADED_KEY);
+      // if a refresh has already been done and no update was found, the SW can't resolve the version mismatch
+      if (isReloaded === String(true) && !updateAvailable) {
+        sessionStorage.removeItem(STORAGE_RELOADED_KEY);
+        console.error(
+          `No update found after reload, redirecting to error page with code ${HttpStatusCodeCustom.UpgradeRequired}.`
+        );
+        this.navigateToErrorPage(HttpStatusCodeCustom.UpgradeRequired);
+      } else {
+        if (updateAvailable) {
+          await this.biaSwUpdateService.activateUpdate();
+        }
+        const timer = 5000;
+        this.biaMessageService.showInfo(
+          this.translateService.instant('biaMsg.infoBeforeGetLatestVersion'),
+          timer
+        );
+        setInterval(() => {
+          this.refresh();
+        }, timer);
       }
-      const timer = 5000;
-      this.biaMessageService.showInfo(
-        this.translateService.instant('biaMsg.infoBeforeGetLatestVersion'),
-        timer
-      );
-      setInterval(() => {
-        this.refresh();
-      }, timer);
     }
   }
 
@@ -531,6 +540,9 @@ export class AuthService extends AbstractDas<AuthInfo> implements OnDestroy {
         return version === BiaAppConstantsService.allEnvironments.version;
       }),
       catchError(err => {
+        if (err.status === HttpStatusCodeCustom.InvalidToken) {
+          return throwError(() => err);
+        }
         if (BiaOnlineOfflineService.isServerAvailable(err) !== true) {
           return of(true);
         }

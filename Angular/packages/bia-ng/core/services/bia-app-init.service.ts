@@ -107,7 +107,7 @@ export class BiaAppInitService implements OnDestroy {
       this.appSettingsService.appSettings?.keycloak?.isActive === true &&
       this.keycloakService
     ) {
-      if (this.keycloakService.authenticated !== true) {
+      if (!this.isKeycloakLoggedIn()) {
         this.keycloakService.login({
           redirectUri: window.location.href,
           idpHint:
@@ -116,6 +116,14 @@ export class BiaAppInitService implements OnDestroy {
         });
       }
     }
+  }
+
+  protected isKeycloakLoggedIn(): boolean {
+    return (
+      !!this.keycloakService?.authenticated &&
+      !!this.keycloakService?.tokenParsed &&
+      !this.keycloakService?.isTokenExpired()
+    );
   }
 
   protected getObsAuthInfo(): Observable<AuthInfo> {

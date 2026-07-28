@@ -24,6 +24,10 @@ export class BiaSwUpdateService {
     }
   }
 
+  public isEnabled(): boolean {
+    return this.swUpdate?.isEnabled === true;
+  }
+
   public async checkForUpdate(): Promise<boolean> {
     if (this.swUpdate?.isEnabled === true) {
       return await this.swUpdate.checkForUpdate();
