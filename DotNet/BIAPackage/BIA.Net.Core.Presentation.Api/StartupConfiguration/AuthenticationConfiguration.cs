@@ -76,16 +76,24 @@ namespace BIA.Net.Core.Presentation.Api.StartupConfiguration
 
             var jwtBearerEvents = new JwtBearerEvents()
             {
-                OnAuthenticationFailed = async context =>
+                OnAuthenticationFailed = context =>
                 {
-                    context.NoResult();
+                    context.HttpContext.Items["StatusCode"] = 498;
+                    return Task.CompletedTask;
+                },
+                OnChallenge = async context =>
+                {
+                    context.HandleResponse();
 
-                    context.Response.Headers["Access-Control-Allow-Origin"] = context.Request.Headers["Origin"].ToString();
-                    context.Response.Headers.Append("Token-Expired-Or-Invalid", "true");
+                    var status = context.HttpContext.Items.TryGetValue("StatusCode", out var value)
+                        ? (int)value
+                        : StatusCodes.Status401Unauthorized;
+
+                    context.Response.StatusCode = status;
+                    context.Response.Headers["Token-Expired-Or-Invalid"] = "true";
                     context.Response.ContentType = "text/plain";
-                    context.Response.StatusCode = 498;
 
-                    await context.Response.WriteAsync("Un-Authorized");
+                    await context.Response.WriteAsync("Unauthorized");
                 },
                 OnTokenValidated = context =>
                 {
